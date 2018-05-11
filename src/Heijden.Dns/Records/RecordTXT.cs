@@ -20,19 +20,19 @@ depends on the domain where it is found.
 
 namespace Heijden.DNS
 {
-	public class RecordTXT : Record
-	{
-		public string TXT;
+    public class RecordTXT : Record
+    {
+        public string TXT;
 
-		public RecordTXT(RecordReader rr)
-		{
-			TXT = rr.ReadString();
-		}
+        public RecordTXT(RecordReader rr)
+        {
+            TXT = rr.ReadString();
+        }
 
-		public override string ToString()
-		{
-			return string.Format("\"{0}\"",TXT);
-		}
+        public override string ToString()
+        {
+            return string.Format("\"{0}\"",TXT);
+        }
 
-	}
+    }
 }

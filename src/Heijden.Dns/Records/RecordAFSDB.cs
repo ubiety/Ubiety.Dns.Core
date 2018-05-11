@@ -29,24 +29,24 @@ using System;
 
 namespace Heijden.DNS
 {
-	public class RecordAFSDB : Record
-	{
-		public ushort SUBTYPE;
-		public string HOSTNAME;
+    public class RecordAFSDB : Record
+    {
+        public ushort SUBTYPE;
+        public string HOSTNAME;
 
-		public RecordAFSDB(RecordReader rr)
-		{
-			SUBTYPE = rr.ReadUInt16();
-			//HOSTNAME = rr.ReadString();
-			HOSTNAME = rr.ReadDomainName();
-		}
+        public RecordAFSDB(RecordReader rr)
+        {
+            SUBTYPE = rr.ReadUInt16();
+            //HOSTNAME = rr.ReadString();
+            HOSTNAME = rr.ReadDomainName();
+        }
 
-		public override string ToString()
-		{
-			return string.Format("{0} {1}",
-				SUBTYPE,
-				HOSTNAME);
-		}
+        public override string ToString()
+        {
+            return string.Format("{0} {1}",
+                SUBTYPE,
+                HOSTNAME);
+        }
 
-	}
+    }
 }

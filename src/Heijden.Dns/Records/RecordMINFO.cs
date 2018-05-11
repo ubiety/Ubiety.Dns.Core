@@ -32,21 +32,21 @@ with a mailing list.
  */
 namespace Heijden.DNS
 {
-	public class RecordMINFO : Record
-	{
-		public string RMAILBX;
-		public string EMAILBX;
+    public class RecordMINFO : Record
+    {
+        public string RMAILBX;
+        public string EMAILBX;
 
-		public RecordMINFO(RecordReader rr)
-		{
-			RMAILBX = rr.ReadDomainName();
-			EMAILBX = rr.ReadDomainName();
-		}
+        public RecordMINFO(RecordReader rr)
+        {
+            RMAILBX = rr.ReadDomainName();
+            EMAILBX = rr.ReadDomainName();
+        }
 
-		public override string ToString()
-		{
-			return string.Format("{0} {1}",RMAILBX,EMAILBX);
-		}
+        public override string ToString()
+        {
+            return string.Format("{0} {1}",RMAILBX,EMAILBX);
+        }
 
-	}
+    }
 }

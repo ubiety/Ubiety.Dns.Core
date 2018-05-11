@@ -16,19 +16,19 @@ MG records cause no additional section processing.
 */
 namespace Heijden.DNS
 {
-	public class RecordMG : Record
-	{
-		public string MGMNAME;
+    public class RecordMG : Record
+    {
+        public string MGMNAME;
 
-		public RecordMG(RecordReader rr)
-		{
-			MGMNAME = rr.ReadDomainName();
-		}
+        public RecordMG(RecordReader rr)
+        {
+            MGMNAME = rr.ReadDomainName();
+        }
 
-		public override string ToString()
-		{
-			return MGMNAME;
-		}
+        public override string ToString()
+        {
+            return MGMNAME;
+        }
 
-	}
+    }
 }

@@ -15,19 +15,19 @@ using System;
 
 namespace Heijden.DNS
 {
-	public class RecordCERT : Record
-	{
-		public byte[] RDATA;
+    public class RecordCERT : Record
+    {
+        public byte[] RDATA;
         public ushort TYPE;
         public ushort KEYTAG;  //Format
         public byte ALGORITHM;
         public string PUBLICKEY;
         public byte[] RAWKEY;
 
-		public RecordCERT(RecordReader rr)
-		{
-			// re-read length
-			ushort RDLENGTH = rr.ReadUInt16(-2);
+        public RecordCERT(RecordReader rr)
+        {
+            // re-read length
+            ushort RDLENGTH = rr.ReadUInt16(-2);
             //RDATA = rr.ReadBytes(RDLENGTH);
 
             TYPE = rr.ReadUInt16();
@@ -36,12 +36,12 @@ namespace Heijden.DNS
             var length = RDLENGTH - 5;
             RAWKEY = rr.ReadBytes(length);
             PUBLICKEY = Convert.ToBase64String(RAWKEY);
-		}
+        }
 
-		public override string ToString()
-		{
+        public override string ToString()
+        {
             return PUBLICKEY;
-		}
+        }
 
-	}
+    }
 }

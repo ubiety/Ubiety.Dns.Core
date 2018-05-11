@@ -3,53 +3,53 @@ using System;
 /*
 3.3.13. SOA RDATA format
 
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	/                     MNAME                     /
-	/                                               /
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	/                     RNAME                     /
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    SERIAL                     |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    REFRESH                    |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                     RETRY                     |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    EXPIRE                     |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    MINIMUM                    |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                     MNAME                     /
+    /                                               /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                     RNAME                     /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    SERIAL                     |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    REFRESH                    |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                     RETRY                     |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    EXPIRE                     |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    MINIMUM                    |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
 where:
 
 MNAME           The <domain-name> of the name server that was the
-				original or primary source of data for this zone.
+                original or primary source of data for this zone.
 
 RNAME           A <domain-name> which specifies the mailbox of the
-				person responsible for this zone.
+                person responsible for this zone.
 
 SERIAL          The unsigned 32 bit version number of the original copy
-				of the zone.  Zone transfers preserve this value.  This
-				value wraps and should be compared using sequence space
-				arithmetic.
+                of the zone.  Zone transfers preserve this value.  This
+                value wraps and should be compared using sequence space
+                arithmetic.
 
 REFRESH         A 32 bit time interval before the zone should be
-				refreshed.
+                refreshed.
 
 RETRY           A 32 bit time interval that should elapse before a
-				failed refresh should be retried.
+                failed refresh should be retried.
 
 EXPIRE          A 32 bit time value that specifies the upper limit on
-				the time interval that can elapse before the zone is no
-				longer authoritative.
+                the time interval that can elapse before the zone is no
+                longer authoritative.
 
 MINIMUM         The unsigned 32 bit minimum TTL field that should be
-				exported with any RR from this zone.
+                exported with any RR from this zone.
 
 SOA records cause no additional section processing.
 
@@ -69,37 +69,37 @@ change the SOA RR with known semantics.
 
 namespace Heijden.DNS
 {
-	public class RecordSOA : Record
-	{
-		public string MNAME;
-		public string RNAME;
-		public uint SERIAL;
-		public uint REFRESH;
-		public uint RETRY;
-		public uint EXPIRE;
-		public uint MINIMUM;
+    public class RecordSOA : Record
+    {
+        public string MNAME;
+        public string RNAME;
+        public uint SERIAL;
+        public uint REFRESH;
+        public uint RETRY;
+        public uint EXPIRE;
+        public uint MINIMUM;
 
-		public RecordSOA(RecordReader rr)
-		{
-			MNAME = rr.ReadDomainName();
-			RNAME = rr.ReadDomainName();
-			SERIAL = rr.ReadUInt32();
-			REFRESH = rr.ReadUInt32();
-			RETRY = rr.ReadUInt32();
-			EXPIRE = rr.ReadUInt32();
-			MINIMUM = rr.ReadUInt32();
-		}
+        public RecordSOA(RecordReader rr)
+        {
+            MNAME = rr.ReadDomainName();
+            RNAME = rr.ReadDomainName();
+            SERIAL = rr.ReadUInt32();
+            REFRESH = rr.ReadUInt32();
+            RETRY = rr.ReadUInt32();
+            EXPIRE = rr.ReadUInt32();
+            MINIMUM = rr.ReadUInt32();
+        }
 
-		public override string ToString()
-		{
-			return string.Format("{0} {1} {2} {3} {4} {5} {6}",
-				MNAME,
-				RNAME,
-				SERIAL,
-				REFRESH,
-				RETRY,
-				EXPIRE,
-				MINIMUM);
-		}
-	}
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {2} {3} {4} {5} {6}",
+                MNAME,
+                RNAME,
+                SERIAL,
+                REFRESH,
+                RETRY,
+                EXPIRE,
+                MINIMUM);
+        }
+    }
 }
