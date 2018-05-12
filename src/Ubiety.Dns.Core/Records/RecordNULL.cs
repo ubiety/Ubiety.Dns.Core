@@ -16,10 +16,16 @@ experimental extensions of the DNS.
 */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordNULL : Record
     {
+        /// <summary>
+        /// </summary>
         public byte[] ANYTHING;
 
+        /// <summary>
+        /// </summary>
         public RecordNULL(RecordReader rr)
         {
             rr.Position -= 2;
@@ -29,6 +35,8 @@ namespace Heijden.DNS
             ANYTHING = rr.ReadBytes(RDLENGTH);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("...binary data... ({0}) bytes",ANYTHING.Length);

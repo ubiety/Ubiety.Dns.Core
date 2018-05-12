@@ -97,14 +97,30 @@ ALTITUDE     The altitude of the center of the sphere described by the
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordLOC : Record
     {
+        /// <summary>
+        /// </summary>
         public byte VERSION;
+        /// <summary>
+        /// </summary>
         public byte SIZE;
+        /// <summary>
+        /// </summary>
         public byte HORIZPRE;
+        /// <summary>
+        /// </summary>
         public byte VERTPRE;
+        /// <summary>
+        /// </summary>
         public UInt32 LATITUDE;
+        /// <summary>
+        /// </summary>
         public UInt32 LONGITUDE;
+        /// <summary>
+        /// </summary>
         public UInt32 ALTITUDE;
 
         private string SizeToString(byte s)
@@ -173,6 +189,8 @@ namespace Heijden.DNS
             return string.Format("{0:0.00}m", alt);
         }
 
+        /// <summary>
+        /// </summary>
         public RecordLOC(RecordReader rr)
         {
             VERSION = rr.ReadByte(); // must be 0!
@@ -184,6 +202,8 @@ namespace Heijden.DNS
             ALTITUDE = rr.ReadUInt32();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2} {3} {4} {5}",

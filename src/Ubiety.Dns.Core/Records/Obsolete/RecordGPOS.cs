@@ -40,12 +40,22 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordGPOS : Record
     {
+        /// <summary>
+        /// </summary>
         public string LONGITUDE;
+        /// <summary>
+        /// </summary>
         public string LATITUDE;
+        /// <summary>
+        /// </summary>
         public string ALTITUDE;
 
+        /// <summary>
+        /// </summary>
         public RecordGPOS(RecordReader rr)
         {
             LONGITUDE = rr.ReadString();
@@ -53,6 +63,8 @@ namespace Heijden.DNS
             ALTITUDE = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2}",

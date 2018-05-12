@@ -43,15 +43,31 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordNAPTR : Record
     {
+        /// <summary>
+        /// </summary>
         public ushort ORDER;
+        /// <summary>
+        /// </summary>
         public ushort PREFERENCE;
+        /// <summary>
+        /// </summary>
         public string FLAGS;
+        /// <summary>
+        /// </summary>
         public string SERVICES;
+        /// <summary>
+        /// </summary>
         public string REGEXP;
+        /// <summary>
+        /// </summary>
         public string REPLACEMENT;
 
+        /// <summary>
+        /// </summary>
         public RecordNAPTR(RecordReader rr)
         {
             ORDER = rr.ReadUInt16();
@@ -62,6 +78,8 @@ namespace Heijden.DNS
             REPLACEMENT = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} \"{2}\" \"{3}\" \"{4}\" {5}",

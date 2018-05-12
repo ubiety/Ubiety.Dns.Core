@@ -72,7 +72,7 @@ namespace Heijden.DNS
         /// <summary>
         /// Specifies type of resource record
         /// </summary>
-        public Type Type;
+        public RecordType Type;
 
         /// <summary>
         /// Specifies type class of resource record, mostly IN but can be CS, CH or HS 
@@ -105,49 +105,69 @@ namespace Heijden.DNS
         /// </summary>
         public Record RECORD;
 
+        /// <summary>
+        /// </summary>
         public int TimeLived;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RR" /> class
+        /// </summary>
+        /// <param name="rr"></param>
         public RR(RecordReader rr)
         {
-            TimeLived = 0;
-            NAME = rr.ReadDomainName();
-            Type = (Type)rr.ReadUInt16();
-            Class = (Class)rr.ReadUInt16();
-            TTL = rr.ReadUInt32();
-            RDLENGTH = rr.ReadUInt16();
-            RECORD = rr.ReadRecord(Type);
-            RECORD.RR = this;
+            this.TimeLived = 0;
+            this.NAME = rr.ReadDomainName();
+            this.Type = (RecordType)rr.ReadUInt16();
+            this.Class = (Class)rr.ReadUInt16();
+            this.TTL = rr.ReadUInt32();
+            this.RDLENGTH = rr.ReadUInt16();
+            this.RECORD = rr.ReadRecord(Type);
+            this.RECORD.RR = this;
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0,-32} {1}\t{2}\t{3}\t{4}",
-                NAME,
-                TTL,
-                Class,
-                Type,
-                RECORD);
+                this.NAME,
+                this.TTL,
+                this.Class,
+                this.Type,
+                this.RECORD);
         }
     }
 
+    /// <summary>
+    /// </summary>
     public class AnswerRR : RR
     {
+        /// <summary>
+        /// </summary>
         public AnswerRR(RecordReader br)
             : base(br)
         {
         }
     }
 
+    /// <summary>
+    /// </summary>
     public class AuthorityRR : RR
     {
+        /// <summary>
+        /// </summary>
         public AuthorityRR(RecordReader br)
             : base(br)
         {
         }
     }
 
+    /// <summary>
+    /// </summary>
     public class AdditionalRR : RR
     {
+        /// <summary>
+        /// </summary>
         public AdditionalRR(RecordReader br)
             : base(br)
         {

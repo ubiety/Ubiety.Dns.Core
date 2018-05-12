@@ -23,15 +23,23 @@ a master file is to reject them, or to convert them to MX RRs with a
 preference of 10. */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordMF : Record
     {
+        /// <summary>
+        /// </summary>
         public string MADNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordMF(RecordReader rr)
         {
             MADNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return MADNAME;

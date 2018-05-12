@@ -1,15 +1,12 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Text;
-using System.Net.Sockets;
-
 using System.Net.NetworkInformation;
-
-using System.Diagnostics;
-//using System.Runtime.Remoting.Messaging;
-
+using System.Net.Sockets;
+using Heijden.DNS;
 
 /*
  * Network Working Group                                     P. Mockapetris
@@ -20,15 +17,15 @@ using System.Diagnostics;
  *
  */
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core
 {
     /// <summary>
-    /// Resolver is the main class to do DNS query lookups
+    ///     DNS resolver runs querys against a server
     /// </summary>
     public class Resolver
     {
         /// <summary>
-        /// Version of this set of routines, when not in a library
+        ///     Gets the current version of the library
         /// </summary>
         public string Version
         {
@@ -39,12 +36,12 @@ namespace Heijden.DNS
         }
 
         /// <summary>
-        /// Default DNS port
+        ///     Default DNS port
         /// </summary>
         public const int DefaultPort = 53;
 
         /// <summary>
-        /// Gets list of OPENDNS servers
+        ///     Default OpenDNS server addresses
         /// </summary>
         public static readonly IPEndPoint[] DefaultDnsServers = 
             { 
@@ -64,25 +61,25 @@ namespace Heijden.DNS
         private Dictionary<string,Response> m_ResponseCache;
 
         /// <summary>
-        /// Constructor of Resolver using DNS servers specified.
+        ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         /// <param name="DnsServers">Set of DNS servers</param>
         public Resolver(IPEndPoint[] DnsServers)
         {
-            m_ResponseCache = new Dictionary<string, Response>();
-            m_DnsServers = new List<IPEndPoint>();
-            m_DnsServers.AddRange(DnsServers);
+            this.m_ResponseCache = new Dictionary<string, Response>();
+            this.m_DnsServers = new List<IPEndPoint>();
+            this.m_DnsServers.AddRange(DnsServers);
 
-            m_Unique = (ushort)(new Random()).Next();
-            m_Retries = 3;
-            m_Timeout = 1;
-            m_Recursion = true;
-            m_UseCache = true;
-            m_TransportType = TransportType.Udp;
+            this.m_Unique = (ushort)(new Random()).Next();
+            this.m_Retries = 3;
+            this.m_Timeout = 1;
+            this.m_Recursion = true;
+            this.m_UseCache = true;
+            this.m_TransportType = TransportType.Udp;
         }
 
         /// <summary>
-        /// Constructor of Resolver using DNS server specified.
+        ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         /// <param name="DnsServer">DNS server to use</param>
         public Resolver(IPEndPoint DnsServer)
@@ -91,7 +88,7 @@ namespace Heijden.DNS
         }
 
         /// <summary>
-        /// Constructor of Resolver using DNS server and port specified.
+        ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         /// <param name="ServerIpAddress">DNS server to use</param>
         /// <param name="ServerPortNumber">DNS port to use</param>
@@ -101,7 +98,7 @@ namespace Heijden.DNS
         }
 
         /// <summary>
-        /// Constructor of Resolver using DNS address and port specified.
+        ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         /// <param name="ServerIpAddress">DNS server address to use</param>
         /// <param name="ServerPortNumber">DNS port to use</param>
@@ -111,7 +108,7 @@ namespace Heijden.DNS
         }
         
         /// <summary>
-        /// Constructor of Resolver using DNS address.
+        ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         /// <param name="ServerIpAddress">DNS server address to use</param>
         public Resolver(string ServerIpAddress)
@@ -120,16 +117,27 @@ namespace Heijden.DNS
         }
 
         /// <summary>
-        /// Resolver constructor, using DNS servers specified by Windows
+        ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         public Resolver()
             : this(GetDnsServers())
         {
         }
 
+        /// <summary>
+        ///     Event args for verbose output
+        /// </summary>
         public class VerboseOutputEventArgs : EventArgs
         {
+            /// <summary>
+            ///     Gets the string message
+            /// </summary>
             public string Message;
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="VerboseOutputEventArgs" /> class
+            /// </summary>
+            /// <param name="Message">Message to output</param>
             public VerboseOutputEventArgs(string Message)
             {
                 this.Message = Message;
@@ -146,11 +154,25 @@ namespace Heijden.DNS
         /// Verbose messages from internal operations
         /// </summary>
         public event VerboseEventHandler OnVerbose;
+
+        /// <summary>
+        ///     Verbose event handler
+        /// </summary>
         public delegate void VerboseEventHandler(object sender, VerboseEventArgs e);
 
+        /// <summary>
+        ///     Verbose event args
+        /// </summary>
         public class VerboseEventArgs : EventArgs
         {
+            /// <summary>
+            ///     Gets the message to output
+            /// </summary>
             public string Message;
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="VerboseEventArgs" /> class
+            /// </summary>
             public VerboseEventArgs(string Message)
             {
                 this.Message = Message;
@@ -159,147 +181,149 @@ namespace Heijden.DNS
 
 
         /// <summary>
-        /// Gets or sets timeout in milliseconds
+        ///     Gets or sets timeout in milliseconds
         /// </summary>
         public int TimeOut
         {
             get
             {
-                return m_Timeout;
+                return this.m_Timeout;
             }
             set
             {
-                m_Timeout = value;
+                this.m_Timeout = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets number of retries before giving up
+        ///     Gets or sets the number of retries before giving up
         /// </summary>
         public int Retries
         {
             get
             {
-                return m_Retries;
+                return this.m_Retries;
             }
             set
             {
                 if(value>=1)
-                    m_Retries = value;
+                    this.m_Retries = value;
             }
         }
 
         /// <summary>
-        /// Gets or set recursion for doing queries
+        ///     Gets or set recursion for doing queries
         /// </summary>
         public bool Recursion
         {
             get
             {
-                return m_Recursion;
+                return this.m_Recursion;
             }
             set
             {
-                m_Recursion = value;
+                this.m_Recursion = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets protocol to use
+        ///     Gets or sets protocol to use
         /// </summary>
         public TransportType TransportType
         {
             get
             {
-                return m_TransportType;
+                return this.m_TransportType;
             }
             set
             {
-                m_TransportType = value;
+                this.m_TransportType = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets list of DNS servers to use
+        ///     Gets or sets list of DNS servers to use
         /// </summary>
         public IPEndPoint[] DnsServers
         {
             get
             {
-                return m_DnsServers.ToArray();
+                return this.m_DnsServers.ToArray();
             }
             set
             {
-                m_DnsServers.Clear();
-                m_DnsServers.AddRange(value);
+                this.m_DnsServers.Clear();
+                this.m_DnsServers.AddRange(value);
             }
         }
 
         /// <summary>
-        /// Gets first DNS server address or sets single DNS server to use
+        ///     Gets first DNS server address or sets single DNS server to use
         /// </summary>
         public string DnsServer
         {
             get
             {
-                return m_DnsServers[0].Address.ToString();
+                return this.m_DnsServers[0].Address.ToString();
             }
             set
             {
                 IPAddress ip;
                 if (IPAddress.TryParse(value, out ip))
                 {
-                    m_DnsServers.Clear();
-                    m_DnsServers.Add(new IPEndPoint(ip, DefaultPort));
+                    this.m_DnsServers.Clear();
+                    this.m_DnsServers.Add(new IPEndPoint(ip, DefaultPort));
                     return;
                 }
                 Response response = Query(value, QType.A);
                 if (response.RecordsA.Length > 0)
                 {
-                    m_DnsServers.Clear();
-                    m_DnsServers.Add(new IPEndPoint(response.RecordsA[0].Address, DefaultPort));
+                    this.m_DnsServers.Clear();
+                    this.m_DnsServers.Add(new IPEndPoint(response.RecordsA[0].Address, DefaultPort));
                 }
             }
         }
 
-
+        /// <summary>
+        ///     Gets or sets whether to use the cache
+        /// </summary>
         public bool UseCache
         {
             get
             {
-                return m_UseCache;
+                return this.m_UseCache;
             }
             set
             {
-                m_UseCache = value;
-                if (!m_UseCache)
-                    m_ResponseCache.Clear();
+                this.m_UseCache = value;
+                if (!this.m_UseCache)
+                    this.m_ResponseCache.Clear();
             }
         }
 
         /// <summary>
-        /// Clear the resolver cache
+        ///     Clear the resolver cache
         /// </summary>
         public void ClearCache()
         {
-            m_ResponseCache.Clear();
+            this.m_ResponseCache.Clear();
         }
 
         private Response SearchInCache(Question question)
         {
-            if (!m_UseCache)
+            if (!this.m_UseCache)
                 return null;
 
             string strKey = question.QClass + "-" + question.QType + "-" + question.QName;
 
             Response response = null;
 
-            lock (m_ResponseCache)
+            lock (this.m_ResponseCache)
             {
-                if (!m_ResponseCache.ContainsKey(strKey))
+                if (!this.m_ResponseCache.ContainsKey(strKey))
                     return null;
 
-                response = m_ResponseCache[strKey];
+                response = this.m_ResponseCache[strKey];
             }
 
             int TimeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
@@ -315,7 +339,7 @@ namespace Heijden.DNS
 
         private void AddToCache(Response response)
         {
-            if (!m_UseCache)
+            if (!this.m_UseCache)
                 return;
 
             // No question, no caching
@@ -330,12 +354,12 @@ namespace Heijden.DNS
 
             string strKey = question.QClass + "-" + question.QType + "-" + question.QName;
 
-            lock (m_ResponseCache)
+            lock (this.m_ResponseCache)
             {
-                if (m_ResponseCache.ContainsKey(strKey))
-                    m_ResponseCache.Remove(strKey);
+                if (this.m_ResponseCache.ContainsKey(strKey))
+                    this.m_ResponseCache.Remove(strKey);
 
-                m_ResponseCache.Add(strKey, response);
+                this.m_ResponseCache.Add(strKey, response);
             }
         }
 
@@ -344,20 +368,20 @@ namespace Heijden.DNS
             // RFC1035 max. size of a UDP datagram is 512 bytes
             byte[] responseMessage = new byte[512];
 
-            for (int intAttempts = 0; intAttempts < m_Retries; intAttempts++)
+            for (int intAttempts = 0; intAttempts < this.m_Retries; intAttempts++)
             {
-                for (int intDnsServer = 0; intDnsServer < m_DnsServers.Count; intDnsServer++)
+                for (int intDnsServer = 0; intDnsServer < this.m_DnsServers.Count; intDnsServer++)
                 {
                     Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, m_Timeout * 1000);
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, this.m_Timeout * 1000);
 
                     try
                     {
-                        socket.SendTo(request.Data, m_DnsServers[intDnsServer]);
+                        socket.SendTo(request.Data, this.m_DnsServers[intDnsServer]);
                         int intReceived = socket.Receive(responseMessage);
                         byte[] data = new byte[intReceived];
                         Array.Copy(responseMessage, data, intReceived);
-                        Response response = new Response(m_DnsServers[intDnsServer], data);
+                        Response response = new Response(this.m_DnsServers[intDnsServer], data);
                         AddToCache(response);
                         return response;
                     }
@@ -368,7 +392,7 @@ namespace Heijden.DNS
                     }
                     finally
                     {
-                        m_Unique++;
+                        this.m_Unique++;
 
                         // close the socket
                         socket.Close();
@@ -387,23 +411,23 @@ namespace Heijden.DNS
 
             byte[] responseMessage = new byte[512];
 
-            for (int intAttempts = 0; intAttempts < m_Retries; intAttempts++)
+            for (int intAttempts = 0; intAttempts < this.m_Retries; intAttempts++)
             {
-                for (int intDnsServer = 0; intDnsServer < m_DnsServers.Count; intDnsServer++)
+                for (int intDnsServer = 0; intDnsServer < this.m_DnsServers.Count; intDnsServer++)
                 {
                     TcpClient tcpClient = new TcpClient();
-                    tcpClient.ReceiveTimeout = m_Timeout * 1000;
+                    tcpClient.ReceiveTimeout = this.m_Timeout * 1000;
 
                     try
                     {
-                        IAsyncResult result = tcpClient.BeginConnect(m_DnsServers[intDnsServer].Address, m_DnsServers[intDnsServer].Port, null, null);
+                        IAsyncResult result = tcpClient.BeginConnect(this.m_DnsServers[intDnsServer].Address, this.m_DnsServers[intDnsServer].Port, null, null);
 
                         bool success = result.AsyncWaitHandle.WaitOne(m_Timeout*1000, true);
 
                         if (!success || !tcpClient.Connected)
                         {
                             tcpClient.Close();
-                            Verbose(string.Format(";; Connection to nameserver {0} failed", (intDnsServer + 1)));
+                            this.Verbose(string.Format(";; Connection to nameserver {0} failed", (intDnsServer + 1)));
                             continue;
                         }
 
@@ -427,7 +451,7 @@ namespace Heijden.DNS
                             if (intLength <= 0)
                             {
                                 tcpClient.Close();
-                                Verbose(string.Format(";; Connection to nameserver {0} failed", (intDnsServer + 1)));
+                                this.Verbose(string.Format(";; Connection to nameserver {0} failed", (intDnsServer + 1)));
                                 throw new SocketException(); // next try
                             }
 
@@ -435,7 +459,7 @@ namespace Heijden.DNS
 
                             data = new byte[intLength];
                             bs.Read(data, 0, intLength);
-                            Response response = new Response(m_DnsServers[intDnsServer], data);
+                            Response response = new Response(this.m_DnsServers[intDnsServer], data);
 
                             //Debug.WriteLine("Received "+ (intLength+2)+" bytes in "+sw.ElapsedMilliseconds +" mS");
 
@@ -444,7 +468,7 @@ namespace Heijden.DNS
 
                             if (response.Questions[0].QType != QType.AXFR)
                             {
-                                AddToCache(response);
+                                this.AddToCache(response);
                                 return response;
                             }
 
@@ -456,15 +480,15 @@ namespace Heijden.DNS
                             TransferResponse.Authorities.AddRange(response.Authorities);
                             TransferResponse.Additionals.AddRange(response.Additionals);
 
-                            if (response.Answers[0].Type == Type.SOA)
+                            if (response.Answers[0].Type == RecordType.SOA)
                                     intSoa++;
 
                             if (intSoa == 2)
                             {
                                 TransferResponse.header.QuestionCount = (ushort)TransferResponse.Questions.Count;
                                 TransferResponse.header.AnswerCount = (ushort)TransferResponse.Answers.Count;
-                                TransferResponse.header.NSCOUNT = (ushort)TransferResponse.Authorities.Count;
-                                TransferResponse.header.ARCOUNT = (ushort)TransferResponse.Additionals.Count;
+                                TransferResponse.header.NameserverCount = (ushort)TransferResponse.Authorities.Count;
+                                TransferResponse.header.AdditionalRecordsCount = (ushort)TransferResponse.Additionals.Count;
                                 TransferResponse.MessageSize = intMessageSize;
                                 return TransferResponse;
                             }
@@ -476,7 +500,7 @@ namespace Heijden.DNS
                     }
                     finally
                     {
-                        m_Unique++;
+                        this.m_Unique++;
 
                         // close the socket
                         tcpClient.Close();
@@ -527,13 +551,13 @@ namespace Heijden.DNS
 
         private Response GetResponse(Request request)
         {
-            request.header.Id = m_Unique;
-            request.header.RD = m_Recursion;
+            request.header.Id = this.m_Unique;
+            request.header.RD = this.m_Recursion;
 
-            if (m_TransportType == TransportType.Udp)
+            if (this.m_TransportType == TransportType.Udp)
                 return UdpRequest(request);
 
-            if (m_TransportType == TransportType.Tcp)
+            if (this.m_TransportType == TransportType.Tcp)
                 return TcpRequest(request);
 
             Response response = new Response();
@@ -568,9 +592,6 @@ namespace Heijden.DNS
             return list.ToArray();
         } 
 
-
-        //
-
         private IPHostEntry MakeEntry(string HostName)
         {
             IPHostEntry entry = new IPHostEntry();
@@ -584,7 +605,7 @@ namespace Heijden.DNS
             List<string> Aliases = new List<string>();
             foreach (AnswerRR answerRR in response.Answers)
             {
-                if (answerRR.Type == Type.A)
+                if (answerRR.Type == RecordType.A)
                 {
                     // answerRR.RECORD.ToString() == (answerRR.RECORD as RecordA).Address
                     AddressList.Add(IPAddress.Parse((answerRR.RECORD.ToString())));
@@ -592,7 +613,7 @@ namespace Heijden.DNS
                 }
                 else
                 {
-                    if (answerRR.Type == Type.CNAME)
+                    if (answerRR.Type == RecordType.CNAME)
                         Aliases.Add(answerRR.NAME);
                 }
             }
@@ -633,6 +654,8 @@ namespace Heijden.DNS
             return "?";
         }
 
+        /// <summary>
+        /// </summary>
         public static string GetArpaFromEnum(string strEnum)
         {
             StringBuilder sb = new StringBuilder();
@@ -645,273 +668,6 @@ namespace Heijden.DNS
             return sb.ToString();
         }
 
-        #region Deprecated methods in the original System.Net.DNS class
-
-        /// <summary>
-        ///        Returns the Internet Protocol (IP) addresses for the specified host.
-        /// </summary>
-        /// <param name="hostNameOrAddress">The host name or IP address to resolve.</param>
-        /// <returns>
-        ///        An array of type System.Net.IPAddress that holds the IP addresses for the
-        ///        host that is specified by the hostNameOrAddress parameter. 
-        ///</returns>
-        public IPAddress[] GetHostAddresses(string hostNameOrAddress)
-        {
-            IPHostEntry entry = GetHostEntry(hostNameOrAddress);
-            return entry.AddressList;
-        }
-
-        private delegate IPAddress[] GetHostAddressesDelegate(string hostNameOrAddress);
-
-        /// <summary>
-        ///        Asynchronously returns the Internet Protocol (IP) addresses for the specified
-        ///     host.
-        /// </summary>
-        /// <param name="hostNameOrAddress">The host name or IP address to resolve.</param>
-        /// <param name="requestCallback">
-        ///        An System.AsyncCallback delegate that references the method to invoke when
-        ///     the operation is complete.
-        /// </param>
-        /// <param name="stateObject">
-        ///        A user-defined object that contains information about the operation. This
-        ///     object is passed to the requestCallback delegate when the operation is complete.
-        ///</param>
-        /// <returns>An System.IAsyncResult instance that references the asynchronous request.</returns>
-        public IAsyncResult BeginGetHostAddresses(string hostNameOrAddress, AsyncCallback requestCallback, object stateObject)
-        {
-            GetHostAddressesDelegate g = new GetHostAddressesDelegate(GetHostAddresses);
-            return g.BeginInvoke(hostNameOrAddress, requestCallback, stateObject);
-        }
-
-        /// <summary>
-        ///        Ends an asynchronous request for DNS information.
-        /// </summary>
-        /// <param name="AsyncResult">
-        ///        An System.IAsyncResult instance returned by a call to the Heijden.Dns.Resolver.BeginGetHostAddresses(System.String,System.AsyncCallback,System.Object)
-        ///        method.
-        /// </param>
-        /// <returns></returns>
-//        public IPAddress[] EndGetHostAddresses(IAsyncResult AsyncResult)
-//        {
-//            AsyncResult aResult = (AsyncResult)AsyncResult;
-//            GetHostAddressesDelegate g = (GetHostAddressesDelegate)aResult.AsyncDelegate;
-//            return g.EndInvoke(AsyncResult);
-//        }
-
-        /// <summary>
-        ///        Creates an System.Net.IPHostEntry instance from the specified System.Net.IPAddress.
-        /// </summary>
-        /// <param name="ip">An System.Net.IPAddress.</param>
-        /// <returns>An System.Net.IPHostEntry.</returns>
-        public IPHostEntry GetHostByAddress(IPAddress ip)
-        {
-            return GetHostEntry(ip);
-        }
-
-        /// <summary>
-        ///        Creates an System.Net.IPHostEntry instance from an IP address.
-        /// </summary>
-        /// <param name="address">An IP address.</param>
-        /// <returns>An System.Net.IPHostEntry instance.</returns>
-        public IPHostEntry GetHostByAddress(string address)
-        {
-            return GetHostEntry(address);
-        }
-
-        /// <summary>
-        ///        Gets the DNS information for the specified DNS host name.
-        /// </summary>
-        /// <param name="hostName">The DNS name of the host</param>
-        /// <returns>An System.Net.IPHostEntry object that contains host information for the address specified in hostName.</returns>
-        public IPHostEntry GetHostByName(string hostName)
-        {
-            return MakeEntry(hostName);
-        }
-
-        private delegate IPHostEntry GetHostByNameDelegate(string hostName);
-
-        /// <summary>
-        ///        Asynchronously resolves an IP address to an System.Net.IPHostEntry instance.
-        /// </summary>
-        /// <param name="hostName">The DNS name of the host</param>
-        /// <param name="requestCallback">An System.AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
-        /// <param name="stateObject">
-        ///        A user-defined object that contains information about the operation. This
-        ///        object is passed to the requestCallback delegate when the operation is complete.
-        /// </param>
-        /// <returns>An System.IAsyncResult instance that references the asynchronous request.</returns>
-        public IAsyncResult BeginGetHostByName(string hostName, AsyncCallback requestCallback, object stateObject)
-        {
-            GetHostByNameDelegate g = new GetHostByNameDelegate(GetHostByName);
-            return g.BeginInvoke(hostName, requestCallback, stateObject);
-        }
-
-        /// <summary>
-        ///        Ends an asynchronous request for DNS information.
-        /// </summary>
-        /// <param name="AsyncResult">
-        ///        An System.IAsyncResult instance returned by a call to an 
-        ///        Heijden.Dns.Resolver.BeginGetHostByName method.
-        /// </param>
-        /// <returns></returns>
-//        public IPHostEntry EndGetHostByName(IAsyncResult AsyncResult)
-//        {
-//            AsyncResult aResult = (AsyncResult)AsyncResult;
-//            GetHostByNameDelegate g = (GetHostByNameDelegate)aResult.AsyncDelegate;
-//            return g.EndInvoke(AsyncResult);
-//        }
-
-        /// <summary>
-        ///        Resolves a host name or IP address to an System.Net.IPHostEntry instance.
-        /// </summary>
-        /// <param name="hostName">A DNS-style host name or IP address.</param>
-        /// <returns></returns>
-        //[Obsolete("no problem",false)]
-        public IPHostEntry Resolve(string hostName)
-        {
-            return MakeEntry(hostName);
-        }
-
-        private delegate IPHostEntry ResolveDelegate(string hostName);
-        
-        /// <summary>
-        ///        Begins an asynchronous request to resolve a DNS host name or IP address to
-        ///     an System.Net.IPAddress instance.
-        /// </summary>
-        /// <param name="hostName">The DNS name of the host.</param>
-        /// <param name="requestCallback">
-        ///        An System.AsyncCallback delegate that references the method to invoke when
-        ///     the operation is complete.
-        ///    </param>
-        /// <param name="stateObject">
-        ///        A user-defined object that contains information about the operation. This
-        ///     object is passed to the requestCallback delegate when the operation is complete.
-        /// </param>
-        /// <returns>An System.IAsyncResult instance that references the asynchronous request.</returns>
-        public IAsyncResult BeginResolve(string hostName, AsyncCallback requestCallback, object stateObject)
-        {
-            ResolveDelegate g = new ResolveDelegate(Resolve);
-            return g.BeginInvoke(hostName, requestCallback, stateObject);
-        }
-
-        /// <summary>
-        ///        Ends an asynchronous request for DNS information.
-        /// </summary>
-        /// <param name="AsyncResult">
-        ///        An System.IAsyncResult instance that is returned by a call to the System.Net.Dns.BeginResolve(System.String,System.AsyncCallback,System.Object)
-        ///     method.
-        /// </param>
-        /// <returns>An System.Net.IPHostEntry object that contains DNS information about a host.</returns>
-//        public IPHostEntry EndResolve(IAsyncResult AsyncResult)
-//        {
-//            AsyncResult aResult = (AsyncResult)AsyncResult;
-//            ResolveDelegate g = (ResolveDelegate)aResult.AsyncDelegate;
-//            return g.EndInvoke(AsyncResult);
-//        }
-        #endregion
-
-        /// <summary>
-        ///        Resolves an IP address to an System.Net.IPHostEntry instance.
-        /// </summary>
-        /// <param name="ip">An IP address.</param>
-        /// <returns>
-        ///        An System.Net.IPHostEntry instance that contains address information about
-        ///        the host specified in address.
-        ///</returns>
-        public IPHostEntry GetHostEntry(IPAddress ip)
-        {
-            Response response = Query(GetArpaFromIp(ip), QType.PTR, QClass.IN);
-            if (response.RecordsPTR.Length > 0)
-                return MakeEntry(response.RecordsPTR[0].PTRDNAME);
-            else
-                return new IPHostEntry();
-        }
-
-        /// <summary>
-        ///        Resolves a host name or IP address to an System.Net.IPHostEntry instance.
-        /// </summary>
-        /// <param name="hostNameOrAddress">The host name or IP address to resolve.</param>
-        /// <returns>
-        ///        An System.Net.IPHostEntry instance that contains address information about
-        ///        the host specified in hostNameOrAddress. 
-        ///</returns>
-        public IPHostEntry GetHostEntry(string hostNameOrAddress)
-        {
-            IPAddress iPAddress;
-            if (IPAddress.TryParse(hostNameOrAddress, out iPAddress))
-                return GetHostEntry(iPAddress);
-            else
-                return MakeEntry(hostNameOrAddress);
-        }
-
-        private delegate IPHostEntry GetHostEntryViaIPDelegate(IPAddress ip);
-        private delegate IPHostEntry GetHostEntryDelegate(string hostNameOrAddress);
-
-        /// <summary>
-        /// Asynchronously resolves a host name or IP address to an System.Net.IPHostEntry instance.
-        /// </summary>
-        /// <param name="hostNameOrAddress">The host name or IP address to resolve.</param>
-        /// <param name="requestCallback">
-        ///        An System.AsyncCallback delegate that references the method to invoke when
-        ///        the operation is complete.
-        ///</param>
-        /// <param name="stateObject">
-        ///        A user-defined object that contains information about the operation. This
-        ///        object is passed to the requestCallback delegate when the operation is complete.
-        /// </param>
-        /// <returns>An System.IAsyncResult instance that references the asynchronous request.</returns>
-        public IAsyncResult BeginGetHostEntry(string hostNameOrAddress, AsyncCallback requestCallback, object stateObject)
-        {
-            GetHostEntryDelegate g = new GetHostEntryDelegate(GetHostEntry);
-            return g.BeginInvoke(hostNameOrAddress, requestCallback, stateObject);
-        }
-
-        /// <summary>
-        /// Asynchronously resolves an IP address to an System.Net.IPHostEntry instance.
-        /// </summary>
-        /// <param name="ip">The IP address to resolve.</param>
-        /// <param name="requestCallback">
-        ///        An System.AsyncCallback delegate that references the method to invoke when
-        ///        the operation is complete.
-        /// </param>
-        /// <param name="stateObject">
-        ///        A user-defined object that contains information about the operation. This
-        ///     object is passed to the requestCallback delegate when the operation is complete.
-        /// </param>
-        /// <returns>An System.IAsyncResult instance that references the asynchronous request.</returns>
-        public IAsyncResult BeginGetHostEntry(IPAddress ip, AsyncCallback requestCallback, object stateObject)
-        {
-            GetHostEntryViaIPDelegate g = new GetHostEntryViaIPDelegate(GetHostEntry);
-            return g.BeginInvoke(ip, requestCallback, stateObject);
-        }
-
-        /// <summary>
-        /// Ends an asynchronous request for DNS information.
-        /// </summary>
-        /// <param name="AsyncResult">
-        ///        An System.IAsyncResult instance returned by a call to an 
-        ///        Overload:Heijden.Dns.Resolver.BeginGetHostEntry method.
-        /// </param>
-        /// <returns>
-        ///        An System.Net.IPHostEntry instance that contains address information about
-        ///        the host. 
-        ///</returns>
-//        public IPHostEntry EndGetHostEntry(IAsyncResult AsyncResult)
-//        {
-//            AsyncResult aResult = (AsyncResult)AsyncResult;
-//            if (aResult.AsyncDelegate is GetHostEntryDelegate)
-//            {
-//                GetHostEntryDelegate g = (GetHostEntryDelegate)aResult.AsyncDelegate;
-//                return g.EndInvoke(AsyncResult);
-//            }
-//            if (aResult.AsyncDelegate is GetHostEntryViaIPDelegate)
-//            {
-//                GetHostEntryViaIPDelegate g = (GetHostEntryViaIPDelegate)aResult.AsyncDelegate;
-//                return g.EndInvoke(AsyncResult);
-//            }
-//            return null;
-//        }
-
         private enum RRRecordStatus
         {
             UNKNOWN,
@@ -922,6 +678,8 @@ namespace Heijden.DNS
             VALUE
         }
 
+        /// <summary>
+        /// </summary>
         public void LoadRootFile(string strPath)
         {
             StreamReader sr = new StreamReader(strPath);

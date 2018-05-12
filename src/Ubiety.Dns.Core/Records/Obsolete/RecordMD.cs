@@ -23,15 +23,23 @@ preference of 0.
  * */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordMD : Record
     {
+        /// <summary>
+        /// </summary>
         public string MADNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordMD(RecordReader rr)
         {
             MADNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return MADNAME;

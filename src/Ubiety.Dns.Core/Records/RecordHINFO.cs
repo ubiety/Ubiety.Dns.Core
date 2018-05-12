@@ -25,17 +25,27 @@ when talking between machines or operating systems of the same type.
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordHINFO : Record
     {
+        /// <summary>
+        /// </summary>
         public string CPU;
+        /// <summary>
+        /// </summary>
         public string OS;
 
+        /// <summary>
+        /// </summary>
         public RecordHINFO(RecordReader rr)
         {
             CPU = rr.ReadString();
             OS = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("CPU={0} OS={1}",CPU,OS);

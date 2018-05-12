@@ -37,13 +37,25 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordKEY : Record
     {
+        /// <summary>
+        /// </summary>
         public UInt16 FLAGS;
+        /// <summary>
+        /// </summary>
         public byte PROTOCOL;
+        /// <summary>
+        /// </summary>
         public byte ALGORITHM;
+        /// <summary>
+        /// </summary>
         public string PUBLICKEY;
 
+        /// <summary>
+        /// </summary>
         public RecordKEY(RecordReader rr)
         {
             FLAGS = rr.ReadUInt16();
@@ -52,6 +64,8 @@ namespace Heijden.DNS
             PUBLICKEY = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2} \"{3}\"",

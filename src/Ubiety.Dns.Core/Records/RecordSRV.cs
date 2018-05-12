@@ -65,13 +65,25 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordSRV : Record
     {
+        /// <summary>
+        /// </summary>
         public ushort PRIORITY;
+        /// <summary>
+        /// </summary>
         public ushort WEIGHT;
+        /// <summary>
+        /// </summary>
         public ushort PORT;
+        /// <summary>
+        /// </summary>
         public string TARGET;
 
+        /// <summary>
+        /// </summary>
         public RecordSRV(RecordReader rr)
         {
             PRIORITY = rr.ReadUInt16();
@@ -80,6 +92,8 @@ namespace Heijden.DNS
             TARGET = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2} {3}",

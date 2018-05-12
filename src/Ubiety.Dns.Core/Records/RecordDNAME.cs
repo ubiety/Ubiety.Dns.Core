@@ -16,15 +16,23 @@ using System;
  */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordDNAME : Record
     {
+        /// <summary>
+        /// </summary>
         public string TARGET;
 
+        /// <summary>
+        /// </summary>
         public RecordDNAME(RecordReader rr)
         {
             TARGET = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return TARGET;

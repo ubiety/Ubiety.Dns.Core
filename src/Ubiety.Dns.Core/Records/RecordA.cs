@@ -16,10 +16,16 @@ records.
  */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordA : Record
     {
+        /// <summary>
+        /// </summary>
         public System.Net.IPAddress Address;
 
+        /// <summary>
+        /// </summary>
         public RecordA(RecordReader rr)
         {
             System.Net.IPAddress.TryParse(string.Format("{0}.{1}.{2}.{3}",
@@ -29,6 +35,8 @@ namespace Heijden.DNS
                 rr.ReadByte()), out this.Address);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return Address.ToString();

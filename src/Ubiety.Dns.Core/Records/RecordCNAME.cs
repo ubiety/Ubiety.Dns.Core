@@ -21,15 +21,23 @@ the description of name server logic in [RFC-1034] for details.
  */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordCNAME : Record
     {
+        /// <summary>
+        /// </summary>
         public string CNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordCNAME(RecordReader rr)
         {
             CNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return CNAME;

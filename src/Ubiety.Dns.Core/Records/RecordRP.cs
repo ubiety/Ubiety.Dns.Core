@@ -31,11 +31,19 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordRP : Record
     {
+        /// <summary>
+        /// </summary>
         public string MBOXDNAME;
+        /// <summary>
+        /// </summary>
         public string TXTDNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordRP(RecordReader rr)
         {
             //MBOXDNAME = rr.ReadString();
@@ -43,6 +51,8 @@ namespace Heijden.DNS
             TXTDNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1}",

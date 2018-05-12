@@ -20,15 +20,23 @@ depends on the domain where it is found.
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordTXT : Record
     {
+        /// <summary>
+        /// </summary>
         public string TXT;
 
+        /// <summary>
+        /// </summary>
         public RecordTXT(RecordReader rr)
         {
             TXT = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("\"{0}\"",TXT);

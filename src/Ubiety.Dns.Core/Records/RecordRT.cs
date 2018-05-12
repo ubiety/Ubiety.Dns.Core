@@ -54,17 +54,27 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordRT : Record
     {
+        /// <summary>
+        /// </summary>
         public ushort PREFERENCE;
+        /// <summary>
+        /// </summary>
         public string INTERMEDIATEHOST;
 
+        /// <summary>
+        /// </summary>
         public RecordRT(RecordReader rr)
         {
             PREFERENCE = rr.ReadUInt16();
             INTERMEDIATEHOST = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1}",

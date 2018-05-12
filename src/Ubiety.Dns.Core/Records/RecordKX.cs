@@ -32,22 +32,34 @@ using System;
  */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordKX : Record, IComparable
     {
+        /// <summary>
+        /// </summary>
         public ushort PREFERENCE;
+        /// <summary>
+        /// </summary>
         public string EXCHANGER;
 
+        /// <summary>
+        /// </summary>
         public RecordKX(RecordReader rr)
         {
             PREFERENCE = rr.ReadUInt16();
             EXCHANGER = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1}", PREFERENCE, EXCHANGER);
         }
 
+        /// <summary>
+        /// </summary>
         public int CompareTo(object objA)
         {
             RecordKX recordKX = objA as RecordKX;

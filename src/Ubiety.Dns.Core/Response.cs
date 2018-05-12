@@ -4,9 +4,13 @@ using System.Net;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Ubiety.Dns.Core;
 
 namespace Heijden.DNS
 {
+    /// <summary>
+    ///     DNS response
+    /// </summary>
     public class Response
     {
         /// <summary>
@@ -26,6 +30,8 @@ namespace Heijden.DNS
         /// </summary>
         public List<AdditionalRR> Additionals;
 
+        /// <summary>
+        /// </summary>
         public Header header;
 
         /// <summary>
@@ -48,52 +54,60 @@ namespace Heijden.DNS
         /// </summary>
         public IPEndPoint Server;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class
+        /// </summary>
         public Response()
         {
-            Questions = new List<Question>();
-            Answers = new List<AnswerRR>();
-            Authorities = new List<AuthorityRR>();
-            Additionals = new List<AdditionalRR>();
+            this.Questions = new List<Question>();
+            this.Answers = new List<AnswerRR>();
+            this.Authorities = new List<AuthorityRR>();
+            this.Additionals = new List<AdditionalRR>();
 
-            Server = new IPEndPoint(0,0);
-            Error = "";
-            MessageSize = 0;
-            TimeStamp = DateTime.Now;
-            header = new Header();
+            this.Server = new IPEndPoint(0,0);
+            this.Error = "";
+            this.MessageSize = 0;
+            this.TimeStamp = DateTime.Now;
+            this.header = new Header();
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class
+        /// </summary>
+        /// <param name="iPEndPoint">Address of the response</param>
+        /// <param name="data">Response data</param>
         public Response(IPEndPoint iPEndPoint, byte[] data)
         {
-            Error = "";
-            Server = iPEndPoint;
-            TimeStamp = DateTime.Now;
-            MessageSize = data.Length;
+            this.Error = "";
+            this.Server = iPEndPoint;
+            this.TimeStamp = DateTime.Now;
+            this.MessageSize = data.Length;
             RecordReader rr = new RecordReader(data);
 
-            Questions = new List<Question>();
-            Answers = new List<AnswerRR>();
-            Authorities = new List<AuthorityRR>();
-            Additionals = new List<AdditionalRR>();
+            this.Questions = new List<Question>();
+            this.Answers = new List<AnswerRR>();
+            this.Authorities = new List<AuthorityRR>();
+            this.Additionals = new List<AdditionalRR>();
 
-            header = new Header(rr);
+            this.header = new Header(rr);
 
             for (int intI = 0; intI < header.QuestionCount; intI++)
             {
-                Questions.Add(new Question(rr));
+                this.Questions.Add(new Question(rr));
             }
 
             for (int intI = 0; intI < header.AnswerCount; intI++)
             {
-                Answers.Add(new AnswerRR(rr));
+                this.Answers.Add(new AnswerRR(rr));
             }
 
-            for (int intI = 0; intI < header.NSCOUNT; intI++)
+            for (int intI = 0; intI < header.NameserverCount; intI++)
             {
-                Authorities.Add(new AuthorityRR(rr));
+                this.Authorities.Add(new AuthorityRR(rr));
             }
-            for (int intI = 0; intI < header.ARCOUNT; intI++)
+            for (int intI = 0; intI < header.AdditionalRecordsCount; intI++)
             {
-                Additionals.Add(new AdditionalRR(rr));
+                this.Additionals.Add(new AdditionalRR(rr));
             }
         }
 
@@ -260,6 +274,8 @@ namespace Heijden.DNS
             }
         }
 
+        /// <summary>
+        /// </summary>
         public RecordSRV[] RecordsSRV
         {
             get
@@ -275,6 +291,8 @@ namespace Heijden.DNS
             }
         }
 
+        /// <summary>
+        /// </summary>
         public RR[] RecordsRR
         {
             get

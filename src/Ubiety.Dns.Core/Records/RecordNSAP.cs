@@ -33,17 +33,27 @@ using System.Text;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordNSAP : Record
     {
+        /// <summary>
+        /// </summary>
         public ushort LENGTH;
+        /// <summary>
+        /// </summary>
         public byte[] NSAPADDRESS;
 
+        /// <summary>
+        /// </summary>
         public RecordNSAP(RecordReader rr)
         {
             LENGTH = rr.ReadUInt16();
             NSAPADDRESS = rr.ReadBytes(LENGTH);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -53,6 +63,8 @@ namespace Heijden.DNS
             return sb.ToString();
         }
 
+        /// <summary>
+        /// </summary>
         public string ToGOSIPV2()
         {
             return string.Format("{0:X}.{1:X}.{2:X}.{3:X}.{4:X}.{5:X}.{6:X}{7:X}.{8:X}",

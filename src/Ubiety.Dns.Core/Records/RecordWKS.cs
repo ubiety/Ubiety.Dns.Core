@@ -46,12 +46,22 @@ or decimal numbers.
  */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordWKS : Record
     {
+        /// <summary>
+        /// </summary>
         public string ADDRESS;
+        /// <summary>
+        /// </summary>
         public int PROTOCOL;
+        /// <summary>
+        /// </summary>
         public byte[] BITMAP;
 
+        /// <summary>
+        /// </summary>
         public RecordWKS(RecordReader rr)
         {
             ushort length = rr.ReadUInt16(-2);
@@ -66,6 +76,8 @@ namespace Heijden.DNS
             BITMAP = rr.ReadBytes(length);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1}",ADDRESS,PROTOCOL);

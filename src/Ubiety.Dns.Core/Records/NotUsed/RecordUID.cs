@@ -5,10 +5,16 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordUID : Record
     {
+        /// <summary>
+        /// </summary>
         public byte[] RDATA;
 
+        /// <summary>
+        /// </summary>
         public RecordUID(RecordReader rr)
         {
             // re-read length
@@ -16,6 +22,8 @@ namespace Heijden.DNS
             RDATA = rr.ReadBytes(RDLENGTH);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("not-used");

@@ -38,11 +38,19 @@ using System.Text;
  */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordNXT : Record
     {
+        /// <summary>
+        /// </summary>
         public string NEXTDOMAINNAME;
+        /// <summary>
+        /// </summary>
         public byte[] BITMAP;
 
+        /// <summary>
+        /// </summary>
         public RecordNXT(RecordReader rr)
         {
             ushort length = rr.ReadUInt16(-2);
@@ -65,13 +73,15 @@ namespace Heijden.DNS
         }
 
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             for (int bitNr = 1; bitNr < (BITMAP.Length * 8); bitNr++)
             {
                 if (IsSet(bitNr))
-                    sb.Append(" " + (Type)bitNr);
+                    sb.Append(" " + (RecordType)bitNr);
             }
             return string.Format("{0}{1}", NEXTDOMAINNAME, sb.ToString());
         }

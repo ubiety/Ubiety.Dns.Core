@@ -34,18 +34,40 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordSIG : Record
     {
+        /// <summary>
+        /// </summary>
         public UInt16 TYPECOVERED;
+        /// <summary>
+        /// </summary>
         public byte ALGORITHM;
+        /// <summary>
+        /// </summary>
         public byte LABELS;
+        /// <summary>
+        /// </summary>
         public UInt32 ORIGINALTTL;
+        /// <summary>
+        /// </summary>
         public UInt32 SIGNATUREEXPIRATION;
+        /// <summary>
+        /// </summary>
         public UInt32 SIGNATUREINCEPTION;
+        /// <summary>
+        /// </summary>
         public UInt16 KEYTAG;
+        /// <summary>
+        /// </summary>
         public string SIGNERSNAME;
+        /// <summary>
+        /// </summary>
         public string SIGNATURE;
 
+        /// <summary>
+        /// </summary>
         public RecordSIG(RecordReader rr)
         {
             TYPECOVERED = rr.ReadUInt16();
@@ -59,6 +81,8 @@ namespace Heijden.DNS
             SIGNATURE = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2} {3} {4} {5} {6} {7} \"{8}\"",

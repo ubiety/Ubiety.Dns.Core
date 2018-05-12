@@ -2,6 +2,8 @@
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public abstract class Record
     {
         /// <summary>

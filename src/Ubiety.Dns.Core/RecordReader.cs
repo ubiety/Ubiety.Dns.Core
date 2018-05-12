@@ -4,71 +4,113 @@ using System.Text;
 
 namespace Heijden.DNS
 {
+    /// <summary>
+    ///     DNS record reader
+    /// </summary>
     public class RecordReader
     {
         private byte[] m_Data;
+
         private int m_Position;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordReader" /> class
+        /// </summary>
+        /// <param name="data">Byte array of the record</param>
         public RecordReader(byte[] data)
         {
-            m_Data = data;
-            m_Position = 0;
+            this.m_Data = data;
+            this.m_Position = 0;
         }
 
+        /// <summary>
+        ///     Gets or sets the position of the cursor in the record
+        /// </summary>
         public int Position
         {
             get
             {
-                return m_Position;
+                return this.m_Position;
             }
             set
             {
-                m_Position = value;
+                this.m_Position = value;
             }
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordReader" /> class
+        /// </summary>
+        /// <param name="data">Byte array of the record</param>
+        /// <param name="Position">Position of the cursor in the record</param>
         public RecordReader(byte[] data, int Position)
         {
-            m_Data = data;
-            m_Position = Position;
+            this.m_Data = data;
+            this.m_Position = Position;
         }
 
 
+        /// <summary>
+        ///     Read a byte from the record
+        /// </summary>
+        /// <returns>Next available byte of the record</returns>
         public byte ReadByte()
         {
-            if (m_Position >= m_Data.Length)
+            if (this.m_Position >= this.m_Data.Length)
                 return 0;
             else
-                return m_Data[m_Position++];
+                return this.m_Data[this.m_Position++];
         }
 
+        /// <summary>
+        ///     Read a char from the record
+        /// </summary>
+        /// <returns>Next available char of the record</returns>
         public char ReadChar()
         {
-            return (char)ReadByte();
+            return (char)this.ReadByte();
         }
 
+        /// <summary>
+        ///     Read an unsigned int 16 from the record
+        /// </summary>
+        /// <returns>Next available unsigned int 16 of the record</returns>
         public UInt16 ReadUInt16()
         {
-            return (UInt16)(ReadByte() << 8 | ReadByte());
+            return (UInt16)(this.ReadByte() << 8 | this.ReadByte());
         }
 
+        /// <summary>
+        ///     Read an unsigned int 16 from the offset of the record
+        /// </summary>
+        /// <param name="offset">Offset to start reading from</param>
+        /// <returns>Next unsigned int 16 from the offset</returns>
         public UInt16 ReadUInt16(int offset)
         {
-            m_Position += offset;
-            return ReadUInt16();
+            this.m_Position += offset;
+            return this.ReadUInt16();
         }
 
+        /// <summary>
+        ///     Read an unsigned int 32 from the record
+        /// </summary>
+        /// <returns>Next available unsigned int 32 in the record</returns>
         public UInt32 ReadUInt32()
         {
-            return (UInt32)(ReadUInt16() << 16 | ReadUInt16());
+            return (UInt32)(this.ReadUInt16() << 16 | this.ReadUInt16());
         }
 
+        /// <summary>
+        ///     Read the domain name from the record
+        /// </summary>
+        /// <returns>Domain name of the record</returns>
         public string ReadDomainName()
         {
             StringBuilder name = new StringBuilder();
             int length = 0;
 
             // get  the length of the first label
-            while ((length = ReadByte()) != 0)
+            while ((length = this.ReadByte()) != 0)
             {
                 // top 2 bits set denotes domain name compression and to reference elsewhere
                 if ((length & 0xc0) == 0xc0)
@@ -94,150 +136,163 @@ namespace Heijden.DNS
                 return name.ToString();
         }
 
+        /// <summary>
+        ///     Read a string from the record
+        /// </summary>
+        /// <returns>String read from the record</returns>
         public string ReadString()
         {
             short length = this.ReadByte();
 
             StringBuilder name = new StringBuilder();
             for(int intI=0;intI<length;intI++)
-                name.Append(ReadChar());
+                name.Append(this.ReadChar());
             return name.ToString();
         }
 
+        /// <summary>
+        ///     Read a series of bytes from the record
+        /// </summary>
+        /// <param name="intLength">Length to read from the record</param>
+        /// <returns>Byte array read from the record</returns>
         public byte[] ReadBytes(int intLength)
         {
             List<byte> list = new List<byte>();
             for(int intI=0;intI<intLength;intI++)
-                list.Add(ReadByte());
+                list.Add(this.ReadByte());
             return list.ToArray();
         }
 
-        public Record ReadRecord(Type type)
+        /// <summary>
+        ///     Read record from the data
+        /// </summary>
+        /// <param name="type">Type of the record to read</param>
+        /// <returns>Record read from the data</returns>
+        public Record ReadRecord(RecordType type)
         {
             switch (type)
             {
-                case Type.A:
+                case RecordType.A:
                     return new RecordA(this);
-                case Type.NS:
+                case RecordType.NS:
                     return new RecordNS(this);
-                case Type.MD:
+                case RecordType.MD:
                     return new RecordMD(this);
-                case Type.MF:
+                case RecordType.MF:
                     return new RecordMF(this);
-                case Type.CNAME:
+                case RecordType.CNAME:
                     return new RecordCNAME(this);
-                case Type.SOA:
+                case RecordType.SOA:
                     return new RecordSOA(this);
-                case Type.MB:
+                case RecordType.MB:
                     return new RecordMB(this);
-                case Type.MG:
+                case RecordType.MG:
                     return new RecordMG(this);
-                case Type.MR:
+                case RecordType.MR:
                     return new RecordMR(this);
-                case Type.NULL:
+                case RecordType.NULL:
                     return new RecordNULL(this);
-                case Type.WKS:
+                case RecordType.WKS:
                     return new RecordWKS(this);
-                case Type.PTR:
+                case RecordType.PTR:
                     return new RecordPTR(this);
-                case Type.HINFO:
+                case RecordType.HINFO:
                     return new RecordHINFO(this);
-                case Type.MINFO:
+                case RecordType.MINFO:
                     return new RecordMINFO(this);
-                case Type.MX:
+                case RecordType.MX:
                     return new RecordMX(this);
-                case Type.TXT:
+                case RecordType.TXT:
                     return new RecordTXT(this);
-                case Type.RP:
+                case RecordType.RP:
                     return new RecordRP(this);
-                case Type.AFSDB:
+                case RecordType.AFSDB:
                     return new RecordAFSDB(this);
-                case Type.X25:
+                case RecordType.X25:
                     return new RecordX25(this);
-                case Type.ISDN:
+                case RecordType.ISDN:
                     return new RecordISDN(this);
-                case Type.RT:
+                case RecordType.RT:
                     return new RecordRT(this);
-                case Type.NSAP:
+                case RecordType.NSAP:
                     return new RecordNSAP(this);
-                case Type.NSAPPTR:
+                case RecordType.NSAPPTR:
                     return new RecordNSAPPTR(this);
-                case Type.SIG:
+                case RecordType.SIG:
                     return new RecordSIG(this);
-                case Type.KEY:
+                case RecordType.KEY:
                     return new RecordKEY(this);
-                case Type.PX:
+                case RecordType.PX:
                     return new RecordPX(this);
-                case Type.GPOS:
+                case RecordType.GPOS:
                     return new RecordGPOS(this);
-                case Type.AAAA:
+                case RecordType.AAAA:
                     return new RecordAAAA(this);
-                case Type.LOC:
+                case RecordType.LOC:
                     return new RecordLOC(this);
-                case Type.NXT:
+                case RecordType.NXT:
                     return new RecordNXT(this);
-                case Type.EID:
+                case RecordType.EID:
                     return new RecordEID(this);
-                case Type.NIMLOC:
+                case RecordType.NIMLOC:
                     return new RecordNIMLOC(this);
-                case Type.SRV:
+                case RecordType.SRV:
                     return new RecordSRV(this);
-                case Type.ATMA:
+                case RecordType.ATMA:
                     return new RecordATMA(this);
-                case Type.NAPTR:
+                case RecordType.NAPTR:
                     return new RecordNAPTR(this);
-                case Type.KX:
+                case RecordType.KX:
                     return new RecordKX(this);
-                case Type.CERT:
+                case RecordType.CERT:
                     return new RecordCERT(this);
-                case Type.A6:
+                case RecordType.A6:
                     return new RecordA6(this);
-                case Type.DNAME:
+                case RecordType.DNAME:
                     return new RecordDNAME(this);
-                case Type.SINK:
+                case RecordType.SINK:
                     return new RecordSINK(this);
-                case Type.OPT:
+                case RecordType.OPT:
                     return new RecordOPT(this);
-                case Type.APL:
+                case RecordType.APL:
                     return new RecordAPL(this);
-                case Type.DS:
+                case RecordType.DS:
                     return new RecordDS(this);
-                case Type.SSHFP:
+                case RecordType.SSHFP:
                     return new RecordSSHFP(this);
-                case Type.IPSECKEY:
+                case RecordType.IPSECKEY:
                     return new RecordIPSECKEY(this);
-                case Type.RRSIG:
+                case RecordType.RRSIG:
                     return new RecordRRSIG(this);
-                case Type.NSEC:
+                case RecordType.NSEC:
                     return new RecordNSEC(this);
-                case Type.DNSKEY:
+                case RecordType.DNSKEY:
                     return new RecordDNSKEY(this);
-                case Type.DHCID:
+                case RecordType.DHCID:
                     return new RecordDHCID(this);
-                case Type.NSEC3:
+                case RecordType.NSEC3:
                     return new RecordNSEC3(this);
-                case Type.NSEC3PARAM:
+                case RecordType.NSEC3PARAM:
                     return new RecordNSEC3PARAM(this);
-                case Type.HIP:
+                case RecordType.HIP:
                     return new RecordHIP(this);
-                case Type.SPF:
+                case RecordType.SPF:
                     return new RecordSPF(this);
-                case Type.UINFO:
+                case RecordType.UINFO:
                     return new RecordUINFO(this);
-                case Type.UID:
+                case RecordType.UID:
                     return new RecordUID(this);
-                case Type.GID:
+                case RecordType.GID:
                     return new RecordGID(this);
-                case Type.UNSPEC:
+                case RecordType.UNSPEC:
                     return new RecordUNSPEC(this);
-                case Type.TKEY:
+                case RecordType.TKEY:
                     return new RecordTKEY(this);
-                case Type.TSIG:
+                case RecordType.TSIG:
                     return new RecordTSIG(this);
                 default:
                     return new RecordUnknown(this);
             }
         }
-
     }
 }

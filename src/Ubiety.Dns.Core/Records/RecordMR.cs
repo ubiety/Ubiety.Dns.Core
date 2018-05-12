@@ -18,15 +18,23 @@ mailbox.
 */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordMR : Record
     {
+        /// <summary>
+        /// </summary>
         public string NEWNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordMR(RecordReader rr)
         {
             NEWNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return NEWNAME;

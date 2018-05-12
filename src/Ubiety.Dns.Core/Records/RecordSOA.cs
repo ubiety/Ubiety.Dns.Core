@@ -69,16 +69,34 @@ change the SOA RR with known semantics.
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordSOA : Record
     {
+        /// <summary>
+        /// </summary>
         public string MNAME;
+        /// <summary>
+        /// </summary>
         public string RNAME;
+        /// <summary>
+        /// </summary>
         public uint SERIAL;
+        /// <summary>
+        /// </summary>
         public uint REFRESH;
+        /// <summary>
+        /// </summary>
         public uint RETRY;
+        /// <summary>
+        /// </summary>
         public uint EXPIRE;
+        /// <summary>
+        /// </summary>
         public uint MINIMUM;
 
+        /// <summary>
+        /// </summary>
         public RecordSOA(RecordReader rr)
         {
             MNAME = rr.ReadDomainName();
@@ -90,6 +108,8 @@ namespace Heijden.DNS
             MINIMUM = rr.ReadUInt32();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2} {3} {4} {5} {6}",

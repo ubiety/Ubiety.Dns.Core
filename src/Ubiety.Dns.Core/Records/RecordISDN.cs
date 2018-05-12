@@ -69,17 +69,27 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordISDN : Record
     {
+        /// <summary>
+        /// </summary>
         public string ISDNADDRESS;
+        /// <summary>
+        /// </summary>
         public string SA;
 
+        /// <summary>
+        /// </summary>
         public RecordISDN(RecordReader rr)
         {
             ISDNADDRESS = rr.ReadString();
             SA = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1}",

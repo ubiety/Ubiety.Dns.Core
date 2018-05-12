@@ -26,22 +26,34 @@ namespace Heijden.DNS
     [RFC-974].
     */
 
+        /// <summary>
+        /// </summary>
     public class RecordMX : Record, IComparable
     {
+        /// <summary>
+        /// </summary>
         public ushort PREFERENCE;
+        /// <summary>
+        /// </summary>
         public string EXCHANGE;
 
+        /// <summary>
+        /// </summary>
         public RecordMX(RecordReader rr)
         {
             PREFERENCE = rr.ReadUInt16();
             EXCHANGE = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1}", PREFERENCE, EXCHANGE);
         }
 
+        /// <summary>
+        /// </summary>
         public int CompareTo(object objA)
         {
             RecordMX recordMX = objA as RecordMX;

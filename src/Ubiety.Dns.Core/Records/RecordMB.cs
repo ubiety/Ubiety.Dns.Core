@@ -17,15 +17,23 @@ RRs corresponding to MADNAME.
 */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordMB : Record
     {
+        /// <summary>
+        /// </summary>
         public string MADNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordMB(RecordReader rr)
         {
             MADNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return MADNAME;

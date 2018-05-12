@@ -23,18 +23,40 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordTKEY : Record
     {
+        /// <summary>
+        /// </summary>
         public string ALGORITHM;
+        /// <summary>
+        /// </summary>
         public UInt32 INCEPTION;
+        /// <summary>
+        /// </summary>
         public UInt32 EXPIRATION;
+        /// <summary>
+        /// </summary>
         public UInt16 MODE;
+        /// <summary>
+        /// </summary>
         public UInt16 ERROR;
+        /// <summary>
+        /// </summary>
         public UInt16 KEYSIZE;
+        /// <summary>
+        /// </summary>
         public byte[] KEYDATA;
+        /// <summary>
+        /// </summary>
         public UInt16 OTHERSIZE;
+        /// <summary>
+        /// </summary>
         public byte[] OTHERDATA;
 
+        /// <summary>
+        /// </summary>
         public RecordTKEY(RecordReader rr)
         {
             ALGORITHM = rr.ReadDomainName();
@@ -48,6 +70,8 @@ namespace Heijden.DNS
             OTHERDATA = rr.ReadBytes(OTHERSIZE);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2} {3} {4}",

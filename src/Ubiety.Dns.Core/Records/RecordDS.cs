@@ -30,13 +30,25 @@ using System.Text;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordDS : Record
     {
+        /// <summary>
+        /// </summary>
         public UInt16 KEYTAG;
+        /// <summary>
+        /// </summary>
         public byte ALGORITHM;
+        /// <summary>
+        /// </summary>
         public byte DIGESTTYPE;
+        /// <summary>
+        /// </summary>
         public byte[] DIGEST;
 
+        /// <summary>
+        /// </summary>
         public RecordDS(RecordReader rr)
         {
             ushort length = rr.ReadUInt16(-2);
@@ -48,6 +60,8 @@ namespace Heijden.DNS
             DIGEST = rr.ReadBytes(length);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

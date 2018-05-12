@@ -20,15 +20,23 @@ description of the IN-ADDR.ARPA domain for an example.
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordPTR : Record
     {
+        /// <summary>
+        /// </summary>
         public string PTRDNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordPTR(RecordReader rr)
         {
             PTRDNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return PTRDNAME;

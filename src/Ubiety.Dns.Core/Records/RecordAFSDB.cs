@@ -29,11 +29,19 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordAFSDB : Record
     {
+        /// <summary>
+        /// </summary>
         public ushort SUBTYPE;
+        /// <summary>
+        /// </summary>
         public string HOSTNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordAFSDB(RecordReader rr)
         {
             SUBTYPE = rr.ReadUInt16();
@@ -41,6 +49,8 @@ namespace Heijden.DNS
             HOSTNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1}",

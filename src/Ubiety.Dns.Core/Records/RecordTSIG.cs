@@ -22,18 +22,40 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordTSIG : Record
     {
+        /// <summary>
+        /// </summary>
         public string ALGORITHMNAME;
+        /// <summary>
+        /// </summary>
         public long TIMESIGNED;
+        /// <summary>
+        /// </summary>
         public UInt16 FUDGE;
+        /// <summary>
+        /// </summary>
         public UInt16 MACSIZE;
+        /// <summary>
+        /// </summary>
         public byte[] MAC;
+        /// <summary>
+        /// </summary>
         public UInt16 ORIGINALID;
+        /// <summary>
+        /// </summary>
         public UInt16 ERROR;
+        /// <summary>
+        /// </summary>
         public UInt16 OTHERLEN;
+        /// <summary>
+        /// </summary>
         public byte[] OTHERDATA;
 
+        /// <summary>
+        /// </summary>
         public RecordTSIG(RecordReader rr)
         {
             ALGORITHMNAME = rr.ReadDomainName();
@@ -47,6 +69,8 @@ namespace Heijden.DNS
             OTHERDATA = rr.ReadBytes(OTHERLEN);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);

@@ -40,15 +40,23 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordNSAPPTR : Record
     {
+        /// <summary>
+        /// </summary>
         public string OWNER;
 
+        /// <summary>
+        /// </summary>
         public RecordNSAPPTR(RecordReader rr)
         {
             OWNER = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0}",OWNER);

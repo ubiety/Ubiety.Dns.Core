@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using Heijden.DNS;
 
 namespace Ubiety.Dns.Core
 {
@@ -12,50 +13,52 @@ namespace Ubiety.Dns.Core
     public class Header
     {
         /// <summary>
-        /// An identifier assigned by the program
+        ///     Gets and sets the unique identifier of the record
         /// </summary>
-        public ushort Id;
+        public ushort Id { get; set; }
 
         // internal flag
         private ushort Flags;
 
         /// <summary>
-        /// the number of entries in the question section
+        ///     Gets and sets the number of questions in the record
         /// </summary>
         public ushort QuestionCount { get; set; }
 
         /// <summary>
-        /// the number of resource records in the answer section
+        ///     Gets and sets the number of answers in the record
         /// </summary>
         public ushort AnswerCount { get; set; }
 
         /// <summary>
-        /// the number of name server resource records in the authority records section
+        ///     Gets and sets the number of name servers in the record
         /// </summary>
-        public ushort NSCOUNT;
+        public ushort NameserverCount {get; set; }
 
         /// <summary>
-        /// the number of resource records in the additional records section
+        ///     Gets and sets the number of additional records in the record
         /// </summary>
-        public ushort ARCOUNT;
+        public ushort AdditionalRecordsCount { get; set; }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="Header" /> class
         /// </summary>
         public Header()
         {
         }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="Header" /> class
         /// </summary>
-        /// <param name="rr"></param>
+        /// <param name="rr"><see cref="RecordReader" /> of the record</param>
         public Header(RecordReader rr)
         {
-            Id = rr.ReadUInt16();
-            Flags = rr.ReadUInt16();
+            this.Id = rr.ReadUInt16();
+            this.Flags = rr.ReadUInt16();
             this.QuestionCount = rr.ReadUInt16();
             this.AnswerCount = rr.ReadUInt16();
-            NSCOUNT = rr.ReadUInt16();
-            ARCOUNT = rr.ReadUInt16();
+            this.NameserverCount = rr.ReadUInt16();
+            this.AdditionalRecordsCount = rr.ReadUInt16();
         }
 
         private ushort SetBits(ushort oldValue, int position, int length, bool blnValue)
@@ -94,19 +97,19 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        /// Represents the header as a byte array
+        ///     Gets the header as a byte array
         /// </summary>
         public byte[] Data
         {
             get
             {
                 List<byte> data = new List<byte>();
-                data.AddRange(WriteShort(Id));
-                data.AddRange(WriteShort(Flags));
-                data.AddRange(WriteShort(this.QuestionCount));
-                data.AddRange(WriteShort(this.AnswerCount));
-                data.AddRange(WriteShort(NSCOUNT));
-                data.AddRange(WriteShort(ARCOUNT));
+                data.AddRange(this.WriteShort(this.Id));
+                data.AddRange(this.WriteShort(this.Flags));
+                data.AddRange(this.WriteShort(this.QuestionCount));
+                data.AddRange(this.WriteShort(this.AnswerCount));
+                data.AddRange(this.WriteShort(this.NameserverCount));
+                data.AddRange(this.WriteShort(this.AdditionalRecordsCount));
                 return data.ToArray();
             }
         }
@@ -117,122 +120,122 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        /// query (false), or a response (true)
+        ///     Gets or sets the query/response flag
         /// </summary>
         public bool QR
         {
             get
             {
-                return GetBits(Flags, 15, 1) == 1;
+                return this.GetBits(this.Flags, 15, 1) == 1;
             }
             set
             {
-                Flags = SetBits(Flags, 15, 1, value);
+                this.Flags = this.SetBits(this.Flags, 15, 1, value);
             }
         }
 
         /// <summary>
-        /// Specifies kind of query
+        ///     Gets or sets the record opcode flag
         /// </summary>
         public OPCode OPCODE
         {
             get
             {
-                return (OPCode)GetBits(Flags, 11, 4);
+                return (OPCode)this.GetBits(this.Flags, 11, 4);
             }
             set
             {
-                Flags = SetBits(Flags, 11, 4, (ushort)value);
+                this.Flags = this.SetBits(this.Flags, 11, 4, (ushort)value);
             }
         }
 
         /// <summary>
-        /// Authoritative Answer
+        ///     Gets or sets the record authoritative answer flag
         /// </summary>
         public bool AA
         {
             get
             {
-                return GetBits(Flags, 10, 1) == 1;
+                return this.GetBits(this.Flags, 10, 1) == 1;
             }
             set
             {
-                Flags = SetBits(Flags, 10, 1, value);
+                this.Flags = this.SetBits(this.Flags, 10, 1, value);
             }
         }
 
         /// <summary>
-        /// TrunCation
+        ///     Gets or sets the record truncation flag
         /// </summary>
         public bool TC
         {
             get
             {
-                return GetBits(Flags, 9, 1) == 1;
+                return this.GetBits(this.Flags, 9, 1) == 1;
             }
             set
             {
-                Flags = SetBits(Flags, 9, 1, value);
+                this.Flags = this.SetBits(this.Flags, 9, 1, value);
             }
         }
 
         /// <summary>
-        /// Recursion Desired
+        ///     Gets or sets the record recursion desired flag
         /// </summary>
         public bool RD
         {
             get
             {
-                return GetBits(Flags, 8, 1) == 1;
+                return this.GetBits(this.Flags, 8, 1) == 1;
             }
             set
             {
-                Flags = SetBits(Flags, 8, 1, value);
+                this.Flags = this.SetBits(this.Flags, 8, 1, value);
             }
         }
 
         /// <summary>
-        /// Recursion Available
+        ///     Gets or sets the record recursion available flag
         /// </summary>
         public bool RA
         {
             get
             {
-                return GetBits(Flags, 7, 1) == 1;
+                return this.GetBits(this.Flags, 7, 1) == 1;
             }
             set
             {
-                Flags = SetBits(Flags, 7, 1, value);
+                this.Flags = this.SetBits(this.Flags, 7, 1, value);
             }
         }
 
         /// <summary>
-        /// Reserved for future use
+        ///     Gets or sets a record reserved flag
         /// </summary>
         public ushort Z
         {
             get
             {
-                return GetBits(Flags, 4, 3);
+                return this.GetBits(this.Flags, 4, 3);
             }
             set
             {
-                Flags = SetBits(Flags, 4, 3, value);
+                this.Flags = this.SetBits(this.Flags, 4, 3, value);
             }
         }
 
         /// <summary>
-        /// Response code
+        ///     Gets or sets the record response code
         /// </summary>
         public RCode RCODE
         {
             get
             {
-                return (RCode)GetBits(Flags, 0, 4);
+                return (RCode)this.GetBits(this.Flags, 0, 4);
             }
             set
             {
-                Flags = SetBits(Flags, 0, 4, (ushort)value);
+                this.Flags = this.SetBits(this.Flags, 0, 4, (ushort)value);
             }
         }
     }

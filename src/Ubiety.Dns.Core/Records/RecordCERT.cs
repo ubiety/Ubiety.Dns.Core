@@ -15,15 +15,31 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordCERT : Record
     {
+        /// <summary>
+        /// </summary>
         public byte[] RDATA;
+        /// <summary>
+        /// </summary>
         public ushort TYPE;
+        /// <summary>
+        /// </summary>
         public ushort KEYTAG;  //Format
+        /// <summary>
+        /// </summary>
         public byte ALGORITHM;
+        /// <summary>
+        /// </summary>
         public string PUBLICKEY;
+        /// <summary>
+        /// </summary>
         public byte[] RAWKEY;
 
+        /// <summary>
+        /// </summary>
         public RecordCERT(RecordReader rr)
         {
             // re-read length
@@ -38,6 +54,8 @@ namespace Heijden.DNS
             PUBLICKEY = Convert.ToBase64String(RAWKEY);
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return PUBLICKEY;

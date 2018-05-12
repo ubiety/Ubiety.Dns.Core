@@ -3,52 +3,20 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Heijden.DNS;
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core
 {
-    #region Rfc 1034/1035
-    /*
-    4.1.2. Question section format
-
-    The question section is used to carry the "question" in most queries,
-    i.e., the parameters that define what is being asked.  The section
-    contains QDCOUNT (usually 1) entries, each of the following format:
-
-                                        1  1  1  1  1  1
-          0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-        |                                               |
-        /                     QNAME                     /
-        /                                               /
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-        |                     QTYPE                     |
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-        |                     QCLASS                    |
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-
-    where:
-
-    QNAME           a domain name represented as a sequence of labels, where
-                    each label consists of a length octet followed by that
-                    number of octets.  The domain name terminates with the
-                    zero length octet for the null label of the root.  Note
-                    that this field may be an odd number of octets; no
-                    padding is used.
-
-    QTYPE           a two octet code which specifies the type of the query.
-                    The values for this field include all codes valid for a
-                    TYPE field, together with some more general codes which
-                    can match more than one type of RR.
-
-
-    QCLASS          a two octet code that specifies the class of the query.
-                    For example, the QCLASS field is IN for the Internet.
-    */
-    #endregion
-
+    /// <summary>
+    ///     DNS Question record
+    /// </summary>
     public class Question
     {
         private string m_QName;
+
+        /// <summary>
+        ///     Gets or sets the question name
+        /// </summary>
         public string QName
         {
             get
@@ -62,16 +30,34 @@ namespace Heijden.DNS
                     m_QName += ".";
             }
         }
+
+        /// <summary>
+        ///     Gets or sets the query type
+        /// </summary>
         public QType QType;
+
+        /// <summary>
+        ///     Gets or sets the query class
+        /// </summary>
         public QClass QClass;
 
-        public Question(string QName,QType QType,QClass QClass)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Question" /> class
+        /// </summary>
+        /// <param name="QName">Query name</param>
+        /// <param name="QType">Query type</param>
+        /// <param name="QClass">Query class</param>
+        public Question(string QName, QType QType, QClass QClass)
         {
             this.QName = QName;
             this.QType = QType;
             this.QClass = QClass;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Question" /> class
+        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> of the record</param>
         public Question(RecordReader rr)
         {
             QName = rr.ReadDomainName();
@@ -103,6 +89,9 @@ namespace Heijden.DNS
             return System.Text.Encoding.ASCII.GetBytes(sb.ToString());
         }
 
+        /// <summary>
+        ///     Gets the question as a byte array
+        /// </summary>
         public byte[] Data
         {
             get
@@ -120,7 +109,10 @@ namespace Heijden.DNS
             return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)sValue));
         }
 
-
+        /// <summary>
+        ///     String representation of the question
+        /// </summary>
+        /// <returns>String representation of the question</returns>
         public override string ToString()
         {
             return string.Format("{0,-32}\t{1}\t{2}", QName, QClass, QType);

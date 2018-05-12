@@ -32,15 +32,23 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordX25 : Record
     {
+        /// <summary>
+        /// </summary>
         public string PSDNADDRESS;
 
+        /// <summary>
+        /// </summary>
         public RecordX25(RecordReader rr)
         {
             PSDNADDRESS = rr.ReadString();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0}",

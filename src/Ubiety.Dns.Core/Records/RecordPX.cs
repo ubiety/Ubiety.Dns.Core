@@ -72,12 +72,22 @@ using System;
 
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordPX : Record
     {
+        /// <summary>
+        /// </summary>
         public UInt16 PREFERENCE;
+        /// <summary>
+        /// </summary>
         public string MAP822;
+        /// <summary>
+        /// </summary>
         public string MAPX400;
 
+        /// <summary>
+        /// </summary>
         public RecordPX(RecordReader rr)
         {
             PREFERENCE = rr.ReadUInt16();
@@ -85,6 +95,8 @@ namespace Heijden.DNS
             MAPX400 = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0} {1} {2}",

@@ -25,15 +25,23 @@ class information are normally queried using IN class protocols.
  */
 namespace Heijden.DNS
 {
+        /// <summary>
+        /// </summary>
     public class RecordNS : Record
     {
+        /// <summary>
+        /// </summary>
         public string NSDNAME;
 
+        /// <summary>
+        /// </summary>
         public RecordNS(RecordReader rr)
         {
             NSDNAME = rr.ReadDomainName();
         }
 
+        /// <summary>
+        /// </summary>
         public override string ToString()
         {
             return NSDNAME;
