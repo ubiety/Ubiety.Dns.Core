@@ -22,6 +22,8 @@ bld/
 # Roslyn cache directories
 *.ide/
 
+.sonarqube/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*

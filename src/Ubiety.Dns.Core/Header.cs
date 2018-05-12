@@ -12,30 +12,30 @@ namespace Ubiety.Dns.Core
     public class Header
     {
         /// <summary>
-        ///     Gets and sets the unique identifier of the record
+        ///     Gets or sets the unique identifier of the record
         /// </summary>
         public ushort Id { get; set; }
 
         // internal flag
-        private ushort Flags;
+        private ushort flags;
 
         /// <summary>
-        ///     Gets and sets the number of questions in the record
+        ///     Gets or sets the number of questions in the record
         /// </summary>
         public ushort QuestionCount { get; set; }
 
         /// <summary>
-        ///     Gets and sets the number of answers in the record
+        ///     Gets or sets the number of answers in the record
         /// </summary>
         public ushort AnswerCount { get; set; }
 
         /// <summary>
-        ///     Gets and sets the number of name servers in the record
+        ///     Gets or sets the number of name servers in the record
         /// </summary>
         public ushort NameserverCount {get; set; }
 
         /// <summary>
-        ///     Gets and sets the number of additional records in the record
+        ///     Gets or sets the number of additional records in the record
         /// </summary>
         public ushort AdditionalRecordsCount { get; set; }
 
@@ -53,23 +53,25 @@ namespace Ubiety.Dns.Core
         public Header(RecordReader rr)
         {
             this.Id = rr.ReadUInt16();
-            this.Flags = rr.ReadUInt16();
+            this.flags = rr.ReadUInt16();
             this.QuestionCount = rr.ReadUInt16();
             this.AnswerCount = rr.ReadUInt16();
             this.NameserverCount = rr.ReadUInt16();
             this.AdditionalRecordsCount = rr.ReadUInt16();
         }
 
-        private ushort SetBits(ushort oldValue, int position, int length, bool blnValue)
+        private static ushort SetBits(ushort oldValue, int position, int length, bool blnValue)
         {
             return SetBits(oldValue, position, length, blnValue ? (ushort)1 : (ushort)0);
         }
 
-        private ushort SetBits(ushort oldValue, int position, int length, ushort newValue)
+        private static ushort SetBits(ushort oldValue, int position, int length, ushort newValue)
         {
             // sanity check
             if (length <= 0 || position >= 16)
+            {
                 return oldValue;
+            }
 
             // get some mask to put on
             int mask = (2 << (length - 1)) - 1;
@@ -82,11 +84,13 @@ namespace Ubiety.Dns.Core
             return oldValue;
         }
 
-        private ushort GetBits(ushort oldValue, int position, int length)
+        private static ushort GetBits(ushort oldValue, int position, int length)
         {
             // sanity check
             if (length <= 0 || position >= 16)
+            {
                 return 0;
+            }
 
             // get some mask to put on
             int mask = (2 << (length - 1)) - 1;
@@ -103,17 +107,17 @@ namespace Ubiety.Dns.Core
             get
             {
                 List<byte> data = new List<byte>();
-                data.AddRange(this.WriteShort(this.Id));
-                data.AddRange(this.WriteShort(this.Flags));
-                data.AddRange(this.WriteShort(this.QuestionCount));
-                data.AddRange(this.WriteShort(this.AnswerCount));
-                data.AddRange(this.WriteShort(this.NameserverCount));
-                data.AddRange(this.WriteShort(this.AdditionalRecordsCount));
+                data.AddRange(WriteShort(this.Id));
+                data.AddRange(WriteShort(this.flags));
+                data.AddRange(WriteShort(this.QuestionCount));
+                data.AddRange(WriteShort(this.AnswerCount));
+                data.AddRange(WriteShort(this.NameserverCount));
+                data.AddRange(WriteShort(this.AdditionalRecordsCount));
                 return data.ToArray();
             }
         }
 
-        private byte[] WriteShort(ushort sValue)
+        private static byte[] WriteShort(ushort sValue)
         {
             return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)sValue));
         }
@@ -123,13 +127,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool QR
         {
-            get
-            {
-                return this.GetBits(this.Flags, 15, 1) == 1;
-            }
+            get => GetBits(this.flags, 15, 1) == 1;
             set
             {
-                this.Flags = this.SetBits(this.Flags, 15, 1, value);
+                this.flags = SetBits(this.flags, 15, 1, value);
             }
         }
 
@@ -138,13 +139,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public OPCode OPCODE
         {
-            get
-            {
-                return (OPCode)this.GetBits(this.Flags, 11, 4);
-            }
+            get => (OPCode)GetBits(this.flags, 11, 4);
             set
             {
-                this.Flags = this.SetBits(this.Flags, 11, 4, (ushort)value);
+                this.flags = SetBits(this.flags, 11, 4, (ushort)value);
             }
         }
 
@@ -153,13 +151,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool AA
         {
-            get
-            {
-                return this.GetBits(this.Flags, 10, 1) == 1;
-            }
+            get => GetBits(this.flags, 10, 1) == 1;
             set
             {
-                this.Flags = this.SetBits(this.Flags, 10, 1, value);
+                this.flags = SetBits(this.flags, 10, 1, value);
             }
         }
 
@@ -168,13 +163,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool TC
         {
-            get
-            {
-                return this.GetBits(this.Flags, 9, 1) == 1;
-            }
+            get => GetBits(this.flags, 9, 1) == 1;
             set
             {
-                this.Flags = this.SetBits(this.Flags, 9, 1, value);
+                this.flags = SetBits(this.flags, 9, 1, value);
             }
         }
 
@@ -183,13 +175,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool RD
         {
-            get
-            {
-                return this.GetBits(this.Flags, 8, 1) == 1;
-            }
+            get => GetBits(this.flags, 8, 1) == 1;
             set
             {
-                this.Flags = this.SetBits(this.Flags, 8, 1, value);
+                this.flags = SetBits(this.flags, 8, 1, value);
             }
         }
 
@@ -198,13 +187,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool RA
         {
-            get
-            {
-                return this.GetBits(this.Flags, 7, 1) == 1;
-            }
+            get => GetBits(this.flags, 7, 1) == 1;
             set
             {
-                this.Flags = this.SetBits(this.Flags, 7, 1, value);
+                this.flags = SetBits(this.flags, 7, 1, value);
             }
         }
 
@@ -213,13 +199,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public ushort Z
         {
-            get
-            {
-                return this.GetBits(this.Flags, 4, 3);
-            }
+            get => GetBits(this.flags, 4, 3);
             set
             {
-                this.Flags = this.SetBits(this.Flags, 4, 3, value);
+                this.flags = SetBits(this.flags, 4, 3, value);
             }
         }
 
@@ -228,13 +211,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public RCode RCODE
         {
-            get
-            {
-                return (RCode)this.GetBits(this.Flags, 0, 4);
-            }
+            get => (RCode)GetBits(this.flags, 0, 4);
             set
             {
-                this.Flags = this.SetBits(this.Flags, 0, 4, (ushort)value);
+                this.flags = SetBits(this.flags, 0, 4, (ushort)value);
             }
         }
     }

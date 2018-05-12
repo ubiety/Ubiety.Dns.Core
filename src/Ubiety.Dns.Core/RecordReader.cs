@@ -12,9 +12,7 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class RecordReader
     {
-        private byte[] data;
-
-        private int position;
+        private readonly byte[] data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordReader" /> class
@@ -23,22 +21,7 @@ namespace Ubiety.Dns.Core
         public RecordReader(byte[] data)
         {
             this.data = data;
-            this.position = 0;
-        }
-
-        /// <summary>
-        ///     Gets or sets the position of the cursor in the record
-        /// </summary>
-        public int Position
-        {
-            get
-            {
-                return this.position;
-            }
-            set
-            {
-                this.position = value;
-            }
+            this.Position = 0;
         }
 
         /// <summary>
@@ -49,9 +32,13 @@ namespace Ubiety.Dns.Core
         public RecordReader(byte[] data, int position)
         {
             this.data = data;
-            this.position = position;
+            this.Position = position;
         }
 
+        /// <summary>
+        ///     Gets or sets the position of the cursor in the record
+        /// </summary>
+        public int Position { get; set; }
 
         /// <summary>
         ///     Read a byte from the record
@@ -59,13 +46,13 @@ namespace Ubiety.Dns.Core
         /// <returns>Next available byte of the record</returns>
         public byte ReadByte()
         {
-            if (this.position >= this.data.Length)
+            if (this.Position >= this.data.Length)
             {
                 return 0;
             }
             else
             {
-                return this.data[this.position++];
+                return this.data[this.Position++];
             }
         }
 
@@ -94,7 +81,7 @@ namespace Ubiety.Dns.Core
         /// <returns>Next unsigned int 16 from the offset</returns>
         public UInt16 ReadUInt16(int offset)
         {
-            this.position += offset;
+            this.Position += offset;
             return this.ReadUInt16();
         }
 

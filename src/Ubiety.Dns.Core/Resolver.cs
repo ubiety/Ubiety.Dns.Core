@@ -34,7 +34,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Default OpenDNS server addresses
         /// </summary>
-        public static readonly IPEndPoint[] defaultDnsServers = 
+        public static IPEndPoint[] defaultDnsServers = 
             { 
                 new IPEndPoint(IPAddress.Parse("208.67.222.222"), defaultPort), 
                 new IPEndPoint(IPAddress.Parse("208.67.220.220"), defaultPort) 
@@ -42,14 +42,12 @@ namespace Ubiety.Dns.Core
 
         private ushort unique;
         private bool useCache;
-        private bool recursion;
         private int retries;
         private int timeout;
-        private TransportType transportType;
 
-        private List<IPEndPoint> dnsServers;
+        private readonly List<IPEndPoint> dnsServers;
 
-        private Dictionary<string,Response> responseCache;
+        private readonly Dictionary<string,Response> responseCache;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Resolver" /> class
@@ -64,9 +62,9 @@ namespace Ubiety.Dns.Core
             this.unique = (ushort)(new Random()).Next();
             this.retries = 3;
             this.timeout = 1;
-            this.recursion = true;
+            this.Recursion = true;
             this.useCache = true;
-            this.transportType = TransportType.Udp;
+            this.TransportType = TransportType.Udp;
         }
 
         /// <summary>
@@ -210,32 +208,12 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or set recursion for doing queries
         /// </summary>
-        public bool Recursion
-        {
-            get
-            {
-                return this.recursion;
-            }
-            set
-            {
-                this.recursion = value;
-            }
-        }
+        public bool Recursion { get; set; }
 
         /// <summary>
         ///     Gets or sets protocol to use
         /// </summary>
-        public TransportType TransportType
-        {
-            get
-            {
-                return this.transportType;
-            }
-            set
-            {
-                this.transportType = value;
-            }
-        }
+        public TransportType TransportType { get; set; }
 
         /// <summary>
         ///     Gets or sets list of DNS servers to use
@@ -414,11 +392,6 @@ namespace Ubiety.Dns.Core
 
         private Response TcpRequest(Request request)
         {
-            //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            //sw.Start();
-
-            byte[] responseMessage = new byte[512];
-
             for (int intAttempts = 0; intAttempts < this.retries; intAttempts++)
             {
                 for (int intDnsServer = 0; intDnsServer < this.dnsServers.Count; intDnsServer++)
@@ -451,8 +424,6 @@ namespace Ubiety.Dns.Core
                         int intSoa = 0;
                         int intMessageSize = 0;
 
-                        //Debug.WriteLine("Sending "+ (request.Length+2) + " bytes in "+ sw.ElapsedMilliseconds+" mS");
-
                         while (true)
                         {
                             int intLength = bs.ReadByte() << 8 | bs.ReadByte();
@@ -468,8 +439,6 @@ namespace Ubiety.Dns.Core
                             data = new byte[intLength];
                             bs.Read(data, 0, intLength);
                             Response response = new Response(this.dnsServers[intDnsServer], data);
-
-                            //Debug.WriteLine("Received "+ (intLength+2)+" bytes in "+sw.ElapsedMilliseconds +" mS");
 
                             if (response.header.RCODE != RCode.NoError)
                             {
@@ -571,14 +540,14 @@ namespace Ubiety.Dns.Core
         private Response GetResponse(Request request)
         {
             request.header.Id = this.unique;
-            request.header.RD = this.recursion;
+            request.header.RD = this.Recursion;
 
-            if (this.transportType == TransportType.Udp)
+            if (this.TransportType == TransportType.Udp)
             {
                 return UdpRequest(request);
             }
 
-            if (this.transportType == TransportType.Tcp)
+            if (this.TransportType == TransportType.Tcp)
             {
                 return TcpRequest(request);
             }
@@ -616,39 +585,6 @@ namespace Ubiety.Dns.Core
             }
             return list.ToArray();
         } 
-
-        private IPHostEntry MakeEntry(string hostname)
-        {
-            IPHostEntry entry = new IPHostEntry();
-
-            entry.HostName = hostname;
-
-            Response response = Query(hostname, QType.A, QClass.IN);
-
-            // fill AddressList and aliases
-            List<IPAddress> AddressList = new List<IPAddress>();
-            List<string> Aliases = new List<string>();
-            foreach (AnswerRR answerRR in response.Answers)
-            {
-                if (answerRR.Type == RecordType.A)
-                {
-                    // answerRR.RECORD.ToString() == (answerRR.RECORD as RecordA).Address
-                    AddressList.Add(IPAddress.Parse((answerRR.RECORD.ToString())));
-                    entry.HostName = answerRR.NAME;
-                }
-                else
-                {
-                    if (answerRR.Type == RecordType.CNAME)
-                    {
-                        Aliases.Add(answerRR.NAME);
-                    }
-                }
-            }
-            entry.AddressList = AddressList.ToArray();
-            entry.Aliases = Aliases.ToArray();
-
-            return entry;
-        }
 
         /// <summary>
         /// Translates the IPV4 or IPV6 address into an arpa address
@@ -693,89 +629,6 @@ namespace Ubiety.Dns.Core
                 sb.Insert(0, string.Format("{0}.", c));
             }
             return sb.ToString();
-        }
-
-        private enum RRRecordStatus
-        {
-            UNKNOWN,
-            NAME,
-            TTL,
-            CLASS,
-            TYPE,
-            VALUE
-        }
-
-        /// <summary>
-        /// </summary>
-        public void LoadRootFile(string strPath)
-        {
-            StreamReader sr = new StreamReader(strPath);
-            while (!sr.EndOfStream)
-            {
-                string strLine = sr.ReadLine();
-                if (strLine == null)
-                {
-                    break;
-                }
-
-                int intI = strLine.IndexOf(';');
-                if (intI >= 0)
-                {
-                    strLine = strLine.Substring(0, intI);
-                }
-
-                strLine = strLine.Trim();
-                if (strLine.Length == 0)
-                {
-                    continue;
-                }
-                
-                RRRecordStatus status = RRRecordStatus.NAME;
-                string Name="";
-                string Ttl="";
-                string Class="";
-                string Type="";
-                string Value="";
-                string strW = "";
-                for (intI = 0; intI < strLine.Length; intI++)
-                {
-                    char C = strLine[intI];
-
-                    if (C <= ' ' && strW!="")
-                    {
-                        switch (status)
-                        {
-                            case RRRecordStatus.NAME:
-                                Name = strW;
-                                status = RRRecordStatus.TTL;
-                                break;
-                            case RRRecordStatus.TTL:
-                                Ttl = strW;
-                                status = RRRecordStatus.CLASS;
-                                break;
-                            case RRRecordStatus.CLASS:
-                                Class = strW;
-                                status = RRRecordStatus.TYPE;
-                                break;
-                            case RRRecordStatus.TYPE:
-                                Type = strW;
-                                status = RRRecordStatus.VALUE;
-                                break;
-                            case RRRecordStatus.VALUE:
-                                Value = strW;
-                                status = RRRecordStatus.UNKNOWN;
-                                break;
-                            default:
-                                break;
-                        }
-                        strW = "";
-                    }
-                    if (C > ' ')
-                        strW += C;
-                }
-
-            }
-            sr.Close();
         }
     } // class
 }

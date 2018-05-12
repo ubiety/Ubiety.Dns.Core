@@ -127,17 +127,17 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the latitude of the location
         /// </summary>
-        public UInt32 Latitude { get; }
+        public uint Latitude { get; }
 
         /// <summary>
         ///     Gets the longitude of the location
         /// </summary>
-        public UInt32 Longitude { get; }
+        public uint Longitude { get; }
 
         /// <summary>
         ///     Gets the altitude of the location
         /// </summary>
-        public UInt32 Altitude { get; }
+        public uint Altitude { get; }
 
         private string SizeToString(byte size)
         {
@@ -167,9 +167,9 @@ namespace Ubiety.Dns.Core.Records
             return sb.ToString();
         }
 
-        private string LonToTime(UInt32 r)
+        private string LonToTime(uint r)
         {
-            UInt32 Mid = 2147483648; // 2^31
+            uint Mid = 2147483648; // 2^31
             char Dir = 'E';
             if (r > Mid)
             {
@@ -182,9 +182,9 @@ namespace Ubiety.Dns.Core.Records
             return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int)h, (int)m, s, Dir);
         }
 
-        private string ToTime(UInt32 r, char below, char above)
+        private string ToTime(uint r, char below, char above)
         {
-            UInt32 mid = 2147483648; // 2^31
+            uint mid = 2147483648; // 2^31
             char dir = '?';
             if (r > mid)
             {
@@ -202,7 +202,7 @@ namespace Ubiety.Dns.Core.Records
             return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int)h, (int)m, s, dir);
         }
 
-        private string ToAlt(UInt32 a)
+        private static string ToAlt(uint a)
         {
             double alt = (a / 100.0) - 100000.00;
             return string.Format(CultureInfo.InvariantCulture, "{0:0.00}m", alt);
@@ -229,11 +229,12 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>String of the location</returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture,
+            return string.Format(
+                CultureInfo.InvariantCulture,
                 "{0} {1} {2} {3} {4} {5}",
                 this.ToTime(this.Latitude,'S','N'),
                 this.ToTime(this.Longitude,'W','E'),
-                this.ToAlt(this.Altitude),
+                ToAlt(this.Altitude),
                 this.SizeToString(this.Size),
                 this.SizeToString(this.HorizontalPrecision),
                 this.SizeToString(this.VerticalPrecision));

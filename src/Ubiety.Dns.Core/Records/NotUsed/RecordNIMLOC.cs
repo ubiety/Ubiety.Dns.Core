@@ -26,7 +26,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
         /// </summary>
         public override string ToString()
         {
-            return string.Format("not-used");
+            return "not-used";
         }
 
     }
