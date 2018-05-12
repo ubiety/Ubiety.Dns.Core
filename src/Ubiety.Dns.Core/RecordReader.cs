@@ -243,7 +243,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.SRV:
                     return new RecordSRV(this);
                 case RecordType.ATMA:
-                    return new RecordATMA(this);
+                    return new RecordAtma(this);
                 case RecordType.NAPTR:
                     return new RecordNAPTR(this);
                 case RecordType.KX:
@@ -259,7 +259,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.OPT:
                     return new RecordOPT(this);
                 case RecordType.APL:
-                    return new RecordAPL(this);
+                    return new RecordApl(this);
                 case RecordType.DS:
                     return new RecordDS(this);
                 case RecordType.SSHFP:

@@ -1,14 +1,13 @@
-// Stuff records are made of
-
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
+    /// <summary>
+    ///     Abstract record
+    /// </summary>
     public abstract class Record
     {
         /// <summary>
-        /// The Resource Record this RDATA record belongs to
+        ///     Gets or sets the resource record this record is a part of
         /// </summary>
-        public RR RR { get; set; }
+        public ResourceRecord ResourceRecord { get; set; }
     }
 }

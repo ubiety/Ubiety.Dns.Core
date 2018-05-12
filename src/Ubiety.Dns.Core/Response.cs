@@ -293,24 +293,24 @@ namespace Ubiety.Dns.Core
 
         /// <summary>
         /// </summary>
-        public RR[] RecordsRR
+        public ResourceRecord[] RecordsRR
         {
             get
             {
-                List<RR> list = new List<RR>();
-                foreach (RR rr in this.Answers)
+                List<ResourceRecord> list = new List<ResourceRecord>();
+                foreach (ResourceRecord rr in this.Answers)
                 {
                     list.Add(rr);
                 }
-                foreach (RR rr in this.Answers)
+                foreach (ResourceRecord rr in this.Answers)
                 {
                     list.Add(rr);
                 }
-                foreach (RR rr in this.Authorities)
+                foreach (ResourceRecord rr in this.Authorities)
                 {
                     list.Add(rr);
                 }
-                foreach (RR rr in this.Additionals)
+                foreach (ResourceRecord rr in this.Additionals)
                 {
                     list.Add(rr);
                 }

@@ -14,7 +14,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public Header header;
 
-        private List<Question> questions;
+        private readonly List<Question> questions;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Request" /> class

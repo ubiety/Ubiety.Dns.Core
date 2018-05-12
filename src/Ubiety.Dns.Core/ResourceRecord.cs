@@ -63,7 +63,7 @@ namespace Ubiety.Dns.Core
     /// <summary>
     /// Resource Record (rfc1034 3.6.)
     /// </summary>
-    public class RR
+    public class ResourceRecord
     {
         /// <summary>
         ///     Gets or sets the name of the node to which this resource record pertains
@@ -112,10 +112,10 @@ namespace Ubiety.Dns.Core
         public int TimeLived { get; set; }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RR" /> class
+        ///     Initializes a new instance of the <see cref="ResourceRecord" /> class
         /// </summary>
         /// <param name="rr">Record reader of the record data</param>
-        public RR(RecordReader rr)
+        public ResourceRecord(RecordReader rr)
         {
             this.TimeLived = 0;
             this.Name = rr.ReadDomainName();
@@ -124,7 +124,7 @@ namespace Ubiety.Dns.Core
             this.TTL = rr.ReadUInt32();
             this.RecordLength = rr.ReadUInt16();
             this.Record = rr.ReadRecord(Type);
-            this.Record.RR = this;
+            this.Record.ResourceRecord = this;
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Ubiety.Dns.Core
 
     /// <summary>
     /// </summary>
-    public class AnswerRR : RR
+    public class AnswerRR : ResourceRecord
     {
         /// <summary>
         /// </summary>
@@ -154,7 +154,7 @@ namespace Ubiety.Dns.Core
 
     /// <summary>
     /// </summary>
-    public class AuthorityRR : RR
+    public class AuthorityRR : ResourceRecord
     {
         /// <summary>
         /// </summary>
@@ -166,7 +166,7 @@ namespace Ubiety.Dns.Core
 
     /// <summary>
     /// </summary>
-    public class AdditionalRR : RR
+    public class AdditionalRR : ResourceRecord
     {
         /// <summary>
         /// </summary>
