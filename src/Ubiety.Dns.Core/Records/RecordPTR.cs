@@ -18,7 +18,7 @@ similar to that performed by CNAME, which identifies aliases.  See the
 description of the IN-ADDR.ARPA domain for an example.
  */
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

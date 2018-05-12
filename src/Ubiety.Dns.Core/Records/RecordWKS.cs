@@ -1,16 +1,18 @@
 using System;
-/*
- * 3.4.2. WKS RDATA format
+using System.Globalization;
 
-    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    |                    ADDRESS                    |
-    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    |       PROTOCOL        |                       |
-    +--+--+--+--+--+--+--+--+                       |
-    |                                               |
-    /                   <BIT MAP>                   /
-    /                                               /
-    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+/*
+* 3.4.2. WKS RDATA format
+
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+|                    ADDRESS                    |
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+|       PROTOCOL        |                       |
++--+--+--+--+--+--+--+--+                       |
+|                                               |
+/                   <BIT MAP>                   /
+/                                               /
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
 where:
 
@@ -19,7 +21,7 @@ ADDRESS         An 32 bit Internet address
 PROTOCOL        An 8 bit IP protocol number
 
 <BIT MAP>       A variable length bit map.  The bit map must be a
-                multiple of 8 bits long.
+multiple of 8 bits long.
 
 The WKS record is used to describe the well known services supported by
 a particular protocol on a particular internet address.  The PROTOCOL
@@ -43,44 +45,55 @@ WKS RRs cause no additional section processing.
 In master files, both ports and protocols are expressed using mnemonics
 or decimal numbers.
 
- */
-namespace Heijden.DNS
+*/
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
+        ///     DNS well known services record
         /// </summary>
     public class RecordWKS : Record
     {
         /// <summary>
+        ///     Address of the server
         /// </summary>
-        public string ADDRESS;
-        /// <summary>
-        /// </summary>
-        public int PROTOCOL;
-        /// <summary>
-        /// </summary>
-        public byte[] BITMAP;
+        public string Address { get; set; }
 
         /// <summary>
+        ///     Protocol of the service
         /// </summary>
+        public int Protocol { get; set; }
+
+        /// <summary>
+        ///     Service bitmap
+        /// </summary>
+        public byte[] Bitmap { get; set; }
+
+        /// <summary>
+        ///     Intializes a new instance of the <see cref="RecordWKS" /> class
+        /// </summary>
+        /// <param name="rr">Record reader for record data</param>
         public RecordWKS(RecordReader rr)
         {
             ushort length = rr.ReadUInt16(-2);
-            ADDRESS = string.Format("{0}.{1}.{2}.{3}",
+            this.Address = string.Format(CultureInfo.InvariantCulture,
+                "{0}.{1}.{2}.{3}",
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte());
-            PROTOCOL = (int)rr.ReadByte();
+            this.Protocol = (int)rr.ReadByte();
             length -= 5;
-            BITMAP = new byte[length];
-            BITMAP = rr.ReadBytes(length);
+            this.Bitmap = new byte[length];
+            this.Bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
+        ///     Return a string of the well known service record
         /// </summary>
+        /// <returns>String of the record</returns>
         public override string ToString()
         {
-            return string.Format("{0} {1}",ADDRESS,PROTOCOL);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", this.Address, this.Protocol);
         }
 
     }

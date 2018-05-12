@@ -30,7 +30,7 @@ using System;
    The KX RDATA field MUST NOT be compressed.
 
  */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

@@ -2,17 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Ubiety.Dns.Core.Records;
+using Ubiety.Dns.Core.Records.NotUsed;
+using Ubiety.Dns.Core.Records.Obsolete;
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core
 {
     /// <summary>
     ///     DNS record reader
     /// </summary>
     public class RecordReader
     {
-        private byte[] m_Data;
+        private byte[] data;
 
-        private int m_Position;
+        private int position;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordReader" /> class
@@ -20,8 +22,8 @@ namespace Heijden.DNS
         /// <param name="data">Byte array of the record</param>
         public RecordReader(byte[] data)
         {
-            this.m_Data = data;
-            this.m_Position = 0;
+            this.data = data;
+            this.position = 0;
         }
 
         /// <summary>
@@ -31,11 +33,11 @@ namespace Heijden.DNS
         {
             get
             {
-                return this.m_Position;
+                return this.position;
             }
             set
             {
-                this.m_Position = value;
+                this.position = value;
             }
         }
 
@@ -43,11 +45,11 @@ namespace Heijden.DNS
         ///     Initializes a new instance of the <see cref="RecordReader" /> class
         /// </summary>
         /// <param name="data">Byte array of the record</param>
-        /// <param name="Position">Position of the cursor in the record</param>
-        public RecordReader(byte[] data, int Position)
+        /// <param name="position">Position of the cursor in the record</param>
+        public RecordReader(byte[] data, int position)
         {
-            this.m_Data = data;
-            this.m_Position = Position;
+            this.data = data;
+            this.position = position;
         }
 
 
@@ -57,10 +59,14 @@ namespace Heijden.DNS
         /// <returns>Next available byte of the record</returns>
         public byte ReadByte()
         {
-            if (this.m_Position >= this.m_Data.Length)
+            if (this.position >= this.data.Length)
+            {
                 return 0;
+            }
             else
-                return this.m_Data[this.m_Position++];
+            {
+                return this.data[this.position++];
+            }
         }
 
         /// <summary>
@@ -88,7 +94,7 @@ namespace Heijden.DNS
         /// <returns>Next unsigned int 16 from the offset</returns>
         public UInt16 ReadUInt16(int offset)
         {
-            this.m_Position += offset;
+            this.position += offset;
             return this.ReadUInt16();
         }
 
@@ -117,7 +123,7 @@ namespace Heijden.DNS
                 if ((length & 0xc0) == 0xc0)
                 {
                     // work out the existing domain name, copy this pointer
-                    RecordReader newRecordReader = new RecordReader(m_Data, (length & 0x3f) << 8 | ReadByte());
+                    RecordReader newRecordReader = new RecordReader(data, (length & 0x3f) << 8 | ReadByte());
 
                     name.Append(newRecordReader.ReadDomainName());
                     return name.ToString();
@@ -132,9 +138,13 @@ namespace Heijden.DNS
                 name.Append('.');
             }
             if (name.Length == 0)
+            {
                 return ".";
+            }
             else
+            {
                 return name.ToString();
+            }
         }
 
         /// <summary>
@@ -146,21 +156,27 @@ namespace Heijden.DNS
             short length = this.ReadByte();
 
             StringBuilder name = new StringBuilder();
-            for(int intI=0;intI<length;intI++)
+            for(int i = 0; i < length; i++)
+            {
                 name.Append(this.ReadChar());
+            }
+
             return name.ToString();
         }
 
         /// <summary>
         ///     Read a series of bytes from the record
         /// </summary>
-        /// <param name="intLength">Length to read from the record</param>
+        /// <param name="length">Length to read from the record</param>
         /// <returns>Byte array read from the record</returns>
-        public byte[] ReadBytes(int intLength)
+        public byte[] ReadBytes(int length)
         {
             List<byte> list = new List<byte>();
-            for(int intI=0;intI<intLength;intI++)
+            for(int i = 0; i < length; i++)
+            {
                 list.Add(this.ReadByte());
+            }
+
             return list.ToArray();
         }
 

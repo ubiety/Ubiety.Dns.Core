@@ -1,6 +1,6 @@
 using System;
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
     /*
     3.3.9. MX RDATA format

@@ -14,7 +14,7 @@ Hosts that have multiple Internet addresses will have multiple A
 records.
  * 
  */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

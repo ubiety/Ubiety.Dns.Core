@@ -6,7 +6,7 @@
  */
 
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core
 {
     /*
      * 3.2.2. TYPE values

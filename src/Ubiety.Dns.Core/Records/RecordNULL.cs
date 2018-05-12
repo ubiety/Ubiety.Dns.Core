@@ -14,7 +14,7 @@ NULL records cause no additional section processing.  NULL RRs are not
 allowed in master files.  NULLs are used as placeholders in some
 experimental extensions of the DNS.
 */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

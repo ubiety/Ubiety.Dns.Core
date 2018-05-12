@@ -1,6 +1,6 @@
 using System;
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records.NotUsed
 {
         /// <summary>
         /// </summary>

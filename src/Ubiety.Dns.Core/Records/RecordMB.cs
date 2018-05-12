@@ -15,7 +15,7 @@ MADNAME         A <domain-name> which specifies a host which has the
 MB records cause additional section processing which looks up an A type
 RRs corresponding to MADNAME.
 */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

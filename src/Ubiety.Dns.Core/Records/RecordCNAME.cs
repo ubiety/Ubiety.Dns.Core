@@ -19,7 +19,7 @@ the description of name server logic in [RFC-1034] for details.
 
  * 
  */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

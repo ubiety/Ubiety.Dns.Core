@@ -1,6 +1,6 @@
 // Stuff records are made of
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

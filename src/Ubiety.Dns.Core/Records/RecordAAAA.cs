@@ -9,7 +9,7 @@ using System;
  */
 #endregion
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

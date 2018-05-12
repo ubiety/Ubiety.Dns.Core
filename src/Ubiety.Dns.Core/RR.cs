@@ -1,6 +1,7 @@
 using System;
+using Ubiety.Dns.Core.Records;
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core
 {
     #region RFC info
     /*

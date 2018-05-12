@@ -67,7 +67,7 @@ reason for this provison is to allow future dynamic update facilities to
 change the SOA RR with known semantics.
 */
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

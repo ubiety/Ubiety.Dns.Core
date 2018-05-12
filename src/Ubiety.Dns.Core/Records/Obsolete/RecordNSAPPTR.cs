@@ -38,7 +38,7 @@ using System;
 
  */
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records.Obsolete
 {
         /// <summary>
         /// </summary>

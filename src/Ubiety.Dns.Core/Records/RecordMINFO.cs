@@ -30,7 +30,7 @@ MINFO records cause no additional section processing.  Although these
 records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

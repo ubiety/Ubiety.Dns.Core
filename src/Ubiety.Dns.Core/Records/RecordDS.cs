@@ -28,7 +28,7 @@ using System.Text;
 
  */
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

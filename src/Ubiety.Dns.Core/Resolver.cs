@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
-using Heijden.DNS;
 using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core

@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using Heijden.DNS;
 
 namespace Ubiety.Dns.Core
 {

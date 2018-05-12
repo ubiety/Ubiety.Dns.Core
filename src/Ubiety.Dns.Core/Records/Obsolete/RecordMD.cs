@@ -21,7 +21,7 @@ the new scheme.  The recommended policy for dealing with MD RRs found in
 a master file is to reject them, or to convert them to MX RRs with a
 preference of 0.
  * */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records.Obsolete
 {
         /// <summary>
         /// </summary>

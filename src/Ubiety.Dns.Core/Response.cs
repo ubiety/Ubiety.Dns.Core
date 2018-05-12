@@ -1,12 +1,12 @@
 using System;
-using System.IO;
-using System.Net;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Text;
-using Ubiety.Dns.Core;
+using Ubiety.Dns.Core.Records;
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core
 {
     /// <summary>
     ///     DNS response

@@ -16,7 +16,7 @@ MR records cause no additional section processing.  The main use for MR
 is as a forwarding entry for a user who has moved to a different
 mailbox.
 */
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
         /// </summary>

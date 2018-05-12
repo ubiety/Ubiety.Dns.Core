@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Text;
+
 /*
  * http://www.ietf.org/rfc/rfc1876.txt
  * 
@@ -95,43 +97,57 @@ ALTITUDE     The altitude of the center of the sphere described by the
 
  */
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
         /// <summary>
+        ///     DNS location recod
         /// </summary>
     public class RecordLOC : Record
     {
         /// <summary>
+        ///     Gets the version of the representation
         /// </summary>
-        public byte VERSION;
-        /// <summary>
-        /// </summary>
-        public byte SIZE;
-        /// <summary>
-        /// </summary>
-        public byte HORIZPRE;
-        /// <summary>
-        /// </summary>
-        public byte VERTPRE;
-        /// <summary>
-        /// </summary>
-        public UInt32 LATITUDE;
-        /// <summary>
-        /// </summary>
-        public UInt32 LONGITUDE;
-        /// <summary>
-        /// </summary>
-        public UInt32 ALTITUDE;
+        public byte Version { get; }
 
-        private string SizeToString(byte s)
+        /// <summary>
+        ///     Gets the diameter of the sphere enclosing the entity
+        /// </summary>
+        public byte Size { get; }
+
+        /// <summary>
+        ///     Gets the horizontal precision of the data
+        /// </summary>
+        public byte HorizontalPrecision { get; }
+
+        /// <summary>
+        ///     Gets the vertical precision or the data
+        /// </summary>
+        public byte VerticalPrecision { get; }
+
+        /// <summary>
+        ///     Gets the latitude of the location
+        /// </summary>
+        public UInt32 Latitude { get; }
+
+        /// <summary>
+        ///     Gets the longitude of the location
+        /// </summary>
+        public UInt32 Longitude { get; }
+
+        /// <summary>
+        ///     Gets the altitude of the location
+        /// </summary>
+        public UInt32 Altitude { get; }
+
+        private string SizeToString(byte size)
         {
-            string strUnit = "cm";
-            int intBase = s >> 4;
-            int intPow = s & 0x0f;
-            if (intPow >= 2)
+            string unit = "cm";
+            int prime = size >> 4;
+            int power = size & 0x0f;
+            if (power >= 2)
             {
-                intPow -= 2;
-                strUnit = "m";
+                power -= 2;
+                unit = "m";
             }
             /*
             if (intPow >= 3)
@@ -141,10 +157,13 @@ namespace Heijden.DNS
             }
             */
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0}", intBase);
-            for (; intPow > 0; intPow--)
+            sb.AppendFormat("{0}", prime);
+            for (; power > 0; power--)
+            {
                 sb.Append('0');
-            sb.Append(strUnit);
+            }
+
+            sb.Append(unit);
             return sb.ToString();
         }
 
@@ -160,59 +179,64 @@ namespace Heijden.DNS
             double h = r / (360000.0 * 10.0);
             double m = 60.0 * (h - (int)h);
             double s = 60.0 * (m - (int)m);
-            return string.Format("{0} {1} {2:0.000} {3}", (int)h, (int)m, s, Dir);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int)h, (int)m, s, Dir);
         }
 
-        private string ToTime(UInt32 r, char Below,char Above)
+        private string ToTime(UInt32 r, char below, char above)
         {
-            UInt32 Mid = 2147483648; // 2^31
-            char Dir = '?';
-            if (r > Mid)
+            UInt32 mid = 2147483648; // 2^31
+            char dir = '?';
+            if (r > mid)
             {
-                Dir = Above;
-                r -= Mid;
+                dir = above;
+                r -= mid;
             }
             else
             {
-                Dir = Below;
-                r = Mid - r;
+                dir = below;
+                r = mid - r;
             }
             double h = r / (360000.0 * 10.0);
             double m = 60.0 * (h - (int)h);
             double s = 60.0 * (m - (int)m);
-            return string.Format("{0} {1} {2:0.000} {3}", (int)h, (int)m, s, Dir);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int)h, (int)m, s, dir);
         }
 
         private string ToAlt(UInt32 a)
         {
             double alt = (a / 100.0) - 100000.00;
-            return string.Format("{0:0.00}m", alt);
+            return string.Format(CultureInfo.InvariantCulture, "{0:0.00}m", alt);
         }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordLOC" /> class
         /// </summary>
+        /// <param name="rr">Record reader of the record data</param>
         public RecordLOC(RecordReader rr)
         {
-            VERSION = rr.ReadByte(); // must be 0!
-            SIZE = rr.ReadByte();
-            HORIZPRE = rr.ReadByte();
-            VERTPRE = rr.ReadByte();
-            LATITUDE = rr.ReadUInt32();
-            LONGITUDE = rr.ReadUInt32();
-            ALTITUDE = rr.ReadUInt32();
+            this.Version = rr.ReadByte(); // must be 0!
+            this.Size = rr.ReadByte();
+            this.HorizontalPrecision = rr.ReadByte();
+            this.VerticalPrecision = rr.ReadByte();
+            this.Latitude = rr.ReadUInt32();
+            this.Longitude = rr.ReadUInt32();
+            this.Altitude = rr.ReadUInt32();
         }
 
         /// <summary>
+        ///     Gets a string of the location
         /// </summary>
+        /// <returns>String of the location</returns>
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3} {4} {5}",
-                ToTime(LATITUDE,'S','N'),
-                ToTime(LONGITUDE,'W','E'),
-                ToAlt(ALTITUDE),
-                SizeToString(SIZE),
-                SizeToString(HORIZPRE),
-                SizeToString(VERTPRE));
+            return string.Format(CultureInfo.InvariantCulture,
+                "{0} {1} {2} {3} {4} {5}",
+                this.ToTime(this.Latitude,'S','N'),
+                this.ToTime(this.Longitude,'W','E'),
+                this.ToAlt(this.Altitude),
+                this.SizeToString(this.Size),
+                this.SizeToString(this.HorizontalPrecision),
+                this.SizeToString(this.VerticalPrecision));
         }
 
     }
