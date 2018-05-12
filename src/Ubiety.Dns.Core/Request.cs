@@ -14,7 +14,7 @@ namespace Heijden.DNS
         {
             header = new Header();
             header.OPCODE = OPCode.Query;
-            header.QDCOUNT = 0;
+            header.QuestionCount = 0;
 
             questions = new List<Question>();
         }
@@ -29,7 +29,7 @@ namespace Heijden.DNS
             get
             {
                 List<byte> data = new List<byte>();
-                header.QDCOUNT = (ushort)questions.Count;
+                header.QuestionCount = (ushort)questions.Count;
                 data.AddRange(header.Data);
                 foreach (Question q in questions)
                     data.AddRange(q.Data);

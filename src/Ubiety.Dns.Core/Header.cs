@@ -1,11 +1,14 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core
 {
+    /// <summary>
+    ///     DNS Record header
+    /// </summary>
     public class Header
     {
         /// <summary>
@@ -19,12 +22,12 @@ namespace Heijden.DNS
         /// <summary>
         /// the number of entries in the question section
         /// </summary>
-        public ushort QDCOUNT;
+        public ushort QuestionCount { get; set; }
 
         /// <summary>
         /// the number of resource records in the answer section
         /// </summary>
-        public ushort ANCOUNT;
+        public ushort AnswerCount { get; set; }
 
         /// <summary>
         /// the number of name server resource records in the authority records section
@@ -36,20 +39,24 @@ namespace Heijden.DNS
         /// </summary>
         public ushort ARCOUNT;
 
+        /// <summary>
+        /// </summary>
         public Header()
         {
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="rr"></param>
         public Header(RecordReader rr)
         {
             Id = rr.ReadUInt16();
             Flags = rr.ReadUInt16();
-            QDCOUNT = rr.ReadUInt16();
-            ANCOUNT = rr.ReadUInt16();
+            this.QuestionCount = rr.ReadUInt16();
+            this.AnswerCount = rr.ReadUInt16();
             NSCOUNT = rr.ReadUInt16();
             ARCOUNT = rr.ReadUInt16();
         }
-
 
         private ushort SetBits(ushort oldValue, int position, int length, bool blnValue)
         {
@@ -96,8 +103,8 @@ namespace Heijden.DNS
                 List<byte> data = new List<byte>();
                 data.AddRange(WriteShort(Id));
                 data.AddRange(WriteShort(Flags));
-                data.AddRange(WriteShort(QDCOUNT));
-                data.AddRange(WriteShort(ANCOUNT));
+                data.AddRange(WriteShort(this.QuestionCount));
+                data.AddRange(WriteShort(this.AnswerCount));
                 data.AddRange(WriteShort(NSCOUNT));
                 data.AddRange(WriteShort(ARCOUNT));
                 return data.ToArray();
@@ -108,7 +115,6 @@ namespace Heijden.DNS
         {
             return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)sValue));
         }
-
 
         /// <summary>
         /// query (false), or a response (true)

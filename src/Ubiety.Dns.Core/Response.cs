@@ -77,12 +77,12 @@ namespace Heijden.DNS
 
             header = new Header(rr);
 
-            for (int intI = 0; intI < header.QDCOUNT; intI++)
+            for (int intI = 0; intI < header.QuestionCount; intI++)
             {
                 Questions.Add(new Question(rr));
             }
 
-            for (int intI = 0; intI < header.ANCOUNT; intI++)
+            for (int intI = 0; intI < header.AnswerCount; intI++)
             {
                 Answers.Add(new AnswerRR(rr));
             }
