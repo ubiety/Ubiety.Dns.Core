@@ -9,6 +9,6 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         /// The Resource Record this RDATA record belongs to
         /// </summary>
-        public RR RR;
+        public RR RR { get; set; }
     }
 }

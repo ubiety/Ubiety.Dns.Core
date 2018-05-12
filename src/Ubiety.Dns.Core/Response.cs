@@ -121,7 +121,7 @@ namespace Ubiety.Dns.Core
                 List<RecordMX> list = new List<RecordMX>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordMX record = answerRR.RECORD as RecordMX;
+                    RecordMX record = answerRR.Record as RecordMX;
                     if(record!=null)
                         list.Add(record);
                 }
@@ -140,7 +140,7 @@ namespace Ubiety.Dns.Core
                 List<RecordTXT> list = new List<RecordTXT>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordTXT record = answerRR.RECORD as RecordTXT;
+                    RecordTXT record = answerRR.Record as RecordTXT;
                     if (record != null)
                         list.Add(record);
                 }
@@ -158,7 +158,7 @@ namespace Ubiety.Dns.Core
                 List<RecordA> list = new List<RecordA>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordA record = answerRR.RECORD as RecordA;
+                    RecordA record = answerRR.Record as RecordA;
                     if (record != null)
                         list.Add(record);
                 }
@@ -176,7 +176,7 @@ namespace Ubiety.Dns.Core
                 List<RecordPTR> list = new List<RecordPTR>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordPTR record = answerRR.RECORD as RecordPTR;
+                    RecordPTR record = answerRR.Record as RecordPTR;
                     if (record != null)
                         list.Add(record);
                 }
@@ -194,7 +194,7 @@ namespace Ubiety.Dns.Core
                 List<RecordCNAME> list = new List<RecordCNAME>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordCNAME record = answerRR.RECORD as RecordCNAME;
+                    RecordCNAME record = answerRR.Record as RecordCNAME;
                     if (record != null)
                         list.Add(record);
                 }
@@ -212,7 +212,7 @@ namespace Ubiety.Dns.Core
                 List<RecordAAAA> list = new List<RecordAAAA>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordAAAA record = answerRR.RECORD as RecordAAAA;
+                    RecordAAAA record = answerRR.Record as RecordAAAA;
                     if (record != null)
                         list.Add(record);
                 }
@@ -230,7 +230,7 @@ namespace Ubiety.Dns.Core
                 List<RecordNS> list = new List<RecordNS>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordNS record = answerRR.RECORD as RecordNS;
+                    RecordNS record = answerRR.Record as RecordNS;
                     if (record != null)
                         list.Add(record);
                 }
@@ -248,7 +248,7 @@ namespace Ubiety.Dns.Core
                 List<RecordSOA> list = new List<RecordSOA>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordSOA record = answerRR.RECORD as RecordSOA;
+                    RecordSOA record = answerRR.Record as RecordSOA;
                     if (record != null)
                         list.Add(record);
                 }
@@ -266,7 +266,7 @@ namespace Ubiety.Dns.Core
                 List<RecordCERT> list = new List<RecordCERT>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordCERT record = answerRR.RECORD as RecordCERT;
+                    RecordCERT record = answerRR.Record as RecordCERT;
                     if (record != null)
                         list.Add(record);
                 }
@@ -283,7 +283,7 @@ namespace Ubiety.Dns.Core
                 List<RecordSRV> list = new List<RecordSRV>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordSRV record = answerRR.RECORD as RecordSRV;
+                    RecordSRV record = answerRR.Record as RecordSRV;
                     if (record != null)
                         list.Add(record);
                 }

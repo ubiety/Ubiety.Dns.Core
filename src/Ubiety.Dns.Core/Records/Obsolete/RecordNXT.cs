@@ -44,10 +44,10 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     {
         /// <summary>
         /// </summary>
-        public string NEXTDOMAINNAME;
+        public string NEXTDOMAINNAME { get; set; }
         /// <summary>
         /// </summary>
-        public byte[] BITMAP;
+        public byte[] BITMAP { get; set; }
 
         /// <summary>
         /// </summary>

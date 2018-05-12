@@ -66,22 +66,22 @@ namespace Ubiety.Dns.Core
     public class RR
     {
         /// <summary>
-        /// The name of the node to which this resource record pertains
+        ///     Gets or sets the name of the node to which this resource record pertains
         /// </summary>
-        public string NAME;
+        public string Name { get; set; }
 
         /// <summary>
-        /// Specifies type of resource record
+        ///     Gets or sets the type of resource record
         /// </summary>
-        public RecordType Type;
+        public RecordType Type { get; set; }
 
         /// <summary>
-        /// Specifies type class of resource record, mostly IN but can be CS, CH or HS 
+        ///     Gets or sets the type class of resource record, mostly IN but can be CS, CH or HS 
         /// </summary>
-        public Class Class;
+        public Class Class { get; set; }
 
         /// <summary>
-        /// Time to live, the time interval that the resource record may be cached
+        ///     Gets or sets the time to live, the time interval that the resource record may be cached
         /// </summary>
         public uint TTL
         {
@@ -97,33 +97,34 @@ namespace Ubiety.Dns.Core
         private uint m_TTL;
 
         /// <summary>
-        /// 
+        ///     Gets or sets the record length
         /// </summary>
-        public ushort RDLENGTH;
+        public ushort RecordLength { get; set; }
 
         /// <summary>
-        /// One of the Record* classes
+        ///     Gets or sets one of the Record* classes
         /// </summary>
-        public Record RECORD;
+        public Record Record { get; set; }
 
         /// <summary>
+        ///     Gets or sets the time lived
         /// </summary>
-        public int TimeLived;
+        public int TimeLived { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RR" /> class
         /// </summary>
-        /// <param name="rr"></param>
+        /// <param name="rr">Record reader of the record data</param>
         public RR(RecordReader rr)
         {
             this.TimeLived = 0;
-            this.NAME = rr.ReadDomainName();
+            this.Name = rr.ReadDomainName();
             this.Type = (RecordType)rr.ReadUInt16();
             this.Class = (Class)rr.ReadUInt16();
             this.TTL = rr.ReadUInt32();
-            this.RDLENGTH = rr.ReadUInt16();
-            this.RECORD = rr.ReadRecord(Type);
-            this.RECORD.RR = this;
+            this.RecordLength = rr.ReadUInt16();
+            this.Record = rr.ReadRecord(Type);
+            this.Record.RR = this;
         }
 
         /// <summary>
@@ -131,11 +132,11 @@ namespace Ubiety.Dns.Core
         public override string ToString()
         {
             return string.Format("{0,-32} {1}\t{2}\t{3}\t{4}",
-                this.NAME,
+                this.Name,
                 this.TTL,
                 this.Class,
                 this.Type,
-                this.RECORD);
+                this.Record);
         }
     }
 

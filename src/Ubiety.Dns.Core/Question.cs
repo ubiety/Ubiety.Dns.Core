@@ -33,12 +33,12 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the query type
         /// </summary>
-        public QType QType;
+        public QType QType { get; set; }
 
         /// <summary>
         ///     Gets or sets the query class
         /// </summary>
-        public QClass QClass;
+        public QClass QClass { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question" /> class

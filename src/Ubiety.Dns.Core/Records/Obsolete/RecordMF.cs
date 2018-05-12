@@ -29,7 +29,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     {
         /// <summary>
         /// </summary>
-        public string MADNAME;
+        public string MADNAME { get; set; }
 
         /// <summary>
         /// </summary>

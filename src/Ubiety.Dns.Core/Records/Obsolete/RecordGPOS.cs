@@ -46,13 +46,13 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     {
         /// <summary>
         /// </summary>
-        public string LONGITUDE;
+        public string LONGITUDE { get; set; }
         /// <summary>
         /// </summary>
-        public string LATITUDE;
+        public string LATITUDE { get; set; }
         /// <summary>
         /// </summary>
-        public string ALTITUDE;
+        public string ALTITUDE { get; set; }
 
         /// <summary>
         /// </summary>

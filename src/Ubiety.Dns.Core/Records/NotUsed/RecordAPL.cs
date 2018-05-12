@@ -11,7 +11,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     {
         /// <summary>
         /// </summary>
-        public byte[] RDATA;
+        public byte[] RDATA { get; set; }
 
         /// <summary>
         /// </summary>

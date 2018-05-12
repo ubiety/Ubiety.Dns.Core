@@ -46,7 +46,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     {
         /// <summary>
         /// </summary>
-        public string OWNER;
+        public string OWNER { get; set; }
 
         /// <summary>
         /// </summary>

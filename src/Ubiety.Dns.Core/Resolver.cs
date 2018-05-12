@@ -31,10 +31,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public const int defaultPort = 53;
 
-        /// <summary>
-        ///     Default OpenDNS server addresses
-        /// </summary>
-        public static IPEndPoint[] defaultDnsServers = 
+        private readonly static IPEndPoint[] defaultDnsServers = 
             { 
                 new IPEndPoint(IPAddress.Parse("208.67.222.222"), defaultPort), 
                 new IPEndPoint(IPAddress.Parse("208.67.220.220"), defaultPort) 
@@ -111,6 +108,14 @@ namespace Ubiety.Dns.Core
         public Resolver()
             : this(GetDnsServers())
         {
+        }
+
+        /// <summary>
+        ///     Gets the default OpenDNS servers
+        /// </summary>
+        public IPEndPoint[] DefaultDnsServers
+        {
+            get => defaultDnsServers;
         }
 
         /// <summary>
