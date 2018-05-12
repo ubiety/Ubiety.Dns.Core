@@ -1,100 +1,93 @@
 using System;
+using System.Globalization;
+using Heijden.DNS;
 
-#region Rfc info
-/*
- * http://www.ietf.org/rfc/rfc2535.txt
- * 4.1 SIG RDATA Format
-
-   The RDATA portion of a SIG RR is as shown below.  The integrity of
-   the RDATA information is protected by the signature field.
-
-                           1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
-       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |        type covered           |  algorithm    |     labels    |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                         original TTL                          |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                      signature expiration                     |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                      signature inception                      |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |            key  tag           |                               |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+         signer's name         +
-      |                                                               /
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-/
-      /                                                               /
-      /                            signature                          /
-      /                                                               /
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-
-*/
-#endregion
-
-namespace Heijden.DNS
+namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
+    /// <summary>
+    ///     DNS signature record
+    /// </summary>
     public class RecordSIG : Record
     {
         /// <summary>
+        ///     Gets or sets the type covered
         /// </summary>
-        public UInt16 TYPECOVERED;
-        /// <summary>
-        /// </summary>
-        public byte ALGORITHM;
-        /// <summary>
-        /// </summary>
-        public byte LABELS;
-        /// <summary>
-        /// </summary>
-        public UInt32 ORIGINALTTL;
-        /// <summary>
-        /// </summary>
-        public UInt32 SIGNATUREEXPIRATION;
-        /// <summary>
-        /// </summary>
-        public UInt32 SIGNATUREINCEPTION;
-        /// <summary>
-        /// </summary>
-        public UInt16 KEYTAG;
-        /// <summary>
-        /// </summary>
-        public string SIGNERSNAME;
-        /// <summary>
-        /// </summary>
-        public string SIGNATURE;
+        public UInt16 TypeCovered { get; set; }
 
         /// <summary>
+        ///     Gets or sets the signature algorithm
         /// </summary>
+        public byte Algorithm { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the labels
+        /// </summary>
+        public byte Labels { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the original TTL
+        /// </summary>
+        public UInt32 OriginalTTL { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the signature expiration
+        /// </summary>
+        public UInt32 SignatureExpiration { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the signature inception
+        /// </summary>
+        public UInt32 SignatureInception { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the key tag
+        /// </summary>
+        public UInt16 KeyTag { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the signers name
+        /// </summary>
+        public string SignersName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the signature
+        /// </summary>
+        public string Signature { get; set; }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordSIG" /> class
+        /// </summary>
+        /// <param name="rr">Record reader for the record data</param>
         public RecordSIG(RecordReader rr)
         {
-            TYPECOVERED = rr.ReadUInt16();
-            ALGORITHM = rr.ReadByte();
-            LABELS = rr.ReadByte();
-            ORIGINALTTL = rr.ReadUInt32();
-            SIGNATUREEXPIRATION = rr.ReadUInt32();
-            SIGNATUREINCEPTION = rr.ReadUInt32();
-            KEYTAG = rr.ReadUInt16();
-            SIGNERSNAME = rr.ReadDomainName();
-            SIGNATURE = rr.ReadString();
+            this.TypeCovered = rr.ReadUInt16();
+            this.Algorithm = rr.ReadByte();
+            this.Labels = rr.ReadByte();
+            this.OriginalTTL = rr.ReadUInt32();
+            this.SignatureExpiration = rr.ReadUInt32();
+            this.SignatureInception = rr.ReadUInt32();
+            this.KeyTag = rr.ReadUInt16();
+            this.SignersName = rr.ReadDomainName();
+            this.Signature = rr.ReadString();
         }
 
         /// <summary>
+        ///     Get a string version of the record
         /// </summary>
+        /// <returns>String of the record</returns>
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3} {4} {5} {6} {7} \"{8}\"",
-                TYPECOVERED,
-                ALGORITHM,
-                LABELS,
-                ORIGINALTTL,
-                SIGNATUREEXPIRATION,
-                SIGNATUREINCEPTION,
-                KEYTAG,
-                SIGNERSNAME,
-                SIGNATURE);
+            return string.Format(CultureInfo.InvariantCulture,
+                "{0} {1} {2} {3} {4} {5} {6} {7} \"{8}\"",
+                this.TypeCovered,
+                this.Algorithm,
+                this.Labels,
+                this.OriginalTTL,
+                this.SignatureExpiration,
+                this.SignatureInception,
+                this.KeyTag,
+                this.SignersName,
+                this.Signature);
         }
 
     }

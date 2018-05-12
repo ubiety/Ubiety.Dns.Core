@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Ubiety.Dns.Core.Records;
 
 namespace Heijden.DNS
 {

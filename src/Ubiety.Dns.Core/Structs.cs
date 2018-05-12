@@ -681,16 +681,4 @@ OPCODE          A four bit field that specifies kind of query in this
         /// </summary>
         RESERVED15 = 15,
     }
-
-        /// <summary>
-        /// </summary>
-    public enum TransportType
-    {
-        /// <summary>
-        /// </summary>
-        Udp,
-        /// <summary>
-        /// </summary>
-        Tcp
-    }
 }
