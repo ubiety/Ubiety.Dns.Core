@@ -254,7 +254,7 @@ namespace Ubiety.Dns.Core
                     this.dnsServers.Add(new IPEndPoint(ip, defaultPort));
                     return;
                 }
-                Response response = Query(value, QType.A);
+                Response response = Query(value, QuestionType.A);
                 if (response.RecordsA.Length > 0)
                 {
                     this.dnsServers.Clear();
@@ -450,7 +450,7 @@ namespace Ubiety.Dns.Core
                                 return response;
                             }
 
-                            if (response.Questions[0].QType != QType.AXFR)
+                            if (response.Questions[0].QType != QuestionType.AXFR)
                             {
                                 this.AddToCache(response);
                                 return response;
@@ -508,7 +508,7 @@ namespace Ubiety.Dns.Core
         /// <param name="qtype">Question type</param>
         /// <param name="qclass">Class type</param>
         /// <returns>Response of the query</returns>
-        public Response Query(string name, QType qtype, QClass qclass)
+        public Response Query(string name, QuestionType qtype, QClass qclass)
         {
             Question question = new Question(name, qtype, qclass);
             Response response = SearchInCache(question);
@@ -528,7 +528,7 @@ namespace Ubiety.Dns.Core
         /// <param name="name">Name to query</param>
         /// <param name="qtype">Question type</param>
         /// <returns>Response of the query</returns>
-        public Response Query(string name, QType qtype)
+        public Response Query(string name, QuestionType qtype)
         {
             Question question = new Question(name, qtype, QClass.IN);
             Response response = SearchInCache(question);

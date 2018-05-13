@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 /*
  * http://tools.ietf.org/rfc/rfc2065.txt
  * 

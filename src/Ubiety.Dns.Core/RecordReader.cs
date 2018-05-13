@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.NotUsed;
 using Ubiety.Dns.Core.Records.Obsolete;
@@ -122,8 +123,10 @@ namespace Ubiety.Dns.Core
                     name.Append(ReadChar());
                     length--;
                 }
+
                 name.Append('.');
             }
+
             if (name.Length == 0)
             {
                 return ".";
@@ -143,7 +146,7 @@ namespace Ubiety.Dns.Core
             short length = this.ReadByte();
 
             StringBuilder name = new StringBuilder();
-            for(int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
                 name.Append(this.ReadChar());
             }
@@ -159,7 +162,7 @@ namespace Ubiety.Dns.Core
         public byte[] ReadBytes(int length)
         {
             List<byte> list = new List<byte>();
-            for(int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
                 list.Add(this.ReadByte());
             }

@@ -1,8 +1,9 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core
 {
@@ -11,34 +12,7 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Question
     {
-        private string m_QName;
-
-        /// <summary>
-        ///     Gets or sets the question name
-        /// </summary>
-        public string QName
-        {
-            get
-            {
-                return m_QName;
-            }
-            set
-            {
-                m_QName = value;
-                if (!m_QName.EndsWith("."))
-                    m_QName += ".";
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the query type
-        /// </summary>
-        public QType QType { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the query class
-        /// </summary>
-        public QClass QClass { get; set; }
+        private string questionName;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question" /> class
@@ -46,7 +20,7 @@ namespace Ubiety.Dns.Core
         /// <param name="QName">Query name</param>
         /// <param name="QType">Query type</param>
         /// <param name="QClass">Query class</param>
-        public Question(string QName, QType QType, QClass QClass)
+        public Question(string QName, QuestionType QType, QClass QClass)
         {
             this.QName = QName;
             this.QType = QType;
@@ -60,8 +34,58 @@ namespace Ubiety.Dns.Core
         public Question(RecordReader rr)
         {
             QName = rr.ReadDomainName();
-            QType = (QType)rr.ReadUInt16();
+            QType = (QuestionType)rr.ReadUInt16();
             QClass = (QClass)rr.ReadUInt16();
+        }
+
+        /// <summary>
+        ///     Gets or sets the question name
+        /// </summary>
+        public string QName
+        {
+            get
+            {
+                return questionName;
+            }
+
+            set
+            {
+                questionName = value;
+                if (!questionName.EndsWith("."))
+                    questionName += ".";
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the query type
+        /// </summary>
+        public QuestionType QType { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the query class
+        /// </summary>
+        public QClass QClass { get; set; }
+
+        /// <summary>
+        ///     String representation of the question
+        /// </summary>
+        /// <returns>String representation of the question</returns>
+        public override string ToString()
+        {
+            return string.Format("{0,-32}\t{1}\t{2}", QName, QClass, QType);
+        }
+
+        /// <summary>
+        ///     Gets the question as a byte array
+        /// </summary>
+        /// <returns>Byte array of the question data</returns>
+        public byte[] GetData()
+        {
+            List<byte> data = new List<byte>();
+            data.AddRange(WriteName(QName));
+            data.AddRange(WriteShort((ushort)QType));
+            data.AddRange(WriteShort((ushort)QClass));
+            return data.ToArray();
         }
 
         private byte[] WriteName(string src)
@@ -84,37 +108,14 @@ namespace Ubiety.Dns.Core
                     intJ = -1;
                 }
             }
+
             sb[sb.Length - 1] = '\0';
             return System.Text.Encoding.ASCII.GetBytes(sb.ToString());
-        }
-
-        /// <summary>
-        ///     Gets the question as a byte array
-        /// </summary>
-        public byte[] Data
-        {
-            get
-            {
-                List<byte> data = new List<byte>();
-                data.AddRange(WriteName(QName));
-                data.AddRange(WriteShort((ushort)QType));
-                data.AddRange(WriteShort((ushort)QClass));
-                return data.ToArray();
-            }
         }
 
         private byte[] WriteShort(ushort sValue)
         {
             return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)sValue));
-        }
-
-        /// <summary>
-        ///     String representation of the question
-        /// </summary>
-        /// <returns>String representation of the question</returns>
-        public override string ToString()
-        {
-            return string.Format("{0,-32}\t{1}\t{2}", QName, QClass, QType);
         }
     }
 }

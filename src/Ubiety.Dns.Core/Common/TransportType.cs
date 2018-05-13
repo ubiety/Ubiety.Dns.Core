@@ -9,7 +9,7 @@ namespace Ubiety.Dns.Core.Common
         ///     Use the UDP transport
         /// </summary>
         Udp,
-        
+
         /// <summary>
         ///     Use the TCP transport
         /// </summary>

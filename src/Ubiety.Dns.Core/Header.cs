@@ -11,33 +11,8 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Header
     {
-        /// <summary>
-        ///     Gets or sets the unique identifier of the record
-        /// </summary>
-        public ushort Id { get; set; }
-
         // internal flag
         private ushort flags;
-
-        /// <summary>
-        ///     Gets or sets the number of questions in the record
-        /// </summary>
-        public ushort QuestionCount { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the number of answers in the record
-        /// </summary>
-        public ushort AnswerCount { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the number of name servers in the record
-        /// </summary>
-        public ushort NameserverCount {get; set; }
-
-        /// <summary>
-        ///     Gets or sets the number of additional records in the record
-        /// </summary>
-        public ushort AdditionalRecordsCount { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Header" /> class
@@ -58,6 +33,143 @@ namespace Ubiety.Dns.Core
             this.AnswerCount = rr.ReadUInt16();
             this.NameserverCount = rr.ReadUInt16();
             this.AdditionalRecordsCount = rr.ReadUInt16();
+        }
+
+        /// <summary>
+        ///     Gets or sets the unique identifier of the record
+        /// </summary>
+        public ushort Id { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the number of questions in the record
+        /// </summary>
+        public ushort QuestionCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the number of answers in the record
+        /// </summary>
+        public ushort AnswerCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the number of name servers in the record
+        /// </summary>
+        public ushort NameserverCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the number of additional records in the record
+        /// </summary>
+        public ushort AdditionalRecordsCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the record is a query or response
+        /// </summary>
+        public bool QR
+        {
+            get => GetBits(this.flags, 15, 1) == 1;
+            set
+            {
+                this.flags = SetBits(this.flags, 15, 1, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the record opcode flag
+        /// </summary>
+        public OPCode OPCODE
+        {
+            get => (OPCode)GetBits(this.flags, 11, 4);
+            set
+            {
+                this.flags = SetBits(this.flags, 11, 4, (ushort)value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the record is an authoritative answer
+        /// </summary>
+        public bool AA
+        {
+            get => GetBits(this.flags, 10, 1) == 1;
+            set
+            {
+                this.flags = SetBits(this.flags, 10, 1, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the truncation flag is set
+        /// </summary>
+        public bool TC
+        {
+            get => GetBits(this.flags, 9, 1) == 1;
+            set
+            {
+                this.flags = SetBits(this.flags, 9, 1, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the recursion flag is set
+        /// </summary>
+        public bool RD
+        {
+            get => GetBits(this.flags, 8, 1) == 1;
+            set
+            {
+                this.flags = SetBits(this.flags, 8, 1, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the recursion available flag is set
+        /// </summary>
+        public bool RA
+        {
+            get => GetBits(this.flags, 7, 1) == 1;
+            set
+            {
+                this.flags = SetBits(this.flags, 7, 1, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a record reserved flag
+        /// </summary>
+        public ushort Z
+        {
+            get => GetBits(this.flags, 4, 3);
+            set
+            {
+                this.flags = SetBits(this.flags, 4, 3, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the record response code
+        /// </summary>
+        public RCode RCODE
+        {
+            get => (RCode)GetBits(this.flags, 0, 4);
+            set
+            {
+                this.flags = SetBits(this.flags, 0, 4, (ushort)value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the header as a byte array
+        /// </summary>
+        /// <returns>Byte array of the header data</returns>
+        public byte[] GetData()
+        {
+            List<byte> data = new List<byte>();
+            data.AddRange(WriteShort(this.Id));
+            data.AddRange(WriteShort(this.flags));
+            data.AddRange(WriteShort(this.QuestionCount));
+            data.AddRange(WriteShort(this.AnswerCount));
+            data.AddRange(WriteShort(this.NameserverCount));
+            data.AddRange(WriteShort(this.AdditionalRecordsCount));
+            return data.ToArray();
         }
 
         private static ushort SetBits(ushort oldValue, int position, int length, bool blnValue)
@@ -99,123 +211,9 @@ namespace Ubiety.Dns.Core
             return (ushort)((oldValue >> position) & mask);
         }
 
-        /// <summary>
-        ///     Gets the header as a byte array
-        /// </summary>
-        public byte[] Data
-        {
-            get
-            {
-                List<byte> data = new List<byte>();
-                data.AddRange(WriteShort(this.Id));
-                data.AddRange(WriteShort(this.flags));
-                data.AddRange(WriteShort(this.QuestionCount));
-                data.AddRange(WriteShort(this.AnswerCount));
-                data.AddRange(WriteShort(this.NameserverCount));
-                data.AddRange(WriteShort(this.AdditionalRecordsCount));
-                return data.ToArray();
-            }
-        }
-
         private static byte[] WriteShort(ushort sValue)
         {
             return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)sValue));
-        }
-
-        /// <summary>
-        ///     Gets or sets the query/response flag
-        /// </summary>
-        public bool QR
-        {
-            get => GetBits(this.flags, 15, 1) == 1;
-            set
-            {
-                this.flags = SetBits(this.flags, 15, 1, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the record opcode flag
-        /// </summary>
-        public OPCode OPCODE
-        {
-            get => (OPCode)GetBits(this.flags, 11, 4);
-            set
-            {
-                this.flags = SetBits(this.flags, 11, 4, (ushort)value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the record authoritative answer flag
-        /// </summary>
-        public bool AA
-        {
-            get => GetBits(this.flags, 10, 1) == 1;
-            set
-            {
-                this.flags = SetBits(this.flags, 10, 1, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the record truncation flag
-        /// </summary>
-        public bool TC
-        {
-            get => GetBits(this.flags, 9, 1) == 1;
-            set
-            {
-                this.flags = SetBits(this.flags, 9, 1, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the record recursion desired flag
-        /// </summary>
-        public bool RD
-        {
-            get => GetBits(this.flags, 8, 1) == 1;
-            set
-            {
-                this.flags = SetBits(this.flags, 8, 1, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the record recursion available flag
-        /// </summary>
-        public bool RA
-        {
-            get => GetBits(this.flags, 7, 1) == 1;
-            set
-            {
-                this.flags = SetBits(this.flags, 7, 1, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets a record reserved flag
-        /// </summary>
-        public ushort Z
-        {
-            get => GetBits(this.flags, 4, 3);
-            set
-            {
-                this.flags = SetBits(this.flags, 4, 3, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the record response code
-        /// </summary>
-        public RCode RCODE
-        {
-            get => (RCode)GetBits(this.flags, 0, 4);
-            set
-            {
-                this.flags = SetBits(this.flags, 0, 4, (ushort)value);
-            }
         }
     }
 }

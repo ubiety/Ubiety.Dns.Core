@@ -46,9 +46,9 @@ namespace Ubiety.Dns.Core
             {
                 List<byte> data = new List<byte>();
                 this.header.QuestionCount = (ushort)this.questions.Count;
-                data.AddRange(this.header.Data);
+                data.AddRange(this.header.GetData());
                 foreach (Question q in this.questions)
-                    data.AddRange(q.Data);
+                    data.AddRange(q.GetData());
                 return data.ToArray();
             }
         }
