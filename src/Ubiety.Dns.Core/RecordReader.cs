@@ -237,7 +237,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.NXT:
                     return new RecordNXT(this);
                 case RecordType.EID:
-                    return new RecordEID(this);
+                    return new RecordEid(this);
                 case RecordType.NIMLOC:
                     return new RecordNIMLOC(this);
                 case RecordType.SRV:
@@ -271,9 +271,9 @@ namespace Ubiety.Dns.Core
                 case RecordType.NSEC:
                     return new RecordNSEC(this);
                 case RecordType.DNSKEY:
-                    return new RecordDNSKEY(this);
+                    return new RecordDNSKey(this);
                 case RecordType.DHCID:
-                    return new RecordDHCID(this);
+                    return new RecordDhcid(this);
                 case RecordType.NSEC3:
                     return new RecordNSEC3(this);
                 case RecordType.NSEC3PARAM:
