@@ -8,7 +8,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     /// </summary>
     public class RecordSpf : Record
     {
-        private Collection<byte> data;
+        private readonly Collection<byte> data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSpf" /> class

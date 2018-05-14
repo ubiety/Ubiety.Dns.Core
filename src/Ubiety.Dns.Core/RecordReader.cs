@@ -268,7 +268,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.SSHFP:
                     return new RecordSSHFP(this);
                 case RecordType.IPSECKEY:
-                    return new RecordIPSECKEY(this);
+                    return new RecordIpsecKey(this);
                 case RecordType.RRSIG:
                     return new RecordRRSIG(this);
                 case RecordType.NSEC:
