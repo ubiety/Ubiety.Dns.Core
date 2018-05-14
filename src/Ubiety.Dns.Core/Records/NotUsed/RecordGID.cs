@@ -1,12 +1,9 @@
 using System;
-/*
-
- */
 
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
-        /// <summary>
-        /// </summary>
+    /// <summary>
+    /// </summary>
     public class RecordGID : Record
     {
         /// <summary>

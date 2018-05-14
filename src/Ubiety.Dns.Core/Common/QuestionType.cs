@@ -20,13 +20,11 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     Mail destination type (Obsolete - Use MX)
         /// </summary>
-        [Obsolete]
         MD = RecordType.MD,
 
         /// <summary>
         ///     Mail forwarder type (Obsolete - use MX)
         /// </summary>
-        [Obsolete]
         MF = RecordType.MF,
 
         /// <summary>
@@ -67,7 +65,7 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     Domain name pointer type
         /// </summary>
-        PTR = RecordType.PTR,
+        PNTR = RecordType.PNTR,
 
         /// <summary>
         ///     Host information type
@@ -83,7 +81,7 @@ namespace Ubiety.Dns.Core.Common
         ///     Mail exchange type
         /// </summary>
         MX = RecordType.MX,
-        
+
         /// <summary>
         ///     Text string type
         /// </summary>
@@ -93,177 +91,250 @@ namespace Ubiety.Dns.Core.Common
         ///     Responsible person DNS type
         /// </summary>
         RP = RecordType.RP,
-        
-        /// <summary>
-        /// </summary>
-        AFSDB = RecordType.AFSDB,    // AFS Data Base location
-        /// <summary>
-        /// </summary>
-        X25 = RecordType.X25,        // X.25 address rfc1183
-        /// <summary>
-        /// </summary>
-        ISDN = RecordType.ISDN,    // ISDN address rfc1183
-        /// <summary>
-        /// </summary>
-        RT = RecordType.RT,        // The Route Through rfc1183
 
         /// <summary>
+        ///     AFS database location
         /// </summary>
-        NSAP = RecordType.NSAP,    // Network service access point address rfc1706
-        /// <summary>
-        /// </summary>
-        NSAP_PTR = RecordType.NSAPPTR, // Obsolete, rfc1348
+        AFSDB = RecordType.AFSDB,
 
         /// <summary>
+        ///     X.25 address
         /// </summary>
-        SIG = RecordType.SIG,        // Cryptographic public key signature rfc2931 / rfc2535
-        /// <summary>
-        /// </summary>
-        KEY = RecordType.KEY,        // Public key as used in DNSSEC rfc2535
+        X25 = RecordType.X25,
 
         /// <summary>
+        ///     ISDN address
         /// </summary>
-        PX = RecordType.PX,        // Pointer to X.400/RFC822 mail mapping information rfc2163
+        ISDN = RecordType.ISDN,
 
         /// <summary>
+        ///     Route through DNS type
         /// </summary>
-        GPOS = RecordType.GPOS,    // Geographical position rfc1712 (obsolete)
+        RT = RecordType.RT,
 
         /// <summary>
+        ///     Network service access point address
         /// </summary>
-        AAAA = RecordType.AAAA,    // a IPV6 host address
+        NSAP = RecordType.NSAP,
 
         /// <summary>
+        ///     Network service access point pointer (Obsolete)
         /// </summary>
-        LOC = RecordType.LOC,        // Location information rfc1876
+        NSAPPTR = RecordType.NSAPPTR,
 
         /// <summary>
+        ///     Cryptographic public key signature
         /// </summary>
-        NXT = RecordType.NXT,        // Obsolete rfc2065 / rfc2535
+        SIG = RecordType.SIG,
 
         /// <summary>
+        ///     Public key for DNSSEC
         /// </summary>
-        EID = RecordType.EID,        // *** Endpoint Identifier (Patton)
-        /// <summary>
-        /// </summary>
-        NIMLOC = RecordType.NIMLOC, // *** Nimrod Locator (Patton)
+        KEY = RecordType.KEY,
 
         /// <summary>
+        ///     Pointer to X.400 mail mapping information
         /// </summary>
-        SRV = RecordType.SRV,        // Location of services rfc2782
+        PX = RecordType.PX,
 
         /// <summary>
+        ///     Global position DNS type (Obsolete)
         /// </summary>
-        ATMA = RecordType.ATMA,    // *** ATM Address (Dobrowski)
+        GPOS = RecordType.GPOS,
 
         /// <summary>
+        ///     IPv6 address DNS type
         /// </summary>
-        NAPTR = RecordType.NAPTR,    // The Naming Authority Pointer rfc3403
+        AAAA = RecordType.AAAA,
 
         /// <summary>
+        ///     DNS location information
         /// </summary>
-        KX = RecordType.KX,        // Key Exchange Delegation Record rfc2230
+        LOC = RecordType.LOC,
 
         /// <summary>
+        ///     Obsolete DNS type
         /// </summary>
-        CERT = RecordType.CERT,    // *** CERT RFC2538
+        NXT = RecordType.NXT,
 
         /// <summary>
+        ///     Endpoint identifier
         /// </summary>
-        A6 = RecordType.A6,        // IPv6 address rfc3363
-        /// <summary>
-        /// </summary>
-        DNAME = RecordType.DNAME,    // A way to provide aliases for a whole domain, not just a single domain name as with CNAME. rfc2672
+        EID = RecordType.EID,
 
         /// <summary>
+        ///     Nimrod locator
         /// </summary>
-        SINK = RecordType.SINK,    // *** SINK Eastlake
-        /// <summary>
-        /// </summary>
-        OPT = RecordType.OPT,        // *** OPT RFC2671
+        NIMLOC = RecordType.NIMLOC,
 
         /// <summary>
+        ///     Location of services
         /// </summary>
-        APL = RecordType.APL,        // *** APL [RFC3123]
+        SRV = RecordType.SRV,
 
         /// <summary>
+        ///     ATM address
         /// </summary>
-        DS = RecordType.DS,        // Delegation Signer rfc3658
+        ATMA = RecordType.ATMA,
 
         /// <summary>
+        ///     Naming authority pointer
         /// </summary>
-        SSHFP = RecordType.SSHFP,    // *** SSH Key Fingerprint RFC-ietf-secsh-dns
-        /// <summary>
-        /// </summary>
-        IPSECKEY = RecordType.IPSECKEY, // rfc4025
-        /// <summary>
-        /// </summary>
-        RRSIG = RecordType.RRSIG,    // *** RRSIG RFC-ietf-dnsext-dnssec-2535
-        /// <summary>
-        /// </summary>
-        NSEC = RecordType.NSEC,    // *** NSEC RFC-ietf-dnsext-dnssec-2535
-        /// <summary>
-        /// </summary>
-        DNSKEY = RecordType.DNSKEY,// *** DNSKEY RFC-ietf-dnsext-dnssec-2535
-        /// <summary>
-        /// </summary>
-        DHCID = RecordType.DHCID,    // rfc4701
+        NAPTR = RecordType.NAPTR,
 
         /// <summary>
+        ///     Key exchange delegation record
         /// </summary>
-        NSEC3 = RecordType.NSEC3,    // RFC5155
-        /// <summary>
-        /// </summary>
-        NSEC3PARAM = RecordType.NSEC3PARAM, // RFC5155
+        KX = RecordType.KX,
 
         /// <summary>
+        ///     Certificate DNS record
         /// </summary>
-        HIP = RecordType.HIP,        // RFC-ietf-hip-dns-09.txt
+        CERT = RecordType.CERT,
 
         /// <summary>
+        ///     IPv6 address type (Historic)
         /// </summary>
-        SPF = RecordType.SPF,        // RFC4408
-        /// <summary>
-        /// </summary>
-        UINFO = RecordType.UINFO,    // *** IANA-Reserved
-        /// <summary>
-        /// </summary>
-        UID = RecordType.UID,        // *** IANA-Reserved
-        /// <summary>
-        /// </summary>
-        GID = RecordType.GID,        // *** IANA-Reserved
-        /// <summary>
-        /// </summary>
-        UNSPEC = RecordType.UNSPEC,// *** IANA-Reserved
+        A6 = RecordType.A6,
 
         /// <summary>
+        ///     DNS name redirection
         /// </summary>
-        TKEY = RecordType.TKEY,    // Transaction key rfc2930
-        /// <summary>
-        /// </summary>
-        TSIG = RecordType.TSIG,    // Transaction signature rfc2845
+        DNAME = RecordType.DNAME,
 
         /// <summary>
+        ///     SINK DNS type
         /// </summary>
-        IXFR = 251,            // incremental transfer                  [RFC1995]
-        /// <summary>
-        /// </summary>
-        AXFR = 252,            // transfer of an entire zone            [RFC1035]
-        /// <summary>
-        /// </summary>
-        MAILB = 253,        // mailbox-related RRs (MB, MG or MR)    [RFC1035]
-        /// <summary>
-        /// </summary>
-        MAILA = 254,        // mail agent RRs (Obsolete - see MX)    [RFC1035]
-        /// <summary>
-        /// </summary>
-        ANY = 255,            // A request for all records             [RFC1035]
+        SINK = RecordType.SINK,
 
         /// <summary>
+        ///     OPT DNS type
         /// </summary>
-        TA = RecordType.TA,        // DNSSEC Trust Authorities    [Weiler]  13 December 2005
+        OPT = RecordType.OPT,
+
         /// <summary>
+        ///     APL DNS type
         /// </summary>
-        DLV = RecordType.DLV        // DNSSEC Lookaside Validation [RFC4431]
+        APL = RecordType.APL,
+
+        /// <summary>
+        ///     Delegation signer DNS type
+        /// </summary>
+        DS = RecordType.DS,
+
+        /// <summary>
+        ///     SSH key fingerprint
+        /// </summary>
+        SSHFP = RecordType.SSHFP,
+
+        /// <summary>
+        ///     IPSEC key DNS type
+        /// </summary>
+        IPSECKEY = RecordType.IPSECKEY,
+
+        /// <summary>
+        ///     Resource record signature
+        /// </summary>
+        RRSIG = RecordType.RRSIG,
+
+        /// <summary>
+        ///     NSEC DNS type
+        /// </summary>
+        NSEC = RecordType.NSEC,
+
+        /// <summary>
+        ///     DNSKEY DNS type
+        /// </summary>
+        DNSKEY = RecordType.DNSKEY,
+
+        /// <summary>
+        ///     DHCP identifier type
+        /// </summary>
+        DHCID = RecordType.DHCID,
+
+        /// <summary>
+        ///     NSEC3 DNS type
+        /// </summary>
+        NSEC3 = RecordType.NSEC3,
+
+        /// <summary>
+        ///     NSEC3PARAM DNS type
+        /// </summary>
+        NSEC3PARAM = RecordType.NSEC3PARAM,
+
+        /// <summary>
+        ///     HIP DNS type
+        /// </summary>
+        HIP = RecordType.HIP,
+
+        /// <summary>
+        ///     SPF DNS type
+        /// </summary>
+        SPF = RecordType.SPF,
+
+        /// <summary>
+        ///     UINFO DNS type
+        /// </summary>
+        UINFO = RecordType.UINFO,
+
+        /// <summary>
+        ///     UID DNS type
+        /// </summary>
+        UID = RecordType.UID,
+
+        /// <summary>
+        ///     GID DNS type
+        /// </summary>
+        GID = RecordType.GID,
+
+        /// <summary>
+        ///     UNSPEC DNS type
+        /// </summary>
+        UNSPEC = RecordType.UNSPEC,
+
+        /// <summary>
+        ///     Transaction key DNS type
+        /// </summary>
+        TKEY = RecordType.TKEY,
+
+        /// <summary>
+        ///     Transaction signature DNS type
+        /// </summary>
+        TSIG = RecordType.TSIG,
+
+        /// <summary>
+        ///     Incremental transfer
+        /// </summary>
+        IXFR = 251,
+
+        /// <summary>
+        ///     Zone transfer question
+        /// </summary>
+        AXFR = 252,
+
+        /// <summary>
+        ///     Mailbox resource record question
+        /// </summary>
+        MAILB = 253,
+
+        /// <summary>
+        ///     Mail agent resource record question
+        /// </summary>
+        MAILA = 254,
+
+        /// <summary>
+        ///     Request all records for a domain
+        /// </summary>
+        ANY = 255,
+
+        /// <summary>
+        ///     DNSSEC trust authorities
+        /// </summary>
+        TA = RecordType.TA,
+
+        /// <summary>
+        ///     DNSSEC lookaside validation
+        /// </summary>
+        DLV = RecordType.DLV
     }
 }

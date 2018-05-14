@@ -1,7 +1,4 @@
 using System;
-/*
-
- */
 
 namespace Ubiety.Dns.Core.Records.NotUsed
 {

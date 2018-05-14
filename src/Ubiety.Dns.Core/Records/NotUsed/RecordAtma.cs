@@ -9,7 +9,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     public class RecordAtma : Record
     {
         private Collection<byte> data;
-        
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAtma" /> class
         /// </summary>
@@ -22,7 +22,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
         }
 
         /// <summary>
-        ///     Gets or sets the record data
+        ///     Gets the record data
         /// </summary>
         public Collection<byte> RecordData { get => this.data; }
 

@@ -201,7 +201,7 @@ namespace Ubiety.Dns.Core
                     return new RecordNULL(this);
                 case RecordType.WKS:
                     return new RecordWKS(this);
-                case RecordType.PTR:
+                case RecordType.PNTR:
                     return new RecordPTR(this);
                 case RecordType.HINFO:
                     return new RecordHINFO(this);

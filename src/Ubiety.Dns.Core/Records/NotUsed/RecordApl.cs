@@ -22,7 +22,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
         }
 
         /// <summary>
-        ///     Gets or sets the record data
+        ///     Gets the record data
         /// </summary>
         public Collection<byte> RecordData { get => this.data; }
 
