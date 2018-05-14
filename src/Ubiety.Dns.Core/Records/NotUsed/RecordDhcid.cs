@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
@@ -7,10 +8,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     /// </summary>
     public class RecordDhcid : Record
     {
-        /// <summary>
-        ///     Gets or sets the record data
-        /// </summary>
-        public byte[] RecordData { get; set; }
+        private readonly Collection<Byte> data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordDhcid" /> class
@@ -19,15 +17,20 @@ namespace Ubiety.Dns.Core.Records.NotUsed
         public RecordDhcid(RecordReader rr)
         {
             // re-read length
-            ushort length = rr.ReadUInt16(-2);
-            this.RecordData = rr.ReadBytes(length);
+            UInt16 length = rr.ReadUInt16(-2);
+            this.data = new Collection<Byte>(rr.ReadBytes(length));
         }
+
+        /// <summary>
+        ///     Gets the record data
+        /// </summary>
+        public Collection<Byte> RecordData { get => this.data; }
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>String version of the record</returns>
-        public override string ToString()
+        public override String ToString()
         {
             return "not-used";
         }

@@ -1,30 +1,38 @@
 using System;
+using System.Collections.ObjectModel;
 
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
     /// <summary>
+    ///     GID DNS record
     /// </summary>
-    public class RecordGID : Record
+    public class RecordGid : Record
     {
-        /// <summary>
-        /// </summary>
-        public byte[] RDATA { get; set; }
+        private readonly Collection<Byte> data;
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordGid" /> class
         /// </summary>
-        public RecordGID(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordGid(RecordReader rr)
         {
             // re-read length
-            ushort RDLENGTH = rr.ReadUInt16(-2);
-            RDATA = rr.ReadBytes(RDLENGTH);
+            UInt16 length = rr.ReadUInt16(-2);
+            this.data = new Collection<Byte>(rr.ReadBytes(length));
         }
 
         /// <summary>
+        ///     Gets the record data
         /// </summary>
-        public override string ToString()
+        public Collection<Byte> RecordData { get => this.data; }
+
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>String of the record data</returns>
+        public override String ToString()
         {
             return "not-used";
         }
-
     }
 }

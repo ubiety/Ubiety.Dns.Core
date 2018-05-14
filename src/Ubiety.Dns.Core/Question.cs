@@ -52,7 +52,7 @@ namespace Ubiety.Dns.Core
             set
             {
                 this.questionName = value;
-                if (!this.questionName.EndsWith("."))
+                if (!this.questionName.EndsWith(".", StringComparison.InvariantCulture))
                 {
                     this.questionName += ".";
                 }
@@ -72,10 +72,10 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     String representation of the question
         /// </summary>
-        /// <returns>String representation of the question</returns>
+        /// <returns>String of the question</returns>
         public override string ToString()
         {
-            return string.Format("{0,-32}\t{1}\t{2}", this.QName, this.QClass, this.QType);
+            return string.Format(CultureInfo.InvariantCulture, "{0,-32}\t{1}\t{2}", this.QName, this.QClass, this.QType);
         }
 
         /// <summary>

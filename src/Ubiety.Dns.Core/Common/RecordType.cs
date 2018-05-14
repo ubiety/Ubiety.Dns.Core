@@ -5,7 +5,7 @@ namespace Ubiety.Dns.Core.Common
     /// <summary>
     ///     DNS record type
     /// </summary>
-    public enum RecordType : Int32
+    public enum RecordType
     {
         /// <summary>
         ///     IPv4 address

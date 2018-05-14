@@ -111,7 +111,7 @@ namespace Ubiety.Dns.Core
                 if ((length & 0xc0) == 0xc0)
                 {
                     // work out the existing domain name, copy this pointer
-                    RecordReader newRecordReader = new RecordReader(data, (length & 0x3f) << 8 | ReadByte());
+                    RecordReader newRecordReader = new RecordReader(this.data, (length & 0x3f) << 8 | this.ReadByte());
 
                     name.Append(newRecordReader.ReadDomainName());
                     return name.ToString();
@@ -120,7 +120,7 @@ namespace Ubiety.Dns.Core
                 // if not using compression, copy a char at a time to the domain name
                 while (length > 0)
                 {
-                    name.Append(ReadChar());
+                    name.Append(this.ReadChar());
                     length--;
                 }
 
@@ -274,7 +274,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.NSEC:
                     return new RecordNSEC(this);
                 case RecordType.DNSKEY:
-                    return new RecordDNSKey(this);
+                    return new RecordDnsKey(this);
                 case RecordType.DHCID:
                     return new RecordDhcid(this);
                 case RecordType.NSEC3:
@@ -282,15 +282,15 @@ namespace Ubiety.Dns.Core
                 case RecordType.NSEC3PARAM:
                     return new RecordNSEC3PARAM(this);
                 case RecordType.HIP:
-                    return new RecordHIP(this);
+                    return new RecordHip(this);
                 case RecordType.SPF:
-                    return new RecordSPF(this);
+                    return new RecordSpf(this);
                 case RecordType.UINFO:
                     return new RecordUINFO(this);
                 case RecordType.UID:
                     return new RecordUID(this);
                 case RecordType.GID:
-                    return new RecordGID(this);
+                    return new RecordGid(this);
                 case RecordType.UNSPEC:
                     return new RecordUNSPEC(this);
                 case RecordType.TKEY:

@@ -8,7 +8,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     /// </summary>
     public class RecordAtma : Record
     {
-        private Collection<byte> data;
+        private readonly Collection<Byte> data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAtma" /> class
@@ -17,20 +17,20 @@ namespace Ubiety.Dns.Core.Records.NotUsed
         public RecordAtma(RecordReader rr)
         {
             // re-read length
-            ushort length = rr.ReadUInt16(-2);
-            this.data = new Collection<byte>(rr.ReadBytes(length));
+            UInt16 length = rr.ReadUInt16(-2);
+            this.data = new Collection<Byte>(rr.ReadBytes(length));
         }
 
         /// <summary>
         ///     Gets the record data
         /// </summary>
-        public Collection<byte> RecordData { get => this.data; }
+        public Collection<Byte> RecordData { get => this.data; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>String version of the record</returns>
-        public override string ToString()
+        public override String ToString()
         {
             return "not-used";
         }

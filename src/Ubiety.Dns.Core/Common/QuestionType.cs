@@ -5,7 +5,7 @@ namespace Ubiety.Dns.Core.Common
     /// <summary>
     ///     DNS question type
     /// </summary>
-    public enum QuestionType : Int32
+    public enum QuestionType
     {
         /// <summary>
         ///     IPv4 host address type
