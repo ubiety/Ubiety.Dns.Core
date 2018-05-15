@@ -1,4 +1,5 @@
 using System;
+
 /*
 3.3.4. MD RDATA format (Obsolete)
 
@@ -23,27 +24,32 @@ preference of 0.
  * */
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-        /// <summary>
-        /// </summary>
-    public class RecordMD : Record
+    /// <summary>
+    ///     Mail domain record
+    /// </summary>
+    public class RecordMd : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordMd" /> class
         /// </summary>
-        public string MADNAME { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public RecordMD(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordMd(RecordReader rr)
         {
-            MADNAME = rr.ReadDomainName();
+            this.MadName = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the mail domain
         /// </summary>
-        public override string ToString()
-        {
-            return MADNAME;
-        }
+        public String MadName { get; set; }
 
+        /// <summary>
+        ///     String representing the mail domain
+        /// </summary>
+        /// <returns>String version of the record</returns>
+        public override String ToString()
+        {
+            return this.MadName;
+        }
     }
 }

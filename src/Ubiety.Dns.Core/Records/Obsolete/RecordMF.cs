@@ -1,6 +1,7 @@
 using System;
+
 /*
- * 
+ *
 3.3.5. MF RDATA format (Obsolete)
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -23,27 +24,32 @@ a master file is to reject them, or to convert them to MX RRs with a
 preference of 10. */
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-        /// <summary>
-        /// </summary>
-    public class RecordMF : Record
+    /// <summary>
+    ///     Mail forwarder record (Obsolete - use MX)
+    /// </summary>
+    public class RecordMf : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordMf" /> class
         /// </summary>
-        public string MADNAME { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public RecordMF(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordMf(RecordReader rr)
         {
-            MADNAME = rr.ReadDomainName();
+            this.MadName = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the mail domain
         /// </summary>
-        public override string ToString()
-        {
-            return MADNAME;
-        }
+        public String MadName { get; set; }
 
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>String of the mail domain</returns>
+        public override String ToString()
+        {
+            return this.MadName;
+        }
     }
 }

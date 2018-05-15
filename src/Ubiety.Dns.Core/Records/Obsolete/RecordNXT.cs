@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Ubiety.Dns.Core.Common;
+
 /*
  * http://tools.ietf.org/rfc/rfc2065.txt
  * 
@@ -39,53 +40,66 @@ using Ubiety.Dns.Core.Common;
  */
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-        /// <summary>
-        /// </summary>
-    public class RecordNXT : Record
+    /// <summary>
+    ///     NXT DNS Record
+    /// </summary>
+    public class RecordNxt : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNxt" /> class
         /// </summary>
-        public string NEXTDOMAINNAME { get; set; }
-        /// <summary>
-        /// </summary>
-        public byte[] BITMAP { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public RecordNXT(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordNxt(RecordReader rr)
         {
-            ushort length = rr.ReadUInt16(-2);
-            NEXTDOMAINNAME = rr.ReadDomainName();
-            length -= (ushort)rr.Position;
-            BITMAP = new byte[length];
-            BITMAP = rr.ReadBytes(length);
+            UInt16 length = rr.ReadUInt16(-2);
+            this.NextDomainName = rr.ReadDomainName();
+            length -= (UInt16) rr.Position;
+            this.Bitmap = new byte[length];
+            this.Bitmap = rr.ReadBytes(length);
         }
 
-        private bool IsSet(int bitNr)
-        {
-            int intByte = (int)(bitNr / 8);
-            int intOffset = (bitNr % 8);
-            byte b = BITMAP[intByte];
-            int intTest = 1 << intOffset;
-            if ((b & intTest) == 0)
-                return false;
-            else
-                return true;
-        }
-
+        /// <summary>
+        ///     Gets or sets the next domain name
+        /// </summary>
+        public String NextDomainName { get; set; }
 
         /// <summary>
+        ///     Gets or sets the record bitmap
         /// </summary>
-        public override string ToString()
+        public Byte[] Bitmap { get; set; }
+
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>String version of the data</returns>
+        public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            for (int bitNr = 1; bitNr < (BITMAP.Length * 8); bitNr++)
+            for (Int32 bitNr = 1; bitNr < (this.Bitmap.Length * 8); bitNr++)
             {
-                if (IsSet(bitNr))
-                    sb.Append(" " + (RecordType)bitNr);
+                if (this.IsSet(bitNr))
+                {
+                    sb.Append(" " + (RecordType) bitNr);
+                }
             }
-            return string.Format("{0}{1}", NEXTDOMAINNAME, sb.ToString());
+            
+            return $"{this.NextDomainName}{sb.ToString()}";
         }
 
+        private bool IsSet(Int32 bitNr)
+        {
+            Int32 intByte = (Int32) (bitNr / 8);
+            Int32 intOffset = (bitNr % 8);
+            Byte b = this.Bitmap[intByte];
+            Int32 intTest = 1 << intOffset;
+            if ((b & intTest) == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

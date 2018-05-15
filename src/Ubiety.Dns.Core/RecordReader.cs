@@ -184,9 +184,9 @@ namespace Ubiety.Dns.Core
                 case RecordType.NS:
                     return new RecordNS(this);
                 case RecordType.MD:
-                    return new RecordMD(this);
+                    return new RecordMd(this);
                 case RecordType.MF:
-                    return new RecordMF(this);
+                    return new RecordMf(this);
                 case RecordType.CNAME:
                     return new RecordCNAME(this);
                 case RecordType.SOA:
@@ -224,7 +224,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.NSAP:
                     return new RecordNSAP(this);
                 case RecordType.NSAPPTR:
-                    return new RecordNSAPPTR(this);
+                    return new RecordNsapPtr(this);
                 case RecordType.SIG:
                     return new RecordSIG(this);
                 case RecordType.KEY:
@@ -232,13 +232,13 @@ namespace Ubiety.Dns.Core
                 case RecordType.PX:
                     return new RecordPX(this);
                 case RecordType.GPOS:
-                    return new RecordGPOS(this);
+                    return new RecordGpos(this);
                 case RecordType.AAAA:
                     return new RecordAAAA(this);
                 case RecordType.LOC:
                     return new RecordLOC(this);
                 case RecordType.NXT:
-                    return new RecordNXT(this);
+                    return new RecordNxt(this);
                 case RecordType.EID:
                     return new RecordEid(this);
                 case RecordType.NIMLOC:

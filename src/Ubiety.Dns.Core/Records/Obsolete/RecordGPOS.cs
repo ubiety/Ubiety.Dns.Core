@@ -1,7 +1,8 @@
 using System;
-/* 
+
+/*
  * http://tools.ietf.org/rfc/rfc1712.txt
- * 
+ *
 3. RDATA Format
 
         MSB                                        LSB
@@ -40,38 +41,44 @@ using System;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-        /// <summary>
-        /// </summary>
-    public class RecordGPOS : Record
+    /// <summary>
+    ///     GPOS DNS record
+    /// </summary>
+    public class RecordGpos : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordGpos" /> class
         /// </summary>
-        public string LONGITUDE { get; set; }
-        /// <summary>
-        /// </summary>
-        public string LATITUDE { get; set; }
-        /// <summary>
-        /// </summary>
-        public string ALTITUDE { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public RecordGPOS(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordGpos(RecordReader rr)
         {
-            LONGITUDE = rr.ReadString();
-            LATITUDE = rr.ReadString();
-            ALTITUDE = rr.ReadString();
+            this.Longitude = rr.ReadString();
+            this.Latitude = rr.ReadString();
+            this.Altitude = rr.ReadString();
         }
 
         /// <summary>
+        ///     Gets or sets the longitude
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1} {2}",
-                LONGITUDE,
-                LATITUDE,
-                ALTITUDE);
-        }
+        public String Longitude { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the latitude
+        /// </summary>
+        public String Latitude { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the altitude
+        /// </summary>
+        public String Altitude { get; set; }
+
+        /// <summary>
+        ///     String representation of the position
+        /// </summary>
+        /// <returns>String of the version</returns>
+        public override String ToString()
+        {
+            return $"{this.Longitude} {this.Latitude} {this.Altitude}";
+        }
     }
 }

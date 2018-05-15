@@ -1,4 +1,5 @@
 using System;
+
 /*
  * http://tools.ietf.org/rfc/rfc1348.txt   
 
@@ -40,26 +41,32 @@ using System;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-        /// <summary>
-        /// </summary>
-    public class RecordNSAPPTR : Record
+    /// <summary>
+    ///     NSAP PTR DNS Record
+    /// </summary>
+    public class RecordNsapPtr : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNsapPtr" /> class
         /// </summary>
-        public string OWNER { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public RecordNSAPPTR(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordNsapPtr(RecordReader rr)
         {
-            OWNER = rr.ReadString();
+            this.Owner = rr.ReadString();
         }
 
         /// <summary>
+        ///     Gets or sets the owner
         /// </summary>
-        public override string ToString()
+        public String Owner { get; set; }
+
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>String version of the data</returns>
+        public override String ToString()
         {
-            return string.Format("{0}",OWNER);
+            return this.Owner;
         }
     }
 }

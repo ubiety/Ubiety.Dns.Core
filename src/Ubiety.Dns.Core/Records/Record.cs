@@ -11,7 +11,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Record data
         /// </summary>
-        protected readonly Collection<Byte> data;
+        private readonly Collection<Byte> data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Record" /> class
