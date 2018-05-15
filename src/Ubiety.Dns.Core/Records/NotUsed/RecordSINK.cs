@@ -1,30 +1,17 @@
-using System;
-
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
-        /// <summary>
-        /// </summary>
-    public class RecordSINK : Record
+    /// <summary>
+    ///     SINK DNS Record
+    /// </summary>
+    public class RecordSink : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordSink" /> class
         /// </summary>
-        public byte[] RDATA { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public RecordSINK(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordSink(RecordReader rr)
+            : base(rr)
         {
-            // re-read length
-            ushort RDLENGTH = rr.ReadUInt16(-2);
-            RDATA = rr.ReadBytes(RDLENGTH);
         }
-
-        /// <summary>
-        /// </summary>
-        public override string ToString()
-        {
-            return "not-used";
-        }
-
     }
 }

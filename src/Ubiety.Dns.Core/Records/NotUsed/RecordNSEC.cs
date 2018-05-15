@@ -1,30 +1,17 @@
-using System;
-
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
-        /// <summary>
-        /// </summary>
-    public class RecordNSEC : Record
+    /// <summary>
+    ///     NSEC DNS record
+    /// </summary>
+    public class RecordNsec : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNsec" /> class
         /// </summary>
-        public byte[] RDATA { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public RecordNSEC(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordNsec(RecordReader rr)
+            : base(rr)
         {
-            // re-read length
-            ushort RDLENGTH = rr.ReadUInt16(-2);
-            RDATA = rr.ReadBytes(RDLENGTH);
         }
-
-        /// <summary>
-        /// </summary>
-        public override string ToString()
-        {
-            return "not-used";
-        }
-
     }
 }

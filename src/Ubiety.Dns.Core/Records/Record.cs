@@ -46,7 +46,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>String version of the data</returns>
         public override String ToString()
         {
-            return "not-used";
+            return $"{this.GetType().Name} is not-used";
         }
     }
 }
