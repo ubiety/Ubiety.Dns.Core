@@ -1,21 +1,17 @@
-using System;
-
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
-        /// <summary>
-        /// </summary>
+    /// <summary>
+    ///     Unknown DNS record
+    /// </summary>
     public class RecordUnknown : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordUnknown" /> class
         /// </summary>
-        public byte[] RDATA { get; set; }
-        /// <summary>
-        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordUnknown(RecordReader rr)
+            : base(rr)
         {
-            // re-read length
-            ushort RDLENGTH = rr.ReadUInt16(-2);
-            RDATA = rr.ReadBytes(RDLENGTH);
         }
     }
 }

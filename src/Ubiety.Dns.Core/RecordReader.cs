@@ -266,7 +266,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.DS:
                     return new RecordDS(this);
                 case RecordType.SSHFP:
-                    return new RecordSSHFP(this);
+                    return new RecordSshfp(this);
                 case RecordType.IPSECKEY:
                     return new RecordIpsecKey(this);
                 case RecordType.RRSIG:
@@ -286,13 +286,13 @@ namespace Ubiety.Dns.Core
                 case RecordType.SPF:
                     return new RecordSpf(this);
                 case RecordType.UINFO:
-                    return new RecordUINFO(this);
+                    return new RecordUinfo(this);
                 case RecordType.UID:
-                    return new RecordUID(this);
+                    return new RecordUid(this);
                 case RecordType.GID:
                     return new RecordGid(this);
                 case RecordType.UNSPEC:
-                    return new RecordUNSPEC(this);
+                    return new RecordUnspec(this);
                 case RecordType.TKEY:
                     return new RecordTKEY(this);
                 case RecordType.TSIG:

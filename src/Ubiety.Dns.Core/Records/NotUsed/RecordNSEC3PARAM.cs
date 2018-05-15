@@ -3,7 +3,7 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     /// <summary>
     ///     NSEC3PARAM DNS record
     /// </summary>
-    public class  RecordNsec3Param : Record
+    public class RecordNsec3Param : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNsec3Param" /> class
