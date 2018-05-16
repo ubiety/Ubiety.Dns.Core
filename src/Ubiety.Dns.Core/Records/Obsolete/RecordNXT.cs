@@ -1,10 +1,11 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Text;
 using Ubiety.Dns.Core.Common;
 
 /*
  * http://tools.ietf.org/rfc/rfc2065.txt
- * 
+ *
 5.2 NXT RDATA Format
 
    The RDATA for an NXT RR consists simply of a domain name followed by
@@ -45,6 +46,8 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     /// </summary>
     public class RecordNxt : Record
     {
+        private Byte[] bitmap;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNxt" /> class
         /// </summary>
@@ -53,9 +56,9 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         {
             UInt16 length = rr.ReadUInt16(-2);
             this.NextDomainName = rr.ReadDomainName();
-            length -= (UInt16) rr.Position;
-            this.Bitmap = new byte[length];
-            this.Bitmap = rr.ReadBytes(length);
+            length -= (UInt16)rr.Position;
+            this.bitmap = new byte[length];
+            this.bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
@@ -64,9 +67,9 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         public String NextDomainName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the record bitmap
+        ///     Gets the record bitmap
         /// </summary>
-        public Byte[] Bitmap { get; set; }
+        public Collection<Byte> Bitmap { get => new Collection<Byte>(this.bitmap); }
 
         /// <summary>
         ///     String representation of the record
@@ -75,22 +78,22 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            for (Int32 bitNr = 1; bitNr < (this.Bitmap.Length * 8); bitNr++)
+            for (Int32 bitNr = 1; bitNr < (this.bitmap.Length * 8); bitNr++)
             {
                 if (this.IsSet(bitNr))
                 {
-                    sb.Append(" " + (RecordType) bitNr);
+                    sb.Append(" " + (RecordType)bitNr);
                 }
             }
-            
+
             return $"{this.NextDomainName}{sb.ToString()}";
         }
 
         private bool IsSet(Int32 bitNr)
         {
-            Int32 intByte = (Int32) (bitNr / 8);
+            Int32 intByte = (Int32)(bitNr / 8);
             Int32 intOffset = (bitNr % 8);
-            Byte b = this.Bitmap[intByte];
+            Byte b = this.bitmap[intByte];
             Int32 intTest = 1 << intOffset;
             if ((b & intTest) == 0)
             {

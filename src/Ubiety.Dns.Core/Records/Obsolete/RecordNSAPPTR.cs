@@ -1,7 +1,7 @@
 using System;
 
 /*
- * http://tools.ietf.org/rfc/rfc1348.txt   
+ * http://tools.ietf.org/rfc/rfc1348.txt
 
  * The NSAP-PTR RR
 

@@ -1,26 +1,26 @@
 using System;
+using System.Net;
 
-#region Rfc info
 /*
 2.2 AAAA data format
 
    A 128 bit IPv6 address is encoded in the data portion of an AAAA
    resource record in network byte order (high-order byte first).
  */
-#endregion
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
+    /// <summary>
+    ///     IPv6 Address record
+    /// </summary>
     public class RecordAAAA : Record
     {
-        /// <summary>
-        /// </summary>
-        public System.Net.IPAddress Address;
+        private readonly IPAddress address;
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordAAAA" /> class
         /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordAAAA(RecordReader rr)
         {
             System.Net.IPAddress.TryParse(
@@ -32,15 +32,21 @@ namespace Ubiety.Dns.Core.Records
                 rr.ReadUInt16(),
                 rr.ReadUInt16(),
                 rr.ReadUInt16(),
-                rr.ReadUInt16()), out this.Address);
+                rr.ReadUInt16()), out this.address);
         }
 
         /// <summary>
+        ///     Gets the IP address of the record
         /// </summary>
+        public IPAddress Address { get => this.address; }
+
+        /// <summary>
+        ///     String version of the record
+        /// </summary>
+        /// <returns>String of the address</returns>
         public override string ToString()
         {
-            return Address.ToString();
+            return this.address.ToString();
         }
-
     }
 }
