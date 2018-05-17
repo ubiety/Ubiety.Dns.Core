@@ -187,14 +187,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordCNAME in Response.Answers
         /// </summary>
-        public RecordCNAME[] RecordsCNAME
+        public RecordCname[] RecordsCNAME
         {
             get
             {
-                List<RecordCNAME> list = new List<RecordCNAME>();
+                List<RecordCname> list = new List<RecordCname>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordCNAME record = answerRR.Record as RecordCNAME;
+                    RecordCname record = answerRR.Record as RecordCname;
                     if (record != null)
                         list.Add(record);
                 }
@@ -259,14 +259,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordCERT in Response.Answers
         /// </summary>
-        public RecordCERT[] RecordsCERT
+        public RecordCert[] RecordsCERT
         {
             get
             {
-                List<RecordCERT> list = new List<RecordCERT>();
+                List<RecordCert> list = new List<RecordCert>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordCERT record = answerRR.Record as RecordCERT;
+                    RecordCert record = answerRR.Record as RecordCert;
                     if (record != null)
                         list.Add(record);
                 }

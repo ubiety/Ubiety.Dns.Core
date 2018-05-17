@@ -188,7 +188,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.MF:
                     return new RecordMf(this);
                 case RecordType.CNAME:
-                    return new RecordCNAME(this);
+                    return new RecordCname(this);
                 case RecordType.SOA:
                     return new RecordSOA(this);
                 case RecordType.MB:
@@ -214,7 +214,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.RP:
                     return new RecordRP(this);
                 case RecordType.AFSDB:
-                    return new RecordAFSDB(this);
+                    return new RecordAfsdb(this);
                 case RecordType.X25:
                     return new RecordX25(this);
                 case RecordType.ISDN:
@@ -252,7 +252,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.KX:
                     return new RecordKX(this);
                 case RecordType.CERT:
-                    return new RecordCERT(this);
+                    return new RecordCert(this);
                 case RecordType.A6:
                     return new RecordA6(this);
                 case RecordType.DNAME:

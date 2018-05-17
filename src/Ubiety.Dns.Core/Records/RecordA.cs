@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the IP address
         /// </summary>
-        public IPAddress Address { get => IPAddress.Parse(address); }
+        public IPAddress Address { get => IPAddress.Parse(this.address); }
 
         /// <summary>
         ///     String representation of the address

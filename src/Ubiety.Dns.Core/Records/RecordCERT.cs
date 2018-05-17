@@ -1,4 +1,6 @@
 using System;
+using System.Collections.ObjectModel;
+
 /*
 
  CERT RR
@@ -15,51 +17,61 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordCERT : Record
+    /// <summary>
+    ///     Certificate DNS record
+    /// </summary>
+    public class RecordCert : Record
     {
-        /// <summary>
-        /// </summary>
-        public byte[] RDATA;
-        /// <summary>
-        /// </summary>
-        public ushort TYPE;
-        /// <summary>
-        /// </summary>
-        public ushort KEYTAG;  //Format
-        /// <summary>
-        /// </summary>
-        public byte ALGORITHM;
-        /// <summary>
-        /// </summary>
-        public string PUBLICKEY;
-        /// <summary>
-        /// </summary>
-        public byte[] RAWKEY;
+        private Byte[] rawKey;
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordCert" /> class
         /// </summary>
-        public RecordCERT(RecordReader rr)
+        public RecordCert(RecordReader rr)
         {
             // re-read length
-            ushort RDLENGTH = rr.ReadUInt16(-2);
-            //RDATA = rr.ReadBytes(RDLENGTH);
+            UInt16 recordLength = rr.ReadUInt16(-2);
 
-            TYPE = rr.ReadUInt16();
-            KEYTAG = rr.ReadUInt16();
-            ALGORITHM = rr.ReadByte();
-            var length = RDLENGTH - 5;
-            RAWKEY = rr.ReadBytes(length);
-            PUBLICKEY = Convert.ToBase64String(RAWKEY);
+            this.Type = rr.ReadUInt16();
+            this.KeyTag = rr.ReadUInt16();
+            this.Algorithm = rr.ReadByte();
+            var length = recordLength - 5;
+            this.rawKey = rr.ReadBytes(length);
+            this.PublicKey = Convert.ToBase64String(this.rawKey);
         }
 
         /// <summary>
+        ///     Gets or sets the record type
         /// </summary>
-        public override string ToString()
-        {
-            return PUBLICKEY;
-        }
+        public UInt16 Type { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the key tag
+        /// </summary>
+        public UInt16 KeyTag { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the algorithm
+        /// </summary>
+        public Byte Algorithm { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the public key
+        /// </summary>
+        public String PublicKey { get; set; }
+
+        /// <summary>
+        ///     Gets the raw key
+        /// </summary>
+        public Collection<Byte> RawKey { get => new Collection<Byte>(this.rawKey); }
+
+        /// <summary>
+        ///     String version of the record
+        /// </summary>
+        /// <returns>String of the public key</returns>
+        public override String ToString()
+        {
+            return this.PublicKey;
+        }
     }
 }

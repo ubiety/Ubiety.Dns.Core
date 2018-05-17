@@ -92,7 +92,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         private bool IsSet(Int32 bitNr)
         {
             Int32 intByte = (Int32)(bitNr / 8);
-            Int32 intOffset = (bitNr % 8);
+            Int32 intOffset = bitNr % 8;
             Byte b = this.bitmap[intByte];
             Int32 intTest = 1 << intOffset;
             if ((b & intTest) == 0)

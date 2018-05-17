@@ -1,6 +1,7 @@
 using System;
+
 /*
- * 
+ *
 3.3.1. CNAME RDATA format
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -17,31 +18,36 @@ CNAME RRs cause no additional section processing, but name servers may
 choose to restart the query at the canonical name in certain cases.  See
 the description of name server logic in [RFC-1034] for details.
 
- * 
+ *
  */
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordCNAME : Record
+    /// <summary>
+    ///     Canonical name DNS record
+    /// </summary>
+    public class RecordCname : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordCname" /> class
         /// </summary>
-        public string CNAME;
-
-        /// <summary>
-        /// </summary>
-        public RecordCNAME(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordCname(RecordReader rr)
         {
-            CNAME = rr.ReadDomainName();
+            this.Cname = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the canonical name
         /// </summary>
+        public String Cname { get; set; }
+
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>String version of the cname</returns>
         public override string ToString()
         {
-            return CNAME;
+            return this.Cname;
         }
-
     }
 }

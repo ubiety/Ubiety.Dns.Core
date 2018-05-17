@@ -1,4 +1,5 @@
 using System;
+
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
  * 1. AFS Data Base location
@@ -29,34 +30,38 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordAFSDB : Record
+    /// <summary>
+    ///     DNS AFSDB Record
+    /// </summary>
+    public class RecordAfsdb : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordAfsdb" /> class
         /// </summary>
-        public ushort SUBTYPE;
-        /// <summary>
-        /// </summary>
-        public string HOSTNAME;
-
-        /// <summary>
-        /// </summary>
-        public RecordAFSDB(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordAfsdb(RecordReader rr)
         {
-            SUBTYPE = rr.ReadUInt16();
-            //HOSTNAME = rr.ReadString();
-            HOSTNAME = rr.ReadDomainName();
+            this.SubType = rr.ReadUInt16();
+            this.Hostname = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the subtype
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1}",
-                SUBTYPE,
-                HOSTNAME);
-        }
+        public UInt16 SubType { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the hostname
+        /// </summary>
+        public String Hostname { get; set; }
+
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>String version of the data</returns>
+        public override String ToString()
+        {
+            return $"{this.SubType}{this.Hostname}";
+        }
     }
 }

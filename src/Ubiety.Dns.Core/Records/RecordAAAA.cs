@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Net;
 
 /*
@@ -23,16 +24,18 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordAAAA(RecordReader rr)
         {
-            System.Net.IPAddress.TryParse(
-                string.Format("{0:x}:{1:x}:{2:x}:{3:x}:{4:x}:{5:x}:{6:x}:{7:x}",
-                rr.ReadUInt16(),
-                rr.ReadUInt16(),
-                rr.ReadUInt16(),
-                rr.ReadUInt16(),
-                rr.ReadUInt16(),
-                rr.ReadUInt16(),
-                rr.ReadUInt16(),
-                rr.ReadUInt16()), out this.address);
+            this.address = IPAddress.Parse(
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0:x}:{1:x}:{2:x}:{3:x}:{4:x}:{5:x}:{6:x}:{7:x}",
+                    rr.ReadUInt16(),
+                    rr.ReadUInt16(),
+                    rr.ReadUInt16(),
+                    rr.ReadUInt16(),
+                    rr.ReadUInt16(),
+                    rr.ReadUInt16(),
+                    rr.ReadUInt16(),
+                    rr.ReadUInt16()));
         }
 
         /// <summary>
