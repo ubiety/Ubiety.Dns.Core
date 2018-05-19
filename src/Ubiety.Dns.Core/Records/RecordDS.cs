@@ -1,8 +1,11 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
+
 /*
  * http://tools.ietf.org/rfc/rfc3658.txt
- * 
+ *
 2.4.  Wire Format of the DS record
 
    The DS (type=43) record contains these fields: key tag, algorithm,
@@ -30,49 +33,61 @@ using System.Text;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordDS : Record
+    /// <summary>
+    ///     DS DNS Record
+    /// </summary>
+    public class RecordDs : Record
     {
-        /// <summary>
-        /// </summary>
-        public UInt16 KEYTAG;
-        /// <summary>
-        /// </summary>
-        public byte ALGORITHM;
-        /// <summary>
-        /// </summary>
-        public byte DIGESTTYPE;
-        /// <summary>
-        /// </summary>
-        public byte[] DIGEST;
+        private Byte[] digest;
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordDs" /> class
         /// </summary>
-        public RecordDS(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> of the record data</param>
+        public RecordDs(RecordReader rr)
         {
-            ushort length = rr.ReadUInt16(-2);
-            KEYTAG = rr.ReadUInt16();
-            ALGORITHM = rr.ReadByte();
-            DIGESTTYPE = rr.ReadByte();
+            UInt16 length = rr.ReadUInt16(-2);
+            this.KeyTag = rr.ReadUInt16();
+            this.Algorithm = rr.ReadByte();
+            this.DigestType = rr.ReadByte();
             length -= 4;
-            DIGEST = new byte[length];
-            DIGEST = rr.ReadBytes(length);
+            this.digest = new Byte[length];
+            this.digest = rr.ReadBytes(length);
         }
 
         /// <summary>
+        ///     Gets or sets the key tag
         /// </summary>
+        public UInt16 KeyTag { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the algorithm
+        /// </summary>
+        public Byte Algorithm { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the digest type
+        /// </summary>
+        public Byte DigestType { get; set; }
+
+        /// <summary>
+        ///     Gets the digest
+        /// </summary>
+        public Collection<Byte> Digest { get => new Collection<Byte>(this.digest); }
+
+        /// <summary>
+        ///     String version of the record
+        /// </summary>
+        /// <returns>String of the data</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            for (int intI = 0; intI < DIGEST.Length; intI++)
-                sb.AppendFormat("{0:x2}", DIGEST[intI]);
-            return string.Format("{0} {1} {2} {3}",
-                KEYTAG,
-                ALGORITHM,
-                DIGESTTYPE,
-                sb.ToString());
-        }
+            for (Int32 i = 0; i < this.digest.Length; i++)
+            {
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:x2}", this.digest[i]);
+            }
 
+            return $"{this.KeyTag} {this.Algorithm} {this.DigestType} {sb.ToString()}";
+        }
     }
 }

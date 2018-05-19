@@ -1,7 +1,9 @@
 using System;
+using System.Globalization;
+
 /*
  * http://tools.ietf.org/rfc/rfc2230.txt
- * 
+ *
  * 3.1 KX RDATA format
 
    The KX DNS record has the following RDATA format:
@@ -30,48 +32,68 @@ using System;
    The KX RDATA field MUST NOT be compressed.
 
  */
+
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordKX : Record, IComparable
+    /// <summary>
+    ///     Key exchange record
+    /// </summary>
+    public class RecordKx : Record, IComparable
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordKx" /> class
         /// </summary>
-        public ushort PREFERENCE;
-        /// <summary>
-        /// </summary>
-        public string EXCHANGER;
-
-        /// <summary>
-        /// </summary>
-        public RecordKX(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the data</param>
+        public RecordKx(RecordReader rr)
         {
-            PREFERENCE = rr.ReadUInt16();
-            EXCHANGER = rr.ReadDomainName();
+            this.Preference = rr.ReadUInt16();
+            this.Exchanger = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the preference
         /// </summary>
-        public override string ToString()
+        public UInt16 Preference { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the exchanger
+        /// </summary>
+        public String Exchanger { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>String version of the record</returns>
+        public override String ToString()
         {
-            return string.Format("{0} {1}", PREFERENCE, EXCHANGER);
+            return $"{this.Preference} {this.Exchanger}";
         }
 
         /// <summary>
+        ///     Compares instance to an object
         /// </summary>
-        public int CompareTo(object objA)
+        /// <param name="objA">Object to compare to</param>
+        /// <returns>Integer representing the comparison</returns>
+        public Int32 CompareTo(Object objA)
         {
-            RecordKX recordKX = objA as RecordKX;
+            RecordKx recordKX = objA as RecordKx;
             if (recordKX == null)
+            {
                 return -1;
-            else if (this.PREFERENCE > recordKX.PREFERENCE)
+            }
+            else if (this.Preference > recordKX.Preference)
+            {
                 return 1;
-            else if (this.PREFERENCE < recordKX.PREFERENCE)
+            }
+            else if (this.Preference < recordKX.Preference)
+            {
                 return -1;
-            else // they are the same, now compare case insensitive names
-                return string.Compare(this.EXCHANGER, recordKX.EXCHANGER, true);
+            }
+            else
+            {
+                // they are the same, now compare case insensitive names
+                return String.Compare(this.Exchanger, recordKX.Exchanger, true, CultureInfo.InvariantCulture);
+            }
         }
-
     }
 }

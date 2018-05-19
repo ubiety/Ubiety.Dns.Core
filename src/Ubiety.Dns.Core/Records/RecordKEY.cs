@@ -1,8 +1,7 @@
 using System;
 
-#region Rfc info
 /* http://www.ietf.org/rfc/rfc2535.txt
- * 
+ *
 3.1 KEY RDATA format
 
    The RDATA for a KEY RR consists of flags, a protocol octet, the
@@ -33,47 +32,53 @@ using System;
    SIG RR(s) do as described in Section 4 below.
 
 */
-#endregion
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordKEY : Record
+    /// <summary>
+    ///     Key DNS record
+    /// </summary>
+    public class RecordKey : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordKey" /> class
         /// </summary>
-        public UInt16 FLAGS;
-        /// <summary>
-        /// </summary>
-        public byte PROTOCOL;
-        /// <summary>
-        /// </summary>
-        public byte ALGORITHM;
-        /// <summary>
-        /// </summary>
-        public string PUBLICKEY;
-
-        /// <summary>
-        /// </summary>
-        public RecordKEY(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordKey(RecordReader rr)
         {
-            FLAGS = rr.ReadUInt16();
-            PROTOCOL = rr.ReadByte();
-            ALGORITHM = rr.ReadByte();
-            PUBLICKEY = rr.ReadString();
+            this.Flags = rr.ReadUInt16();
+            this.Protocol = rr.ReadByte();
+            this.Algorithm = rr.ReadByte();
+            this.PublicKey = rr.ReadString();
         }
 
         /// <summary>
+        ///     Gets or sets the flags
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1} {2} \"{3}\"",
-                FLAGS,
-                PROTOCOL,
-                ALGORITHM,
-                PUBLICKEY);
-        }
+        public UInt16 Flags { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the protocol
+        /// </summary>
+        public Byte Protocol { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the algorithm
+        /// </summary>
+        public Byte Algorithm { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the public key
+        /// </summary>
+        public String PublicKey { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>String version of the record</returns>
+        public override String ToString()
+        {
+            return $"{this.Flags} {this.Protocol} {this.Algorithm} \"{this.PublicKey}\"";
+        }
     }
 }

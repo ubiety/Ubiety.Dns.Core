@@ -204,7 +204,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.PNTR:
                     return new RecordPTR(this);
                 case RecordType.HINFO:
-                    return new RecordHINFO(this);
+                    return new RecordHinfo(this);
                 case RecordType.MINFO:
                     return new RecordMINFO(this);
                 case RecordType.MX:
@@ -218,7 +218,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.X25:
                     return new RecordX25(this);
                 case RecordType.ISDN:
-                    return new RecordISDN(this);
+                    return new RecordIsdn(this);
                 case RecordType.RT:
                     return new RecordRT(this);
                 case RecordType.NSAP:
@@ -228,7 +228,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.SIG:
                     return new RecordSIG(this);
                 case RecordType.KEY:
-                    return new RecordKEY(this);
+                    return new RecordKey(this);
                 case RecordType.PX:
                     return new RecordPX(this);
                 case RecordType.GPOS:
@@ -236,7 +236,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.AAAA:
                     return new RecordAAAA(this);
                 case RecordType.LOC:
-                    return new RecordLOC(this);
+                    return new RecordLoc(this);
                 case RecordType.NXT:
                     return new RecordNxt(this);
                 case RecordType.EID:
@@ -250,13 +250,13 @@ namespace Ubiety.Dns.Core
                 case RecordType.NAPTR:
                     return new RecordNAPTR(this);
                 case RecordType.KX:
-                    return new RecordKX(this);
+                    return new RecordKx(this);
                 case RecordType.CERT:
                     return new RecordCert(this);
                 case RecordType.A6:
                     return new RecordA6(this);
                 case RecordType.DNAME:
-                    return new RecordDNAME(this);
+                    return new RecordDname(this);
                 case RecordType.SINK:
                     return new RecordSink(this);
                 case RecordType.OPT:
@@ -264,7 +264,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.APL:
                     return new RecordApl(this);
                 case RecordType.DS:
-                    return new RecordDS(this);
+                    return new RecordDs(this);
                 case RecordType.SSHFP:
                     return new RecordSshfp(this);
                 case RecordType.IPSECKEY:

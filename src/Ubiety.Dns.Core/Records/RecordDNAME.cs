@@ -1,7 +1,8 @@
 using System;
+
 /*
  * http://tools.ietf.org/rfc/rfc2672.txt
- * 
+ *
 3. The DNAME Resource Record
 
    The DNAME RR has mnemonic DNAME and type code 39 (decimal).
@@ -12,31 +13,36 @@ using System;
    The format is not class-sensitive.  All fields are required.  The
    RDATA field <target> is a <domain-name> [DNSIS].
 
- * 
+ *
  */
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordDNAME : Record
+    /// <summary>
+    ///     DNAME DNS Record
+    /// </summary>
+    public class RecordDname : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordDname" /> class
         /// </summary>
-        public string TARGET;
-
-        /// <summary>
-        /// </summary>
-        public RecordDNAME(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record</param>
+        public RecordDname(RecordReader rr)
         {
-            TARGET = rr.ReadDomainName();
+            this.Target = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the target
         /// </summary>
-        public override string ToString()
-        {
-            return TARGET;
-        }
+        public String Target { get; set; }
 
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>String of the target</returns>
+        public override String ToString()
+        {
+            return this.Target;
+        }
     }
 }

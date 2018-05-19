@@ -27,6 +27,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordCert" /> class
         /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordCert(RecordReader rr)
         {
             // re-read length

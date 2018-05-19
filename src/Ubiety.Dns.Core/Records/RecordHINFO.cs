@@ -25,31 +25,38 @@ when talking between machines or operating systems of the same type.
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordHINFO : Record
+    /// <summary>
+    ///     Hardware info DNS record
+    /// </summary>
+    public class RecordHinfo : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordHinfo" /> class
         /// </summary>
-        public string CPU;
-        /// <summary>
-        /// </summary>
-        public string OS;
-
-        /// <summary>
-        /// </summary>
-        public RecordHINFO(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordHinfo(RecordReader rr)
         {
-            CPU = rr.ReadString();
-            OS = rr.ReadString();
+            this.Cpu = rr.ReadString();
+            this.Os = rr.ReadString();
         }
 
         /// <summary>
+        ///     Gets or sets the CPU
         /// </summary>
+        public String Cpu { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the OS
+        /// </summary>
+        public string Os { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>String version of the record</returns>
         public override string ToString()
         {
-            return string.Format("CPU={0} OS={1}",CPU,OS);
+            return $"CPU={this.Cpu} OS={this.Os}";
         }
-
     }
 }

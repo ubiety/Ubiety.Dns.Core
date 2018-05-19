@@ -1,4 +1,5 @@
 using System;
+
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
 3.2. The ISDN RR
@@ -69,33 +70,38 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordISDN : Record
+    /// <summary>
+    ///     ISDN DNS record
+    /// </summary>
+    public class RecordIsdn : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordIsdn" /> class
         /// </summary>
-        public string ISDNADDRESS;
-        /// <summary>
-        /// </summary>
-        public string SA;
-
-        /// <summary>
-        /// </summary>
-        public RecordISDN(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordIsdn(RecordReader rr)
         {
-            ISDNADDRESS = rr.ReadString();
-            SA = rr.ReadString();
+            this.IsdnAddress = rr.ReadString();
+            this.SA = rr.ReadString();
         }
 
         /// <summary>
+        ///     Gets or sets the ISDN address
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1}",
-                ISDNADDRESS,
-                SA);
-        }
+        public String IsdnAddress { get; set; }
 
+        /// <summary>
+        ///     Gets or sets SA
+        /// </summary>
+        public String SA { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>String version of the data</returns>
+        public override String ToString()
+        {
+            return $"{this.IsdnAddress} {this.SA}";
+        }
     }
 }
