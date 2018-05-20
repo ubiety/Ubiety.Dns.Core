@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core
 {
@@ -75,9 +76,9 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the record opcode flag
         /// </summary>
-        public OPCode OPCODE
+        public OperationCode OPCODE
         {
-            get => (OPCode)GetBits(this.flags, 11, 4);
+            get => (OperationCode)GetBits(this.flags, 11, 4);
             set
             {
                 this.flags = SetBits(this.flags, 11, 4, (ushort)value);
@@ -147,9 +148,9 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the record response code
         /// </summary>
-        public RCode RCODE
+        public ResponseCode RCODE
         {
-            get => (RCode)GetBits(this.flags, 0, 4);
+            get => (ResponseCode)GetBits(this.flags, 0, 4);
             set
             {
                 this.flags = SetBits(this.flags, 0, 4, (ushort)value);

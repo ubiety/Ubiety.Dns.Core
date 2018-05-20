@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core
 {
@@ -22,7 +23,7 @@ namespace Ubiety.Dns.Core
         public Request()
         {
             this.header = new Header();
-            this.header.OPCODE = OPCode.Query;
+            this.header.OPCODE = OperationCode.Query;
             this.header.QuestionCount = 0;
 
             this.questions = new List<Question>();

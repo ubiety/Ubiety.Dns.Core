@@ -21,7 +21,7 @@ namespace Ubiety.Dns.Core
         /// <param name="queryName">Query name</param>
         /// <param name="questionType">Question type</param>
         /// <param name="queryClass">Query class</param>
-        public Question(string queryName, QuestionType questionType, QClass queryClass)
+        public Question(string queryName, QuestionType questionType, QuestionClass queryClass)
         {
             this.QName = queryName;
             this.QType = questionType;
@@ -36,7 +36,7 @@ namespace Ubiety.Dns.Core
         {
             this.QName = rr.ReadDomainName();
             this.QType = (QuestionType)rr.ReadUInt16();
-            this.QClass = (QClass)rr.ReadUInt16();
+            this.QClass = (QuestionClass)rr.ReadUInt16();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the query class
         /// </summary>
-        public QClass QClass { get; set; }
+        public QuestionClass QClass { get; set; }
 
         /// <summary>
         ///     String representation of the question

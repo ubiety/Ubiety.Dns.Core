@@ -334,7 +334,7 @@ namespace Ubiety.Dns.Core
             }
 
             // Only cached non-error responses
-            if (response.header.RCODE != RCode.NoError)
+            if (response.header.RCODE != ResponseCode.NoError)
             {
                 return;
             }
@@ -445,7 +445,7 @@ namespace Ubiety.Dns.Core
                             bs.Read(data, 0, intLength);
                             Response response = new Response(this.dnsServers[intDnsServer], data);
 
-                            if (response.header.RCODE != RCode.NoError)
+                            if (response.header.RCODE != ResponseCode.NoError)
                             {
                                 return response;
                             }
@@ -508,7 +508,7 @@ namespace Ubiety.Dns.Core
         /// <param name="qtype">Question type</param>
         /// <param name="qclass">Class type</param>
         /// <returns>Response of the query</returns>
-        public Response Query(string name, QuestionType qtype, QClass qclass)
+        public Response Query(string name, QuestionType qtype, QuestionClass qclass)
         {
             Question question = new Question(name, qtype, qclass);
             Response response = SearchInCache(question);
@@ -530,7 +530,7 @@ namespace Ubiety.Dns.Core
         /// <returns>Response of the query</returns>
         public Response Query(string name, QuestionType qtype)
         {
-            Question question = new Question(name, qtype, QClass.IN);
+            Question question = new Question(name, qtype, QuestionClass.IN);
             Response response = SearchInCache(question);
             if (response != null)
             {
