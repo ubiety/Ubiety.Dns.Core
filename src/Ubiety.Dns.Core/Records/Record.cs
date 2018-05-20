@@ -16,7 +16,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="Record" /> class
         /// </summary>
-        public Record()
+        protected Record()
         {
         }
 
@@ -24,7 +24,7 @@ namespace Ubiety.Dns.Core.Records
         ///     Initializes a new instance of the <see cref="Record" /> class
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data</param>
-        public Record(RecordReader reader)
+        protected Record(RecordReader reader)
         {
             UInt16 length = reader.ReadUInt16(-2);
             this.data = new Collection<Byte>(reader.ReadBytes(length));

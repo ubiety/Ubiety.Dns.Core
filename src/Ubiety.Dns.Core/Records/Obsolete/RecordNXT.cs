@@ -46,7 +46,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     /// </summary>
     public class RecordNxt : Record
     {
-        private Byte[] bitmap;
+        private readonly Byte[] bitmap;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNxt" /> class
@@ -91,7 +91,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
 
         private bool IsSet(Int32 bitNr)
         {
-            Int32 intByte = (Int32)(bitNr / 8);
+            Int32 intByte = (bitNr / 8);
             Int32 intOffset = bitNr % 8;
             Byte b = this.bitmap[intByte];
             Int32 intTest = 1 << intOffset;

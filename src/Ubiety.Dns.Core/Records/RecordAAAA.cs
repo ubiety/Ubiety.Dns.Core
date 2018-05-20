@@ -14,15 +14,15 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     IPv6 Address record
     /// </summary>
-    public class RecordAAAA : Record
+    public class RecordAaaa : Record
     {
         private readonly IPAddress address;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordAAAA" /> class
+        ///     Initializes a new instance of the <see cref="RecordAaaa" /> class
         /// </summary>
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordAAAA(RecordReader rr)
+        public RecordAaaa(RecordReader rr)
         {
             this.address = IPAddress.Parse(
                 string.Format(

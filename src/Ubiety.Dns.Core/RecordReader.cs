@@ -234,7 +234,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.GPOS:
                     return new RecordGpos(this);
                 case RecordType.AAAA:
-                    return new RecordAAAA(this);
+                    return new RecordAaaa(this);
                 case RecordType.LOC:
                     return new RecordLoc(this);
                 case RecordType.NXT:

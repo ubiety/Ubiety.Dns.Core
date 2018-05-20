@@ -199,26 +199,10 @@ namespace Ubiety.Dns.Core.Records
             return sb.ToString();
         }
 
-        private static String LonToTime(UInt32 r)
-        {
-            UInt32 mid = 2147483648; // 2^31
-            Char dir = 'E';
-            if (r > mid)
-            {
-                dir = 'W';
-                r -= mid;
-            }
-
-            Double h = r / (360000.0 * 10.0);
-            Double m = 60.0 * (h - (Int32)h);
-            Double s = 60.0 * (m - (Int32)m);
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (Int32)h, (Int32)m, s, dir);
-        }
-
         private static String ToTime(UInt32 r, Char below, Char above)
         {
             UInt32 mid = 2147483648; // 2^31
-            Char dir = '?';
+            Char dir;
             if (r > mid)
             {
                 dir = above;

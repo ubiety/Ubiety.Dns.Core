@@ -205,14 +205,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordAAAA in Response.Answers
         /// </summary>
-        public RecordAAAA[] RecordsAAAA
+        public RecordAaaa[] RecordsAAAA
         {
             get
             {
-                List<RecordAAAA> list = new List<RecordAAAA>();
+                List<RecordAaaa> list = new List<RecordAaaa>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordAAAA record = answerRR.Record as RecordAAAA;
+                    RecordAaaa record = answerRR.Record as RecordAaaa;
                     if (record != null)
                         list.Add(record);
                 }

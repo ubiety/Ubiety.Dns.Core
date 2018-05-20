@@ -35,7 +35,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets or sets the text
         /// </summary>
-        public String Text;
+        public String Text { get; set; }
 
         /// <summary>
         ///     String representation of the record data

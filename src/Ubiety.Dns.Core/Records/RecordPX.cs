@@ -43,14 +43,14 @@ using System;
 
    PREFERENCE   A 16 bit integer which specifies the preference given to
                 this RR among others at the same owner.  Lower values
-                are preferred;
+                are preferred
 
    MAP822       A <domain-name> element containing <rfc822-domain>, the
-                RFC822 part of the MCGAM;
+                RFC822 part of the MCGAM
 
    MAPX400      A <domain-name> element containing the value of
                 <x400-in-domain-syntax> derived from the X.400 part of
-                the MCGAM (see sect. 4.2);
+                the MCGAM (see sect. 4.2)
 
    PX records cause no additional section processing. The PX RR format
    is the usual one:

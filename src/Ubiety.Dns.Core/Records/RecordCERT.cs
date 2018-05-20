@@ -22,7 +22,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordCert : Record
     {
-        private Byte[] rawKey;
+        private readonly Byte[] rawKey;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordCert" /> class

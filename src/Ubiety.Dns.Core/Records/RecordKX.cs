@@ -72,11 +72,11 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Compares instance to an object
         /// </summary>
-        /// <param name="objA">Object to compare to</param>
+        /// <param name="obj">Object to compare to</param>
         /// <returns>Integer representing the comparison</returns>
-        public Int32 CompareTo(Object objA)
+        public Int32 CompareTo(Object obj)
         {
-            RecordKx recordKX = objA as RecordKx;
+            RecordKx recordKX = obj as RecordKx;
             if (recordKX == null)
             {
                 return -1;

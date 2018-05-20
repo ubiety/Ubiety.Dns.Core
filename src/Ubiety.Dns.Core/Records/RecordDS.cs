@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordDs : Record
     {
-        private Byte[] digest;
+        private readonly Byte[] digest;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordDs" /> class

@@ -24,7 +24,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordA : Record
     {
-        private String address;
+        private readonly String address;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordA" /> class
