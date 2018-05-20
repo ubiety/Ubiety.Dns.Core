@@ -1,8 +1,9 @@
 using System;
 using System.Globalization;
+
 /*
 * http://tools.ietf.org/rfc/rfc2930.txt
-* 
+*
 2. The TKEY Resource Record
 
 The TKEY resource record (RR) has the structure given below.  Its RR
@@ -27,12 +28,29 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Transaction key DNS resource record
     /// </summary>
-    public class RecordTKEY : Record
+    public class RecordTkey : Record
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordTkey" /> class
+        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordTkey(RecordReader rr)
+        {
+            this.Algorithm = rr.ReadDomainName();
+            this.Inception = rr.ReadUInt32();
+            this.Expiration = rr.ReadUInt32();
+            this.Mode = rr.ReadUInt16();
+            this.Error = rr.ReadUInt16();
+            this.KeySize = rr.ReadUInt16();
+            this.KeyData = rr.ReadBytes(this.KeySize);
+            this.OtherSize = rr.ReadUInt16();
+            this.OtherData = rr.ReadBytes(this.OtherSize);
+        }
+
         /// <summary>
         ///     Gets the key algorithm
         /// </summary>
-        public string Algorithm { get; }
+        public String Algorithm { get; }
 
         /// <summary>
         ///     Gets the inception time of the key
@@ -75,25 +93,13 @@ namespace Ubiety.Dns.Core.Records
         public byte[] OtherData { get; }
 
         /// <summary>
+        ///     String representation of the record data
         /// </summary>
-        public RecordTKEY(RecordReader rr)
+        /// <returns>Key data as a string</returns>
+        public override String ToString()
         {
-            this.Algorithm = rr.ReadDomainName();
-            this.Inception = rr.ReadUInt32();
-            this.Expiration = rr.ReadUInt32();
-            this.Mode = rr.ReadUInt16();
-            this.Error = rr.ReadUInt16();
-            this.KeySize = rr.ReadUInt16();
-            this.KeyData = rr.ReadBytes(this.KeySize);
-            this.OtherSize = rr.ReadUInt16();
-            this.OtherData = rr.ReadBytes(this.OtherSize);
-        }
-
-        /// <summary>
-        /// </summary>
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture,
+            return string.Format(
+                CultureInfo.InvariantCulture,
                 "{0} {1} {2} {3} {4}",
                 this.Algorithm,
                 this.Inception,
@@ -101,6 +107,5 @@ namespace Ubiety.Dns.Core.Records
                 this.Mode,
                 this.Error);
         }
-
     }
 }

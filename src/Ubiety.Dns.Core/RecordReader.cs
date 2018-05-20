@@ -182,7 +182,7 @@ namespace Ubiety.Dns.Core
                 case RecordType.A:
                     return new RecordA(this);
                 case RecordType.NS:
-                    return new RecordNS(this);
+                    return new RecordNs(this);
                 case RecordType.MD:
                     return new RecordMd(this);
                 case RecordType.MF:
@@ -190,29 +190,29 @@ namespace Ubiety.Dns.Core
                 case RecordType.CNAME:
                     return new RecordCname(this);
                 case RecordType.SOA:
-                    return new RecordSOA(this);
+                    return new RecordSoa(this);
                 case RecordType.MB:
-                    return new RecordMB(this);
+                    return new RecordMb(this);
                 case RecordType.MG:
-                    return new RecordMG(this);
+                    return new RecordMg(this);
                 case RecordType.MR:
-                    return new RecordMR(this);
+                    return new RecordMr(this);
                 case RecordType.NULL:
-                    return new RecordNULL(this);
+                    return new RecordNull(this);
                 case RecordType.WKS:
-                    return new RecordWKS(this);
+                    return new RecordWks(this);
                 case RecordType.PNTR:
-                    return new RecordPTR(this);
+                    return new RecordPtr(this);
                 case RecordType.HINFO:
                     return new RecordHinfo(this);
                 case RecordType.MINFO:
-                    return new RecordMINFO(this);
+                    return new RecordMinfo(this);
                 case RecordType.MX:
-                    return new RecordMX(this);
+                    return new RecordMx(this);
                 case RecordType.TXT:
-                    return new RecordTXT(this);
+                    return new RecordTxt(this);
                 case RecordType.RP:
-                    return new RecordRP(this);
+                    return new RecordRp(this);
                 case RecordType.AFSDB:
                     return new RecordAfsdb(this);
                 case RecordType.X25:
@@ -220,17 +220,17 @@ namespace Ubiety.Dns.Core
                 case RecordType.ISDN:
                     return new RecordIsdn(this);
                 case RecordType.RT:
-                    return new RecordRT(this);
+                    return new RecordRt(this);
                 case RecordType.NSAP:
-                    return new RecordNSAP(this);
+                    return new RecordNsap(this);
                 case RecordType.NSAPPTR:
                     return new RecordNsapPtr(this);
                 case RecordType.SIG:
-                    return new RecordSIG(this);
+                    return new RecordSig(this);
                 case RecordType.KEY:
                     return new RecordKey(this);
                 case RecordType.PX:
-                    return new RecordPX(this);
+                    return new RecordPx(this);
                 case RecordType.GPOS:
                     return new RecordGpos(this);
                 case RecordType.AAAA:
@@ -244,11 +244,11 @@ namespace Ubiety.Dns.Core
                 case RecordType.NIMLOC:
                     return new RecordNimloc(this);
                 case RecordType.SRV:
-                    return new RecordSRV(this);
+                    return new RecordSrv(this);
                 case RecordType.ATMA:
                     return new RecordAtma(this);
                 case RecordType.NAPTR:
-                    return new RecordNAPTR(this);
+                    return new RecordNaptr(this);
                 case RecordType.KX:
                     return new RecordKx(this);
                 case RecordType.CERT:
@@ -294,9 +294,9 @@ namespace Ubiety.Dns.Core
                 case RecordType.UNSPEC:
                     return new RecordUnspec(this);
                 case RecordType.TKEY:
-                    return new RecordTKEY(this);
+                    return new RecordTkey(this);
                 case RecordType.TSIG:
-                    return new RecordTSIG(this);
+                    return new RecordTsig(this);
                 default:
                     return new RecordUnknown(this);
             }

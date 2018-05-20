@@ -1,4 +1,5 @@
 using System;
+
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
 2.2. The Responsible Person RR
@@ -31,34 +32,38 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordRP : Record
+    /// <summary>
+    ///     Responsible person DNS record
+    /// </summary>
+    public class RecordRp : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordRp" /> class
         /// </summary>
-        public string MBOXDNAME;
-        /// <summary>
-        /// </summary>
-        public string TXTDNAME;
-
-        /// <summary>
-        /// </summary>
-        public RecordRP(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordRp(RecordReader rr)
         {
-            //MBOXDNAME = rr.ReadString();
-            MBOXDNAME = rr.ReadDomainName();
-            TXTDNAME = rr.ReadDomainName();
+            this.MailboxDomain = rr.ReadDomainName();
+            this.TxtDomain = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the mailbox domain
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1}",
-                MBOXDNAME,
-                TXTDNAME);
-        }
+        public String MailboxDomain { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the text domain
+        /// </summary>
+        public String TxtDomain { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Domains as a string</returns>
+        public override String ToString()
+        {
+            return $"{this.MailboxDomain} {this.TxtDomain}";
+        }
     }
 }

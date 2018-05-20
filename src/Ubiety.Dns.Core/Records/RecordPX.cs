@@ -1,7 +1,8 @@
 using System;
-/* 
+
+/*
  * http://tools.ietf.org/rfc/rfc2163.txt
- * 
+ *
 4. The new DNS resource record for MIXER mapping rules: PX
 
    The specification of the Internet DNS (RFC1035) provides a number of
@@ -66,44 +67,48 @@ using System;
    MAP822 and MAPX400, as <domain-name> elements, must have the final
    "." (root) when they are fully qualified.
 
-
-
  */
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordPX : Record
+    /// <summary>
+    ///     PX DNS record
+    /// </summary>
+    public class RecordPx : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordPx" /> class
         /// </summary>
-        public UInt16 PREFERENCE;
-        /// <summary>
-        /// </summary>
-        public string MAP822;
-        /// <summary>
-        /// </summary>
-        public string MAPX400;
-
-        /// <summary>
-        /// </summary>
-        public RecordPX(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordPx(RecordReader rr)
         {
-            PREFERENCE = rr.ReadUInt16();
-            MAP822 = rr.ReadDomainName();
-            MAPX400 = rr.ReadDomainName();
+            this.Preference = rr.ReadUInt16();
+            this.Map822 = rr.ReadDomainName();
+            this.MapX400 = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the preference
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1} {2}",
-                PREFERENCE,
-                MAP822,
-                MAPX400);
-        }
+        public UInt16 Preference { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the map to 822
+        /// </summary>
+        public String Map822 { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the map to X.400
+        /// </summary>
+        public String MapX400 { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Mappings as a string</returns>
+        public override String ToString()
+        {
+            return $"{this.Preference} {this.Map822} {this.MapX400}";
+        }
     }
 }

@@ -69,57 +69,68 @@ change the SOA RR with known semantics.
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordSOA : Record
+    /// <summary>
+    ///     DNS Start of Authority record
+    /// </summary>
+    public class RecordSoa : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordSoa" /> class
         /// </summary>
-        public string MNAME;
-        /// <summary>
-        /// </summary>
-        public string RNAME;
-        /// <summary>
-        /// </summary>
-        public uint SERIAL;
-        /// <summary>
-        /// </summary>
-        public uint REFRESH;
-        /// <summary>
-        /// </summary>
-        public uint RETRY;
-        /// <summary>
-        /// </summary>
-        public uint EXPIRE;
-        /// <summary>
-        /// </summary>
-        public uint MINIMUM;
-
-        /// <summary>
-        /// </summary>
-        public RecordSOA(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordSoa(RecordReader rr)
         {
-            MNAME = rr.ReadDomainName();
-            RNAME = rr.ReadDomainName();
-            SERIAL = rr.ReadUInt32();
-            REFRESH = rr.ReadUInt32();
-            RETRY = rr.ReadUInt32();
-            EXPIRE = rr.ReadUInt32();
-            MINIMUM = rr.ReadUInt32();
+            this.PrimaryNameserver = rr.ReadDomainName();
+            this.ResponsibleDomain = rr.ReadDomainName();
+            this.Serial = rr.ReadUInt32();
+            this.Refresh = rr.ReadUInt32();
+            this.Retry = rr.ReadUInt32();
+            this.Expire = rr.ReadUInt32();
+            this.Minimum = rr.ReadUInt32();
         }
 
         /// <summary>
+        ///     Gets or sets the primary nameserver
         /// </summary>
+        public String PrimaryNameserver { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the responsible domain
+        /// </summary>
+        public String ResponsibleDomain { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the serial
+        /// </summary>
+        public UInt32 Serial { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the refresh interval
+        /// </summary>
+        public UInt32 Refresh { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the retry interval
+        /// </summary>
+        public UInt32 Retry { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the expiration time
+        /// </summary>
+        public UInt32 Expire { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the minimum TTL
+        /// </summary>
+        public UInt32 Minimum { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Record data as the string</returns>
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3} {4} {5} {6}",
-                MNAME,
-                RNAME,
-                SERIAL,
-                REFRESH,
-                RETRY,
-                EXPIRE,
-                MINIMUM);
+            return $"{this.PrimaryNameserver} {this.ResponsibleDomain} {this.Serial} {this.Refresh} {this.Retry} {this.Expire} {this.Minimum}";
         }
     }
 }

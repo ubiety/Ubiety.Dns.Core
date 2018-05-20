@@ -1,4 +1,5 @@
 using System;
+
 /*
  3.3.7. MINFO RDATA format (EXPERIMENTAL)
 
@@ -30,33 +31,41 @@ MINFO records cause no additional section processing.  Although these
 records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
+
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordMINFO : Record
+    /// <summary>
+    ///     Mail list DNS record
+    /// </summary>
+    public class RecordMinfo : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordMinfo" /> class
         /// </summary>
-        public string RMAILBX;
-        /// <summary>
-        /// </summary>
-        public string EMAILBX;
-
-        /// <summary>
-        /// </summary>
-        public RecordMINFO(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordMinfo(RecordReader rr)
         {
-            RMAILBX = rr.ReadDomainName();
-            EMAILBX = rr.ReadDomainName();
+            this.ResponsibleMailbox = rr.ReadDomainName();
+            this.ErrorMailbox = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the responsible mailbox
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1}",RMAILBX,EMAILBX);
-        }
+        public String ResponsibleMailbox { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the error mailbox
+        /// </summary>
+        public String ErrorMailbox { get; set; }
+
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>String version of the domains</returns>
+        public override String ToString()
+        {
+            return $"{this.ResponsibleMailbox} {this.ErrorMailbox}";
+        }
     }
 }

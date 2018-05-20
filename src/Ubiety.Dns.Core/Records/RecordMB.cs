@@ -1,4 +1,5 @@
 using System;
+
 /*
 3.3.3. MB RDATA format (EXPERIMENTAL)
 
@@ -15,29 +16,35 @@ MADNAME         A <domain-name> which specifies a host which has the
 MB records cause additional section processing which looks up an A type
 RRs corresponding to MADNAME.
 */
+
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordMB : Record
+    /// <summary>
+    ///     Mailbox DNS record
+    /// </summary>
+    public class RecordMb : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordMb" /> class
         /// </summary>
-        public string MADNAME;
-
-        /// <summary>
-        /// </summary>
-        public RecordMB(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordMb(RecordReader rr)
         {
-            MADNAME = rr.ReadDomainName();
+            this.MadName = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the mailbox domain
         /// </summary>
-        public override string ToString()
-        {
-            return MADNAME;
-        }
+        public String MadName { get; set; }
 
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>String version of the domain</returns>
+        public override String ToString()
+        {
+            return this.MadName;
+        }
     }
 }

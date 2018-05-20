@@ -48,53 +48,53 @@ or decimal numbers.
 */
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        ///     DNS well known services record
-        /// </summary>
-    public class RecordWKS : Record
+    /// <summary>
+    ///     DNS well known services record
+    /// </summary>
+    public class RecordWks : Record
     {
         /// <summary>
-        ///     Address of the server
-        /// </summary>
-        public string Address { get; set; }
-
-        /// <summary>
-        ///     Protocol of the service
-        /// </summary>
-        public int Protocol { get; set; }
-
-        /// <summary>
-        ///     Service bitmap
-        /// </summary>
-        public byte[] Bitmap { get; set; }
-
-        /// <summary>
-        ///     Intializes a new instance of the <see cref="RecordWKS" /> class
+        ///     Intializes a new instance of the <see cref="RecordWks" /> class
         /// </summary>
         /// <param name="rr">Record reader for record data</param>
-        public RecordWKS(RecordReader rr)
+        public RecordWks(RecordReader rr)
         {
-            ushort length = rr.ReadUInt16(-2);
-            this.Address = string.Format(CultureInfo.InvariantCulture,
+            UInt16 length = rr.ReadUInt16(-2);
+            this.Address = string.Format(
+                CultureInfo.InvariantCulture,
                 "{0}.{1}.{2}.{3}",
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte());
-            this.Protocol = (int)rr.ReadByte();
+            this.Protocol = (Int32)rr.ReadByte();
             length -= 5;
-            this.Bitmap = new byte[length];
+            this.Bitmap = new Byte[length];
             this.Bitmap = rr.ReadBytes(length);
         }
+
+        /// <summary>
+        ///     Address of the server
+        /// </summary>
+        public String Address { get; set; }
+
+        /// <summary>
+        ///     Protocol of the service
+        /// </summary>
+        public Int32 Protocol { get; set; }
+
+        /// <summary>
+        ///     Service bitmap
+        /// </summary>
+        public Byte[] Bitmap { get; set; }
 
         /// <summary>
         ///     Return a string of the well known service record
         /// </summary>
         /// <returns>String of the record</returns>
-        public override string ToString()
+        public override String ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "{0} {1}", this.Address, this.Protocol);
         }
-
     }
 }

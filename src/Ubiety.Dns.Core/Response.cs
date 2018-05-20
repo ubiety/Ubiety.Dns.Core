@@ -114,14 +114,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordMX in Response.Answers
         /// </summary>
-        public RecordMX[] RecordsMX
+        public RecordMx[] RecordsMX
         {
             get
             {
-                List<RecordMX> list = new List<RecordMX>();
+                List<RecordMx> list = new List<RecordMx>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordMX record = answerRR.Record as RecordMX;
+                    RecordMx record = answerRR.Record as RecordMx;
                     if(record!=null)
                         list.Add(record);
                 }
@@ -133,14 +133,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordTXT in Response.Answers
         /// </summary>
-        public RecordTXT[] RecordsTXT
+        public RecordTxt[] RecordsTXT
         {
             get
             {
-                List<RecordTXT> list = new List<RecordTXT>();
+                List<RecordTxt> list = new List<RecordTxt>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordTXT record = answerRR.Record as RecordTXT;
+                    RecordTxt record = answerRR.Record as RecordTxt;
                     if (record != null)
                         list.Add(record);
                 }
@@ -169,14 +169,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordPTR in Response.Answers
         /// </summary>
-        public RecordPTR[] RecordsPTR
+        public RecordPtr[] RecordsPTR
         {
             get
             {
-                List<RecordPTR> list = new List<RecordPTR>();
+                List<RecordPtr> list = new List<RecordPtr>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordPTR record = answerRR.Record as RecordPTR;
+                    RecordPtr record = answerRR.Record as RecordPtr;
                     if (record != null)
                         list.Add(record);
                 }
@@ -223,14 +223,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordNS in Response.Answers
         /// </summary>
-        public RecordNS[] RecordsNS
+        public RecordNs[] RecordsNS
         {
             get
             {
-                List<RecordNS> list = new List<RecordNS>();
+                List<RecordNs> list = new List<RecordNs>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordNS record = answerRR.Record as RecordNS;
+                    RecordNs record = answerRR.Record as RecordNs;
                     if (record != null)
                         list.Add(record);
                 }
@@ -241,14 +241,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         /// List of RecordSOA in Response.Answers
         /// </summary>
-        public RecordSOA[] RecordsSOA
+        public RecordSoa[] RecordsSOA
         {
             get
             {
-                List<RecordSOA> list = new List<RecordSOA>();
+                List<RecordSoa> list = new List<RecordSoa>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordSOA record = answerRR.Record as RecordSOA;
+                    RecordSoa record = answerRR.Record as RecordSoa;
                     if (record != null)
                         list.Add(record);
                 }
@@ -275,15 +275,16 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
+        ///     List of SRV records
         /// </summary>
-        public RecordSRV[] RecordsSRV
+        public RecordSrv[] RecordsSRV
         {
             get
             {
-                List<RecordSRV> list = new List<RecordSRV>();
+                List<RecordSrv> list = new List<RecordSrv>();
                 foreach (AnswerRR answerRR in this.Answers)
                 {
-                    RecordSRV record = answerRR.Record as RecordSRV;
+                    RecordSrv record = answerRR.Record as RecordSrv;
                     if (record != null)
                         list.Add(record);
                 }
@@ -292,6 +293,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
+        ///     List of resource records
         /// </summary>
         public ResourceRecord[] RecordsRR
         {
@@ -317,7 +319,5 @@ namespace Ubiety.Dns.Core
                 return list.ToArray();
             }
         }
-
-
     }
 }

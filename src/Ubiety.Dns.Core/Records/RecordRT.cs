@@ -1,4 +1,5 @@
 using System;
+
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
 3.3. The Route Through RR
@@ -54,33 +55,38 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordRT : Record
+    /// <summary>
+    ///     Route through DNS record
+    /// </summary>
+    public class RecordRt : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordRt" /> class
         /// </summary>
-        public ushort PREFERENCE;
-        /// <summary>
-        /// </summary>
-        public string INTERMEDIATEHOST;
-
-        /// <summary>
-        /// </summary>
-        public RecordRT(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordRt(RecordReader rr)
         {
-            PREFERENCE = rr.ReadUInt16();
-            INTERMEDIATEHOST = rr.ReadDomainName();
+            this.Preference = rr.ReadUInt16();
+            this.IntermediateHost = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the route preference
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1}",
-                PREFERENCE,
-                INTERMEDIATEHOST);
-        }
+        public UInt16 Preference { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the intermediate host
+        /// </summary>
+        public String IntermediateHost { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Preference and host as a string</returns>
+        public override String ToString()
+        {
+            return $"{this.Preference} {this.IntermediateHost}";
+        }
     }
 }

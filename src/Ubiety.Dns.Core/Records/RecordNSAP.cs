@@ -1,9 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
+
 /*
- * http://tools.ietf.org/rfc/rfc1348.txt  
+ * http://tools.ietf.org/rfc/rfc1348.txt
  * http://tools.ietf.org/html/rfc1706
- * 
+ *
  *              |--------------|
               | <-- IDP -->  |
               |--------------|-------------------------------------|
@@ -28,57 +31,72 @@ using System.Text;
 
                   Figure 1: GOSIP Version 2 NSAP structure.
 
-
  */
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordNSAP : Record
+    /// <summary>
+    ///     Network service access point DNS record
+    /// </summary>
+    public class RecordNsap : Record
     {
-        /// <summary>
-        /// </summary>
-        public ushort LENGTH;
-        /// <summary>
-        /// </summary>
-        public byte[] NSAPADDRESS;
+        private readonly Byte[] address;
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNsap" /> class
         /// </summary>
-        public RecordNSAP(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordNsap(RecordReader rr)
         {
-            LENGTH = rr.ReadUInt16();
-            NSAPADDRESS = rr.ReadBytes(LENGTH);
+            this.Length = rr.ReadUInt16();
+            this.address = rr.ReadBytes(this.Length);
         }
 
         /// <summary>
+        ///     Gets or sets the length
         /// </summary>
-        public override string ToString()
+        public UInt16 Length { get; set; }
+
+        /// <summary>
+        ///     Gets the address as a byte collection
+        /// </summary>
+        public Collection<Byte> NsapAddress { get => new Collection<Byte>(this.address); }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>NSAP address as a string</returns>
+        public override String ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0} ", LENGTH);
-            for (int intI = 0; intI < NSAPADDRESS.Length; intI++)
-                sb.AppendFormat("{0:X00}", NSAPADDRESS[intI]);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "{0} ", this.Length);
+            for (Int32 i = 0; i < this.address.Length; i++)
+            {
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X00}", this.address[i]);
+            }
+
             return sb.ToString();
         }
 
         /// <summary>
+        ///     Converts the address to a readable string
         /// </summary>
-        public string ToGOSIPV2()
+        /// <returns>String of the address in IPv2 format</returns>
+        public String ToGOSIPV2()
         {
-            return string.Format("{0:X}.{1:X}.{2:X}.{3:X}.{4:X}.{5:X}.{6:X}{7:X}.{8:X}",
-                NSAPADDRESS[0],                            // AFI
-                NSAPADDRESS[1]  << 8  | NSAPADDRESS[2],    // IDI
-                NSAPADDRESS[3],                            // DFI
-                NSAPADDRESS[4]  << 16 | NSAPADDRESS[5] << 8 | NSAPADDRESS[6], // AA
-                NSAPADDRESS[7]  << 8  | NSAPADDRESS[8],    // Rsvd
-                NSAPADDRESS[9]  << 8  | NSAPADDRESS[10],// RD
-                NSAPADDRESS[11] << 8  | NSAPADDRESS[12],// Area
-                NSAPADDRESS[13] << 16 | NSAPADDRESS[14] << 8 | NSAPADDRESS[15], // ID-High
-                NSAPADDRESS[16] << 16 | NSAPADDRESS[17] << 8 | NSAPADDRESS[18], // ID-Low
-                NSAPADDRESS[19]);
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "{0:X}.{1:X}.{2:X}.{3:X}.{4:X}.{5:X}.{6:X}{7:X}.{8:X}",
+                this.address[0],
+                this.address[1] << 8 | this.address[2],
+                this.address[3],
+                this.address[4] << 16 | this.address[5] << 8 | this.address[6],
+                this.address[7] << 8 | this.address[8],
+                this.address[9] << 8 | this.address[10],
+                this.address[11] << 8 | this.address[12],
+                this.address[13] << 16 | this.address[14] << 8 | this.address[15],
+                this.address[16] << 16 | this.address[17] << 8 | this.address[18],
+                this.address[19]);
         }
-
     }
 }

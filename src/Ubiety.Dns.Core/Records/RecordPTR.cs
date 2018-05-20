@@ -1,4 +1,5 @@
 using System;
+
 /*
  3.3.12. PTR RDATA format
 
@@ -20,27 +21,32 @@ description of the IN-ADDR.ARPA domain for an example.
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordPTR : Record
+    /// <summary>
+    ///     Pointer DNS record
+    /// </summary>
+    public class RecordPtr : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordPtr" /> class
         /// </summary>
-        public string PTRDNAME;
-
-        /// <summary>
-        /// </summary>
-        public RecordPTR(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordPtr(RecordReader rr)
         {
-            PTRDNAME = rr.ReadDomainName();
+            this.PointerDomain = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the pointer domain
         /// </summary>
+        public String PointerDomain { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Pointer domain as a string</returns>
         public override string ToString()
         {
-            return PTRDNAME;
+            return this.PointerDomain;
         }
-
     }
 }

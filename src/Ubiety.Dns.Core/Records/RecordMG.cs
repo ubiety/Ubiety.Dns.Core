@@ -1,4 +1,5 @@
 using System;
+
 /*
 3.3.6. MG RDATA format (EXPERIMENTAL)
 
@@ -14,29 +15,35 @@ MGMNAME         A <domain-name> which specifies a mailbox which is a
 
 MG records cause no additional section processing.
 */
+
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordMG : Record
+    /// <summary>
+    ///     Mail group DNS record
+    /// </summary>
+    public class RecordMg : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordMg" /> class
         /// </summary>
-        public string MGMNAME;
-
-        /// <summary>
-        /// </summary>
-        public RecordMG(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordMg(RecordReader rr)
         {
-            MGMNAME = rr.ReadDomainName();
+            this.MgmName = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the mail group name
         /// </summary>
-        public override string ToString()
-        {
-            return MGMNAME;
-        }
+        public String MgmName { get; set; }
 
+        /// <summary>
+        ///     String representation of the record
+        /// </summary>
+        /// <returns>Mail group name as a string</returns>
+        public override String ToString()
+        {
+            return this.MgmName;
+        }
     }
 }

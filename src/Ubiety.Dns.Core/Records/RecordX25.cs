@@ -1,4 +1,5 @@
 using System;
+
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
 3.1. The X25 RR
@@ -32,28 +33,32 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
+    /// <summary>
+    ///     X25 DNS record
+    /// </summary>
     public class RecordX25 : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordX25" /> class
         /// </summary>
-        public string PSDNADDRESS;
-
-        /// <summary>
-        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordX25(RecordReader rr)
         {
-            PSDNADDRESS = rr.ReadString();
+            this.PSDNAdress = rr.ReadString();
         }
 
         /// <summary>
+        ///     Gets or sets the PSDN address
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0}",
-                PSDNADDRESS);
-        }
+        public String PSDNAdress { get; set; }
 
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>PSDN address as a string</returns>
+        public override String ToString()
+        {
+            return this.PSDNAdress;
+        }
     }
 }

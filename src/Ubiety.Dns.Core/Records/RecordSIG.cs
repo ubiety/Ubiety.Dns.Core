@@ -6,8 +6,25 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     DNS signature record
     /// </summary>
-    public class RecordSIG : Record
+    public class RecordSig : Record
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordSig" /> class
+        /// </summary>
+        /// <param name="rr">Record reader for the record data</param>
+        public RecordSig(RecordReader rr)
+        {
+            this.TypeCovered = rr.ReadUInt16();
+            this.Algorithm = rr.ReadByte();
+            this.Labels = rr.ReadByte();
+            this.OriginalTTL = rr.ReadUInt32();
+            this.SignatureExpiration = rr.ReadUInt32();
+            this.SignatureInception = rr.ReadUInt32();
+            this.KeyTag = rr.ReadUInt16();
+            this.SignersName = rr.ReadDomainName();
+            this.Signature = rr.ReadString();
+        }
+
         /// <summary>
         ///     Gets or sets the type covered
         /// </summary>
@@ -54,29 +71,13 @@ namespace Ubiety.Dns.Core.Records
         public string Signature { get; set; }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordSIG" /> class
-        /// </summary>
-        /// <param name="rr">Record reader for the record data</param>
-        public RecordSIG(RecordReader rr)
-        {
-            this.TypeCovered = rr.ReadUInt16();
-            this.Algorithm = rr.ReadByte();
-            this.Labels = rr.ReadByte();
-            this.OriginalTTL = rr.ReadUInt32();
-            this.SignatureExpiration = rr.ReadUInt32();
-            this.SignatureInception = rr.ReadUInt32();
-            this.KeyTag = rr.ReadUInt16();
-            this.SignersName = rr.ReadDomainName();
-            this.Signature = rr.ReadString();
-        }
-
-        /// <summary>
         ///     Get a string version of the record
         /// </summary>
         /// <returns>String of the record</returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture,
+            return string.Format(
+                CultureInfo.InvariantCulture,
                 "{0} {1} {2} {3} {4} {5} {6} {7} \"{8}\"",
                 this.TypeCovered,
                 this.Algorithm,
@@ -88,6 +89,5 @@ namespace Ubiety.Dns.Core.Records
                 this.SignersName,
                 this.Signature);
         }
-
     }
 }

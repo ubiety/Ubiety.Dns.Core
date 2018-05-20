@@ -1,4 +1,5 @@
 using System;
+
 /*
  3.3.11. NS RDATA format
 
@@ -23,29 +24,35 @@ with the host, although it is typically a strong hint.  For example,
 hosts which are name servers for either Internet (IN) or Hesiod (HS)
 class information are normally queried using IN class protocols.
  */
+
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordNS : Record
+    /// <summary>
+    ///     Nameserver DNS record
+    /// </summary>
+    public class RecordNs : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNs" /> class
         /// </summary>
-        public string NSDNAME;
-
-        /// <summary>
-        /// </summary>
-        public RecordNS(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordNs(RecordReader rr)
         {
-            NSDNAME = rr.ReadDomainName();
+            this.NameserverDomain = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the nameserver domain
         /// </summary>
-        public override string ToString()
-        {
-            return NSDNAME;
-        }
+        public String NameserverDomain { get; set; }
 
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Nameserver domain as a string</returns>
+        public override String ToString()
+        {
+            return this.NameserverDomain;
+        }
     }
 }

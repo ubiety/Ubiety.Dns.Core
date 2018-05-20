@@ -1,4 +1,6 @@
 using System;
+using System.Collections.ObjectModel;
+
 /*
 3.3.10. NULL RDATA format (EXPERIMENTAL)
 
@@ -14,33 +16,40 @@ NULL records cause no additional section processing.  NULL RRs are not
 allowed in master files.  NULLs are used as placeholders in some
 experimental extensions of the DNS.
 */
+
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordNULL : Record
+    /// <summary>
+    ///     Null DNS record
+    /// </summary>
+    public class RecordNull : Record
     {
-        /// <summary>
-        /// </summary>
-        public byte[] ANYTHING;
+        private readonly Byte[] data;
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNull" /> class
         /// </summary>
-        public RecordNULL(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordNull(RecordReader rr)
         {
             rr.Position -= 2;
-            // re-read length
-            ushort RDLENGTH = rr.ReadUInt16();
-            ANYTHING = new byte[RDLENGTH];
-            ANYTHING = rr.ReadBytes(RDLENGTH);
+            UInt16 recordLength = rr.ReadUInt16();
+            this.data = new Byte[recordLength];
+            this.data = rr.ReadBytes(recordLength);
         }
 
         /// <summary>
+        ///     Gets the record data
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("...binary data... ({0}) bytes",ANYTHING.Length);
-        }
+        public Collection<Byte> Data { get => new Collection<Byte>(this.data); }
 
+        /// <summary>
+        ///     String representation of the data
+        /// </summary>
+        /// <returns>Record data as a string</returns>
+        public override String ToString()
+        {
+            return $"...binary data... ({this.data.Length}) bytes";
+        }
     }
 }

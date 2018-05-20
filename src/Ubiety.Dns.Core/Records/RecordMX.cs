@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -26,46 +27,65 @@ namespace Ubiety.Dns.Core.Records
     [RFC-974].
     */
 
-        /// <summary>
-        /// </summary>
-    public class RecordMX : Record, IComparable
+    /// <summary>
+    ///     Mail exchange DNS record
+    /// </summary>
+    public class RecordMx : Record, IComparable
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordMx" /> class
         /// </summary>
-        public ushort PREFERENCE;
-        /// <summary>
-        /// </summary>
-        public string EXCHANGE;
-
-        /// <summary>
-        /// </summary>
-        public RecordMX(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordMx(RecordReader rr)
         {
-            PREFERENCE = rr.ReadUInt16();
-            EXCHANGE = rr.ReadDomainName();
+            this.Preference = rr.ReadUInt16();
+            this.Exchange = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the preference
         /// </summary>
-        public override string ToString()
+        public UInt16 Preference { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the exchange
+        /// </summary>
+        public String Exchange { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Exchange and preference as a string</returns>
+        public override String ToString()
         {
-            return string.Format("{0} {1}", PREFERENCE, EXCHANGE);
+            return $"{this.Preference} {this.Exchange}";
         }
 
         /// <summary>
+        ///     Compares record to an object
         /// </summary>
+        /// <param name="objA">Object to compare record to</param>
+        /// <returns>Int value of the comparison</returns>
         public int CompareTo(object objA)
         {
-            RecordMX recordMX = objA as RecordMX;
+            RecordMx recordMX = objA as RecordMx;
             if (recordMX == null)
+            {
                 return -1;
-            else if (this.PREFERENCE > recordMX.PREFERENCE)
+            }
+            else if (this.Preference > recordMX.Preference)
+            {
                 return 1;
-            else if (this.PREFERENCE < recordMX.PREFERENCE)
+            }
+            else if (this.Preference < recordMX.Preference)
+            {
                 return -1;
-            else // they are the same, now compare case insensitive names
-                return string.Compare(this.EXCHANGE, recordMX.EXCHANGE, true);
+            }
+            else
+            {
+                // they are the same, now compare case insensitive names
+                return string.Compare(this.Exchange, recordMX.Exchange, true, CultureInfo.InvariantCulture);
+            }
         }
-
     }
 }

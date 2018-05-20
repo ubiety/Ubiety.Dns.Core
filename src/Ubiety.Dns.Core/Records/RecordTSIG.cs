@@ -1,7 +1,9 @@
 using System;
+using System.Globalization;
+
 /*
  * http://www.ietf.org/rfc/rfc2845.txt
- * 
+ *
  * Field Name       Data Type      Notes
       --------------------------------------------------------------
       Algorithm Name   domain-name    Name of the algorithm
@@ -22,67 +24,90 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordTSIG : Record
+    /// <summary>
+    ///     Transaction signature DNS record
+    /// </summary>
+    public class RecordTsig : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordTsig" /> class
         /// </summary>
-        public string ALGORITHMNAME;
-        /// <summary>
-        /// </summary>
-        public long TIMESIGNED;
-        /// <summary>
-        /// </summary>
-        public UInt16 FUDGE;
-        /// <summary>
-        /// </summary>
-        public UInt16 MACSIZE;
-        /// <summary>
-        /// </summary>
-        public byte[] MAC;
-        /// <summary>
-        /// </summary>
-        public UInt16 ORIGINALID;
-        /// <summary>
-        /// </summary>
-        public UInt16 ERROR;
-        /// <summary>
-        /// </summary>
-        public UInt16 OTHERLEN;
-        /// <summary>
-        /// </summary>
-        public byte[] OTHERDATA;
-
-        /// <summary>
-        /// </summary>
-        public RecordTSIG(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordTsig(RecordReader rr)
         {
-            ALGORITHMNAME = rr.ReadDomainName();
-            TIMESIGNED = rr.ReadUInt32() << 32 | rr.ReadUInt32();
-            FUDGE = rr.ReadUInt16();
-            MACSIZE = rr.ReadUInt16();
-            MAC = rr.ReadBytes(MACSIZE);
-            ORIGINALID = rr.ReadUInt16();
-            ERROR = rr.ReadUInt16();
-            OTHERLEN = rr.ReadUInt16();
-            OTHERDATA = rr.ReadBytes(OTHERLEN);
+            this.AlgorithmName = rr.ReadDomainName();
+            this.TimeSigned = rr.ReadUInt32() << 32 | rr.ReadUInt32();
+            this.Fudge = rr.ReadUInt16();
+            this.MacSize = rr.ReadUInt16();
+            this.Mac = rr.ReadBytes(this.MacSize);
+            this.OriginalId = rr.ReadUInt16();
+            this.Error = rr.ReadUInt16();
+            this.OtherLength = rr.ReadUInt16();
+            this.OtherData = rr.ReadBytes(this.OtherLength);
         }
 
         /// <summary>
+        ///     Gets or sets the algorithm name
         /// </summary>
-        public override string ToString()
+        public String AlgorithmName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the time signed
+        /// </summary>
+        public Int64 TimeSigned { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the number of seconds of error
+        /// </summary>
+        public UInt16 Fudge { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the MAC size
+        /// </summary>
+        public UInt16 MacSize { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the MAC
+        /// </summary>
+        public Byte[] Mac { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the original id
+        /// </summary>
+        public UInt16 OriginalId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the record error
+        /// </summary>
+        public UInt16 Error { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the length of other data
+        /// </summary>
+        public UInt16 OtherLength { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the other record data
+        /// </summary>
+        public Byte[] OtherData { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Signature as a string</returns>
+        public override String ToString()
         {
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            dateTime = dateTime.AddSeconds(TIMESIGNED);
-            string printDate = dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString();
-            return string.Format("{0} {1} {2} {3} {4}",
-                ALGORITHMNAME,
+            dateTime = dateTime.AddSeconds(this.TimeSigned);
+            String printDate = dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString();
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "{0} {1} {2} {3} {4}",
+                this.AlgorithmName,
                 printDate,
-                FUDGE,
-                ORIGINALID,
-                ERROR);
+                this.Fudge,
+                this.OriginalId,
+                this.Error);
         }
-
     }
 }

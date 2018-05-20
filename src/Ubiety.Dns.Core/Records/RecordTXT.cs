@@ -1,6 +1,5 @@
 using System;
 
-#region Rfc info
 /*
 3.3.14. TXT RDATA format
 
@@ -16,31 +15,35 @@ TXT RRs are used to hold descriptive text.  The semantics of the text
 depends on the domain where it is found.
  * 
 */
-#endregion
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordTXT : Record
+    /// <summary>
+    ///     Text DNS record
+    /// </summary>
+    public class RecordTxt : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordTxt" /> class
         /// </summary>
-        public string TXT;
-
-        /// <summary>
-        /// </summary>
-        public RecordTXT(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordTxt(RecordReader rr)
         {
-            TXT = rr.ReadString();
+            this.Text = rr.ReadString();
         }
 
         /// <summary>
+        ///     Gets or sets the text
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("\"{0}\"",TXT);
-        }
+        public String Text;
 
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Text as a string</returns>
+        public override String ToString()
+        {
+            return $"\"{this.Text}\"";
+        }
     }
 }

@@ -1,7 +1,8 @@
 using System;
+
 /*
  * http://www.faqs.org/rfcs/rfc2915.html
- * 
+ *
  8. DNS Packet Format
 
          The packet format for the NAPTR record is:
@@ -43,53 +44,62 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordNAPTR : Record
+    /// <summary>
+    ///     NAPTR DNS record
+    /// </summary>
+    public class RecordNaptr : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNaptr" /> class
         /// </summary>
-        public ushort ORDER;
-        /// <summary>
-        /// </summary>
-        public ushort PREFERENCE;
-        /// <summary>
-        /// </summary>
-        public string FLAGS;
-        /// <summary>
-        /// </summary>
-        public string SERVICES;
-        /// <summary>
-        /// </summary>
-        public string REGEXP;
-        /// <summary>
-        /// </summary>
-        public string REPLACEMENT;
-
-        /// <summary>
-        /// </summary>
-        public RecordNAPTR(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        public RecordNaptr(RecordReader rr)
         {
-            ORDER = rr.ReadUInt16();
-            PREFERENCE = rr.ReadUInt16();
-            FLAGS = rr.ReadString();
-            SERVICES = rr.ReadString();
-            REGEXP = rr.ReadString();
-            REPLACEMENT = rr.ReadDomainName();
+            this.Order = rr.ReadUInt16();
+            this.Preference = rr.ReadUInt16();
+            this.Flags = rr.ReadString();
+            this.Services = rr.ReadString();
+            this.Regexp = rr.ReadString();
+            this.Replacement = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the order
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1} \"{2}\" \"{3}\" \"{4}\" {5}",
-                ORDER,
-                PREFERENCE,
-                FLAGS,
-                SERVICES,
-                REGEXP,
-                REPLACEMENT);
-        }
+        public UInt16 Order { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the preference
+        /// </summary>
+        public UInt16 Preference { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the flags
+        /// </summary>
+        public String Flags { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the services
+        /// </summary>
+        public String Services { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the regexp
+        /// </summary>
+        public String Regexp { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the replacement
+        /// </summary>
+        public String Replacement { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Data as a string</returns>
+        public override String ToString()
+        {
+            return $"{this.Order} {this.Preference} \"{this.Flags}\" \"{this.Services}\" \"{this.Regexp}\" {this.Replacement}";
+        }
     }
 }

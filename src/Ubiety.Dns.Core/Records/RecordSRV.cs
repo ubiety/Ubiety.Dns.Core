@@ -1,7 +1,8 @@
 using System;
+
 /*
  *  http://www.ietf.org/rfc/rfc2782.txt
- * 
+ *
    Priority
         The priority of this target host.  A client MUST attempt to
         contact the target host with the lowest-numbered priority it can
@@ -65,43 +66,50 @@ using System;
 
 namespace Ubiety.Dns.Core.Records
 {
-        /// <summary>
-        /// </summary>
-    public class RecordSRV : Record
+    /// <summary>
+    ///     Service DNS record
+    /// </summary>
+    public class RecordSrv : Record
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordSrv" /> class
         /// </summary>
-        public ushort PRIORITY;
-        /// <summary>
-        /// </summary>
-        public ushort WEIGHT;
-        /// <summary>
-        /// </summary>
-        public ushort PORT;
-        /// <summary>
-        /// </summary>
-        public string TARGET;
-
-        /// <summary>
-        /// </summary>
-        public RecordSRV(RecordReader rr)
+        /// <param name="rr"><see cref="RecordReader" /> of the record data</param>
+        public RecordSrv(RecordReader rr)
         {
-            PRIORITY = rr.ReadUInt16();
-            WEIGHT = rr.ReadUInt16();
-            PORT = rr.ReadUInt16();
-            TARGET = rr.ReadDomainName();
+            this.Priority = rr.ReadUInt16();
+            this.Weight = rr.ReadUInt16();
+            this.Port = rr.ReadUInt16();
+            this.Target = rr.ReadDomainName();
         }
 
         /// <summary>
+        ///     Gets or sets the record priority
         /// </summary>
-        public override string ToString()
-        {
-            return string.Format("{0} {1} {2} {3}",
-                PRIORITY,
-                WEIGHT,
-                PORT,
-                TARGET);
-        }
+        public UInt16 Priority { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the record weight
+        /// </summary>
+        public UInt16 Weight { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the service port
+        /// </summary>
+        public UInt16 Port { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the target domain
+        /// </summary>
+        public String Target { get; set; }
+
+        /// <summary>
+        ///     String representation of the record data
+        /// </summary>
+        /// <returns>Record as a string</returns>
+        public override String ToString()
+        {
+            return $"{this.Priority} {this.Weight} {this.Port} {this.Target}";
+        }
     }
 }
