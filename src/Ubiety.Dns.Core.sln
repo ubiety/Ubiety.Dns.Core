@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ubiety.Dns.Core", "Ubiety.Dns.Core\Ubiety.Dns.Core.csproj", "{2C1C1215-D183-47CE-94E5-6F0C29480F79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ubiety.Dns.Test", "Ubiety.Dns.Test\Ubiety.Dns.Test.csproj", "{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{2C1C1215-D183-47CE-94E5-6F0C29480F79}.Release|x64.Build.0 = Release|x64
 		{2C1C1215-D183-47CE-94E5-6F0C29480F79}.Release|x86.ActiveCfg = Release|x86
 		{2C1C1215-D183-47CE-94E5-6F0C29480F79}.Release|x86.Build.0 = Release|x86
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Debug|x64.ActiveCfg = Debug|x64
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Debug|x64.Build.0 = Debug|x64
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Debug|x86.ActiveCfg = Debug|x86
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Debug|x86.Build.0 = Debug|x86
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Release|x64.ActiveCfg = Release|x64
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Release|x64.Build.0 = Release|x64
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Release|x86.ActiveCfg = Release|x86
+		{41F12D3F-4B8C-4714-8B20-A0E62DC3D494}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal
