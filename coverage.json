@@ -1,8 +1,8 @@
 {
-  "SourcePath": "/home/dieter/Projects/Heijden.Dns/",
-  "HitsFile": "/home/dieter/Projects/Heijden.Dns/coverage-hits.txt",
+  "SourcePath": "/home/dieter/Projects/Ubiety.Dns.Core/",
+  "HitsFile": "/home/dieter/Projects/Ubiety.Dns.Core/coverage-hits.txt",
   "ExtraAssemblies": [
-    "/home/dieter/Projects/Heijden.Dns/src/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/MiniCover.HitServices.dll"
+    "/home/dieter/Projects/Ubiety.Dns.Core/test/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/MiniCover.HitServices.dll"
   ],
   "Assemblies": [
     {
@@ -12548,10 +12548,10 @@
       },
       "Locations": [
         {
-          "File": "/home/dieter/Projects/Heijden.Dns/src/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.dll",
-          "BackupFile": "/home/dieter/Projects/Heijden.Dns/src/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.uninstrumented.dll",
-          "PdbFile": "/home/dieter/Projects/Heijden.Dns/src/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.pdb",
-          "BackupPdbFile": "/home/dieter/Projects/Heijden.Dns/src/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.uninstrumented.pdb"
+          "File": "/home/dieter/Projects/Ubiety.Dns.Core/test/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.dll",
+          "BackupFile": "/home/dieter/Projects/Ubiety.Dns.Core/test/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.uninstrumented.dll",
+          "PdbFile": "/home/dieter/Projects/Ubiety.Dns.Core/test/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.pdb",
+          "BackupPdbFile": "/home/dieter/Projects/Ubiety.Dns.Core/test/Ubiety.Dns.Test/bin/Debug/netcoreapp2.0/Ubiety.Dns.Core.uninstrumented.pdb"
         }
       ]
     }
