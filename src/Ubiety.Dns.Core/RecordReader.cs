@@ -13,13 +13,13 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class RecordReader
     {
-        private readonly byte[] data;
+        private readonly Byte[] data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordReader" /> class
         /// </summary>
         /// <param name="data">Byte array of the record</param>
-        public RecordReader(byte[] data)
+        public RecordReader(Byte[] data)
         {
             this.data = data;
             this.Position = 0;
