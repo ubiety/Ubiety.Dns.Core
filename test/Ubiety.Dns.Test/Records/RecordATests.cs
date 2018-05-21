@@ -1,17 +1,17 @@
 using System;
 using System.Net;
+using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Records;
-using Xunit;
 
 namespace Ubiety.Dns.Test.Records
 {
-    public class RecordATest
+    public class RecordATests
     {
         private readonly Byte[] data = new Byte[4];
         private readonly RecordReader reader;
 
-        public RecordATest()
+        public RecordATests()
         {
             data[0] = 192;
             data[1] = 168;
@@ -21,20 +21,18 @@ namespace Ubiety.Dns.Test.Records
             reader = new RecordReader(data);
         }
 
-        [Fact]
         public void TestRecordAddress()
         {
             var a = new RecordA(reader);
 
-            Assert.Equal(IPAddress.Parse("192.168.0.1"), a.Address);
+            a.Address.ShouldBe(IPAddress.Parse("192.168.0.1"));
         }
 
-        [Fact]
         public void TestRecordToString()
         {
             var a = new RecordA(reader);
 
-            Assert.Equal("192.168.0.1", a.ToString());
+            a.ToString().ShouldBe("192.168.0.1");
         }
     }
 }
