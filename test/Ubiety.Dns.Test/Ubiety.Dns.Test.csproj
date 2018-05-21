@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ubiety.Dns.Core\Ubiety.Dns.Core.csproj" />
+    <ProjectReference Include="..\..\src\Ubiety.Dns.Core\Ubiety.Dns.Core.csproj" />
   </ItemGroup>
-
 </Project>
