@@ -32,7 +32,7 @@ namespace Ubiety.Dns.Test.Records.NotUsed
         {
             var a6 = new RecordA6(reader);
 
-            a6.ToString().ShouldBe("RecordA6 is not-used");
+            a6.ToString().ShouldMatch("RecordA6 is not-used");
         }
     }
 }

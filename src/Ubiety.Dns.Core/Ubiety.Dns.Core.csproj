@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.0" />
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.6.0" />
-    <PackageReference Include="Stylecop.Analyzers" Version="1.0.2" />
+    <PackageReference Include="Stylecop.Analyzers" Version="1.0.2" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
