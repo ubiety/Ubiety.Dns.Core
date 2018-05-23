@@ -6,76 +6,118 @@ namespace Ubiety.Dns.Core.Common
     public enum ResponseCode
     {
         /// <summary>
+        ///     No error in query
         /// </summary>
-        NoError = 0,        // No Error                           [RFC1035]
-        /// <summary>
-        /// </summary>
-        FormErr = 1,        // Format Error                       [RFC1035]
-        /// <summary>
-        /// </summary>
-        ServFail = 2,        // Server Failure                     [RFC1035]
-        /// <summary>
-        /// </summary>
-        NXDomain = 3,        // Non-Existent Domain                [RFC1035]
-        /// <summary>
-        /// </summary>
-        NotImp = 4,            // Not Implemented                    [RFC1035]
-        /// <summary>
-        /// </summary>
-        Refused = 5,        // Query Refused                      [RFC1035]
-        /// <summary>
-        /// </summary>
-        YXDomain = 6,        // Name Exists when it should not     [RFC2136]
-        /// <summary>
-        /// </summary>
-        YXRRSet = 7,        // RR Set Exists when it should not   [RFC2136]
-        /// <summary>
-        /// </summary>
-        NXRRSet = 8,        // RR Set that should exist does not  [RFC2136]
-        /// <summary>
-        /// </summary>
-        NotAuth = 9,        // Server Not Authoritative for zone  [RFC2136]
-        /// <summary>
-        /// </summary>
-        NotZone = 10,        // Name not contained in zone         [RFC2136]
+        NoError = 0,
 
         /// <summary>
+        ///     Format error in query
         /// </summary>
-        RESERVED11 = 11,    // Reserved
-        /// <summary>
-        /// </summary>
-        RESERVED12 = 12,    // Reserved
-        /// <summary>
-        /// </summary>
-        RESERVED13 = 13,    // Reserved
-        /// <summary>
-        /// </summary>
-        RESERVED14 = 14,    // Reserved
-        /// <summary>
-        /// </summary>
-        RESERVED15 = 15,    // Reserved
+        FormErr = 1,
 
         /// <summary>
+        ///     Server failure
         /// </summary>
-        BADVERSSIG = 16,    // Bad OPT Version                    [RFC2671]
-                            // TSIG Signature Failure             [RFC2845]
+        ServFail = 2,
+
         /// <summary>
+        ///     Non-Existent Domain
         /// </summary>
-        BADKEY = 17,        // Key not recognized                 [RFC2845]
+        NXDomain = 3,
+
         /// <summary>
+        ///     Not implemented
         /// </summary>
-        BADTIME = 18,        // Signature out of time window       [RFC2845]
+        NotImp = 4,
+
         /// <summary>
+        ///     Query refused
         /// </summary>
-        BADMODE = 19,        // Bad TKEY Mode                      [RFC2930]
+        Refused = 5,
+
         /// <summary>
+        ///     Name exists when it should not
         /// </summary>
-        BADNAME = 20,        // Duplicate key name                 [RFC2930]
+        YXDomain = 6,
+
         /// <summary>
+        ///     RR set exists when it should not
         /// </summary>
-        BADALG = 21,        // Algorithm not supported            [RFC2930]
+        YXRRSet = 7,
+
         /// <summary>
+        ///     RR set that exists does not
         /// </summary>
-        BADTRUNC = 22        // Bad Truncation                     [RFC4635]
+        NXRRSet = 8,
+
+        /// <summary>
+        ///     Server not authoritative for zone
+        /// </summary>
+        NotAuth = 9,
+
+        /// <summary>
+        ///     Name not contained in zone
+        /// </summary>
+        NotZone = 10,
+
+        /// <summary>
+        ///     Reserved
+        /// </summary>
+        RESERVED11 = 11,
+
+        /// <summary>
+        ///     Reserved
+        /// </summary>
+        RESERVED12 = 12,
+
+        /// <summary>
+        ///     Reserved
+        /// </summary>
+        RESERVED13 = 13,
+
+        /// <summary>
+        ///     Reserved
+        /// </summary>
+        RESERVED14 = 14,
+
+        /// <summary>
+        ///     Reserved
+        /// </summary>
+        RESERVED15 = 15,
+
+        /// <summary>
+        ///     Bad OPT version
+        /// </summary>
+        BADVERSSIG = 16,
+
+        /// <summary>
+        ///     Key not recognized
+        /// </summary>
+        BADKEY = 17,
+
+        /// <summary>
+        ///     Signature out of time window
+        /// </summary>
+        BADTIME = 18,
+
+        /// <summary>
+        ///     Bad TKEY mode
+        /// </summary>
+        BADMODE = 19,
+
+        /// <summary>
+        ///     Duplicate key name
+        /// </summary>
+        BADNAME = 20,
+
+        /// <summary>
+        ///     Algorithm not supported
+        /// </summary>
+        BADALG = 21,
+
+        /// <summary>
+        ///     Bad truncation
+        /// </summary>
+        BADTRUNC = 22
     }
 }

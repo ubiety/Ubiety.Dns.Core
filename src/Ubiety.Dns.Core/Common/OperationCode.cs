@@ -1,58 +1,87 @@
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
+    ///     DNS Record OpCode
     /// </summary>
     public enum OperationCode
     {
         /// <summary>
+        ///     Standard DNS Query
         /// </summary>
-        Query = 0,                // a standard query (QUERY)
-        /// <summary>
-        /// </summary>
-        IQUERY = 1,                // OpCode Retired (previously IQUERY - No further [RFC3425]
-                                // assignment of this code available)
-        /// <summary>
-        /// </summary>
-        Status = 2,                // a server status request (STATUS) RFC1035
-        /// <summary>
-        /// </summary>
-        RESERVED3 = 3,            // IANA
+        Query = 0,
 
         /// <summary>
+        ///     Retired IQUERY code
         /// </summary>
-        Notify = 4,                // RFC1996
-        /// <summary>
-        /// </summary>
-        Update = 5,                // RFC2136
+        IQUERY = 1,
 
         /// <summary>
+        ///     Server status request
+        /// </summary>
+        Status = 2,
+
+        /// <summary>
+        ///     Reserved OpCode
+        /// </summary>
+        RESERVED3 = 3,
+
+        /// <summary>
+        ///     Notify OpCode
+        /// </summary>
+        Notify = 4,
+
+        /// <summary>
+        ///     Update OpCode
+        /// </summary>
+        Update = 5,
+
+        /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED6 = 6,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED7 = 7,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED8 = 8,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED9 = 9,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED10 = 10,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED11 = 11,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED12 = 12,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED13 = 13,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED14 = 14,
+
         /// <summary>
+        ///     Reserved
         /// </summary>
         RESERVED15 = 15,
     }
