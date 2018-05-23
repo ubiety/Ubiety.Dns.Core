@@ -5,13 +5,13 @@ namespace Ubiety.Dns.Core.Common
     /// <summary>
     ///     Resource record class
     /// </summary>
-    public enum Class : UInt16
+    public enum OperationClass : UInt16
     {
         /// <summary>
         ///     Internet class
         /// </summary>
         IN = 1,
-        
+
         /// <summary>
         ///     CSNET class
         /// </summary>
