@@ -21,13 +21,30 @@ Teardown(ctx =>
    Information("Finished running tasks.");
 });
 
+var projectDir = Directory("./src/Ubiety.Dns.Core");
+
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
 
+Task("Clean")
+    .Does(() => {
+        DotNetCoreClean(projectDir);
+    });
+
+Task("Restore")
+    .IsDependentOn("Clean")
+    .Does(() => {
+        DotNetCoreRestore(projectDir);
+    });
+
+Task("Build")
+    .IsDependentOn("Restore")
+    .Does(() => {
+        DotNetCoreBuild(projectDir);
+    });
+
 Task("Default")
-.Does(() => {
-   Information("Hello Cake!");
-});
+    .IsDependentOn("Build");
 
 RunTarget(target);
