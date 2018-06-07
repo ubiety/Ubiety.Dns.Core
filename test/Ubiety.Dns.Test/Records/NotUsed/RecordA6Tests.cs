@@ -2,6 +2,7 @@ using System;
 using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Records.NotUsed;
+using Xunit;
 
 namespace Ubiety.Dns.Test.Records.NotUsed
 {
@@ -21,6 +22,7 @@ namespace Ubiety.Dns.Test.Records.NotUsed
             reader = new RecordReader(data, 2);
         }
 
+        [Fact]
         public void TestRecordData()
         {
             var a6 = new RecordA6(reader);
@@ -28,6 +30,7 @@ namespace Ubiety.Dns.Test.Records.NotUsed
             a6.RecordData[0].ShouldBe(data[2]);
         }
 
+        [Fact]
         public void TestToString()
         {
             var a6 = new RecordA6(reader);
