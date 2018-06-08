@@ -15,12 +15,13 @@ var configuration = Argument("configuration", "Debug");
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
 
+SetMiniCoverToolsProject("./tools/tools.csproj");
+
+
 Setup(ctx =>
 {
    // Executed BEFORE the first task.
    Information("Running tasks...");
-
-   SetMiniCoverToolsProject("./tools/tools.csproj");
 });
 
 Teardown(ctx =>
