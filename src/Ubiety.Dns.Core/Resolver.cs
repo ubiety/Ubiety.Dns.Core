@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -18,21 +19,21 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Default DNS port
         /// </summary>
-        public const int DefaultPort = 53;
+        public const Int32 DefaultPort = 53;
 
         private readonly List<IPEndPoint> dnsServers;
-        private readonly IPEndPoint[] defaultDnsServers = 
-            { 
-                new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort), 
-                new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort) 
+        private readonly IPEndPoint[] defaultDnsServers =
+            {
+                new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort),
+                new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort)
             };
 
-        private readonly Dictionary<string,Response> responseCache;
+        private readonly Dictionary<string, Response> responseCache;
 
-        private ushort unique;
-        private bool useCache;
-        private int retries;
-        private int timeout;
+        private UInt16 unique;
+        private Boolean useCache;
+        private Int32 retries;
+        private Int32 timeout;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Resolver" /> class
@@ -40,11 +41,11 @@ namespace Ubiety.Dns.Core
         /// <param name="dnsServers">Set of DNS servers</param>
         public Resolver(IPEndPoint[] dnsServers)
         {
-            this.responseCache = new Dictionary<string, Response>();
+            this.responseCache = new Dictionary<String, Response>();
             this.dnsServers = new List<IPEndPoint>();
             this.dnsServers.AddRange(dnsServers);
 
-            this.unique = (ushort)(new Random()).Next();
+            this.unique = (UInt16)(new Random()).Next();
             this.retries = 3;
             this.timeout = 1;
             this.Recursion = true;
@@ -66,8 +67,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="serverIpAddress">DNS server to use</param>
         /// <param name="serverPortNumber">DNS port to use</param>
-        public Resolver(IPAddress serverIpAddress, int serverPortNumber)
-            : this(new IPEndPoint(serverIpAddress,serverPortNumber))
+        public Resolver(IPAddress serverIpAddress, Int32 serverPortNumber)
+            : this(new IPEndPoint(serverIpAddress, serverPortNumber))
         {
         }
 
@@ -76,16 +77,16 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="serverIpAddress">DNS server address to use</param>
         /// <param name="serverPortNumber">DNS port to use</param>
-        public Resolver(string serverIpAddress, int serverPortNumber)
+        public Resolver(String serverIpAddress, Int32 serverPortNumber)
             : this(IPAddress.Parse(serverIpAddress), serverPortNumber)
         {
         }
-        
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         /// <param name="serverIpAddress">DNS server address to use</param>
-        public Resolver(string serverIpAddress)
+        public Resolver(String serverIpAddress)
             : this(IPAddress.Parse(serverIpAddress), DefaultPort)
         {
         }
@@ -101,7 +102,9 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Verbose event handler
         /// </summary>
-        public delegate void VerboseEventHandler(object sender, VerboseEventArgs e);
+        /// <param name="sender">Object sending the event</param>
+        /// <param name="e">Event arguments</param>
+        public delegate void VerboseEventHandler(Object sender, VerboseEventArgs e);
 
         /// <summary>
         /// Verbose messages from internal operations
@@ -121,7 +124,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public IPEndPoint[] DefaultDnsServers
         {
-            get => defaultDnsServers;
+            get => this.defaultDnsServers;
         }
 
         /// <summary>
@@ -146,7 +149,7 @@ namespace Ubiety.Dns.Core
 
             set
             {
-                if(value >= 1)
+                if (value >= 1)
                 {
                     this.retries = value;
                 }
@@ -200,7 +203,7 @@ namespace Ubiety.Dns.Core
                     return;
                 }
 
-                Response response = Query(value, QuestionType.A);
+                Response response = this.Query(value, QuestionType.A);
                 if (response.RecordA.Count > 0)
                 {
                     this.dnsServers.Clear();
@@ -230,7 +233,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        /// Gets a list of default DNS servers used on the Windows machine.
+        ///     Gets a list of default DNS servers used on the Windows machine.
         /// </summary>
         /// <returns>Array of DNS servers</returns>
         public static IPEndPoint[] GetDnsServers()
@@ -243,6 +246,7 @@ namespace Ubiety.Dns.Core
                 if (n.OperationalStatus == OperationalStatus.Up)
                 {
                     IPInterfaceProperties ipProps = n.GetIPProperties();
+
                     // thanks to Jon Webster on May 20, 2008
                     foreach (IPAddress ipAddr in ipProps.DnsAddresses)
                     {
@@ -255,54 +259,60 @@ namespace Ubiety.Dns.Core
 
                 }
             }
+
             return list.ToArray();
-        } 
+        }
 
         /// <summary>
-        /// Translates the IPV4 or IPV6 address into an arpa address
+        ///     Translates the IPV4 or IPV6 address into an arpa address
         /// </summary>
         /// <param name="ip">IP address to get the arpa address form</param>
         /// <returns>The 'mirrored' IPV4 or IPV6 arpa address</returns>
-        public static string GetArpaFromIp(IPAddress ip)
+        public static String GetArpaFromIp(IPAddress ip)
         {
             if (ip.AddressFamily == AddressFamily.InterNetwork)
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("in-addr.arpa.");
-                foreach (byte b in ip.GetAddressBytes())
+                foreach (Byte b in ip.GetAddressBytes())
                 {
-                    sb.Insert(0, string.Format("{0}.", b));
+                    sb.Insert(0, $"{b}.");
                 }
+
                 return sb.ToString();
             }
+
             if (ip.AddressFamily == AddressFamily.InterNetworkV6)
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("ip6.arpa.");
                 foreach (byte b in ip.GetAddressBytes())
                 {
-                    sb.Insert(0, string.Format("{0:x}.", (b >> 4) & 0xf));
-                    sb.Insert(0, string.Format("{0:x}.", (b >> 0) & 0xf));
+                    sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
+                    sb.Insert(0, $"{(b >> 0) & 0xf:x}.");
                 }
+
                 return sb.ToString();
             }
+
             return "?";
         }
 
         /// <summary>
         ///     Get ARPA address from enum
         /// </summary>
-        /// <param name="strEnum">Enum for the address</param>
+        /// <param name="enumerator">Enum for the address</param>
         /// <returns>String of the ARPA address</returns>
-        public static string GetArpaFromEnum(string strEnum)
+        public static String GetArpaFromEnum(String enumerator)
         {
             StringBuilder sb = new StringBuilder();
-            string Number = System.Text.RegularExpressions.Regex.Replace(strEnum, "[^0-9]", "");
+            String number = System.Text.RegularExpressions.Regex.Replace(enumerator, "[^0-9]", String.Empty);
             sb.Append("e164.arpa.");
-            foreach (char c in Number)
+            foreach (Char c in number)
             {
-                sb.Insert(0, string.Format("{0}.", c));
+                sb.Insert(0, $"{c}.");
             }
+
             return sb.ToString();
         }
 
@@ -315,13 +325,13 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        /// Do Query on specified DNS servers
+        ///     Do Query on specified DNS servers
         /// </summary>
         /// <param name="name">Name to query</param>
         /// <param name="qtype">Question type</param>
         /// <param name="qclass">Class type</param>
         /// <returns>Response of the query</returns>
-        public Response Query(string name, QuestionType qtype, QuestionClass qclass)
+        public Response Query(String name, QuestionType qtype, QuestionClass qclass)
         {
             Question question = new Question(name, qtype, qclass);
             Response response = SearchInCache(question);
@@ -336,7 +346,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        /// Do an QClass=IN Query on specified DNS servers
+        ///     Do an QClass=IN Query on specified DNS servers
         /// </summary>
         /// <param name="name">Name to query</param>
         /// <param name="qtype">Question type</param>
@@ -406,10 +416,12 @@ namespace Ubiety.Dns.Core
             foreach (ResourceRecord rr in response.ResourceRecords)
             {
                 rr.TimeLived = TimeLived;
+                
                 // The TTL property calculates its actual time to live
                 if (rr.TTL == 0)
                     return null; // out of date
             }
+
             return response;
         }
 
@@ -471,7 +483,7 @@ namespace Ubiety.Dns.Core
                     }
                     catch (SocketException)
                     {
-                        Verbose(string.Format(";; Connection to nameserver {0} failed", (intDnsServer + 1)));
+                        Verbose($";; Connection to nameserver {(intDnsServer + 1)} failed");
                         continue; // next try
                     }
                     finally
@@ -483,6 +495,7 @@ namespace Ubiety.Dns.Core
                     }
                 }
             }
+
             Response responseTimeout = new Response();
             responseTimeout.Error = "Timeout Error";
             return responseTimeout;
@@ -506,7 +519,7 @@ namespace Ubiety.Dns.Core
                         if (!success || !tcpClient.Connected)
                         {
                             tcpClient.Close();
-                            this.Verbose(string.Format(";; Connection to nameserver {0} failed", (intDnsServer + 1)));
+                            this.Verbose($";; Connection to nameserver {(intDnsServer + 1)} failed");
                             continue;
                         }
 
@@ -528,7 +541,7 @@ namespace Ubiety.Dns.Core
                             if (intLength <= 0)
                             {
                                 tcpClient.Close();
-                                this.Verbose(string.Format(";; Connection to nameserver {0} failed", (intDnsServer + 1)));
+                                this.Verbose($";; Connection to nameserver {(intDnsServer + 1)} failed");
                                 throw new SocketException(); // next try
                             }
 
@@ -550,8 +563,7 @@ namespace Ubiety.Dns.Core
                             }
 
                             // Zone transfer!!
-
-                            if(TransferResponse.Questions.Count==0)
+                            if (TransferResponse.Questions.Count==0)
                             {
                                 TransferResponse.Questions.AddRange(response.Questions);
                             }
@@ -589,6 +601,7 @@ namespace Ubiety.Dns.Core
                     }
                 }
             }
+
             Response responseTimeout = new Response();
             responseTimeout.Error = "Timeout Error";
             return responseTimeout;
