@@ -16,35 +16,23 @@ namespace Ubiety.Dns.Core
     public class Resolver
     {
         /// <summary>
-        ///     Gets the current version of the library
-        /// </summary>
-        public string Version
-        {
-            get
-            {
-                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-        }
-
-        /// <summary>
         ///     Default DNS port
         /// </summary>
-        public const int defaultPort = 53;
+        public const int DefaultPort = 53;
 
-        private readonly static IPEndPoint[] defaultDnsServers = 
+        private readonly List<IPEndPoint> dnsServers;
+        private readonly IPEndPoint[] defaultDnsServers = 
             { 
-                new IPEndPoint(IPAddress.Parse("208.67.222.222"), defaultPort), 
-                new IPEndPoint(IPAddress.Parse("208.67.220.220"), defaultPort) 
+                new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort), 
+                new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort) 
             };
+
+        private readonly Dictionary<string,Response> responseCache;
 
         private ushort unique;
         private bool useCache;
         private int retries;
         private int timeout;
-
-        private readonly List<IPEndPoint> dnsServers;
-
-        private readonly Dictionary<string,Response> responseCache;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Resolver" /> class
@@ -98,7 +86,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="serverIpAddress">DNS server address to use</param>
         public Resolver(string serverIpAddress)
-            : this(IPAddress.Parse(serverIpAddress), defaultPort)
+            : this(IPAddress.Parse(serverIpAddress), DefaultPort)
         {
         }
 
@@ -111,6 +99,24 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
+        ///     Verbose event handler
+        /// </summary>
+        public delegate void VerboseEventHandler(object sender, VerboseEventArgs e);
+
+        /// <summary>
+        /// Verbose messages from internal operations
+        /// </summary>
+        public event VerboseEventHandler OnVerbose;
+
+        /// <summary>
+        ///     Gets the current version of the library
+        /// </summary>
+        public string Version
+        {
+            get => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        /// <summary>
         ///     Gets the default OpenDNS servers
         /// </summary>
         public IPEndPoint[] DefaultDnsServers
@@ -119,73 +125,12 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Event args for verbose output
-        /// </summary>
-        public class VerboseOutputEventArgs : EventArgs
-        {
-            /// <summary>
-            ///     Gets the string message
-            /// </summary>
-            public string Message;
-
-            /// <summary>
-            ///     Initializes a new instance of the <see cref="VerboseOutputEventArgs" /> class
-            /// </summary>
-            /// <param name="message">Message to output</param>
-            public VerboseOutputEventArgs(string message)
-            {
-                this.Message = message;
-            }
-        }
-
-        private void Verbose(string format, params object[] args)
-        {
-            if (OnVerbose != null)
-            {
-                OnVerbose(this, new VerboseEventArgs(string.Format(format, args)));
-            }
-        }
-
-        /// <summary>
-        /// Verbose messages from internal operations
-        /// </summary>
-        public event VerboseEventHandler OnVerbose;
-
-        /// <summary>
-        ///     Verbose event handler
-        /// </summary>
-        public delegate void VerboseEventHandler(object sender, VerboseEventArgs e);
-
-        /// <summary>
-        ///     Verbose event args
-        /// </summary>
-        public class VerboseEventArgs : EventArgs
-        {
-            /// <summary>
-            ///     Gets the message to output
-            /// </summary>
-            public string Message;
-
-            /// <summary>
-            ///     Initializes a new instance of the <see cref="VerboseEventArgs" /> class
-            /// </summary>
-            /// <param name="message">Verbose message</param>
-            public VerboseEventArgs(string message)
-            {
-                this.Message = message;
-            }
-        }
-
-
-        /// <summary>
         ///     Gets or sets timeout in milliseconds
         /// </summary>
         public int Timeout
         {
-            get
-            {
-                return this.timeout;
-            }
+            get => this.timeout;
+
             set
             {
                 this.timeout = value * 1000;
@@ -197,10 +142,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public int Retries
         {
-            get
-            {
-                return this.retries;
-            }
+            get => this.retries;
+
             set
             {
                 if(value >= 1)
@@ -211,7 +154,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or set recursion for doing queries
+        ///     Gets or sets a value indicating whether recursion is enabled for doing queries
         /// </summary>
         public bool Recursion { get; set; }
 
@@ -229,6 +172,7 @@ namespace Ubiety.Dns.Core
             {
                 return this.dnsServers.ToArray();
             }
+
             set
             {
                 this.dnsServers.Clear();
@@ -237,7 +181,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets first DNS server address or sets single DNS server to use
+        ///     Gets or sets the first DNS server address or sets single DNS server to use
         /// </summary>
         public string DnsServer
         {
@@ -245,26 +189,27 @@ namespace Ubiety.Dns.Core
             {
                 return this.dnsServers[0].Address.ToString();
             }
+
             set
             {
                 IPAddress ip;
                 if (IPAddress.TryParse(value, out ip))
                 {
                     this.dnsServers.Clear();
-                    this.dnsServers.Add(new IPEndPoint(ip, defaultPort));
+                    this.dnsServers.Add(new IPEndPoint(ip, DefaultPort));
                     return;
                 }
                 Response response = Query(value, QuestionType.A);
                 if (response.RecordsA.Length > 0)
                 {
                     this.dnsServers.Clear();
-                    this.dnsServers.Add(new IPEndPoint(response.RecordsA[0].Address, defaultPort));
+                    this.dnsServers.Add(new IPEndPoint(response.RecordsA[0].Address, DefaultPort));
                 }
             }
         }
 
         /// <summary>
-        ///     Gets or sets whether to use the cache
+        ///     Gets or sets a value indicating whether to use the cache
         /// </summary>
         public bool UseCache
         {
@@ -272,6 +217,7 @@ namespace Ubiety.Dns.Core
             {
                 return this.useCache;
             }
+
             set
             {
                 this.useCache = value;
@@ -283,11 +229,157 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
+        /// Gets a list of default DNS servers used on the Windows machine.
+        /// </summary>
+        /// <returns>Array of DNS servers</returns>
+        public static IPEndPoint[] GetDnsServers()
+        {
+            List<IPEndPoint> list = new List<IPEndPoint>();
+
+            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (NetworkInterface n in adapters)
+            {
+                if (n.OperationalStatus == OperationalStatus.Up)
+                {
+                    IPInterfaceProperties ipProps = n.GetIPProperties();
+                    // thanks to Jon Webster on May 20, 2008
+                    foreach (IPAddress ipAddr in ipProps.DnsAddresses)
+                    {
+                        IPEndPoint entry = new IPEndPoint(ipAddr, DefaultPort);
+                        if (!list.Contains(entry))
+                        {
+                            list.Add(entry);
+                        }
+                    }
+
+                }
+            }
+            return list.ToArray();
+        } 
+
+        /// <summary>
+        /// Translates the IPV4 or IPV6 address into an arpa address
+        /// </summary>
+        /// <param name="ip">IP address to get the arpa address form</param>
+        /// <returns>The 'mirrored' IPV4 or IPV6 arpa address</returns>
+        public static string GetArpaFromIp(IPAddress ip)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("in-addr.arpa.");
+                foreach (byte b in ip.GetAddressBytes())
+                {
+                    sb.Insert(0, string.Format("{0}.", b));
+                }
+                return sb.ToString();
+            }
+            if (ip.AddressFamily == AddressFamily.InterNetworkV6)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("ip6.arpa.");
+                foreach (byte b in ip.GetAddressBytes())
+                {
+                    sb.Insert(0, string.Format("{0:x}.", (b >> 4) & 0xf));
+                    sb.Insert(0, string.Format("{0:x}.", (b >> 0) & 0xf));
+                }
+                return sb.ToString();
+            }
+            return "?";
+        }
+
+        /// <summary>
+        ///     Get ARPA address from enum
+        /// </summary>
+        /// <param name="strEnum">Enum for the address</param>
+        /// <returns>String of the ARPA address</returns>
+        public static string GetArpaFromEnum(string strEnum)
+        {
+            StringBuilder sb = new StringBuilder();
+            string Number = System.Text.RegularExpressions.Regex.Replace(strEnum, "[^0-9]", "");
+            sb.Append("e164.arpa.");
+            foreach (char c in Number)
+            {
+                sb.Insert(0, string.Format("{0}.", c));
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
         ///     Clear the resolver cache
         /// </summary>
         public void ClearCache()
         {
             this.responseCache.Clear();
+        }
+
+        /// <summary>
+        /// Do Query on specified DNS servers
+        /// </summary>
+        /// <param name="name">Name to query</param>
+        /// <param name="qtype">Question type</param>
+        /// <param name="qclass">Class type</param>
+        /// <returns>Response of the query</returns>
+        public Response Query(string name, QuestionType qtype, QuestionClass qclass)
+        {
+            Question question = new Question(name, qtype, qclass);
+            Response response = SearchInCache(question);
+            if (response != null)
+            {
+                return response;
+            }
+
+            Request request = new Request();
+            request.AddQuestion(question);
+            return GetResponse(request);
+        }
+
+        /// <summary>
+        /// Do an QClass=IN Query on specified DNS servers
+        /// </summary>
+        /// <param name="name">Name to query</param>
+        /// <param name="qtype">Question type</param>
+        /// <returns>Response of the query</returns>
+        public Response Query(string name, QuestionType qtype)
+        {
+            Question question = new Question(name, qtype, QuestionClass.IN);
+            Response response = SearchInCache(question);
+            if (response != null)
+            {
+                return response;
+            }
+
+            Request request = new Request();
+            request.AddQuestion(question);
+            return GetResponse(request);
+        }
+
+        private Response GetResponse(Request request)
+        {
+            request.header.Id = this.unique;
+            request.header.RD = this.Recursion;
+
+            if (this.TransportType == TransportType.Udp)
+            {
+                return UdpRequest(request);
+            }
+
+            if (this.TransportType == TransportType.Tcp)
+            {
+                return TcpRequest(request);
+            }
+
+            Response response = new Response();
+            response.Error = "Unknown TransportType";
+            return response;
+        }
+
+        private void Verbose(string format, params object[] args)
+        {
+            if (OnVerbose != null)
+            {
+                OnVerbose(this, new VerboseEventArgs(string.Format(format, args)));
+            }
         }
 
         private Response SearchInCache(Question question)
@@ -502,138 +594,43 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        /// Do Query on specified DNS servers
+        ///     Event args for verbose output
         /// </summary>
-        /// <param name="name">Name to query</param>
-        /// <param name="qtype">Question type</param>
-        /// <param name="qclass">Class type</param>
-        /// <returns>Response of the query</returns>
-        public Response Query(string name, QuestionType qtype, QuestionClass qclass)
+        public class VerboseOutputEventArgs : EventArgs
         {
-            Question question = new Question(name, qtype, qclass);
-            Response response = SearchInCache(question);
-            if (response != null)
-            {
-                return response;
-            }
+            /// <summary>
+            ///     Gets the string message
+            /// </summary>
+            public string Message;
 
-            Request request = new Request();
-            request.AddQuestion(question);
-            return GetResponse(request);
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="VerboseOutputEventArgs" /> class
+            /// </summary>
+            /// <param name="message">Message to output</param>
+            public VerboseOutputEventArgs(string message)
+            {
+                this.Message = message;
+            }
         }
 
         /// <summary>
-        /// Do an QClass=IN Query on specified DNS servers
+        ///     Verbose event args
         /// </summary>
-        /// <param name="name">Name to query</param>
-        /// <param name="qtype">Question type</param>
-        /// <returns>Response of the query</returns>
-        public Response Query(string name, QuestionType qtype)
+        public class VerboseEventArgs : EventArgs
         {
-            Question question = new Question(name, qtype, QuestionClass.IN);
-            Response response = SearchInCache(question);
-            if (response != null)
+            /// <summary>
+            ///     Gets the message to output
+            /// </summary>
+            public string Message;
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="VerboseEventArgs" /> class
+            /// </summary>
+            /// <param name="message">Verbose message</param>
+            public VerboseEventArgs(string message)
             {
-                return response;
+                this.Message = message;
             }
-
-            Request request = new Request();
-            request.AddQuestion(question);
-            return GetResponse(request);
-        }
-
-        private Response GetResponse(Request request)
-        {
-            request.header.Id = this.unique;
-            request.header.RD = this.Recursion;
-
-            if (this.TransportType == TransportType.Udp)
-            {
-                return UdpRequest(request);
-            }
-
-            if (this.TransportType == TransportType.Tcp)
-            {
-                return TcpRequest(request);
-            }
-
-            Response response = new Response();
-            response.Error = "Unknown TransportType";
-            return response;
-        }
-
-        /// <summary>
-        /// Gets a list of default DNS servers used on the Windows machine.
-        /// </summary>
-        /// <returns>Array of DNS servers</returns>
-        public static IPEndPoint[] GetDnsServers()
-        {
-            List<IPEndPoint> list = new List<IPEndPoint>();
-
-            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (NetworkInterface n in adapters)
-            {
-                if (n.OperationalStatus == OperationalStatus.Up)
-                {
-                    IPInterfaceProperties ipProps = n.GetIPProperties();
-                    // thanks to Jon Webster on May 20, 2008
-                    foreach (IPAddress ipAddr in ipProps.DnsAddresses)
-                    {
-                        IPEndPoint entry = new IPEndPoint(ipAddr, defaultPort);
-                        if (!list.Contains(entry))
-                        {
-                            list.Add(entry);
-                        }
-                    }
-
-                }
-            }
-            return list.ToArray();
-        } 
-
-        /// <summary>
-        /// Translates the IPV4 or IPV6 address into an arpa address
-        /// </summary>
-        /// <param name="ip">IP address to get the arpa address form</param>
-        /// <returns>The 'mirrored' IPV4 or IPV6 arpa address</returns>
-        public static string GetArpaFromIp(IPAddress ip)
-        {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("in-addr.arpa.");
-                foreach (byte b in ip.GetAddressBytes())
-                {
-                    sb.Insert(0, string.Format("{0}.", b));
-                }
-                return sb.ToString();
-            }
-            if (ip.AddressFamily == AddressFamily.InterNetworkV6)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("ip6.arpa.");
-                foreach (byte b in ip.GetAddressBytes())
-                {
-                    sb.Insert(0, string.Format("{0:x}.", (b >> 4) & 0xf));
-                    sb.Insert(0, string.Format("{0:x}.", (b >> 0) & 0xf));
-                }
-                return sb.ToString();
-            }
-            return "?";
-        }
-
-        /// <summary>
-        /// </summary>
-        public static string GetArpaFromEnum(string strEnum)
-        {
-            StringBuilder sb = new StringBuilder();
-            string Number = System.Text.RegularExpressions.Regex.Replace(strEnum, "[^0-9]", "");
-            sb.Append("e164.arpa.");
-            foreach (char c in Number)
-            {
-                sb.Insert(0, string.Format("{0}.", c));
-            }
-            return sb.ToString();
         }
     } // class
 }

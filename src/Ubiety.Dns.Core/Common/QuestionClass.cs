@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
     ///     Question class
     /// </summary>
+    [SuppressMessage("Microsoft.Naming", "CA1717", Justification = "Class is not plural")]
     public enum QuestionClass : UInt16
     {
         /// <summary>

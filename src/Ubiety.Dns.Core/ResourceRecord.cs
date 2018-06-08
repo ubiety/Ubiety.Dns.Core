@@ -4,7 +4,6 @@ using Ubiety.Dns.Core.Records;
 
 namespace Ubiety.Dns.Core
 {
-    #region RFC info
     /*
     3.2. RR definitions
 
@@ -59,13 +58,30 @@ namespace Ubiety.Dns.Core
                     resource.  The format of this information varies
                     according to the TYPE and CLASS of the resource record.
     */
-    #endregion
 
     /// <summary>
     /// Resource Record (rfc1034 3.6.)
     /// </summary>
     public class ResourceRecord
     {
+        private uint ttl;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ResourceRecord" /> class
+        /// </summary>
+        /// <param name="rr">Record reader of the record data</param>
+        public ResourceRecord(RecordReader rr)
+        {
+            this.TimeLived = 0;
+            this.Name = rr.ReadDomainName();
+            this.Type = (RecordType)rr.ReadUInt16();
+            this.Class = (OperationClass)rr.ReadUInt16();
+            this.TTL = rr.ReadUInt32();
+            this.RecordLength = rr.ReadUInt16();
+            this.Record = rr.ReadRecord(Type);
+            this.Record.ResourceRecord = this;
+        }
+
         /// <summary>
         ///     Gets or sets the name of the node to which this resource record pertains
         /// </summary>
@@ -88,14 +104,13 @@ namespace Ubiety.Dns.Core
         {
             get
             {
-                return (uint)Math.Max(0, m_TTL - TimeLived);
+                return (uint)Math.Max(0, ttl - TimeLived);
             }
             set
             {
-                m_TTL = value;
+                ttl = value;
             }
         }
-        private uint m_TTL;
 
         /// <summary>
         ///     Gets or sets the record length
@@ -113,23 +128,9 @@ namespace Ubiety.Dns.Core
         public int TimeLived { get; set; }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ResourceRecord" /> class
+        ///     String version of the resource record
         /// </summary>
-        /// <param name="rr">Record reader of the record data</param>
-        public ResourceRecord(RecordReader rr)
-        {
-            this.TimeLived = 0;
-            this.Name = rr.ReadDomainName();
-            this.Type = (RecordType)rr.ReadUInt16();
-            this.Class = (OperationClass)rr.ReadUInt16();
-            this.TTL = rr.ReadUInt32();
-            this.RecordLength = rr.ReadUInt16();
-            this.Record = rr.ReadRecord(Type);
-            this.Record.ResourceRecord = this;
-        }
-
-        /// <summary>
-        /// </summary>
+        /// <returns>String of the resource</returns>
         public override string ToString()
         {
             return string.Format("{0,-32} {1}\t{2}\t{3}\t{4}",
@@ -142,11 +143,14 @@ namespace Ubiety.Dns.Core
     }
 
     /// <summary>
+    ///     Answer resource record
     /// </summary>
     public class AnswerRR : ResourceRecord
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="AnswerRR" /> class
         /// </summary>
+        /// <param name="br"><see cref="RecordReader" /> for the record data</param>
         public AnswerRR(RecordReader br)
             : base(br)
         {
@@ -154,11 +158,14 @@ namespace Ubiety.Dns.Core
     }
 
     /// <summary>
+    ///     Authority resource record
     /// </summary>
     public class AuthorityRR : ResourceRecord
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="AuthorityRR" /> class
         /// </summary>
+        /// <param name="br"><see cref="ResourceRecord" /> for the record data</param>
         public AuthorityRR(RecordReader br)
             : base(br)
         {
@@ -166,11 +173,14 @@ namespace Ubiety.Dns.Core
     }
 
     /// <summary>
+    ///     Additional resource record
     /// </summary>
     public class AdditionalRR : ResourceRecord
     {
         /// <summary>
+        ///     Initalizes a new instance of the <see cref="AdditionalRR" /> class
         /// </summary>
+        /// <param name="br"><see cref="ResourceRecord" /> for the record data</param>
         public AdditionalRR(RecordReader br)
             : base(br)
         {
