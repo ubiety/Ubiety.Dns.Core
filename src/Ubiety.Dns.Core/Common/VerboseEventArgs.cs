@@ -8,17 +8,17 @@ namespace Ubiety.Dns.Core.Common
     public class VerboseEventArgs : EventArgs
     {
         /// <summary>
-        ///     Gets the message to output
-        /// </summary>
-        public string Message;
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref="VerboseEventArgs" /> class
         /// </summary>
         /// <param name="message">Verbose message</param>
-        public VerboseEventArgs(string message)
+        public VerboseEventArgs(String message)
         {
             this.Message = message;
         }
+
+        /// <summary>
+        ///     Gets or sets the message to output
+        /// </summary>
+        public String Message { get; set; }
     }
 }

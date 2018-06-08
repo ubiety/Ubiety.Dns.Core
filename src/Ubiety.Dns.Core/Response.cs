@@ -14,47 +14,6 @@ namespace Ubiety.Dns.Core
     public class Response
     {
         /// <summary>
-        /// List of Question records
-        /// </summary>
-        public List<Question> Questions;
-        /// <summary>
-        /// List of AnswerRR records
-        /// </summary>
-        public List<AnswerRR> Answers;
-        /// <summary>
-        /// List of AuthorityRR records
-        /// </summary>
-        public List<AuthorityRR> Authorities;
-        /// <summary>
-        /// List of AdditionalRR records
-        /// </summary>
-        public List<AdditionalRR> Additionals;
-
-        /// <summary>
-        /// </summary>
-        public Header header;
-
-        /// <summary>
-        /// Error message, empty when no error
-        /// </summary>
-        public string Error;
-
-        /// <summary>
-        /// The Size of the message
-        /// </summary>
-        public int MessageSize;
-
-        /// <summary>
-        /// TimeStamp when cached
-        /// </summary>
-        public DateTime TimeStamp;
-
-        /// <summary>
-        /// Server which delivered this response
-        /// </summary>
-        public IPEndPoint Server;
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref="Response" /> class
         /// </summary>
         public Response()
@@ -68,7 +27,7 @@ namespace Ubiety.Dns.Core
             this.Error = "";
             this.MessageSize = 0;
             this.TimeStamp = DateTime.Now;
-            this.header = new Header();
+            this.Header = new Header();
         }
 
         /// <summary>
@@ -89,27 +48,73 @@ namespace Ubiety.Dns.Core
             this.Authorities = new List<AuthorityRR>();
             this.Additionals = new List<AdditionalRR>();
 
-            this.header = new Header(rr);
+            this.Header = new Header(rr);
 
-            for (int intI = 0; intI < header.QuestionCount; intI++)
+            for (Int32 i = 0; i < Header.QuestionCount; i++)
             {
                 this.Questions.Add(new Question(rr));
             }
 
-            for (int intI = 0; intI < header.AnswerCount; intI++)
+            for (Int32 i = 0; i < Header.AnswerCount; i++)
             {
                 this.Answers.Add(new AnswerRR(rr));
             }
 
-            for (int intI = 0; intI < header.NameserverCount; intI++)
+            for (Int32 i = 0; i < Header.NameserverCount; i++)
             {
                 this.Authorities.Add(new AuthorityRR(rr));
             }
-            for (int intI = 0; intI < header.AdditionalRecordsCount; intI++)
+
+            for (Int32 i = 0; i < Header.AdditionalRecordsCount; i++)
             {
                 this.Additionals.Add(new AdditionalRR(rr));
             }
         }
+
+        /// <summary>
+        ///     Gets the list of question records
+        /// </summary>
+        public List<Question> Questions { get; }
+
+        /// <summary>
+        ///     Gets the list of answer resource records
+        /// </summary>
+        public List<AnswerRR> Answers { get; }
+
+        /// <summary>
+        ///     Gets the list of authority resource records
+        /// </summary>
+        public List<AuthorityRR> Authorities { get; }
+
+        /// <summary>
+        ///     Gets the list of additional resource records
+        /// </summary>
+        public List<AdditionalRR> Additionals { get; }
+
+        /// <summary>
+        ///     Gets or sets the response header
+        /// </summary>
+        public Header Header { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the error message, empty when no error
+        /// </summary>
+        public String Error { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the size of the message
+        /// </summary>
+        public Int32 MessageSize { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the timestamp when cached
+        /// </summary>
+        public DateTime TimeStamp { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the server which delivered this response
+        /// </summary>
+        public IPEndPoint Server { get; set; }
 
         /// <summary>
         /// List of RecordMX in Response.Answers
@@ -123,8 +128,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordMx record = answerRR.Record as RecordMx;
                     if(record!=null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 list.Sort();
                 return list.ToArray();
             }
@@ -142,8 +150,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordTxt record = answerRR.Record as RecordTxt;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -160,8 +171,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordA record = answerRR.Record as RecordA;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -178,8 +192,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordPtr record = answerRR.Record as RecordPtr;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -196,8 +213,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordCname record = answerRR.Record as RecordCname;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -214,8 +234,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordAaaa record = answerRR.Record as RecordAaaa;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -232,8 +255,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordNs record = answerRR.Record as RecordNs;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -250,8 +276,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordSoa record = answerRR.Record as RecordSoa;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -268,8 +297,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordCert record = answerRR.Record as RecordCert;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+
                 return list.ToArray();
             }
         }
@@ -286,8 +318,11 @@ namespace Ubiety.Dns.Core
                 {
                     RecordSrv record = answerRR.Record as RecordSrv;
                     if (record != null)
+                    {
                         list.Add(record);
+                    }
                 }
+                
                 return list.ToArray();
             }
         }
@@ -304,18 +339,22 @@ namespace Ubiety.Dns.Core
                 {
                     list.Add(rr);
                 }
+
                 foreach (ResourceRecord rr in this.Answers)
                 {
                     list.Add(rr);
                 }
+
                 foreach (ResourceRecord rr in this.Authorities)
                 {
                     list.Add(rr);
                 }
+
                 foreach (ResourceRecord rr in this.Additionals)
                 {
                     list.Add(rr);
                 }
+
                 return list.ToArray();
             }
         }

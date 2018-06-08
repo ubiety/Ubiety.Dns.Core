@@ -356,8 +356,8 @@ namespace Ubiety.Dns.Core
 
         private Response GetResponse(Request request)
         {
-            request.header.Id = this.unique;
-            request.header.RD = this.Recursion;
+            request.Header.Id = this.unique;
+            request.Header.RD = this.Recursion;
 
             if (this.TransportType == TransportType.Udp)
             {
@@ -426,7 +426,7 @@ namespace Ubiety.Dns.Core
             }
 
             // Only cached non-error responses
-            if (response.header.RCODE != ResponseCode.NoError)
+            if (response.Header.RCODE != ResponseCode.NoError)
             {
                 return;
             }
@@ -460,7 +460,7 @@ namespace Ubiety.Dns.Core
 
                     try
                     {
-                        socket.SendTo(request.Data, this.dnsServers[intDnsServer]);
+                        socket.SendTo(request.GetData(), this.dnsServers[intDnsServer]);
                         int intReceived = socket.Receive(responseMessage);
                         byte[] data = new byte[intReceived];
                         Array.Copy(responseMessage, data, intReceived);
@@ -511,7 +511,7 @@ namespace Ubiety.Dns.Core
 
                         BufferedStream bs = new BufferedStream(tcpClient.GetStream());
 
-                        byte[] data = request.Data;
+                        byte[] data = request.GetData();
                         bs.WriteByte((byte)((data.Length >> 8) & 0xff));
                         bs.WriteByte((byte)(data.Length & 0xff));
                         bs.Write(data, 0, data.Length);
@@ -537,7 +537,7 @@ namespace Ubiety.Dns.Core
                             bs.Read(data, 0, intLength);
                             Response response = new Response(this.dnsServers[intDnsServer], data);
 
-                            if (response.header.RCODE != ResponseCode.NoError)
+                            if (response.Header.RCODE != ResponseCode.NoError)
                             {
                                 return response;
                             }
@@ -566,10 +566,10 @@ namespace Ubiety.Dns.Core
 
                             if (intSoa == 2)
                             {
-                                TransferResponse.header.QuestionCount = (ushort)TransferResponse.Questions.Count;
-                                TransferResponse.header.AnswerCount = (ushort)TransferResponse.Answers.Count;
-                                TransferResponse.header.NameserverCount = (ushort)TransferResponse.Authorities.Count;
-                                TransferResponse.header.AdditionalRecordsCount = (ushort)TransferResponse.Additionals.Count;
+                                TransferResponse.Header.QuestionCount = (ushort)TransferResponse.Questions.Count;
+                                TransferResponse.Header.AnswerCount = (ushort)TransferResponse.Answers.Count;
+                                TransferResponse.Header.NameserverCount = (ushort)TransferResponse.Authorities.Count;
+                                TransferResponse.Header.AdditionalRecordsCount = (ushort)TransferResponse.Additionals.Count;
                                 TransferResponse.MessageSize = intMessageSize;
                                 return TransferResponse;
                             }
