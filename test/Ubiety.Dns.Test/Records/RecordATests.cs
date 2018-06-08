@@ -3,6 +3,7 @@ using System.Net;
 using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Records;
+using Xunit;
 
 namespace Ubiety.Dns.Test.Records
 {
@@ -21,6 +22,7 @@ namespace Ubiety.Dns.Test.Records
             reader = new RecordReader(data);
         }
 
+        [Fact]
         public void TestRecordAddress()
         {
             var a = new RecordA(reader);
@@ -28,6 +30,7 @@ namespace Ubiety.Dns.Test.Records
             a.Address.ShouldBe(IPAddress.Parse("192.168.0.1"));
         }
 
+        [Fact]
         public void TestRecordToString()
         {
             var a = new RecordA(reader);

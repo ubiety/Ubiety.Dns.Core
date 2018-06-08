@@ -74,17 +74,17 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Address of the server
+        ///     Gets or sets the address of the server
         /// </summary>
         public String Address { get; set; }
 
         /// <summary>
-        ///     Protocol of the service
+        ///     Gets or sets the protocol of the service
         /// </summary>
         public Int32 Protocol { get; set; }
 
         /// <summary>
-        ///     Service bitmap
+        ///     Gets or sets the service bitmap
         /// </summary>
         public Byte[] Bitmap { get; set; }
 

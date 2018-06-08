@@ -6,8 +6,7 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "build",
-                "${workspaceFolder}/test/Ubiety.Dns.Test/Ubiety.Dns.Test.csproj"
+                "build"
             ],
             "problemMatcher": "$msCompile"
         }
