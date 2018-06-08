@@ -13,7 +13,7 @@ namespace Ubiety.Dns.Core
     /// <summary>
     ///     DNS resolver runs querys against a server
     /// </summary>
-    public class Resolver
+    public partial class Resolver
     {
         /// <summary>
         ///     Default DNS port
@@ -591,46 +591,6 @@ namespace Ubiety.Dns.Core
             Response responseTimeout = new Response();
             responseTimeout.Error = "Timeout Error";
             return responseTimeout;
-        }
-
-        /// <summary>
-        ///     Event args for verbose output
-        /// </summary>
-        public class VerboseOutputEventArgs : EventArgs
-        {
-            /// <summary>
-            ///     Gets the string message
-            /// </summary>
-            public string Message;
-
-            /// <summary>
-            ///     Initializes a new instance of the <see cref="VerboseOutputEventArgs" /> class
-            /// </summary>
-            /// <param name="message">Message to output</param>
-            public VerboseOutputEventArgs(string message)
-            {
-                this.Message = message;
-            }
-        }
-
-        /// <summary>
-        ///     Verbose event args
-        /// </summary>
-        public class VerboseEventArgs : EventArgs
-        {
-            /// <summary>
-            ///     Gets the message to output
-            /// </summary>
-            public string Message;
-
-            /// <summary>
-            ///     Initializes a new instance of the <see cref="VerboseEventArgs" /> class
-            /// </summary>
-            /// <param name="message">Verbose message</param>
-            public VerboseEventArgs(string message)
-            {
-                this.Message = message;
-            }
         }
     } // class
 }
