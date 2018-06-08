@@ -1,11 +1,14 @@
 #addin "nuget:?package=Cake.Sonar"
+#addin "Cake.MiniCover"
 #tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
+#tool "nuget:?package=GitVersion.CommandLine"
+#tool "nuget:?package=xunit.runner.console"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Sonar");
+var target = Argument("target", "Coverage");
 var configuration = Argument("configuration", "Debug");
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -16,6 +19,8 @@ Setup(ctx =>
 {
    // Executed BEFORE the first task.
    Information("Running tasks...");
+
+   SetMiniCoverToolsProject("./tools/tools.csproj");
 });
 
 Teardown(ctx =>
@@ -33,6 +38,44 @@ var projectDir = Directory("./src/Ubiety.Dns.Core");
 Task("Clean")
     .Does(() => {
         DotNetCoreClean(projectDir);
+    });
+
+Task("UpdateVersion")
+    .IsDependentOn("Clean")
+    .Does(() => {
+        GitVersion(new GitVersionSettings{
+            UpdateAssemblyInfo = true
+        });
+    });
+
+Task("Pack")
+    .IsDependentOn("Build")
+    .Does(() => {
+        DotNetCorePack(projectDir);
+    });
+
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() => {
+        var testAssemblies = GetFiles("./test/**/bin/Debug/netcoreapp2.0/Ubiety.Dns.Test.dll");
+        XUnit2(testAssemblies);
+    });
+
+Task("Coverage")
+    .IsDependentOn("Build")
+    .Does(() => {
+        MiniCover(tool => {
+            foreach (var project in GetFiles("./test/**/*.csproj"))
+            {
+                tool.DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings{
+                    NoBuild = true,
+                    Configuration = configuration
+                });
+            }
+        }, new MiniCoverSettings()
+            .WithAssembliesMatching("./test/**/*.dll")
+            .WithSourcesMatching("./src/**/*.cs")
+            .GenerateReport(ReportType.XML));
     });
 
 Task("SonarBegin")
@@ -58,7 +101,7 @@ Task("Sonar")
     .IsDependentOn("SonarEnd");
 
 Task("Build")
-    .IsDependentOn("Clean")
+    .IsDependentOn("UpdateVersion")
     .Does(() => {
         DotNetCoreBuild(projectDir);
     });
