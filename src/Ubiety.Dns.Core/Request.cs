@@ -10,11 +10,6 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Request
     {
-        /// <summary>
-        ///     DNS record header
-        /// </summary>
-        public Header header;
-
         private readonly List<Question> questions;
 
         /// <summary>
@@ -22,11 +17,33 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public Request()
         {
-            this.header = new Header();
-            this.header.OPCODE = OperationCode.Query;
-            this.header.QuestionCount = 0;
+            this.Header = new Header();
+            this.Header.OPCODE = OperationCode.Query;
+            this.Header.QuestionCount = 0;
 
             this.questions = new List<Question>();
+        }
+
+        /// <summary>
+        ///     Gets or sets the DNS record header
+        /// </summary>
+        public Header Header { get; set; }
+
+
+        /// <summary>
+        ///     Gets the request as a byte array
+        /// </summary>
+        public byte[] GetData()
+        {
+                List<byte> data = new List<byte>();
+                this.Header.QuestionCount = (ushort)this.questions.Count;
+                data.AddRange(this.Header.GetData());
+                foreach (Question q in this.questions)
+                {
+                    data.AddRange(q.GetData());
+                }
+
+                return data.ToArray();
         }
 
         /// <summary>
@@ -36,22 +53,6 @@ namespace Ubiety.Dns.Core
         public void AddQuestion(Question question)
         {
             this.questions.Add(question);
-        }
-
-        /// <summary>
-        ///     Gets or sets the request as a byte array
-        /// </summary>
-        public byte[] Data
-        {
-            get
-            {
-                List<byte> data = new List<byte>();
-                this.header.QuestionCount = (ushort)this.questions.Count;
-                data.AddRange(this.header.GetData());
-                foreach (Question q in this.questions)
-                    data.AddRange(q.GetData());
-                return data.ToArray();
-            }
         }
     }
 }
