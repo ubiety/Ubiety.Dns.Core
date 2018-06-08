@@ -29,7 +29,6 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public Header Header { get; set; }
 
-
         /// <summary>
         ///     Gets the request as a byte array
         /// </summary>

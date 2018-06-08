@@ -199,11 +199,12 @@ namespace Ubiety.Dns.Core
                     this.dnsServers.Add(new IPEndPoint(ip, DefaultPort));
                     return;
                 }
+
                 Response response = Query(value, QuestionType.A);
-                if (response.RecordsA.Length > 0)
+                if (response.RecordA.Count > 0)
                 {
                     this.dnsServers.Clear();
-                    this.dnsServers.Add(new IPEndPoint(response.RecordsA[0].Address, DefaultPort));
+                    this.dnsServers.Add(new IPEndPoint(response.RecordA[0].Address, DefaultPort));
                 }
             }
         }
@@ -402,7 +403,7 @@ namespace Ubiety.Dns.Core
             }
 
             int TimeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
-            foreach (ResourceRecord rr in response.RecordsRR)
+            foreach (ResourceRecord rr in response.ResourceRecords)
             {
                 rr.TimeLived = TimeLived;
                 // The TTL property calculates its actual time to live
