@@ -10,22 +10,22 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     Internet class
         /// </summary>
-        IN = Class.IN,
+        IN = OperationClass.IN,
 
         /// <summary>
         ///     CSNET class
         /// </summary>
-        CS = Class.CS,
+        CS = OperationClass.CS,
 
         /// <summary>
         ///     CHAOS class
         /// </summary>
-        CH = Class.CH,
+        CH = OperationClass.CH,
 
         /// <summary>
         ///     Hesiod class
         /// </summary>
-        HS = Class.HS,
+        HS = OperationClass.HS,
 
         /// <summary>
         ///     Any question class

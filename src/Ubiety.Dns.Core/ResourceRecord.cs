@@ -79,7 +79,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the type class of resource record, mostly IN but can be CS, CH or HS 
         /// </summary>
-        public Class Class { get; set; }
+        public OperationClass Class { get; set; }
 
         /// <summary>
         ///     Gets or sets the time to live, the time interval that the resource record may be cached
@@ -121,7 +121,7 @@ namespace Ubiety.Dns.Core
             this.TimeLived = 0;
             this.Name = rr.ReadDomainName();
             this.Type = (RecordType)rr.ReadUInt16();
-            this.Class = (Class)rr.ReadUInt16();
+            this.Class = (OperationClass)rr.ReadUInt16();
             this.TTL = rr.ReadUInt32();
             this.RecordLength = rr.ReadUInt16();
             this.Record = rr.ReadRecord(Type);
