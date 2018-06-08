@@ -34,6 +34,8 @@ CAKE_ARGUMENTS=()
 for i in "$@"; do
     case $1 in
         -s|--script) SCRIPT="$2"; shift ;;
+        -t|--target) TARGET="$2"; shift ;;
+        --version) SHOW_VERSION=true ;;
         --) shift; CAKE_ARGUMENTS+=("$@"); break ;;
         *) CAKE_ARGUMENTS+=("$1") ;;
     esac

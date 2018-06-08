@@ -37,7 +37,10 @@ coverage.xml
 coverage.json
 coverage-hits.txt
 
-Cake/
+tools/
+!tools/packages.config
+!tools/packages.config.md5sum
+!tools/tools.csproj
 
 # Build Results of an ATL Project
 [Dd]ebugPS/

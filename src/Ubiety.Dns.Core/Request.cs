@@ -29,11 +29,11 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public Header Header { get; set; }
 
-
         /// <summary>
         ///     Gets the request as a byte array
         /// </summary>
-        public byte[] GetData()
+        /// <returns>Byte array of the data</returns>
+        public Byte[] GetData()
         {
                 List<byte> data = new List<byte>();
                 this.Header.QuestionCount = (ushort)this.questions.Count;

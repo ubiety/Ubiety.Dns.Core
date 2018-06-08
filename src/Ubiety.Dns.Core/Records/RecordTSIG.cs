@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 /*
@@ -29,6 +30,9 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordTsig : Record
     {
+        private Byte[] mac;
+        private Byte[] otherData;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTsig" /> class
         /// </summary>
@@ -39,11 +43,11 @@ namespace Ubiety.Dns.Core.Records
             this.TimeSigned = rr.ReadUInt32() << 32 | rr.ReadUInt32();
             this.Fudge = rr.ReadUInt16();
             this.MacSize = rr.ReadUInt16();
-            this.Mac = rr.ReadBytes(this.MacSize);
+            this.mac = rr.ReadBytes(this.MacSize);
             this.OriginalId = rr.ReadUInt16();
             this.Error = rr.ReadUInt16();
             this.OtherLength = rr.ReadUInt16();
-            this.OtherData = rr.ReadBytes(this.OtherLength);
+            this.otherData = rr.ReadBytes(this.OtherLength);
         }
 
         /// <summary>
@@ -67,9 +71,9 @@ namespace Ubiety.Dns.Core.Records
         public UInt16 MacSize { get; set; }
 
         /// <summary>
-        ///     Gets or sets the MAC
+        ///     Gets the MAC
         /// </summary>
-        public Byte[] Mac { get; set; }
+        public List<Byte> Mac { get => new List<Byte>(this.mac); }
 
         /// <summary>
         ///     Gets or sets the original id
@@ -87,9 +91,9 @@ namespace Ubiety.Dns.Core.Records
         public UInt16 OtherLength { get; set; }
 
         /// <summary>
-        ///     Gets or sets the other record data
+        ///     Gets the other record data
         /// </summary>
-        public Byte[] OtherData { get; set; }
+        public List<Byte> OtherData { get => new List<Byte>(this.otherData); }
 
         /// <summary>
         ///     String representation of the record data
