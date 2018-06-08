@@ -35,12 +35,6 @@ Task("Clean")
         DotNetCoreClean(projectDir);
     });
 
-Task("Restore")
-    .IsDependentOn("Clean")
-    .Does(() => {
-        DotNetCoreRestore(projectDir);
-    });
-
 Task("SonarBegin")
     .Does(() => {
         SonarBegin(new SonarBeginSettings{
@@ -64,7 +58,7 @@ Task("Sonar")
     .IsDependentOn("SonarEnd");
 
 Task("Build")
-    .IsDependentOn("Restore")
+    .IsDependentOn("Clean")
     .Does(() => {
         DotNetCoreBuild(projectDir);
     });
