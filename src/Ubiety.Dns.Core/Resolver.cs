@@ -45,7 +45,7 @@ namespace Ubiety.Dns.Core
             this.dnsServers = new List<IPEndPoint>();
             this.dnsServers.AddRange(dnsServers);
 
-            this.unique = (UInt16)(new Random()).Next();
+            this.unique = (UInt16)new Random().Next();
             this.retries = 3;
             this.timeout = 1;
             this.Recursion = true;
@@ -114,7 +114,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the current version of the library
         /// </summary>
-        public string Version
+        public static string Version
         {
             get => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
@@ -256,7 +256,6 @@ namespace Ubiety.Dns.Core
                             list.Add(entry);
                         }
                     }
-
                 }
             }
 
@@ -334,7 +333,7 @@ namespace Ubiety.Dns.Core
         public Response Query(String name, QuestionType qtype, QuestionClass qclass)
         {
             Question question = new Question(name, qtype, qclass);
-            Response response = SearchInCache(question);
+            Response response = this.SearchInCache(question);
             if (response != null)
             {
                 return response;
@@ -342,7 +341,7 @@ namespace Ubiety.Dns.Core
 
             Request request = new Request();
             request.AddQuestion(question);
-            return GetResponse(request);
+            return this.GetResponse(request);
         }
 
         /// <summary>
@@ -354,7 +353,7 @@ namespace Ubiety.Dns.Core
         public Response Query(string name, QuestionType qtype)
         {
             Question question = new Question(name, qtype, QuestionClass.IN);
-            Response response = SearchInCache(question);
+            Response response = this.SearchInCache(question);
             if (response != null)
             {
                 return response;
@@ -362,7 +361,7 @@ namespace Ubiety.Dns.Core
 
             Request request = new Request();
             request.AddQuestion(question);
-            return GetResponse(request);
+            return this.GetResponse(request);
         }
 
         private Response GetResponse(Request request)
@@ -372,12 +371,12 @@ namespace Ubiety.Dns.Core
 
             if (this.TransportType == TransportType.Udp)
             {
-                return UdpRequest(request);
+                return this.UdpRequest(request);
             }
 
             if (this.TransportType == TransportType.Tcp)
             {
-                return TcpRequest(request);
+                return this.TcpRequest(request);
             }
 
             Response response = new Response();
@@ -387,9 +386,9 @@ namespace Ubiety.Dns.Core
 
         private void Verbose(string format, params object[] args)
         {
-            if (OnVerbose != null)
+            if (this.OnVerbose != null)
             {
-                OnVerbose(this, new VerboseEventArgs(string.Format(format, args)));
+                this.OnVerbose(this, new VerboseEventArgs(string.Format(CultureInfo.CurrentCulture, format, args)));
             }
         }
 
@@ -407,19 +406,23 @@ namespace Ubiety.Dns.Core
             lock (this.responseCache)
             {
                 if (!this.responseCache.ContainsKey(strKey))
+                {
                     return null;
+                }
 
                 response = this.responseCache[strKey];
             }
 
-            int TimeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
+            int timeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
             foreach (ResourceRecord rr in response.ResourceRecords)
             {
-                rr.TimeLived = TimeLived;
-                
+                rr.TimeLived = timeLived;
+
                 // The TTL property calculates its actual time to live
                 if (rr.TTL == 0)
+                {
                     return null; // out of date
+                }
             }
 
             return response;
@@ -478,12 +481,12 @@ namespace Ubiety.Dns.Core
                         byte[] data = new byte[intReceived];
                         Array.Copy(responseMessage, data, intReceived);
                         Response response = new Response(this.dnsServers[intDnsServer], data);
-                        AddToCache(response);
+                        this.AddToCache(response);
                         return response;
                     }
                     catch (SocketException)
                     {
-                        Verbose($";; Connection to nameserver {(intDnsServer + 1)} failed");
+                        this.Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
                         continue; // next try
                     }
                     finally
@@ -519,7 +522,7 @@ namespace Ubiety.Dns.Core
                         if (!success || !tcpClient.Connected)
                         {
                             tcpClient.Close();
-                            this.Verbose($";; Connection to nameserver {(intDnsServer + 1)} failed");
+                            this.Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
                             continue;
                         }
 
@@ -531,23 +534,23 @@ namespace Ubiety.Dns.Core
                         bs.Write(data, 0, data.Length);
                         bs.Flush();
 
-                        Response TransferResponse = new Response();
+                        Response transferResponse = new Response();
                         int intSoa = 0;
                         int intMessageSize = 0;
 
                         while (true)
                         {
-                            int intLength = bs.ReadByte() << 8 | bs.ReadByte();
+                            Int32 intLength = bs.ReadByte() << 8 | bs.ReadByte();
                             if (intLength <= 0)
                             {
                                 tcpClient.Close();
-                                this.Verbose($";; Connection to nameserver {(intDnsServer + 1)} failed");
+                                this.Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
                                 throw new SocketException(); // next try
                             }
 
                             intMessageSize += intLength;
 
-                            data = new byte[intLength];
+                            data = new Byte[intLength];
                             bs.Read(data, 0, intLength);
                             Response response = new Response(this.dnsServers[intDnsServer], data);
 
@@ -563,14 +566,14 @@ namespace Ubiety.Dns.Core
                             }
 
                             // Zone transfer!!
-                            if (TransferResponse.Questions.Count==0)
+                            if (transferResponse.Questions.Count == 0)
                             {
-                                TransferResponse.Questions.AddRange(response.Questions);
+                                transferResponse.Questions.AddRange(response.Questions);
                             }
 
-                            TransferResponse.Answers.AddRange(response.Answers);
-                            TransferResponse.Authorities.AddRange(response.Authorities);
-                            TransferResponse.Additionals.AddRange(response.Additionals);
+                            transferResponse.Answers.AddRange(response.Answers);
+                            transferResponse.Authorities.AddRange(response.Authorities);
+                            transferResponse.Additionals.AddRange(response.Additionals);
 
                             if (response.Answers[0].Type == RecordType.SOA)
                             {
@@ -579,12 +582,12 @@ namespace Ubiety.Dns.Core
 
                             if (intSoa == 2)
                             {
-                                TransferResponse.Header.QuestionCount = (ushort)TransferResponse.Questions.Count;
-                                TransferResponse.Header.AnswerCount = (ushort)TransferResponse.Answers.Count;
-                                TransferResponse.Header.NameserverCount = (ushort)TransferResponse.Authorities.Count;
-                                TransferResponse.Header.AdditionalRecordsCount = (ushort)TransferResponse.Additionals.Count;
-                                TransferResponse.MessageSize = intMessageSize;
-                                return TransferResponse;
+                                transferResponse.Header.QuestionCount = (UInt16)transferResponse.Questions.Count;
+                                transferResponse.Header.AnswerCount = (UInt16)transferResponse.Answers.Count;
+                                transferResponse.Header.NameserverCount = (UInt16)transferResponse.Authorities.Count;
+                                transferResponse.Header.AdditionalRecordsCount = (UInt16)transferResponse.Additionals.Count;
+                                transferResponse.MessageSize = intMessageSize;
+                                return transferResponse;
                             }
                         }
                     } // try

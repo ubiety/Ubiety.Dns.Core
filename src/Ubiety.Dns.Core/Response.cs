@@ -23,7 +23,7 @@ namespace Ubiety.Dns.Core
             this.Authorities = new List<AuthorityRR>();
             this.Additionals = new List<AdditionalRR>();
 
-            this.Server = new IPEndPoint(0,0);
+            this.Server = new IPEndPoint(0, 0);
             this.Error = String.Empty;
             this.MessageSize = 0;
             this.TimeStamp = DateTime.Now;
@@ -322,7 +322,7 @@ namespace Ubiety.Dns.Core
                         list.Add(record);
                     }
                 }
-                
+
                 return list;
             }
         }

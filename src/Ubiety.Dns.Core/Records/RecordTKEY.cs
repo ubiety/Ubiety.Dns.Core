@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 /*
@@ -30,6 +31,9 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordTkey : Record
     {
+        private Byte[] keyData;
+        private Byte[] otherData;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTkey" /> class
         /// </summary>
@@ -42,9 +46,9 @@ namespace Ubiety.Dns.Core.Records
             this.Mode = rr.ReadUInt16();
             this.Error = rr.ReadUInt16();
             this.KeySize = rr.ReadUInt16();
-            this.KeyData = rr.ReadBytes(this.KeySize);
+            this.keyData = rr.ReadBytes(this.KeySize);
             this.OtherSize = rr.ReadUInt16();
-            this.OtherData = rr.ReadBytes(this.OtherSize);
+            this.otherData = rr.ReadBytes(this.OtherSize);
         }
 
         /// <summary>
@@ -80,7 +84,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the key data
         /// </summary>
-        public byte[] KeyData { get; }
+        public List<Byte> KeyData { get => new List<Byte>(this.keyData); }
 
         /// <summary>
         ///     Gets the other size from the record (Future use)
@@ -90,7 +94,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the other data from the record (Future use)
         /// </summary>
-        public byte[] OtherData { get; }
+        public List<Byte> OtherData { get => new List<Byte>(this.otherData); }
 
         /// <summary>
         ///     String representation of the record data

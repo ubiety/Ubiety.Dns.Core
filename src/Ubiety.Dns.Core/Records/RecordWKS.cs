@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 /*
@@ -53,8 +54,10 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordWks : Record
     {
+        private Byte[] bitmap;
+
         /// <summary>
-        ///     Intializes a new instance of the <see cref="RecordWks" /> class
+        ///     Initializes a new instance of the <see cref="RecordWks" /> class
         /// </summary>
         /// <param name="rr">Record reader for record data</param>
         public RecordWks(RecordReader rr)
@@ -69,8 +72,8 @@ namespace Ubiety.Dns.Core.Records
                 rr.ReadByte());
             this.Protocol = (Int32)rr.ReadByte();
             length -= 5;
-            this.Bitmap = new Byte[length];
-            this.Bitmap = rr.ReadBytes(length);
+            this.bitmap = new Byte[length];
+            this.bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
@@ -84,9 +87,9 @@ namespace Ubiety.Dns.Core.Records
         public Int32 Protocol { get; set; }
 
         /// <summary>
-        ///     Gets or sets the service bitmap
+        ///     Gets the service bitmap
         /// </summary>
-        public Byte[] Bitmap { get; set; }
+        public Collection<Byte> Bitmap { get => new Collection<Byte>(this.bitmap); }
 
         /// <summary>
         ///     Return a string of the well known service record

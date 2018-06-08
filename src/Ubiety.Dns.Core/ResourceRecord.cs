@@ -64,7 +64,7 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class ResourceRecord
     {
-        private uint ttl;
+        private UInt32 ttl;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ResourceRecord" /> class
@@ -78,14 +78,14 @@ namespace Ubiety.Dns.Core
             this.Class = (OperationClass)rr.ReadUInt16();
             this.TTL = rr.ReadUInt32();
             this.RecordLength = rr.ReadUInt16();
-            this.Record = rr.ReadRecord(Type);
+            this.Record = rr.ReadRecord(this.Type);
             this.Record.ResourceRecord = this;
         }
 
         /// <summary>
         ///     Gets or sets the name of the node to which this resource record pertains
         /// </summary>
-        public string Name { get; set; }
+        public String Name { get; set; }
 
         /// <summary>
         ///     Gets or sets the type of resource record
@@ -93,29 +93,30 @@ namespace Ubiety.Dns.Core
         public RecordType Type { get; set; }
 
         /// <summary>
-        ///     Gets or sets the type class of resource record, mostly IN but can be CS, CH or HS 
+        ///     Gets or sets the type class of resource record, mostly IN but can be CS, CH or HS
         /// </summary>
         public OperationClass Class { get; set; }
 
         /// <summary>
         ///     Gets or sets the time to live, the time interval that the resource record may be cached
         /// </summary>
-        public uint TTL
+        public UInt32 TTL
         {
             get
             {
-                return (uint)Math.Max(0, ttl - TimeLived);
+                return (UInt32)Math.Max(0, this.ttl - this.TimeLived);
             }
+
             set
             {
-                ttl = value;
+                this.ttl = value;
             }
         }
 
         /// <summary>
         ///     Gets or sets the record length
         /// </summary>
-        public ushort RecordLength { get; set; }
+        public UInt16 RecordLength { get; set; }
 
         /// <summary>
         ///     Gets or sets one of the Record* classes
@@ -125,65 +126,15 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the time lived
         /// </summary>
-        public int TimeLived { get; set; }
+        public Int32 TimeLived { get; set; }
 
         /// <summary>
         ///     String version of the resource record
         /// </summary>
         /// <returns>String of the resource</returns>
-        public override string ToString()
+        public override String ToString()
         {
-            return string.Format("{0,-32} {1}\t{2}\t{3}\t{4}",
-                this.Name,
-                this.TTL,
-                this.Class,
-                this.Type,
-                this.Record);
-        }
-    }
-
-    /// <summary>
-    ///     Answer resource record
-    /// </summary>
-    public class AnswerRR : ResourceRecord
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AnswerRR" /> class
-        /// </summary>
-        /// <param name="br"><see cref="RecordReader" /> for the record data</param>
-        public AnswerRR(RecordReader br)
-            : base(br)
-        {
-        }
-    }
-
-    /// <summary>
-    ///     Authority resource record
-    /// </summary>
-    public class AuthorityRR : ResourceRecord
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AuthorityRR" /> class
-        /// </summary>
-        /// <param name="br"><see cref="ResourceRecord" /> for the record data</param>
-        public AuthorityRR(RecordReader br)
-            : base(br)
-        {
-        }
-    }
-
-    /// <summary>
-    ///     Additional resource record
-    /// </summary>
-    public class AdditionalRR : ResourceRecord
-    {
-        /// <summary>
-        ///     Initalizes a new instance of the <see cref="AdditionalRR" /> class
-        /// </summary>
-        /// <param name="br"><see cref="ResourceRecord" /> for the record data</param>
-        public AdditionalRR(RecordReader br)
-            : base(br)
-        {
+            return $"{this.Name, -32} {this.TTL}\t{this.Class}\t{this.Type}\t{this.Record}";
         }
     }
 }

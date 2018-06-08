@@ -103,15 +103,22 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Boolean indicating whether the instances are equal</returns>
         public override Boolean Equals(Object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
+            if (obj == null || this.GetType() != obj.GetType())
             {
                 return false;
             }
 
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
 
-            return Equals(obj as RecordKx);
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return this.Equals(obj as RecordKx);
         }
 
         /// <summary>
@@ -126,7 +133,7 @@ namespace Ubiety.Dns.Core.Records
                 return false;
             }
 
-            return String.Equals(this.Exchanger, other.Exchanger);
+            return String.Equals(this.Exchanger, other.Exchanger, StringComparison.InvariantCulture);
         }
 
         /// <summary>
