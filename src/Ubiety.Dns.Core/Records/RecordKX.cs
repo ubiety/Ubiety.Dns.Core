@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Key exchange record
     /// </summary>
-    public class RecordKx : Record, IComparable
+    public class RecordKx : Record, IComparable, IEquatable<RecordKx>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordKx" /> class
@@ -93,6 +93,62 @@ namespace Ubiety.Dns.Core.Records
             {
                 // they are the same, now compare case insensitive names
                 return String.Compare(this.Exchanger, recordKX.Exchanger, true, CultureInfo.InvariantCulture);
+            }
+        }
+
+        /// <summary>
+        ///     Overrides equals
+        /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>Boolean indicating whether the instances are equal</returns>
+        public override Boolean Equals(Object obj)
+        {
+            if (obj == null || this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return this.Equals(obj as RecordKx);
+        }
+
+        /// <summary>
+        ///     Are two instances of <see cref="RecordKx" /> equal
+        /// </summary>
+        /// <param name="other"><see cref="RecordKx" /> to compare to</param>
+        /// <returns>Boolean indicating whether the two instances are equal</returns>
+        public Boolean Equals(RecordKx other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return String.Equals(this.Exchanger, other.Exchanger, StringComparison.InvariantCulture);
+        }
+
+        /// <summary>
+        ///     Gets the hash code
+        /// </summary>
+        /// <returns>Integer value of the hash</returns>
+        public override Int32 GetHashCode()
+        {
+            unchecked
+            {
+                var hashcode = 13;
+                hashcode = (hashcode * 397) ^ this.Preference;
+                var exHash = !String.IsNullOrEmpty(this.Exchanger) ? this.Exchanger.GetHashCode() : 0;
+                hashcode = (hashcode * 397) ^ exHash;
+                return hashcode;
             }
         }
     }

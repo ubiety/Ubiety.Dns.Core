@@ -1,13 +1,22 @@
+#addin "nuget:?package=Cake.Sonar"
+#addin "Cake.MiniCover"
+#tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
+#tool "nuget:?package=GitVersion.CommandLine"
+#tool "nuget:?package=xunit.runner.console"
+
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
+var target = Argument("target", "Coverage");
+var configuration = Argument("configuration", "Debug");
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
+
+SetMiniCoverToolsProject("./tools/tools.csproj");
+
 
 Setup(ctx =>
 {
@@ -32,14 +41,60 @@ Task("Clean")
         DotNetCoreClean(projectDir);
     });
 
-Task("Restore")
-    .IsDependentOn("Clean")
+Task("Pack")
+    .IsDependentOn("Build")
     .Does(() => {
-        DotNetCoreRestore(projectDir);
+        DotNetCorePack(projectDir);
     });
 
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() => {
+        var testAssemblies = GetFiles("./test/**/bin/Debug/netcoreapp2.0/Ubiety.Dns.Test.dll");
+        XUnit2(testAssemblies);
+    });
+
+Task("Coverage")
+    .IsDependentOn("Build")
+    .Does(() => {
+        MiniCover(tool => {
+            foreach (var project in GetFiles("./test/**/*.csproj"))
+            {
+                tool.DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings{
+                    NoBuild = true,
+                    Configuration = configuration
+                });
+            }
+        }, new MiniCoverSettings()
+            .WithAssembliesMatching("./test/**/*.dll")
+            .WithSourcesMatching("./src/**/*.cs")
+            .GenerateReport(ReportType.XML));
+    });
+
+Task("SonarBegin")
+    .Does(() => {
+        SonarBegin(new SonarBeginSettings{
+            Url = "https://sonarcloud.io",
+            Key = "dns",
+            Organization = "coder2000-github",
+            Login = "6a7700a6bfbe29e25e38e7996631c142ef24480a"
+        });
+    });
+
+Task("SonarEnd")
+    .Does(() => {
+        SonarEnd(new SonarEndSettings{
+            Login = "6a7700a6bfbe29e25e38e7996631c142ef24480a"
+        });
+    });
+
+Task("Sonar")
+    .IsDependentOn("SonarBegin")
+    .IsDependentOn("Build")
+    .IsDependentOn("SonarEnd");
+
 Task("Build")
-    .IsDependentOn("Restore")
+    .IsDependentOn("Clean")
     .Does(() => {
         DotNetCoreBuild(projectDir);
     });

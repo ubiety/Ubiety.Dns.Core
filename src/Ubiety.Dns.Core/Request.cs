@@ -18,7 +18,7 @@ namespace Ubiety.Dns.Core
         public Request()
         {
             this.Header = new Header();
-            this.Header.OPCODE = OperationCode.Query;
+            this.Header.OpCode = OperationCode.Query;
             this.Header.QuestionCount = 0;
 
             this.questions = new List<Question>();
@@ -29,11 +29,11 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public Header Header { get; set; }
 
-
         /// <summary>
         ///     Gets the request as a byte array
         /// </summary>
-        public byte[] GetData()
+        /// <returns>Byte array of the data</returns>
+        public Byte[] GetData()
         {
                 List<byte> data = new List<byte>();
                 this.Header.QuestionCount = (ushort)this.questions.Count;
