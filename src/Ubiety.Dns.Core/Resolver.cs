@@ -367,7 +367,7 @@ namespace Ubiety.Dns.Core
         private Response GetResponse(Request request)
         {
             request.Header.Id = this.unique;
-            request.Header.RD = this.Recursion;
+            request.Header.Recursion = this.Recursion;
 
             if (this.TransportType == TransportType.Udp)
             {
@@ -442,7 +442,7 @@ namespace Ubiety.Dns.Core
             }
 
             // Only cached non-error responses
-            if (response.Header.RCODE != ResponseCode.NoError)
+            if (response.Header.ResponseCode != ResponseCode.NoError)
             {
                 return;
             }
@@ -554,7 +554,7 @@ namespace Ubiety.Dns.Core
                             bs.Read(data, 0, intLength);
                             Response response = new Response(this.dnsServers[intDnsServer], data);
 
-                            if (response.Header.RCODE != ResponseCode.NoError)
+                            if (response.Header.ResponseCode != ResponseCode.NoError)
                             {
                                 return response;
                             }

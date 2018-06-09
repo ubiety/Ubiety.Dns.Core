@@ -13,7 +13,7 @@ namespace Ubiety.Dns.Core
     public class Header
     {
         // internal flag
-        private ushort flags;
+        private UInt16 flags;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Header" /> class
@@ -39,32 +39,32 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the unique identifier of the record
         /// </summary>
-        public ushort Id { get; set; }
+        public UInt16 Id { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of questions in the record
         /// </summary>
-        public ushort QuestionCount { get; set; }
+        public UInt16 QuestionCount { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of answers in the record
         /// </summary>
-        public ushort AnswerCount { get; set; }
+        public UInt16 AnswerCount { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of name servers in the record
         /// </summary>
-        public ushort NameserverCount { get; set; }
+        public UInt16 NameserverCount { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of additional records in the record
         /// </summary>
-        public ushort AdditionalRecordsCount { get; set; }
+        public UInt16 AdditionalRecordsCount { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the record is a query or response
         /// </summary>
-        public bool QR
+        public Boolean QueryResponse
         {
             get => GetBits(this.flags, 15, 1) == 1;
             set
@@ -76,19 +76,19 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the record opcode flag
         /// </summary>
-        public OperationCode OPCODE
+        public OperationCode OpCode
         {
             get => (OperationCode)GetBits(this.flags, 11, 4);
             set
             {
-                this.flags = SetBits(this.flags, 11, 4, (ushort)value);
+                this.flags = SetBits(this.flags, 11, 4, (UInt16)value);
             }
         }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the record is an authoritative answer
         /// </summary>
-        public bool AA
+        public Boolean AuthoritativAnswer
         {
             get => GetBits(this.flags, 10, 1) == 1;
             set
@@ -100,7 +100,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets a value indicating whether the truncation flag is set
         /// </summary>
-        public bool TC
+        public Boolean Truncation
         {
             get => GetBits(this.flags, 9, 1) == 1;
             set
@@ -112,7 +112,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets a value indicating whether the recursion flag is set
         /// </summary>
-        public bool RD
+        public Boolean Recursion
         {
             get => GetBits(this.flags, 8, 1) == 1;
             set
@@ -124,7 +124,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets a value indicating whether the recursion available flag is set
         /// </summary>
-        public bool RA
+        public Boolean RA
         {
             get => GetBits(this.flags, 7, 1) == 1;
             set
@@ -136,7 +136,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets a record reserved flag
         /// </summary>
-        public ushort Z
+        public UInt16 Z
         {
             get => GetBits(this.flags, 4, 3);
             set
@@ -148,12 +148,12 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the record response code
         /// </summary>
-        public ResponseCode RCODE
+        public ResponseCode ResponseCode
         {
             get => (ResponseCode)GetBits(this.flags, 0, 4);
             set
             {
-                this.flags = SetBits(this.flags, 0, 4, (ushort)value);
+                this.flags = SetBits(this.flags, 0, 4, (UInt16)value);
             }
         }
 
@@ -161,9 +161,9 @@ namespace Ubiety.Dns.Core
         ///     Gets the header as a byte array
         /// </summary>
         /// <returns>Byte array of the header data</returns>
-        public byte[] GetData()
+        public Byte[] GetData()
         {
-            List<byte> data = new List<byte>();
+            List<Byte> data = new List<Byte>();
             data.AddRange(WriteShort(this.Id));
             data.AddRange(WriteShort(this.flags));
             data.AddRange(WriteShort(this.QuestionCount));
@@ -173,12 +173,12 @@ namespace Ubiety.Dns.Core
             return data.ToArray();
         }
 
-        private static ushort SetBits(ushort oldValue, int position, int length, bool blnValue)
+        private static UInt16 SetBits(UInt16 oldValue, Int32 position, Int32 length, Boolean blnValue)
         {
-            return SetBits(oldValue, position, length, blnValue ? (ushort)1 : (ushort)0);
+            return SetBits(oldValue, position, length, blnValue ? (UInt16)1 : (UInt16)0);
         }
 
-        private static ushort SetBits(ushort oldValue, int position, int length, ushort newValue)
+        private static UInt16 SetBits(UInt16 oldValue, Int32 position, Int32 length, UInt16 newValue)
         {
             // sanity check
             if (length <= 0 || position >= 16)
@@ -187,17 +187,17 @@ namespace Ubiety.Dns.Core
             }
 
             // get some mask to put on
-            int mask = (2 << (length - 1)) - 1;
+            Int32 mask = (2 << (length - 1)) - 1;
 
             // clear out value
-            oldValue &= (ushort)~(mask << position);
+            oldValue &= (UInt16)~(mask << position);
 
             // set new value
-            oldValue |= (ushort)((newValue & mask) << position);
+            oldValue |= (UInt16)((newValue & mask) << position);
             return oldValue;
         }
 
-        private static ushort GetBits(ushort oldValue, int position, int length)
+        private static UInt16 GetBits(UInt16 oldValue, Int32 position, Int32 length)
         {
             // sanity check
             if (length <= 0 || position >= 16)
@@ -206,15 +206,15 @@ namespace Ubiety.Dns.Core
             }
 
             // get some mask to put on
-            int mask = (2 << (length - 1)) - 1;
+            Int32 mask = (2 << (length - 1)) - 1;
 
             // shift down to get some value and mask it
-            return (ushort)((oldValue >> position) & mask);
+            return (UInt16)((oldValue >> position) & mask);
         }
 
-        private static byte[] WriteShort(ushort sValue)
+        private static Byte[] WriteShort(UInt16 sValue)
         {
-            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)sValue));
+            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((Int16)sValue));
         }
     }
 }
