@@ -18,7 +18,7 @@ namespace Ubiety.Dns.Core
         public Request()
         {
             this.Header = new Header();
-            this.Header.OPCODE = OperationCode.Query;
+            this.Header.OpCode = OperationCode.Query;
             this.Header.QuestionCount = 0;
 
             this.questions = new List<Question>();
