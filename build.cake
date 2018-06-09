@@ -41,14 +41,6 @@ Task("Clean")
         DotNetCoreClean(projectDir);
     });
 
-Task("UpdateVersion")
-    .IsDependentOn("Clean")
-    .Does(() => {
-        GitVersion(new GitVersionSettings{
-            UpdateAssemblyInfo = true
-        });
-    });
-
 Task("Pack")
     .IsDependentOn("Build")
     .Does(() => {
@@ -102,7 +94,7 @@ Task("Sonar")
     .IsDependentOn("SonarEnd");
 
 Task("Build")
-    .IsDependentOn("UpdateVersion")
+    .IsDependentOn("Clean")
     .Does(() => {
         DotNetCoreBuild(projectDir);
     });
