@@ -81,35 +81,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Resolver</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Ubiety.Dns.Core.html">Ubiety.Dns.Core</a></h6>
   <h6><strong>Assembly</strong>: Ubiety.Dns.Core.dll</h6>
   <h5 id="Ubiety_Dns_Core_Resolver_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Resolver</code></pre>
+    <pre><code class="lang-csharp hljs">public class Resolver : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -131,19 +107,19 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_System_Net_IPAddress_System_Int32_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(System.Net.IPAddress%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_IPAddress_Int32_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(IPAddress%2CInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L70">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Resolver__ctor_" data-uid="Ubiety.Dns.Core.Resolver.#ctor*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver__ctor_System_Net_IPAddress_System_Int32_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPAddress,System.Int32)">Resolver(IPAddress, Int32)</h4>
+  <h4 id="Ubiety_Dns_Core_Resolver__ctor_IPAddress_Int32_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(IPAddress,Int32)">Resolver(IPAddress, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Ubiety.Dns.Core.Resolver.html">Resolver</a> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Resolver(IPAddress serverIpAddress, int serverPortNumber)</code></pre>
+    <pre><code class="lang-csharp hljs">public Resolver(IPAddress serverIpAddress, Int32 serverPortNumber)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,13 +132,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPAddress</span></td>
+        <td><span class="xref">IPAddress</span></td>
         <td><span class="parametername">serverIpAddress</span></td>
         <td><p>DNS server to use</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">Int32</span></td>
         <td><span class="parametername">serverPortNumber</span></td>
         <td><p>DNS port to use</p>
 </td>
@@ -171,13 +147,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_System_Net_IPEndPoint_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(System.Net.IPEndPoint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_IPEndPoint_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(IPEndPoint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L60">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Resolver__ctor_" data-uid="Ubiety.Dns.Core.Resolver.#ctor*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver__ctor_System_Net_IPEndPoint_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPEndPoint)">Resolver(IPEndPoint)</h4>
+  <h4 id="Ubiety_Dns_Core_Resolver__ctor_IPEndPoint_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(IPEndPoint)">Resolver(IPEndPoint)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Ubiety.Dns.Core.Resolver.html">Resolver</a> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -196,7 +172,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span></td>
+        <td><span class="xref">IPEndPoint</span></td>
         <td><span class="parametername">dnsServer</span></td>
         <td><p>DNS server to use</p>
 </td>
@@ -205,13 +181,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_System_Net_IPEndPoint___.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(System.Net.IPEndPoint%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_IPEndPoint___.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(IPEndPoint%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L42">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Resolver__ctor_" data-uid="Ubiety.Dns.Core.Resolver.#ctor*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver__ctor_System_Net_IPEndPoint___" data-uid="Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPEndPoint[])">Resolver(IPEndPoint[])</h4>
+  <h4 id="Ubiety_Dns_Core_Resolver__ctor_IPEndPoint___" data-uid="Ubiety.Dns.Core.Resolver.#ctor(IPEndPoint[])">Resolver(IPEndPoint[])</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Ubiety.Dns.Core.Resolver.html">Resolver</a> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -230,7 +206,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span>[]</td>
+        <td><span class="xref">IPEndPoint</span>[]</td>
         <td><span class="parametername">dnsServers</span></td>
         <td><p>Set of DNS servers</p>
 </td>
@@ -239,19 +215,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_System_String_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_String_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L89">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Resolver__ctor_" data-uid="Ubiety.Dns.Core.Resolver.#ctor*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver__ctor_System_String_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(System.String)">Resolver(String)</h4>
+  <h4 id="Ubiety_Dns_Core_Resolver__ctor_String_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(String)">Resolver(String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Ubiety.Dns.Core.Resolver.html">Resolver</a> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Resolver(string serverIpAddress)</code></pre>
+    <pre><code class="lang-csharp hljs">public Resolver(String serverIpAddress)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -264,7 +240,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">String</span></td>
         <td><span class="parametername">serverIpAddress</span></td>
         <td><p>DNS server address to use</p>
 </td>
@@ -273,19 +249,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(System.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver__ctor_String_Int32_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.%23ctor(String%2CInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L80">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Resolver__ctor_" data-uid="Ubiety.Dns.Core.Resolver.#ctor*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver__ctor_System_String_System_Int32_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(System.String,System.Int32)">Resolver(String, Int32)</h4>
+  <h4 id="Ubiety_Dns_Core_Resolver__ctor_String_Int32_" data-uid="Ubiety.Dns.Core.Resolver.#ctor(String,Int32)">Resolver(String, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Ubiety.Dns.Core.Resolver.html">Resolver</a> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Resolver(string serverIpAddress, int serverPortNumber)</code></pre>
+    <pre><code class="lang-csharp hljs">public Resolver(String serverIpAddress, Int32 serverPortNumber)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -298,13 +274,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">String</span></td>
         <td><span class="parametername">serverIpAddress</span></td>
         <td><p>DNS server address to use</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">Int32</span></td>
         <td><span class="parametername">serverPortNumber</span></td>
         <td><p>DNS port to use</p>
 </td>
@@ -326,7 +302,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultPort = 53</code></pre>
+    <pre><code class="lang-csharp hljs">public const Int32 DefaultPort = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -338,7 +314,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -371,7 +347,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span>[]</td>
+        <td><span class="xref">IPEndPoint</span>[]</td>
         <td></td>
       </tr>
     </tbody>
@@ -433,7 +409,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span>[]</td>
+        <td><span class="xref">IPEndPoint</span>[]</td>
         <td></td>
       </tr>
     </tbody>
@@ -644,19 +620,19 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver_GetArpaFromEnum_System_String_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.GetArpaFromEnum(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver_GetArpaFromEnum_String_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.GetArpaFromEnum(String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L305">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Resolver_GetArpaFromEnum_" data-uid="Ubiety.Dns.Core.Resolver.GetArpaFromEnum*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver_GetArpaFromEnum_System_String_" data-uid="Ubiety.Dns.Core.Resolver.GetArpaFromEnum(System.String)">GetArpaFromEnum(String)</h4>
+  <h4 id="Ubiety_Dns_Core_Resolver_GetArpaFromEnum_String_" data-uid="Ubiety.Dns.Core.Resolver.GetArpaFromEnum(String)">GetArpaFromEnum(String)</h4>
   <div class="markdown level1 summary"><p>Get ARPA address from enum</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string GetArpaFromEnum(string enumerator)</code></pre>
+    <pre><code class="lang-csharp hljs">public static String GetArpaFromEnum(String enumerator)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -669,7 +645,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">String</span></td>
         <td><span class="parametername">enumerator</span></td>
         <td><p>Enum for the address</p>
 </td>
@@ -686,7 +662,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">String</span></td>
         <td><p>String of the ARPA address</p>
 </td>
       </tr>
@@ -694,19 +670,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver_GetArpaFromIp_System_Net_IPAddress_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.GetArpaFromIp(System.Net.IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver_GetArpaFromIp_IPAddress_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.GetArpaFromIp(IPAddress)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L270">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Resolver_GetArpaFromIp_" data-uid="Ubiety.Dns.Core.Resolver.GetArpaFromIp*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver_GetArpaFromIp_System_Net_IPAddress_" data-uid="Ubiety.Dns.Core.Resolver.GetArpaFromIp(System.Net.IPAddress)">GetArpaFromIp(IPAddress)</h4>
+  <h4 id="Ubiety_Dns_Core_Resolver_GetArpaFromIp_IPAddress_" data-uid="Ubiety.Dns.Core.Resolver.GetArpaFromIp(IPAddress)">GetArpaFromIp(IPAddress)</h4>
   <div class="markdown level1 summary"><p>Translates the IPV4 or IPV6 address into an arpa address</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string GetArpaFromIp(IPAddress ip)</code></pre>
+    <pre><code class="lang-csharp hljs">public static String GetArpaFromIp(IPAddress ip)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -719,7 +695,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPAddress</span></td>
+        <td><span class="xref">IPAddress</span></td>
         <td><span class="parametername">ip</span></td>
         <td><p>IP address to get the arpa address form</p>
 </td>
@@ -736,7 +712,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">String</span></td>
         <td><p>The 'mirrored' IPV4 or IPV6 arpa address</p>
 </td>
       </tr>
@@ -768,8 +744,70 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span>[]</td>
+        <td><span class="xref">IPEndPoint</span>[]</td>
         <td><p>Array of DNS servers</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver_Query_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.Query(String%2CUbiety.Dns.Core.Common.QuestionType%2CUbiety.Dns.Core.Common.QuestionClass)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L333">View Source</a>
+  </span>
+  <a id="Ubiety_Dns_Core_Resolver_Query_" data-uid="Ubiety.Dns.Core.Resolver.Query*"></a>
+  <h4 id="Ubiety_Dns_Core_Resolver_Query_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_" data-uid="Ubiety.Dns.Core.Resolver.Query(String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)">Query(String, QuestionType, QuestionClass)</h4>
+  <div class="markdown level1 summary"><p>Do Query on specified DNS servers</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Response Query(String name, QuestionType qtype, QuestionClass qclass)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Name to query</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Ubiety.Dns.Core.Common.QuestionType.html">QuestionType</a></td>
+        <td><span class="parametername">qtype</span></td>
+        <td><p>Question type</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Ubiety.Dns.Core.Common.QuestionClass.html">QuestionClass</a></td>
+        <td><span class="parametername">qclass</span></td>
+        <td><p>Class type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Ubiety.Dns.Core.Response.html">Response</a></td>
+        <td><p>Response of the query</p>
 </td>
       </tr>
     </tbody>
@@ -810,68 +848,6 @@
         <td><a class="xref" href="Ubiety.Dns.Core.Common.QuestionType.html">QuestionType</a></td>
         <td><span class="parametername">qtype</span></td>
         <td><p>Question type</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Ubiety.Dns.Core.Response.html">Response</a></td>
-        <td><p>Response of the query</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Resolver_Query_System_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Resolver.Query(System.String%2CUbiety.Dns.Core.Common.QuestionType%2CUbiety.Dns.Core.Common.QuestionClass)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Resolver.cs/#L333">View Source</a>
-  </span>
-  <a id="Ubiety_Dns_Core_Resolver_Query_" data-uid="Ubiety.Dns.Core.Resolver.Query*"></a>
-  <h4 id="Ubiety_Dns_Core_Resolver_Query_System_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_" data-uid="Ubiety.Dns.Core.Resolver.Query(System.String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)">Query(String, QuestionType, QuestionClass)</h4>
-  <div class="markdown level1 summary"><p>Do Query on specified DNS servers</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Response Query(string name, QuestionType qtype, QuestionClass qclass)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name to query</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Ubiety.Dns.Core.Common.QuestionType.html">QuestionType</a></td>
-        <td><span class="parametername">qtype</span></td>
-        <td><p>Question type</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Ubiety.Dns.Core.Common.QuestionClass.html">QuestionClass</a></td>
-        <td><span class="parametername">qclass</span></td>
-        <td><p>Class type</p>
 </td>
       </tr>
     </tbody>

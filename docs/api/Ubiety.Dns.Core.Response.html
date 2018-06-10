@@ -81,35 +81,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Response</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Ubiety.Dns.Core.html">Ubiety.Dns.Core</a></h6>
   <h6><strong>Assembly</strong>: Ubiety.Dns.Core.dll</h6>
   <h5 id="Ubiety_Dns_Core_Response_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Response</code></pre>
+    <pre><code class="lang-csharp hljs">public class Response : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -131,19 +107,19 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Response__ctor_System_Net_IPEndPoint_System_Byte___.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Response.%23ctor(System.Net.IPEndPoint%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/ubiety/Ubiety.Dns.Core/new/develop/apiSpec/new?filename=Ubiety_Dns_Core_Response__ctor_IPEndPoint_Byte___.md&amp;value=---%0Auid%3A%20Ubiety.Dns.Core.Response.%23ctor(IPEndPoint%2CByte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/ubiety/Ubiety.Dns.Core/blob/develop/src/Ubiety.Dns.Core/Response.cs/#L38">View Source</a>
   </span>
   <a id="Ubiety_Dns_Core_Response__ctor_" data-uid="Ubiety.Dns.Core.Response.#ctor*"></a>
-  <h4 id="Ubiety_Dns_Core_Response__ctor_System_Net_IPEndPoint_System_Byte___" data-uid="Ubiety.Dns.Core.Response.#ctor(System.Net.IPEndPoint,System.Byte[])">Response(IPEndPoint, Byte[])</h4>
+  <h4 id="Ubiety_Dns_Core_Response__ctor_IPEndPoint_Byte___" data-uid="Ubiety.Dns.Core.Response.#ctor(IPEndPoint,Byte[])">Response(IPEndPoint, Byte[])</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Ubiety.Dns.Core.Response.html">Response</a> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Response(IPEndPoint iPEndPoint, byte[] data)</code></pre>
+    <pre><code class="lang-csharp hljs">public Response(IPEndPoint iPEndPoint, Byte[] data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,13 +132,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span></td>
+        <td><span class="xref">IPEndPoint</span></td>
         <td><span class="parametername">iPEndPoint</span></td>
         <td><p>Address of the response</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="xref">Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
         <td><p>Response data</p>
 </td>
@@ -197,7 +173,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.AdditionalRR.html">AdditionalRR</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.AdditionalRR.html">AdditionalRR</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -228,7 +204,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.AnswerRR.html">AnswerRR</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.AnswerRR.html">AnswerRR</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -259,7 +235,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.AuthorityRR.html">AuthorityRR</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.AuthorityRR.html">AuthorityRR</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -278,7 +254,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Error { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public String Error { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -290,7 +266,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -340,7 +316,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int MessageSize { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Int32 MessageSize { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -352,7 +328,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -383,7 +359,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Question.html">Question</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Question.html">Question</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -414,7 +390,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordA.html">RecordA</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordA.html">RecordA</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -445,7 +421,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordAaaa.html">RecordAaaa</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordAaaa.html">RecordAaaa</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -476,7 +452,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordCert.html">RecordCert</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordCert.html">RecordCert</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -507,7 +483,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordCname.html">RecordCname</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordCname.html">RecordCname</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -538,7 +514,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordMx.html">RecordMx</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordMx.html">RecordMx</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -569,7 +545,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordNs.html">RecordNs</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordNs.html">RecordNs</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -600,7 +576,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordPtr.html">RecordPtr</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordPtr.html">RecordPtr</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -631,7 +607,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordSoa.html">RecordSoa</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordSoa.html">RecordSoa</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -662,7 +638,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordSrv.html">RecordSrv</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordSrv.html">RecordSrv</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -693,7 +669,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordTxt.html">RecordTxt</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.Records.RecordTxt.html">RecordTxt</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -724,7 +700,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.ResourceRecord.html">ResourceRecord</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Ubiety.Dns.Core.ResourceRecord.html">ResourceRecord</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -755,7 +731,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span></td>
+        <td><span class="xref">IPEndPoint</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -786,7 +762,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DateTime</span></td>
+        <td><span class="xref">DateTime</span></td>
         <td></td>
       </tr>
     </tbody>

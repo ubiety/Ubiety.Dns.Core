@@ -1180,11 +1180,11 @@ references:
   commentId: T:Ubiety.Dns.Core.Common.VerboseEventArgs
   fullName: Ubiety.Dns.Core.Common.VerboseEventArgs
   nameWithType: VerboseEventArgs
-- uid: Ubiety.Dns.Core.Common.VerboseEventArgs.#ctor(System.String)
+- uid: Ubiety.Dns.Core.Common.VerboseEventArgs.#ctor(String)
   name: VerboseEventArgs(String)
-  href: api/Ubiety.Dns.Core.Common.VerboseEventArgs.html#Ubiety_Dns_Core_Common_VerboseEventArgs__ctor_System_String_
-  commentId: M:Ubiety.Dns.Core.Common.VerboseEventArgs.#ctor(System.String)
-  fullName: Ubiety.Dns.Core.Common.VerboseEventArgs.VerboseEventArgs(System.String)
+  href: api/Ubiety.Dns.Core.Common.VerboseEventArgs.html#Ubiety_Dns_Core_Common_VerboseEventArgs__ctor_String_
+  commentId: M:Ubiety.Dns.Core.Common.VerboseEventArgs.#ctor(String)
+  fullName: Ubiety.Dns.Core.Common.VerboseEventArgs.VerboseEventArgs(String)
   nameWithType: VerboseEventArgs.VerboseEventArgs(String)
 - uid: Ubiety.Dns.Core.Common.VerboseEventArgs.#ctor*
   name: VerboseEventArgs
@@ -1419,11 +1419,11 @@ references:
   commentId: T:Ubiety.Dns.Core.Question
   fullName: Ubiety.Dns.Core.Question
   nameWithType: Question
-- uid: Ubiety.Dns.Core.Question.#ctor(System.String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
+- uid: Ubiety.Dns.Core.Question.#ctor(String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
   name: Question(String, QuestionType, QuestionClass)
-  href: api/Ubiety.Dns.Core.Question.html#Ubiety_Dns_Core_Question__ctor_System_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_
-  commentId: M:Ubiety.Dns.Core.Question.#ctor(System.String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
-  fullName: Ubiety.Dns.Core.Question.Question(System.String, Ubiety.Dns.Core.Common.QuestionType, Ubiety.Dns.Core.Common.QuestionClass)
+  href: api/Ubiety.Dns.Core.Question.html#Ubiety_Dns_Core_Question__ctor_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_
+  commentId: M:Ubiety.Dns.Core.Question.#ctor(String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
+  fullName: Ubiety.Dns.Core.Question.Question(String, Ubiety.Dns.Core.Common.QuestionType, Ubiety.Dns.Core.Common.QuestionClass)
   nameWithType: Question.Question(String, QuestionType, QuestionClass)
 - uid: Ubiety.Dns.Core.Question.#ctor(Ubiety.Dns.Core.RecordReader)
   name: Question(RecordReader)
@@ -1509,22 +1509,22 @@ references:
   commentId: T:Ubiety.Dns.Core.RecordReader
   fullName: Ubiety.Dns.Core.RecordReader
   nameWithType: RecordReader
-- uid: Ubiety.Dns.Core.RecordReader.#ctor(System.Byte[])
+- uid: Ubiety.Dns.Core.RecordReader.#ctor(Byte[])
   name: RecordReader(Byte[])
-  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader__ctor_System_Byte___
-  commentId: M:Ubiety.Dns.Core.RecordReader.#ctor(System.Byte[])
+  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader__ctor_Byte___
+  commentId: M:Ubiety.Dns.Core.RecordReader.#ctor(Byte[])
   name.vb: RecordReader(Byte())
-  fullName: Ubiety.Dns.Core.RecordReader.RecordReader(System.Byte[])
-  fullName.vb: Ubiety.Dns.Core.RecordReader.RecordReader(System.Byte())
+  fullName: Ubiety.Dns.Core.RecordReader.RecordReader(Byte[])
+  fullName.vb: Ubiety.Dns.Core.RecordReader.RecordReader(Byte())
   nameWithType: RecordReader.RecordReader(Byte[])
   nameWithType.vb: RecordReader.RecordReader(Byte())
-- uid: Ubiety.Dns.Core.RecordReader.#ctor(System.Byte[],System.Int32)
+- uid: Ubiety.Dns.Core.RecordReader.#ctor(Byte[],Int32)
   name: RecordReader(Byte[], Int32)
-  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader__ctor_System_Byte___System_Int32_
-  commentId: M:Ubiety.Dns.Core.RecordReader.#ctor(System.Byte[],System.Int32)
+  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader__ctor_Byte___Int32_
+  commentId: M:Ubiety.Dns.Core.RecordReader.#ctor(Byte[],Int32)
   name.vb: RecordReader(Byte(), Int32)
-  fullName: Ubiety.Dns.Core.RecordReader.RecordReader(System.Byte[], System.Int32)
-  fullName.vb: Ubiety.Dns.Core.RecordReader.RecordReader(System.Byte(), System.Int32)
+  fullName: Ubiety.Dns.Core.RecordReader.RecordReader(Byte[], Int32)
+  fullName.vb: Ubiety.Dns.Core.RecordReader.RecordReader(Byte(), Int32)
   nameWithType: RecordReader.RecordReader(Byte[], Int32)
   nameWithType.vb: RecordReader.RecordReader(Byte(), Int32)
 - uid: Ubiety.Dns.Core.RecordReader.#ctor*
@@ -1560,11 +1560,11 @@ references:
   isSpec: "True"
   fullName: Ubiety.Dns.Core.RecordReader.ReadByte
   nameWithType: RecordReader.ReadByte
-- uid: Ubiety.Dns.Core.RecordReader.ReadBytes(System.Int32)
+- uid: Ubiety.Dns.Core.RecordReader.ReadBytes(Int32)
   name: ReadBytes(Int32)
-  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader_ReadBytes_System_Int32_
-  commentId: M:Ubiety.Dns.Core.RecordReader.ReadBytes(System.Int32)
-  fullName: Ubiety.Dns.Core.RecordReader.ReadBytes(System.Int32)
+  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader_ReadBytes_Int32_
+  commentId: M:Ubiety.Dns.Core.RecordReader.ReadBytes(Int32)
+  fullName: Ubiety.Dns.Core.RecordReader.ReadBytes(Int32)
   nameWithType: RecordReader.ReadBytes(Int32)
 - uid: Ubiety.Dns.Core.RecordReader.ReadBytes*
   name: ReadBytes
@@ -1631,11 +1631,11 @@ references:
   commentId: M:Ubiety.Dns.Core.RecordReader.ReadUInt16
   fullName: Ubiety.Dns.Core.RecordReader.ReadUInt16()
   nameWithType: RecordReader.ReadUInt16()
-- uid: Ubiety.Dns.Core.RecordReader.ReadUInt16(System.Int32)
+- uid: Ubiety.Dns.Core.RecordReader.ReadUInt16(Int32)
   name: ReadUInt16(Int32)
-  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader_ReadUInt16_System_Int32_
-  commentId: M:Ubiety.Dns.Core.RecordReader.ReadUInt16(System.Int32)
-  fullName: Ubiety.Dns.Core.RecordReader.ReadUInt16(System.Int32)
+  href: api/Ubiety.Dns.Core.RecordReader.html#Ubiety_Dns_Core_RecordReader_ReadUInt16_Int32_
+  commentId: M:Ubiety.Dns.Core.RecordReader.ReadUInt16(Int32)
+  fullName: Ubiety.Dns.Core.RecordReader.ReadUInt16(Int32)
   nameWithType: RecordReader.ReadUInt16(Int32)
 - uid: Ubiety.Dns.Core.RecordReader.ReadUInt16*
   name: ReadUInt16
@@ -3059,11 +3059,11 @@ references:
   isSpec: "True"
   fullName: Ubiety.Dns.Core.Records.RecordKx.RecordKx
   nameWithType: RecordKx.RecordKx
-- uid: Ubiety.Dns.Core.Records.RecordKx.CompareTo(System.Object)
+- uid: Ubiety.Dns.Core.Records.RecordKx.CompareTo(Object)
   name: CompareTo(Object)
-  href: api/Ubiety.Dns.Core.Records.RecordKx.html#Ubiety_Dns_Core_Records_RecordKx_CompareTo_System_Object_
-  commentId: M:Ubiety.Dns.Core.Records.RecordKx.CompareTo(System.Object)
-  fullName: Ubiety.Dns.Core.Records.RecordKx.CompareTo(System.Object)
+  href: api/Ubiety.Dns.Core.Records.RecordKx.html#Ubiety_Dns_Core_Records_RecordKx_CompareTo_Object_
+  commentId: M:Ubiety.Dns.Core.Records.RecordKx.CompareTo(Object)
+  fullName: Ubiety.Dns.Core.Records.RecordKx.CompareTo(Object)
   nameWithType: RecordKx.CompareTo(Object)
 - uid: Ubiety.Dns.Core.Records.RecordKx.CompareTo*
   name: CompareTo
@@ -3072,11 +3072,11 @@ references:
   isSpec: "True"
   fullName: Ubiety.Dns.Core.Records.RecordKx.CompareTo
   nameWithType: RecordKx.CompareTo
-- uid: Ubiety.Dns.Core.Records.RecordKx.Equals(System.Object)
+- uid: Ubiety.Dns.Core.Records.RecordKx.Equals(Object)
   name: Equals(Object)
-  href: api/Ubiety.Dns.Core.Records.RecordKx.html#Ubiety_Dns_Core_Records_RecordKx_Equals_System_Object_
-  commentId: M:Ubiety.Dns.Core.Records.RecordKx.Equals(System.Object)
-  fullName: Ubiety.Dns.Core.Records.RecordKx.Equals(System.Object)
+  href: api/Ubiety.Dns.Core.Records.RecordKx.html#Ubiety_Dns_Core_Records_RecordKx_Equals_Object_
+  commentId: M:Ubiety.Dns.Core.Records.RecordKx.Equals(Object)
+  fullName: Ubiety.Dns.Core.Records.RecordKx.Equals(Object)
   nameWithType: RecordKx.Equals(Object)
 - uid: Ubiety.Dns.Core.Records.RecordKx.Equals(Ubiety.Dns.Core.Records.RecordKx)
   name: Equals(RecordKx)
@@ -4918,38 +4918,38 @@ references:
   commentId: M:Ubiety.Dns.Core.Resolver.#ctor
   fullName: Ubiety.Dns.Core.Resolver.Resolver()
   nameWithType: Resolver.Resolver()
-- uid: Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPAddress,System.Int32)
+- uid: Ubiety.Dns.Core.Resolver.#ctor(IPAddress,Int32)
   name: Resolver(IPAddress, Int32)
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_System_Net_IPAddress_System_Int32_
-  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPAddress,System.Int32)
-  fullName: Ubiety.Dns.Core.Resolver.Resolver(System.Net.IPAddress, System.Int32)
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_IPAddress_Int32_
+  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(IPAddress,Int32)
+  fullName: Ubiety.Dns.Core.Resolver.Resolver(IPAddress, Int32)
   nameWithType: Resolver.Resolver(IPAddress, Int32)
-- uid: Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPEndPoint)
+- uid: Ubiety.Dns.Core.Resolver.#ctor(IPEndPoint)
   name: Resolver(IPEndPoint)
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_System_Net_IPEndPoint_
-  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPEndPoint)
-  fullName: Ubiety.Dns.Core.Resolver.Resolver(System.Net.IPEndPoint)
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_IPEndPoint_
+  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(IPEndPoint)
+  fullName: Ubiety.Dns.Core.Resolver.Resolver(IPEndPoint)
   nameWithType: Resolver.Resolver(IPEndPoint)
-- uid: Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPEndPoint[])
+- uid: Ubiety.Dns.Core.Resolver.#ctor(IPEndPoint[])
   name: Resolver(IPEndPoint[])
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_System_Net_IPEndPoint___
-  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(System.Net.IPEndPoint[])
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_IPEndPoint___
+  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(IPEndPoint[])
   name.vb: Resolver(IPEndPoint())
-  fullName: Ubiety.Dns.Core.Resolver.Resolver(System.Net.IPEndPoint[])
-  fullName.vb: Ubiety.Dns.Core.Resolver.Resolver(System.Net.IPEndPoint())
+  fullName: Ubiety.Dns.Core.Resolver.Resolver(IPEndPoint[])
+  fullName.vb: Ubiety.Dns.Core.Resolver.Resolver(IPEndPoint())
   nameWithType: Resolver.Resolver(IPEndPoint[])
   nameWithType.vb: Resolver.Resolver(IPEndPoint())
-- uid: Ubiety.Dns.Core.Resolver.#ctor(System.String)
+- uid: Ubiety.Dns.Core.Resolver.#ctor(String)
   name: Resolver(String)
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_System_String_
-  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(System.String)
-  fullName: Ubiety.Dns.Core.Resolver.Resolver(System.String)
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_String_
+  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(String)
+  fullName: Ubiety.Dns.Core.Resolver.Resolver(String)
   nameWithType: Resolver.Resolver(String)
-- uid: Ubiety.Dns.Core.Resolver.#ctor(System.String,System.Int32)
+- uid: Ubiety.Dns.Core.Resolver.#ctor(String,Int32)
   name: Resolver(String, Int32)
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_System_String_System_Int32_
-  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(System.String,System.Int32)
-  fullName: Ubiety.Dns.Core.Resolver.Resolver(System.String, System.Int32)
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver__ctor_String_Int32_
+  commentId: M:Ubiety.Dns.Core.Resolver.#ctor(String,Int32)
+  fullName: Ubiety.Dns.Core.Resolver.Resolver(String, Int32)
   nameWithType: Resolver.Resolver(String, Int32)
 - uid: Ubiety.Dns.Core.Resolver.#ctor*
   name: Resolver
@@ -5016,11 +5016,11 @@ references:
   isSpec: "True"
   fullName: Ubiety.Dns.Core.Resolver.DnsServers
   nameWithType: Resolver.DnsServers
-- uid: Ubiety.Dns.Core.Resolver.GetArpaFromEnum(System.String)
+- uid: Ubiety.Dns.Core.Resolver.GetArpaFromEnum(String)
   name: GetArpaFromEnum(String)
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_GetArpaFromEnum_System_String_
-  commentId: M:Ubiety.Dns.Core.Resolver.GetArpaFromEnum(System.String)
-  fullName: Ubiety.Dns.Core.Resolver.GetArpaFromEnum(System.String)
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_GetArpaFromEnum_String_
+  commentId: M:Ubiety.Dns.Core.Resolver.GetArpaFromEnum(String)
+  fullName: Ubiety.Dns.Core.Resolver.GetArpaFromEnum(String)
   nameWithType: Resolver.GetArpaFromEnum(String)
 - uid: Ubiety.Dns.Core.Resolver.GetArpaFromEnum*
   name: GetArpaFromEnum
@@ -5029,11 +5029,11 @@ references:
   isSpec: "True"
   fullName: Ubiety.Dns.Core.Resolver.GetArpaFromEnum
   nameWithType: Resolver.GetArpaFromEnum
-- uid: Ubiety.Dns.Core.Resolver.GetArpaFromIp(System.Net.IPAddress)
+- uid: Ubiety.Dns.Core.Resolver.GetArpaFromIp(IPAddress)
   name: GetArpaFromIp(IPAddress)
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_GetArpaFromIp_System_Net_IPAddress_
-  commentId: M:Ubiety.Dns.Core.Resolver.GetArpaFromIp(System.Net.IPAddress)
-  fullName: Ubiety.Dns.Core.Resolver.GetArpaFromIp(System.Net.IPAddress)
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_GetArpaFromIp_IPAddress_
+  commentId: M:Ubiety.Dns.Core.Resolver.GetArpaFromIp(IPAddress)
+  fullName: Ubiety.Dns.Core.Resolver.GetArpaFromIp(IPAddress)
   nameWithType: Resolver.GetArpaFromIp(IPAddress)
 - uid: Ubiety.Dns.Core.Resolver.GetArpaFromIp*
   name: GetArpaFromIp
@@ -5061,18 +5061,18 @@ references:
   commentId: E:Ubiety.Dns.Core.Resolver.OnVerbose
   fullName: Ubiety.Dns.Core.Resolver.OnVerbose
   nameWithType: Resolver.OnVerbose
+- uid: Ubiety.Dns.Core.Resolver.Query(String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
+  name: Query(String, QuestionType, QuestionClass)
+  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_Query_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_
+  commentId: M:Ubiety.Dns.Core.Resolver.Query(String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
+  fullName: Ubiety.Dns.Core.Resolver.Query(String, Ubiety.Dns.Core.Common.QuestionType, Ubiety.Dns.Core.Common.QuestionClass)
+  nameWithType: Resolver.Query(String, QuestionType, QuestionClass)
 - uid: Ubiety.Dns.Core.Resolver.Query(System.String,Ubiety.Dns.Core.Common.QuestionType)
   name: Query(String, QuestionType)
   href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_Query_System_String_Ubiety_Dns_Core_Common_QuestionType_
   commentId: M:Ubiety.Dns.Core.Resolver.Query(System.String,Ubiety.Dns.Core.Common.QuestionType)
   fullName: Ubiety.Dns.Core.Resolver.Query(System.String, Ubiety.Dns.Core.Common.QuestionType)
   nameWithType: Resolver.Query(String, QuestionType)
-- uid: Ubiety.Dns.Core.Resolver.Query(System.String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
-  name: Query(String, QuestionType, QuestionClass)
-  href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_Query_System_String_Ubiety_Dns_Core_Common_QuestionType_Ubiety_Dns_Core_Common_QuestionClass_
-  commentId: M:Ubiety.Dns.Core.Resolver.Query(System.String,Ubiety.Dns.Core.Common.QuestionType,Ubiety.Dns.Core.Common.QuestionClass)
-  fullName: Ubiety.Dns.Core.Resolver.Query(System.String, Ubiety.Dns.Core.Common.QuestionType, Ubiety.Dns.Core.Common.QuestionClass)
-  nameWithType: Resolver.Query(String, QuestionType, QuestionClass)
 - uid: Ubiety.Dns.Core.Resolver.Query*
   name: Query
   href: api/Ubiety.Dns.Core.Resolver.html#Ubiety_Dns_Core_Resolver_Query_
@@ -5299,13 +5299,13 @@ references:
   commentId: M:Ubiety.Dns.Core.Response.#ctor
   fullName: Ubiety.Dns.Core.Response.Response()
   nameWithType: Response.Response()
-- uid: Ubiety.Dns.Core.Response.#ctor(System.Net.IPEndPoint,System.Byte[])
+- uid: Ubiety.Dns.Core.Response.#ctor(IPEndPoint,Byte[])
   name: Response(IPEndPoint, Byte[])
-  href: api/Ubiety.Dns.Core.Response.html#Ubiety_Dns_Core_Response__ctor_System_Net_IPEndPoint_System_Byte___
-  commentId: M:Ubiety.Dns.Core.Response.#ctor(System.Net.IPEndPoint,System.Byte[])
+  href: api/Ubiety.Dns.Core.Response.html#Ubiety_Dns_Core_Response__ctor_IPEndPoint_Byte___
+  commentId: M:Ubiety.Dns.Core.Response.#ctor(IPEndPoint,Byte[])
   name.vb: Response(IPEndPoint, Byte())
-  fullName: Ubiety.Dns.Core.Response.Response(System.Net.IPEndPoint, System.Byte[])
-  fullName.vb: Ubiety.Dns.Core.Response.Response(System.Net.IPEndPoint, System.Byte())
+  fullName: Ubiety.Dns.Core.Response.Response(IPEndPoint, Byte[])
+  fullName.vb: Ubiety.Dns.Core.Response.Response(IPEndPoint, Byte())
   nameWithType: Response.Response(IPEndPoint, Byte[])
   nameWithType.vb: Response.Response(IPEndPoint, Byte())
 - uid: Ubiety.Dns.Core.Response.#ctor*
@@ -5581,11 +5581,11 @@ references:
   commentId: T:Ubiety.Dns.Core.VerboseOutputEventArgs
   fullName: Ubiety.Dns.Core.VerboseOutputEventArgs
   nameWithType: VerboseOutputEventArgs
-- uid: Ubiety.Dns.Core.VerboseOutputEventArgs.#ctor(System.String)
+- uid: Ubiety.Dns.Core.VerboseOutputEventArgs.#ctor(String)
   name: VerboseOutputEventArgs(String)
-  href: api/Ubiety.Dns.Core.VerboseOutputEventArgs.html#Ubiety_Dns_Core_VerboseOutputEventArgs__ctor_System_String_
-  commentId: M:Ubiety.Dns.Core.VerboseOutputEventArgs.#ctor(System.String)
-  fullName: Ubiety.Dns.Core.VerboseOutputEventArgs.VerboseOutputEventArgs(System.String)
+  href: api/Ubiety.Dns.Core.VerboseOutputEventArgs.html#Ubiety_Dns_Core_VerboseOutputEventArgs__ctor_String_
+  commentId: M:Ubiety.Dns.Core.VerboseOutputEventArgs.#ctor(String)
+  fullName: Ubiety.Dns.Core.VerboseOutputEventArgs.VerboseOutputEventArgs(String)
   nameWithType: VerboseOutputEventArgs.VerboseOutputEventArgs(String)
 - uid: Ubiety.Dns.Core.VerboseOutputEventArgs.#ctor*
   name: VerboseOutputEventArgs
