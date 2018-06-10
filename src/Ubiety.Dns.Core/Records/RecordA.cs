@@ -2,26 +2,25 @@ using System;
 using System.Globalization;
 using System.Net;
 
-/*
-3.4.1. A RDATA format
-
-+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-|                    ADDRESS                    |
-+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-
-where:
-
-ADDRESS         A 32 bit Internet address.
-
-Hosts that have multiple Internet addresses will have multiple A
-records.
-*
-*/
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
     ///     IPv4 Address DNS record
     /// </summary>
+    /// <remarks>
+    ///     3.4.1 A RDATA format
+    ///
+    ///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    ///     |                    ADDRESS                    |
+    ///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    ///
+    ///     where:
+    ///
+    ///     ADDRESS     A 32 bit internet address
+    ///
+    ///     Hosts that have multiple internet address will have multiple A
+    ///     records.
+    /// </remarks>
     public class RecordA : Record
     {
         private readonly String address;

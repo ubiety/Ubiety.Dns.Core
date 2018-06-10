@@ -1,0 +1,1 @@
+# Ubiety DNS for .NET Core

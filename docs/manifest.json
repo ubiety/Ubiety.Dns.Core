@@ -1,0 +1,1148 @@
+{
+  "homepages": [],
+  "source_base_path": "/home/dieter/Projects/Ubiety.Dns.Core/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.AdditionalRR.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.AdditionalRR.html",
+          "hash": "xtJLzL60izm2YDUaQAGb0A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.AnswerRR.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.AnswerRR.html",
+          "hash": "cqf19wjdMPuRrin2aakPWw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.AuthorityRR.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.AuthorityRR.html",
+          "hash": "ZgK8WHmeonNnix9zcaBx1g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.OperationClass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.OperationClass.html",
+          "hash": "RVNHeJLznyY7n3Mw34mrig=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.OperationCode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.OperationCode.html",
+          "hash": "CJwbd07/PBjU02xcAHSucw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.QuestionClass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.QuestionClass.html",
+          "hash": "jZ7ugRbk3e3DW+ga6FZ7eA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.QuestionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.QuestionType.html",
+          "hash": "0VHuRkXSTYFdqCLCweJDCQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.RecordType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.RecordType.html",
+          "hash": "1uMSovk3KUNmm6k+Zz1imw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.ResponseCode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.ResponseCode.html",
+          "hash": "wJZtxS8RPNh7Jc4bsruwpQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.TransportType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.TransportType.html",
+          "hash": "X2PEBwFbM34q4xD8aQr6Bg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.VerboseEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.VerboseEventArgs.html",
+          "hash": "utEQc8BKtLsQEppXddnUeA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Common.html",
+          "hash": "RkQx6X/bd7YUj5GtMuI0eg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Header.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Header.html",
+          "hash": "HqfaJy5J3SUn+jH2jiB3aQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Question.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Question.html",
+          "hash": "kvWVrPUNXSTpdVBDNuTHiw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.RecordReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.RecordReader.html",
+          "hash": "o0UIsEw/fR9HQROmn03OMg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordA6.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordA6.html",
+          "hash": "ZVNgDSJE2AE8TOmhrMauBQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordApl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordApl.html",
+          "hash": "0GGFUVPqyij1InQFJP3Vhw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordAtma.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordAtma.html",
+          "hash": "QcQw9MppRZo35uPL1hwjsg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordDhcid.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordDhcid.html",
+          "hash": "UmUn5mhc4A4/0Z4X2Af0BA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordDnsKey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordDnsKey.html",
+          "hash": "cveMzn5mXfzZOmEUe+XpqA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordEid.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordEid.html",
+          "hash": "VXdo0xxAj5XD75jknlKj7w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordGid.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordGid.html",
+          "hash": "tvbYnjKI+AhI1HdUdDVqWQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordHip.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordHip.html",
+          "hash": "cSczAG0JCzPTDzugL9N46A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordIpsecKey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordIpsecKey.html",
+          "hash": "WHkb8hBDej15bh0wuqIZ8w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNimloc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNimloc.html",
+          "hash": "BOLA+ZwGtJYYlYv6bsT5ew=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNsec.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNsec.html",
+          "hash": "6goXX0wN9SaOrsNtWJm4KA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNsec3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNsec3.html",
+          "hash": "cTxzU8dzbzF1fVO++7xBvw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNsec3Param.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordNsec3Param.html",
+          "hash": "F1E4ZFd4QDbkHjsOYHijog=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordOpt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordOpt.html",
+          "hash": "goTAoS7QaaUunJOv3ZaB8g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordRrsig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordRrsig.html",
+          "hash": "Ke5FcB2tiUCRK2kotLs9Aw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordSink.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordSink.html",
+          "hash": "bVg6/PG5Su8kazAkBu4j9A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordSpf.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordSpf.html",
+          "hash": "ZB+456TufpFLso6emVS0rQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordSshfp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordSshfp.html",
+          "hash": "oroeQeCQxyUuHsQRmKuetA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUid.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUid.html",
+          "hash": "Dy4YCqkVGFGsJ3i8tTdbeg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUinfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUinfo.html",
+          "hash": "gjodC/2obQ47NYBMYUpNBg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUnknown.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUnknown.html",
+          "hash": "HhUld4AQTwJNiibS708C2g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUnspec.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.RecordUnspec.html",
+          "hash": "W3oLAfVxz/FL1G9al1Iu5Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.NotUsed.html",
+          "hash": "2k8HabUZ0gYC2KRMlgX9Og=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordGpos.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordGpos.html",
+          "hash": "fxAQRLehjxegjMb7vpDIgw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordMd.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordMd.html",
+          "hash": "7MHJKRhln8b1bnYmpSzF3Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordMf.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordMf.html",
+          "hash": "/6P/8wosS1k8/jmIHjln8g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordNsapPtr.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordNsapPtr.html",
+          "hash": "FFBzKGSNmDi1W7oduZRYRg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordNxt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.RecordNxt.html",
+          "hash": "XBTiXCoIXHQVGX0bk24Q8Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.Obsolete.html",
+          "hash": "ZgoAVp5AXzUe63vh3CigpQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.Record.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.Record.html",
+          "hash": "7G0V+F80DKiqlT4UFfK2kA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordA.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordA.html",
+          "hash": "9y5cRLX/wA1K53/+6LDfkQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordAaaa.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordAaaa.html",
+          "hash": "MLjhgh8AFAtOeYRUG7+oYA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordAfsdb.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordAfsdb.html",
+          "hash": "7se3DHM0QqV1H3dot/kxZQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordCert.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordCert.html",
+          "hash": "fk4APOWZ9ovtjhDCnEF/cg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordCname.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordCname.html",
+          "hash": "0UGT6rpySv9iiHNLgdwVdA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordDname.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordDname.html",
+          "hash": "0+bXrXyfrNp4VKR6aq8OqQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordDs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordDs.html",
+          "hash": "hMIgNE76Y7DSBLSbp8vdEA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordHinfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordHinfo.html",
+          "hash": "CtQ1xLAUqrd/z1afgFd3bA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordIsdn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordIsdn.html",
+          "hash": "YPRmlUAmuWGaj6uHTK7J7Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordKey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordKey.html",
+          "hash": "h7f+xmI+MWJIELx92D6AVA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordKx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordKx.html",
+          "hash": "/JO6vA8ls983rZTIbVRq6A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordLoc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordLoc.html",
+          "hash": "PppVbM8PFvgPIsIAeDcNkg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordMb.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordMb.html",
+          "hash": "GzssFzINwmEwddI6/wYu/A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordMg.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordMg.html",
+          "hash": "EIEFuGqIlPYMQciawkE85g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordMinfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordMinfo.html",
+          "hash": "vif1QYO3EfAhpggBvXdYCw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordMr.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordMr.html",
+          "hash": "gv/OHzXyjasViaw7t7hv3g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordMx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordMx.html",
+          "hash": "CSxM3HQuVyjAvk0EQ6S/5g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordNaptr.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordNaptr.html",
+          "hash": "A4t11ObwflduiW8vk639PQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordNs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordNs.html",
+          "hash": "1nn6uM0yFB/bL9g3vtHHgg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordNsap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordNsap.html",
+          "hash": "U6Ph0gRemV/t40vsl3hUJA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordNull.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordNull.html",
+          "hash": "wpZhGwhfuw+BkwZzyn8lCQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordPtr.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordPtr.html",
+          "hash": "ltuWEpFR3HCM/gbBvQ575g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordPx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordPx.html",
+          "hash": "vzfb3xJCBf6me5cVyUZ4ZA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordRp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordRp.html",
+          "hash": "0kODCF61fv0syppyjuEd9A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordRt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordRt.html",
+          "hash": "HKR7V7v8Kgp9BhX3dK12hQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordSig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordSig.html",
+          "hash": "njbXJMCp1OVmVqXt4P6Bkg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordSoa.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordSoa.html",
+          "hash": "Nl4rlvgXn2uLPGzHPboW1Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordSrv.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordSrv.html",
+          "hash": "ZzU4ALUVczs8epJRM6B6xg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordTkey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordTkey.html",
+          "hash": "yM5GYaDYWYZVEweXi0SwkA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordTsig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordTsig.html",
+          "hash": "h5MIVOhelpnIGf3kJRfMPg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordTxt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordTxt.html",
+          "hash": "iipIYeEIwxETILdRdkL8jg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordWks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordWks.html",
+          "hash": "WnEanTQo6LJINvMwfjP5Kw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.RecordX25.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.RecordX25.html",
+          "hash": "LivvkJllldEWzAaxeSuv0w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Records.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Records.html",
+          "hash": "S8bUvLtb11jINllh7BAAuA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Request.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Request.html",
+          "hash": "73as77bZ0bwy1SWL33B3SA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Resolver.VerboseEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Resolver.VerboseEventHandler.html",
+          "hash": "CyU4NrV5mzMVdasDOYql8A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Resolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Resolver.html",
+          "hash": "iPwQ5DMUzJtirzkIG+pRfw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.ResourceRecord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.ResourceRecord.html",
+          "hash": "SZx3gUzkFWGHOO1ORAF94Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.Response.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.Response.html",
+          "hash": "NIhL2Ls01SqvH5gkFBS8aQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.VerboseOutputEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.VerboseOutputEventArgs.html",
+          "hash": "7YhAc3wrl9/xf3G8qKs4aw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Dns.Core.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Dns.Core.html",
+          "hash": "7swC14ju3wptU+NnvrXJFg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "O6zrg4+Sv2XYrdHb3+F+Bg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "LdxNIHmeQqNZBV4O0WI4vQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "ph4up3y25ee9/2qykDNahA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "xVlQaX7Tk85omoiWv3O+Ag=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "tA4Bo34w2CoI40Vcqbb/UQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "ob7LqWp4kTNLz+9W4omdTw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build"
+      },
+      "processors": {
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build"
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build"
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing"
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
