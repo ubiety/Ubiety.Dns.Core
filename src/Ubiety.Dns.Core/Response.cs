@@ -35,7 +35,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="iPEndPoint">Address of the response</param>
         /// <param name="data">Response data</param>
-        public Response(IPEndPoint iPEndPoint, byte[] data)
+        public Response(IPEndPoint iPEndPoint, Byte[] data)
         {
             this.Error = String.Empty;
             this.Server = iPEndPoint;
