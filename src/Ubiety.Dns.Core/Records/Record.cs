@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -11,7 +11,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Record data
         /// </summary>
-        private readonly Collection<Byte> data;
+        private readonly List<Byte> data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Record" /> class
@@ -27,13 +27,13 @@ namespace Ubiety.Dns.Core.Records
         protected Record(RecordReader reader)
         {
             UInt16 length = reader.ReadUInt16(-2);
-            this.data = new Collection<Byte>(reader.ReadBytes(length));
+            this.data = new List<Byte>(reader.ReadBytes(length));
         }
 
         /// <summary>
         ///     Gets the record data
         /// </summary>
-        public Collection<Byte> RecordData { get => this.data; }
+        public List<Byte> RecordData { get => this.data; }
 
         /// <summary>
         ///     Gets or sets the resource record this record is a part of
