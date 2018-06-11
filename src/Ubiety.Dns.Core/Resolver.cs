@@ -14,7 +14,7 @@ namespace Ubiety.Dns.Core
     /// <summary>
     ///     DNS resolver runs querys against a server
     /// </summary>
-    public partial class Resolver
+    public class Resolver
     {
         /// <summary>
         ///     Default DNS port

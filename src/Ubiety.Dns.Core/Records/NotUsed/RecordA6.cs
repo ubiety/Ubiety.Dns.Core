@@ -4,11 +4,11 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     /// Historic IPv6 record lookup
     /// </summary>
     /// <remarks>
-    /// > [!IMPORTANT]
+    /// > [!WARNING]
     /// > AAAA is preferred over A6
     ///
     /// # [Description](#tab/description)
-    /// A6 description
+    /// A6 records are defined to map a domain name to an IPv6 address.
     ///
     /// # [RFC](#tab/rfc)
     ///
