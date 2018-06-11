@@ -33,7 +33,7 @@ namespace Ubiety.Dns.Core.Records
         private readonly String address;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RecordA" /> class
+        /// Initializes a new instance of the <see cref="RecordA" /> class.
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data</param>
         public RecordA(RecordReader reader)
