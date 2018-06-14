@@ -1,5 +1,4 @@
 #addin "nuget:?package=Cake.Sonar"
-#addin "Cake.MiniCover"
 #tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
 #tool "nuget:?package=xunit.runner.console"
 
@@ -13,8 +12,6 @@ var configuration = Argument("configuration", "Debug");
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
-
-SetMiniCoverToolsProject("tools/tools.csproj");
 
 Setup(ctx =>
 {
