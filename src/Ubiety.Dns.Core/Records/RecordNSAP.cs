@@ -95,8 +95,7 @@ namespace Ubiety.Dns.Core.Records
                 this.address[9] << 8 | this.address[10],
                 this.address[11] << 8 | this.address[12],
                 this.address[13] << 16 | this.address[14] << 8 | this.address[15],
-                this.address[16] << 16 | this.address[17] << 8 | this.address[18],
-                this.address[19]);
+                this.address[16] << 16 | this.address[17] << 8 | this.address[18]);
         }
     }
 }
