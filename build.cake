@@ -1,14 +1,13 @@
 #addin "nuget:?package=Cake.Sonar"
 #addin "Cake.MiniCover"
 #tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
-#tool "nuget:?package=GitVersion.CommandLine"
 #tool "nuget:?package=xunit.runner.console"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Coverage");
+var target = Argument("target", "Sonar");
 var configuration = Argument("configuration", "Debug");
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -16,7 +15,6 @@ var configuration = Argument("configuration", "Debug");
 ///////////////////////////////////////////////////////////////////////////////
 
 SetMiniCoverToolsProject("./tools/tools.csproj");
-
 
 Setup(ctx =>
 {
@@ -50,25 +48,11 @@ Task("Pack")
 Task("Test")
     .IsDependentOn("Build")
     .Does(() => {
-        var testAssemblies = GetFiles("./test/**/bin/Debug/netcoreapp2.0/Ubiety.Dns.Test.dll");
-        XUnit2(testAssemblies);
-    });
-
-Task("Coverage")
-    .IsDependentOn("Build")
-    .Does(() => {
-        MiniCover(tool => {
-            foreach (var project in GetFiles("./test/**/*.csproj"))
-            {
-                tool.DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings{
-                    NoBuild = true,
-                    Configuration = configuration
-                });
-            }
-        }, new MiniCoverSettings()
-            .WithAssembliesMatching("./test/**/*.dll")
-            .WithSourcesMatching("./src/**/*.cs")
-            .GenerateReport(ReportType.XML));
+        DotNetCoreTest("./test/Ubiety.Dns.Test/Ubiety.Dns.Test.csproj", new DotNetCoreTestSettings{
+            ArgumentCustomization = args => args.Append("/p:CollectCoverage=true").Append("/p:CoverletOutputFormat=opencover"),
+            NoBuild = true,
+            Configuration = configuration
+        });
     });
 
 Task("SonarBegin")
@@ -77,7 +61,8 @@ Task("SonarBegin")
             Url = "https://sonarcloud.io",
             Key = "dns",
             Organization = "coder2000-github",
-            Login = "6a7700a6bfbe29e25e38e7996631c142ef24480a"
+            Login = "6a7700a6bfbe29e25e38e7996631c142ef24480a",
+            OpenCoverReportsPath = "test/Ubiety.Dns.Test/coverage.opencover.xml"
         });
     });
 
@@ -91,6 +76,7 @@ Task("SonarEnd")
 Task("Sonar")
     .IsDependentOn("SonarBegin")
     .IsDependentOn("Build")
+    .IsDependentOn("Test")
     .IsDependentOn("SonarEnd");
 
 Task("Build")
