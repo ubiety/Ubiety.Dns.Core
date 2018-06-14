@@ -103,7 +103,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Boolean indicating whether the instances are equal</returns>
         public override Boolean Equals(Object obj)
         {
-            if (obj == null || this.GetType() != obj.GetType())
+            if (this.GetType() != obj.GetType())
             {
                 return false;
             }

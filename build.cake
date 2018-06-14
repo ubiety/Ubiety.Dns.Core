@@ -29,6 +29,7 @@ Teardown(ctx =>
 });
 
 var projectDir = Directory("./src/Ubiety.Dns.Core");
+var testDir = Directory("./test/Ubiety.Dns.Test");
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
@@ -37,6 +38,7 @@ var projectDir = Directory("./src/Ubiety.Dns.Core");
 Task("Clean")
     .Does(() => {
         DotNetCoreClean(projectDir);
+        DotNetCoreClean(testDir);
     });
 
 Task("Pack")
@@ -83,6 +85,7 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(() => {
         DotNetCoreBuild(projectDir);
+        DotNetCoreBuild(testDir);
     });
 
 Task("Default")
