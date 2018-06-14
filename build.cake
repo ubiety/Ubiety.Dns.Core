@@ -9,7 +9,7 @@
 var target = Argument("target", "Sonar");
 var configuration = Argument("configuration", "Debug");
 
-var version = EnvironmentVariable("GitVersion_NuGetVersionV2")
+var version = EnvironmentVariable("GitVersion_NuGetVersionV2");
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
