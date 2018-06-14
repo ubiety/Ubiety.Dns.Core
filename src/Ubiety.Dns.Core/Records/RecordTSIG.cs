@@ -30,8 +30,8 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordTsig : Record
     {
-        private Byte[] mac;
-        private Byte[] otherData;
+        private readonly Byte[] mac;
+        private readonly Byte[] otherData;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTsig" /> class

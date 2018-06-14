@@ -54,7 +54,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordWks : Record
     {
-        private Byte[] bitmap;
+        private readonly Byte[] bitmap;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordWks" /> class
