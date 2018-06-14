@@ -9,6 +9,8 @@
 var target = Argument("target", "Sonar");
 var configuration = Argument("configuration", "Debug");
 
+var version = EnvironmentVariable("GitVersion_NuGetVersionV2")
+
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,6 +63,7 @@ Task("SonarBegin")
             Key = "dns",
             Organization = "coder2000-github",
             Login = "6a7700a6bfbe29e25e38e7996631c142ef24480a",
+            Version = version,
             OpenCoverReportsPath = "test/Ubiety.Dns.Test/coverage.opencover.xml"
         });
     });
@@ -81,7 +84,6 @@ Task("Sonar")
 Task("Build")
     .IsDependentOn("Clean")
     .Does(() => {
-        DotNetCoreBuild(projectDir);
         DotNetCoreBuild(testDir);
     });
 
