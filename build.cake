@@ -14,7 +14,7 @@ var configuration = Argument("configuration", "Debug");
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
 
-SetMiniCoverToolsProject("./tools/tools.csproj");
+SetMiniCoverToolsProject("tools/tools.csproj");
 
 Setup(ctx =>
 {
