@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Key exchange record
     /// </summary>
-    public class RecordKx : Record, IComparable, IEquatable<RecordKx>
+    public sealed class RecordKx : Record, IComparable, IEquatable<RecordKx>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordKx" /> class
