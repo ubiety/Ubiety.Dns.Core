@@ -7,5 +7,5 @@ before_build:
   - cmd: dotnet restore
   - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
-build:
-  verbosity: minimal
+build_script:
+  - cmd: PowerShell -Version 2.0 .\build.ps1

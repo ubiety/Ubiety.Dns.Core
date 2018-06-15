@@ -88,7 +88,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets a value indicating whether the record is an authoritative answer
         /// </summary>
-        public Boolean AuthoritativAnswer
+        public Boolean AuthoritativeAnswer
         {
             get => GetBits(this.flags, 10, 1) == 1;
             set

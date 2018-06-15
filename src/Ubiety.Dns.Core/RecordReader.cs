@@ -30,7 +30,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="data">Byte array of the record</param>
         /// <param name="position">Position of the cursor in the record</param>
-        public RecordReader(byte[] data, int position)
+        public RecordReader(Byte[] data, Int32 position)
         {
             this.data = data;
             this.Position = position;
@@ -39,13 +39,13 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the position of the cursor in the record
         /// </summary>
-        public int Position { get; set; }
+        public Int32 Position { get; set; }
 
         /// <summary>
         ///     Read a byte from the record
         /// </summary>
         /// <returns>Next available byte of the record</returns>
-        public byte ReadByte()
+        public Byte ReadByte()
         {
             if (this.Position >= this.data.Length)
             {
@@ -61,7 +61,7 @@ namespace Ubiety.Dns.Core
         ///     Read a char from the record
         /// </summary>
         /// <returns>Next available char of the record</returns>
-        public char ReadChar()
+        public Char ReadChar()
         {
             return (char)this.ReadByte();
         }
@@ -80,7 +80,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="offset">Offset to start reading from</param>
         /// <returns>Next unsigned int 16 from the offset</returns>
-        public UInt16 ReadUInt16(int offset)
+        public UInt16 ReadUInt16(Int32 offset)
         {
             this.Position += offset;
             return this.ReadUInt16();
@@ -99,10 +99,10 @@ namespace Ubiety.Dns.Core
         ///     Read the domain name from the record
         /// </summary>
         /// <returns>Domain name of the record</returns>
-        public string ReadDomainName()
+        public String ReadDomainName()
         {
             StringBuilder name = new StringBuilder();
-            int length = 0;
+            Int32 length = 0;
 
             // get  the length of the first label
             while ((length = this.ReadByte()) != 0)
@@ -141,9 +141,9 @@ namespace Ubiety.Dns.Core
         ///     Read a string from the record
         /// </summary>
         /// <returns>String read from the record</returns>
-        public string ReadString()
+        public String ReadString()
         {
-            short length = this.ReadByte();
+            Int16 length = this.ReadByte();
 
             StringBuilder name = new StringBuilder();
             for (int i = 0; i < length; i++)
@@ -159,10 +159,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="length">Length to read from the record</param>
         /// <returns>Byte array read from the record</returns>
-        public byte[] ReadBytes(int length)
+        public Byte[] ReadBytes(Int32 length)
         {
-            List<byte> list = new List<byte>();
-            for (int i = 0; i < length; i++)
+            List<Byte> list = new List<Byte>();
+            for (Int32 i = 0; i < length; i++)
             {
                 list.Add(this.ReadByte());
             }

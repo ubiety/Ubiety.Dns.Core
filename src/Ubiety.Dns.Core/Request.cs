@@ -35,8 +35,8 @@ namespace Ubiety.Dns.Core
         /// <returns>Byte array of the data</returns>
         public Byte[] GetData()
         {
-                List<byte> data = new List<byte>();
-                this.Header.QuestionCount = (ushort)this.questions.Count;
+                List<Byte> data = new List<Byte>();
+                this.Header.QuestionCount = (UInt16)this.questions.Count;
                 data.AddRange(this.Header.GetData());
                 foreach (Question q in this.questions)
                 {

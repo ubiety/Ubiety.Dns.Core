@@ -14,7 +14,7 @@ namespace Ubiety.Dns.Core
     /// <summary>
     ///     DNS resolver runs querys against a server
     /// </summary>
-    public partial class Resolver
+    public class Resolver
     {
         /// <summary>
         ///     Default DNS port
@@ -399,7 +399,7 @@ namespace Ubiety.Dns.Core
                 return null;
             }
 
-            string strKey = question.QClass + "-" + question.QType + "-" + question.QName;
+            string strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.QuestionName;
 
             Response response = null;
 
@@ -449,7 +449,7 @@ namespace Ubiety.Dns.Core
 
             Question question = response.Questions[0];
 
-            string strKey = question.QClass + "-" + question.QType + "-" + question.QName;
+            string strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.QuestionName;
 
             lock (this.responseCache)
             {
@@ -559,7 +559,7 @@ namespace Ubiety.Dns.Core
                                 return response;
                             }
 
-                            if (response.Questions[0].QType != QuestionType.AXFR)
+                            if (response.Questions[0].QuestionType != QuestionType.AXFR)
                             {
                                 this.AddToCache(response);
                                 return response;

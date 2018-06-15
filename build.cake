@@ -1,22 +1,21 @@
 #addin "nuget:?package=Cake.Sonar"
-#addin "Cake.MiniCover"
+#addin "nuget:?package=Cake.Codecov"
+#tool "nuget:?package=Codecov"
 #tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
-#tool "nuget:?package=GitVersion.CommandLine"
 #tool "nuget:?package=xunit.runner.console"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Coverage");
+var target = Argument("target", "Sonar");
 var configuration = Argument("configuration", "Debug");
+
+var version = EnvironmentVariable("GitVersion_NuGetVersionV2");
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
-
-SetMiniCoverToolsProject("./tools/tools.csproj");
-
 
 Setup(ctx =>
 {
@@ -31,6 +30,7 @@ Teardown(ctx =>
 });
 
 var projectDir = Directory("./src/Ubiety.Dns.Core");
+var testDir = Directory("./test/Ubiety.Dns.Test");
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
@@ -39,6 +39,7 @@ var projectDir = Directory("./src/Ubiety.Dns.Core");
 Task("Clean")
     .Does(() => {
         DotNetCoreClean(projectDir);
+        DotNetCoreClean(testDir);
     });
 
 Task("Pack")
@@ -50,25 +51,13 @@ Task("Pack")
 Task("Test")
     .IsDependentOn("Build")
     .Does(() => {
-        var testAssemblies = GetFiles("./test/**/bin/Debug/netcoreapp2.0/Ubiety.Dns.Test.dll");
-        XUnit2(testAssemblies);
-    });
+        DotNetCoreTest("./test/Ubiety.Dns.Test/Ubiety.Dns.Test.csproj", new DotNetCoreTestSettings{
+            ArgumentCustomization = args => args.Append("/p:CollectCoverage=true").Append("/p:CoverletOutputFormat=opencover"),
+            NoBuild = true,
+            Configuration = configuration
+        });
 
-Task("Coverage")
-    .IsDependentOn("Build")
-    .Does(() => {
-        MiniCover(tool => {
-            foreach (var project in GetFiles("./test/**/*.csproj"))
-            {
-                tool.DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings{
-                    NoBuild = true,
-                    Configuration = configuration
-                });
-            }
-        }, new MiniCoverSettings()
-            .WithAssembliesMatching("./test/**/*.dll")
-            .WithSourcesMatching("./src/**/*.cs")
-            .GenerateReport(ReportType.XML));
+        Codecov("test/Ubiety.Dns.Test/coverage.opencover.xml", "977eef75-3209-48ad-8543-92e88ccf4bc5");
     });
 
 Task("SonarBegin")
@@ -77,7 +66,9 @@ Task("SonarBegin")
             Url = "https://sonarcloud.io",
             Key = "dns",
             Organization = "coder2000-github",
-            Login = "6a7700a6bfbe29e25e38e7996631c142ef24480a"
+            Login = "6a7700a6bfbe29e25e38e7996631c142ef24480a",
+            Version = version,
+            OpenCoverReportsPath = "test/Ubiety.Dns.Test/coverage.opencover.xml"
         });
     });
 
@@ -91,12 +82,13 @@ Task("SonarEnd")
 Task("Sonar")
     .IsDependentOn("SonarBegin")
     .IsDependentOn("Build")
+    .IsDependentOn("Test")
     .IsDependentOn("SonarEnd");
 
 Task("Build")
     .IsDependentOn("Clean")
     .Does(() => {
-        DotNetCoreBuild(projectDir);
+        DotNetCoreBuild(testDir);
     });
 
 Task("Default")

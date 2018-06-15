@@ -32,10 +32,8 @@ bld/
 *.VisualState.xml
 TestResult.xml
 
-coverage-html/
-coverage.xml
-coverage.json
-coverage-hits.txt
+coverage*
+!coverage.sh
 
 tools/
 !tools/packages.config

@@ -13,19 +13,19 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Question
     {
-        private string questionName;
+        private String questionName;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question" /> class
         /// </summary>
-        /// <param name="queryName">Query name</param>
+        /// <param name="questionName">Query name</param>
         /// <param name="questionType">Question type</param>
-        /// <param name="queryClass">Query class</param>
-        public Question(string queryName, QuestionType questionType, QuestionClass queryClass)
+        /// <param name="questionClass">Question class</param>
+        public Question(String questionName, QuestionType questionType, QuestionClass questionClass)
         {
-            this.QName = queryName;
-            this.QType = questionType;
-            this.QClass = queryClass;
+            this.QuestionName = questionName;
+            this.QuestionType = questionType;
+            this.QuestionClass = questionClass;
         }
 
         /// <summary>
@@ -34,15 +34,15 @@ namespace Ubiety.Dns.Core
         /// <param name="rr"><see cref="RecordReader" /> of the record</param>
         public Question(RecordReader rr)
         {
-            this.QName = rr.ReadDomainName();
-            this.QType = (QuestionType)rr.ReadUInt16();
-            this.QClass = (QuestionClass)rr.ReadUInt16();
+            this.QuestionName = rr.ReadDomainName();
+            this.QuestionType = (QuestionType)rr.ReadUInt16();
+            this.QuestionClass = (QuestionClass)rr.ReadUInt16();
         }
 
         /// <summary>
         ///     Gets or sets the question name
         /// </summary>
-        public string QName
+        public String QuestionName
         {
             get
             {
@@ -62,36 +62,36 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the query type
         /// </summary>
-        public QuestionType QType { get; set; }
+        public QuestionType QuestionType { get; set; }
 
         /// <summary>
         ///     Gets or sets the query class
         /// </summary>
-        public QuestionClass QClass { get; set; }
+        public QuestionClass QuestionClass { get; set; }
 
         /// <summary>
         ///     String representation of the question
         /// </summary>
         /// <returns>String of the question</returns>
-        public override string ToString()
+        public override String ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0,-32}\t{1}\t{2}", this.QName, this.QClass, this.QType);
+            return string.Format(CultureInfo.InvariantCulture, "{0,-32}\t{1}\t{2}", this.QuestionName, this.QuestionClass, this.QuestionType);
         }
 
         /// <summary>
         ///     Gets the question as a byte array
         /// </summary>
         /// <returns>Byte array of the question data</returns>
-        public byte[] GetData()
+        public Byte[] GetData()
         {
-            List<byte> data = new List<byte>();
-            data.AddRange(WriteName(this.QName));
-            data.AddRange(WriteShort((ushort)this.QType));
-            data.AddRange(WriteShort((ushort)this.QClass));
+            List<Byte> data = new List<Byte>();
+            data.AddRange(WriteName(this.QuestionName));
+            data.AddRange(WriteShort((UInt16)this.QuestionType));
+            data.AddRange(WriteShort((UInt16)this.QuestionClass));
             return data.ToArray();
         }
 
-        private static byte[] WriteName(string src)
+        private static Byte[] WriteName(String src)
         {
             if (!src.EndsWith(".", StringComparison.InvariantCulture))
             {
@@ -100,18 +100,18 @@ namespace Ubiety.Dns.Core
 
             if (src == ".")
             {
-                return new byte[1];
+                return new Byte[1];
             }
 
             StringBuilder sb = new StringBuilder();
-            int intI, intJ, intLen = src.Length;
+            Int32 intI, intJ, intLen = src.Length;
             sb.Append('\0');
             for (intI = 0, intJ = 0; intI < intLen; intI++, intJ++)
             {
                 sb.Append(src[intI]);
                 if (src[intI] == '.')
                 {
-                    sb[intI - intJ] = (char)(intJ & 0xff);
+                    sb[intI - intJ] = (Char)(intJ & 0xff);
                     intJ = -1;
                 }
             }
@@ -120,9 +120,9 @@ namespace Ubiety.Dns.Core
             return System.Text.Encoding.ASCII.GetBytes(sb.ToString());
         }
 
-        private static byte[] WriteShort(ushort sValue)
+        private static Byte[] WriteShort(UInt16 sValue)
         {
-            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)sValue));
+            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((Int16)sValue));
         }
     }
 }
