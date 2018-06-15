@@ -31,7 +31,7 @@ namespace Ubiety.Dns.Core.Records
         public RecordAaaa(RecordReader reader)
         {
             this.address = IPAddress.Parse(
-                    $"{reader.ReadUInt16():x}:{reader.ReadUInt16():x}:{reader.ReadUInt16():x}:{reader.ReadUInt16():x}:{reader.ReadUInt16():x}:{reader.ReadUInt16():x}:{reader.ReadUInt16():x}:{reader.ReadUInt16():x}");
+                    $"{reader.ReadUInt16():x4}:{reader.ReadUInt16():x4}:{reader.ReadUInt16():x4}:{reader.ReadUInt16():x4}:{reader.ReadUInt16():x4}:{reader.ReadUInt16():x4}:{reader.ReadUInt16():x4}:{reader.ReadUInt16():x4}");
         }
 
         /// <summary>
