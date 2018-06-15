@@ -108,7 +108,7 @@ namespace Ubiety.Dns.Core.Records
                 return false;
             }
 
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }

@@ -1,4 +1,6 @@
 #addin "nuget:?package=Cake.Sonar"
+#addin "nuget:?package=Cake.Codecov"
+#tool "nuget:?package=Codecov"
 #tool "nuget:?package=MSBuild.SonarQube.Runner.Tool"
 #tool "nuget:?package=xunit.runner.console"
 
@@ -54,6 +56,8 @@ Task("Test")
             NoBuild = true,
             Configuration = configuration
         });
+
+        Codecov("test/Ubiety.Dns.Test/coverage.opencover.xml", "977eef75-3209-48ad-8543-92e88ccf4bc5");
     });
 
 Task("SonarBegin")
