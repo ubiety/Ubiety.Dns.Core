@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Ubiety.Dns.Core.Records;
+using Ubiety.Dns.Core.Records.General;
 
 namespace Ubiety.Dns.Core
 {

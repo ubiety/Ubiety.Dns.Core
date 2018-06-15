@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using Shouldly;
 using Ubiety.Dns.Core;
-using Ubiety.Dns.Core.Records;
+using Ubiety.Dns.Core.Records.General;
 using Xunit;
 
 namespace Ubiety.Dns.Test.Records
