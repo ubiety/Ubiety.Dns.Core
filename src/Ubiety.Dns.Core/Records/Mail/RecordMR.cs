@@ -18,7 +18,7 @@ is as a forwarding entry for a user who has moved to a different
 mailbox.
 */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
     ///     Mailbox rename DNS record

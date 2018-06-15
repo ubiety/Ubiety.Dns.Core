@@ -4,6 +4,7 @@ using System.Text;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.General;
+using Ubiety.Dns.Core.Records.Mail;
 using Ubiety.Dns.Core.Records.NotUsed;
 using Ubiety.Dns.Core.Records.Obsolete;
 

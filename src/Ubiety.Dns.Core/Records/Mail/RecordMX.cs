@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records.Mail
 {
     /*
     3.3.9. MX RDATA format
