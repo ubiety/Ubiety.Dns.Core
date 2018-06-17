@@ -514,18 +514,32 @@ namespace Ubiety.Dns.Core
                     TcpClient client = new TcpClient();
                     client.ReceiveTimeout = this.timeout;
 
-                    await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
-
-                    if (!client.Connected)
+                    try
                     {
-                        client.Close();
-                        this.Verbose($";; Connection to nameserver {server.Address} failed");
+                        await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
+
+                        if (!client.Connected)
+                        {
+                            client.Close();
+                            this.Verbose($";; Connection to nameserver {server.Address} failed");
+                            continue;
+                        }
+
+                        var stream = new BufferedStream(client.GetStream());
+
+                        WriteRequest(stream, request);
+
+                        return ReceiveResponse(stream, server);
+                    }
+                    catch(SocketException)
+                    {
                         continue;
                     }
-
-                    var stream = new BufferedStream(client.GetStream());
-
-                    WriteRequest(stream, request);
+                    finally
+                    {
+                        this.unique++;
+                        client.Close();
+                    }
                 }
             }
 
@@ -534,13 +548,73 @@ namespace Ubiety.Dns.Core
             return responseTimeout;
         }
 
-        private void WriteRequest(BufferedStream stream, Request request)
+        private static void WriteRequest(BufferedStream stream, Request request)
         {
             Byte[] data = request.GetData();
             stream.WriteByte((Byte)((data.Length >> 8) & 0xFF));
             stream.WriteByte((Byte)(data.Length & 0xFF));
             stream.Write(data, 0, data.Length);
             stream.Flush();
+        }
+
+        private Response ReceiveResponse(BufferedStream stream,  IPEndPoint server)
+        {
+            Response transferResponse = new Response();
+            Int32 soa = 0;
+            Int32 messageSize = 0;
+
+            while (true)
+            {
+                Int32 length = stream.ReadByte() << 8 | stream.ReadByte();
+                if (length <= 0)
+                {
+                    this.Verbose($"Connection to nameserver {server.Address} failed");
+                    throw new SocketException();
+                }
+
+                messageSize += length;
+
+                Byte[] data = new Byte[length];
+                stream.Read(data, 0, length);
+
+                Response response = new Response(server, data);
+
+                if (response.Header.ResponseCode != ResponseCode.NoError)
+                {
+                    return response;
+                }
+
+                if (response.Questions[0].QuestionType != QuestionType.AXFR)
+                {
+                    this.AddToCache(response);
+                    return response;
+                }
+
+                if (transferResponse.Questions.Count == 0)
+                {
+                    transferResponse.Questions.AddRange(response.Questions);
+                }
+
+                transferResponse.Answers.AddRange(response.Answers);
+                transferResponse.Authorities.AddRange(response.Authorities);
+                transferResponse.Additionals.AddRange(response.Additionals);
+
+                if (response.Answers[0].Type == RecordType.SOA)
+                {
+                    soa++;
+                }
+
+                if (soa == 2)
+                {
+                    transferResponse.Header.QuestionCount = (UInt16)transferResponse.Questions.Count;
+                    transferResponse.Header.AnswerCount = (UInt16)transferResponse.Answers.Count;
+                    transferResponse.Header.NameserverCount = (UInt16)transferResponse.Authorities.Count;
+                    transferResponse.Header.AdditionalRecordsCount = (UInt16)transferResponse.Additionals.Count;
+                    transferResponse.MessageSize = messageSize;
+
+                    return transferResponse;
+                }
+            }
         }
     } // class
 }

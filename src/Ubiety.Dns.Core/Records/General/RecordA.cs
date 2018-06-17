@@ -13,7 +13,7 @@ namespace Ubiety.Dns.Core.Records.General
     /// a domain or subdomain to an IP address.
     ///
     /// # [RFC](#tab/rfc)
-    /// ```   
+    /// ```
     /// A RDATA format
     ///
     /// +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
