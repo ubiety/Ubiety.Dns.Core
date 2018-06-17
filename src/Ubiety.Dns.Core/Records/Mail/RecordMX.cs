@@ -30,7 +30,7 @@ namespace Ubiety.Dns.Core.Records.Mail
     /// <summary>
     ///     Mail exchange DNS record
     /// </summary>
-    public class RecordMx : Record, IComparable, IEquatable<RecordMx>
+    public sealed class RecordMx : Record, IComparable, IEquatable<RecordMx>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMx" /> class
