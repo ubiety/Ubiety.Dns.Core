@@ -43,7 +43,7 @@ Task("Clean")
     });
 
 Task("Pack")
-    .IsDependentOn("Build")
+    .IsDependentOn("Sonar")
     .Does(() => {
         DotNetCorePack(projectDir);
     });

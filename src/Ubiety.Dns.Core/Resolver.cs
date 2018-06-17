@@ -377,7 +377,7 @@ namespace Ubiety.Dns.Core
 
             if (this.TransportType == TransportType.Tcp)
             {
-                return this.TcpRequest(request);
+                return this.TcpRequest(request).Result;
             }
 
             Response response = new Response();
@@ -516,13 +516,31 @@ namespace Ubiety.Dns.Core
 
                     await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
 
-                    
+                    if (!client.Connected)
+                    {
+                        client.Close();
+                        this.Verbose($";; Connection to nameserver {server.Address} failed");
+                        continue;
+                    }
+
+                    var stream = new BufferedStream(client.GetStream());
+
+                    WriteRequest(stream, request);
                 }
             }
 
             Response responseTimeout = new Response();
             responseTimeout.Error = "Timeout Error";
             return responseTimeout;
+        }
+
+        private void WriteRequest(BufferedStream stream, Request request)
+        {
+            Byte[] data = request.GetData();
+            stream.WriteByte((Byte)((data.Length >> 8) & 0xFF));
+            stream.WriteByte((Byte)(data.Length & 0xFF));
+            stream.Write(data, 0, data.Length);
+            stream.Flush();
         }
     } // class
 }
