@@ -30,7 +30,7 @@ namespace Ubiety.Dns.Core.Records.Mail
     /// <summary>
     ///     Mail exchange DNS record
     /// </summary>
-    public class RecordMx : Record, IComparable
+    public class RecordMx : Record, IComparable, IEquatable<RecordMx>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMx" /> class
@@ -86,6 +86,69 @@ namespace Ubiety.Dns.Core.Records.Mail
                 // they are the same, now compare case insensitive names
                 return string.Compare(this.Exchange, recordMX.Exchange, true, CultureInfo.InvariantCulture);
             }
+        }
+
+        /// <summary>
+        /// </summary>
+        public override Boolean Equals(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public override Int32 GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public Boolean Equals(RecordMx other)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator <(RecordMx x, RecordMx y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator >(RecordMx x, RecordMx y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator <=(RecordMx x, RecordMx y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator >=(RecordMx x, RecordMx y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator ==(RecordMx x, RecordMx y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator !=(RecordMx x, RecordMx y)
+        {
+            throw new NotImplementedException();
         }
     }
 }
