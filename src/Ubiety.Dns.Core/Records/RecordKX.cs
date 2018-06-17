@@ -76,24 +76,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Integer representing the comparison</returns>
         public Int32 CompareTo(Object obj)
         {
-            RecordKx recordKX = obj as RecordKx;
-            if (recordKX == null)
-            {
-                return -1;
-            }
-            else if (this.Preference > recordKX.Preference)
-            {
-                return 1;
-            }
-            else if (this.Preference < recordKX.Preference)
-            {
-                return -1;
-            }
-            else
-            {
-                // they are the same, now compare case insensitive names
-                return String.Compare(this.Exchanger, recordKX.Exchanger, true, CultureInfo.InvariantCulture);
-            }
+            return CompareTo(this, (RecordKx)obj);
         }
 
         /// <summary>
@@ -133,7 +116,7 @@ namespace Ubiety.Dns.Core.Records
                 return false;
             }
 
-            return String.Equals(this.Exchanger, other.Exchanger, StringComparison.InvariantCulture);
+            return this.CompareTo(other) == 0;
         }
 
         /// <summary>
@@ -149,6 +132,81 @@ namespace Ubiety.Dns.Core.Records
                 var exHash = !String.IsNullOrEmpty(this.Exchanger) ? this.Exchanger.GetHashCode() : 0;
                 hashcode = (hashcode * 397) ^ exHash;
                 return hashcode;
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static Boolean operator <(RecordKx x, RecordKx y)
+        {
+            return CompareTo(x, y) < 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static Boolean operator >(RecordKx x, RecordKx y)
+        {
+            return CompareTo(x, y) > 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static Boolean operator <=(RecordKx x, RecordKx y)
+        {
+            return CompareTo(x, y) <= 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static Boolean operator >=(RecordKx x, RecordKx y)
+        {
+            return CompareTo(x, y) >= 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static Boolean operator ==(RecordKx x, RecordKx y)
+        {
+            return CompareTo(x, y) == 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static Boolean operator !=(RecordKx x, RecordKx y)
+        {
+            return CompareTo(x, y) != 0;
+        }
+
+        private static Int32 CompareTo(RecordKx x, RecordKx y)
+        {
+            if (y == null)
+            {
+                return -1;
+            }
+            else if (x.Preference > y.Preference)
+            {
+                return 1;
+            }
+            else if (x.Preference < y.Preference)
+            {
+                return -1;
+            }
+            else
+            {
+                // they are the same, now compare case insensitive names
+                return String.Compare(x.Exchanger, y.Exchanger, true, CultureInfo.InvariantCulture);
             }
         }
     }

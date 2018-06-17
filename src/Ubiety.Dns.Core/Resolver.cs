@@ -529,7 +529,7 @@ namespace Ubiety.Dns.Core
 
                         WriteRequest(stream, request);
 
-                        return ReceiveResponse(stream, server);
+                        return this.ReceiveResponse(stream, server);
                     }
                     catch(SocketException)
                     {
