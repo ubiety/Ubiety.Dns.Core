@@ -6,12 +6,6 @@ namespace Ubiety.Dns.Core.Records.Mail
     /*
     3.3.9. MX RDATA format
 
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-        |                  PREFERENCE                   |
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-        /                   EXCHANGE                    /
-        /                                               /
-        +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
     where:
 
@@ -28,12 +22,26 @@ namespace Ubiety.Dns.Core.Records.Mail
     */
 
     /// <summary>
-    ///     Mail exchange DNS record
+    /// Mail exchange DNS record
     /// </summary>
+    /// <remarks>
+    /// # [Description](#tab/description)
+    /// Standard MX mail DNS record
+    ///
+    /// # [RFC](#tab/rfc)
+    /// ```
+    /// +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /// |                  PREFERENCE                   |
+    /// +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /// /                   EXCHANGE                    /
+    /// /                                               /
+    /// +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /// ```
+    /// </remarks>
     public sealed class RecordMx : Record, IComparable, IEquatable<RecordMx>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMx" /> class
+        /// Initializes a new instance of the <see cref="RecordMx" /> class
         /// </summary>
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordMx(RecordReader rr)
@@ -43,17 +51,17 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     Gets or sets the preference
+        /// Gets or sets the preference
         /// </summary>
         public UInt16 Preference { get; set; }
 
         /// <summary>
-        ///     Gets or sets the exchange
+        /// Gets or sets the exchange
         /// </summary>
         public String Exchange { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        /// String representation of the record data
         /// </summary>
         /// <returns>Exchange and preference as a string</returns>
         public override String ToString()
@@ -62,93 +70,117 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     Compares record to an object
+        /// Compares record to an object
         /// </summary>
         /// <param name="obj">Object to compare record to</param>
         /// <returns>Int value of the comparison</returns>
         public int CompareTo(object obj)
         {
-            RecordMx recordMX = obj as RecordMx;
-            if (recordMX == null)
-            {
-                return -1;
-            }
-            else if (this.Preference > recordMX.Preference)
-            {
-                return 1;
-            }
-            else if (this.Preference < recordMX.Preference)
-            {
-                return -1;
-            }
-            else
-            {
-                // they are the same, now compare case insensitive names
-                return string.Compare(this.Exchange, recordMX.Exchange, true, CultureInfo.InvariantCulture);
-            }
+            return CompareTo(this, obj as RecordMx);
         }
 
         /// <summary>
         /// </summary>
         public override Boolean Equals(object obj)
         {
-            throw new NotImplementedException();
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return this.Equals(obj as RecordMx);
         }
 
         /// <summary>
         /// </summary>
         public override Int32 GetHashCode()
         {
-            throw new NotImplementedException();
+            return Exchange.GetHashCode();
         }
 
         /// <summary>
         /// </summary>
         public Boolean Equals(RecordMx other)
         {
-            throw new NotImplementedException();
+            if (other is null)
+            {
+                return false;
+            }
+
+            return CompareTo(this, other) == 0;
         }
 
         /// <summary>
         /// </summary>
         public static Boolean operator <(RecordMx x, RecordMx y)
         {
-            throw new NotImplementedException();
+            return CompareTo(x, y) < 0;
         }
 
         /// <summary>
         /// </summary>
         public static Boolean operator >(RecordMx x, RecordMx y)
         {
-            throw new NotImplementedException();
+            return CompareTo(x, y) > 0;
         }
 
         /// <summary>
         /// </summary>
         public static Boolean operator <=(RecordMx x, RecordMx y)
         {
-            throw new NotImplementedException();
+            return CompareTo(x, y) <= 0;
         }
 
         /// <summary>
         /// </summary>
         public static Boolean operator >=(RecordMx x, RecordMx y)
         {
-            throw new NotImplementedException();
+            return CompareTo(x, y) >= 0;
         }
 
         /// <summary>
         /// </summary>
         public static Boolean operator ==(RecordMx x, RecordMx y)
         {
-            throw new NotImplementedException();
+            return CompareTo(x, y) == 0;
         }
 
         /// <summary>
         /// </summary>
         public static Boolean operator !=(RecordMx x, RecordMx y)
         {
-            throw new NotImplementedException();
+            return CompareTo(x, y) != 0;
+        }
+
+        private static Int32 CompareTo(RecordMx x, RecordMx y)
+        {
+            if (y == null)
+            {
+                return -1;
+            }
+            else if (x.Preference > y.Preference)
+            {
+                return 1;
+            }
+            else if (x.Preference < y.Preference)
+            {
+                return -1;
+            }
+            else
+            {
+                // they are the same, now compare case insensitive names
+                return string.Compare(x.Exchange, y.Exchange, true, CultureInfo.InvariantCulture);
+            }
         }
     }
 }
