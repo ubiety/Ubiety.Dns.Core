@@ -26,7 +26,7 @@ deploy:
   on:
     branch: master
 
-  release: Ubiety.Dns.Core-v$(appveyor_build_version)
+  release: Ubiety.Dns.Core.beta-v$(appveyor_build_version)
   description: Ubiety DNS Beta
   provider: GitHub
   auth_token:
