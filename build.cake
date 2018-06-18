@@ -60,7 +60,7 @@ Task("Test")
             Configuration = configuration
         });
 
-        //Codecov("test/Ubiety.Dns.Test/coverage.opencover.xml", "977eef75-3209-48ad-8543-92e88ccf4bc5");
+        Codecov("test/Ubiety.Dns.Test/coverage.opencover.xml", "977eef75-3209-48ad-8543-92e88ccf4bc5");
     });
 
 Task("SonarBegin")
