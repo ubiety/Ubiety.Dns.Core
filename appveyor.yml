@@ -9,3 +9,16 @@ before_build:
 
 build_script:
   - cmd: PowerShell -Version 2.0 .\build.ps1
+
+deploy:
+  release: Ubiety.Dns.Core-v$(appveyor_build_version)
+  description: Ubiety DNS for .NET Standard
+  provider: GitHub
+  auth_token:
+    secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
+  artifact: /.*\.nupkg/
+  draft: true
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
