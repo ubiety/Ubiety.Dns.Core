@@ -1,6 +1,13 @@
 image: Visual Studio 2017
 skip_tags: true
 
+branches:
+  only:
+    - master
+    - develop
+  except:
+    - gh-pages
+
 install:
   - choco install gitversion.portable -pre -y
 
@@ -15,24 +22,24 @@ artifacts:
   - path: '**\*.nupkg'
 
 deploy:
-  release: Ubiety.Dns.Core-v$(appveyor_build_version)
-  description: Ubiety DNS for .NET Standard
-  provider: GitHub
-  auth_token:
-    secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
-  artifact: /.*\.nupkg/
-  draft: true
-  prerelease: false
-  on:
-    branch: master
+  - provider: GitHub
+    release: Ubiety.Dns.Core-v$(appveyor_build_version)
+    description: Ubiety DNS for .NET Standard
+    auth_token:
+      secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
+    artifact: /.*\.nupkg/
+    draft: true
+    prerelease: false
+    on:
+      branch: master
 
-  release: Ubiety.Dns.Core.beta-v$(appveyor_build_version)
-  description: Ubiety DNS Beta
-  provider: GitHub
-  auth_token:
-    secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
-  artifact: /.*\.nupkg/
-  draft: true
-  prerelease: true
-  on:
-    branch: develop
+  - provider: GitHub
+    release: Ubiety.Dns.Core.beta-v$(appveyor_build_version)
+    description: Ubiety DNS Beta
+    auth_token:
+      secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
+    artifact: /.*\.nupkg/
+    draft: true
+    prerelease: true
+    on:
+      branch: develop
