@@ -30,8 +30,6 @@ deploy:
   release: Ubiety.Dns.Core-v$(appveyor_build_version)
   description: Ubiety DNS Beta
   provider: GitHub
-  auth_token:
-    secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
   artifact: /.*\.nupkg/
   draft: true
   prerelease: true
