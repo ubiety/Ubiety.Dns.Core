@@ -20,7 +20,7 @@ the description of name server logic in [RFC-1034] for details.
 
  *
  */
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
     ///     Canonical name DNS record

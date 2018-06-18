@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Net;
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
     /// IPv4 Address DNS record
@@ -13,7 +13,7 @@ namespace Ubiety.Dns.Core.Records
     /// a domain or subdomain to an IP address.
     ///
     /// # [RFC](#tab/rfc)
-    /// ```   
+    /// ```
     /// A RDATA format
     ///
     /// +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+

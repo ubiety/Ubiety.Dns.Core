@@ -16,7 +16,7 @@ MGMNAME         A <domain-name> which specifies a mailbox which is a
 MG records cause no additional section processing.
 */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
     ///     Mail group DNS record

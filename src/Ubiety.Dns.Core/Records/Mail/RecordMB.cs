@@ -17,7 +17,7 @@ MB records cause additional section processing which looks up an A type
 RRs corresponding to MADNAME.
 */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
     ///     Mailbox DNS record

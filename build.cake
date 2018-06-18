@@ -8,7 +8,7 @@
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Sonar");
+var target = Argument("target", "Pack");
 var configuration = Argument("configuration", "Debug");
 
 var version = EnvironmentVariable("GitVersion_NuGetVersionV2");
@@ -43,9 +43,12 @@ Task("Clean")
     });
 
 Task("Pack")
-    .IsDependentOn("Build")
+    .IsDependentOn("Sonar")
     .Does(() => {
-        DotNetCorePack(projectDir);
+        var ver = String.IsNullOrEmpty(version) ? "2.0" : version;
+        DotNetCorePack(projectDir, new DotNetCorePackSettings{
+            ArgumentCustomization = args => args.Append($"/p:PackageVersion={ver}")
+        });
     });
 
 Task("Test")
@@ -57,7 +60,7 @@ Task("Test")
             Configuration = configuration
         });
 
-        Codecov("test/Ubiety.Dns.Test/coverage.opencover.xml", "977eef75-3209-48ad-8543-92e88ccf4bc5");
+        //Codecov("test/Ubiety.Dns.Test/coverage.opencover.xml", "977eef75-3209-48ad-8543-92e88ccf4bc5");
     });
 
 Task("SonarBegin")

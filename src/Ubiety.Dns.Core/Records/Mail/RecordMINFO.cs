@@ -32,7 +32,7 @@ records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
     ///     Mail list DNS record

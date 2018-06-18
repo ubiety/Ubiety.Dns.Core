@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core
@@ -376,7 +377,7 @@ namespace Ubiety.Dns.Core
 
             if (this.TransportType == TransportType.Tcp)
             {
-                return this.TcpRequest(request);
+                return this.TcpRequest(request).Result;
             }
 
             Response response = new Response();
@@ -504,103 +505,40 @@ namespace Ubiety.Dns.Core
             return responseTimeout;
         }
 
-        private Response TcpRequest(Request request)
+        private async Task<Response> TcpRequest(Request request)
         {
             for (int intAttempts = 0; intAttempts < this.retries; intAttempts++)
             {
-                for (int intDnsServer = 0; intDnsServer < this.dnsServers.Count; intDnsServer++)
+                foreach (var server in this.dnsServers)
                 {
-                    TcpClient tcpClient = new TcpClient();
-                    tcpClient.ReceiveTimeout = this.Timeout;
+                    TcpClient client = new TcpClient();
+                    client.ReceiveTimeout = this.timeout;
 
                     try
                     {
-                        IAsyncResult result = tcpClient.BeginConnect(this.dnsServers[intDnsServer].Address, this.dnsServers[intDnsServer].Port, null, null);
+                        await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
 
-                        bool success = result.AsyncWaitHandle.WaitOne(this.Timeout, true);
-
-                        if (!success || !tcpClient.Connected)
+                        if (!client.Connected)
                         {
-                            tcpClient.Close();
-                            this.Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
+                            client.Close();
+                            this.Verbose($";; Connection to nameserver {server.Address} failed");
                             continue;
                         }
 
-                        BufferedStream bs = new BufferedStream(tcpClient.GetStream());
+                        var stream = new BufferedStream(client.GetStream());
 
-                        byte[] data = request.GetData();
-                        bs.WriteByte((byte)((data.Length >> 8) & 0xff));
-                        bs.WriteByte((byte)(data.Length & 0xff));
-                        bs.Write(data, 0, data.Length);
-                        bs.Flush();
+                        WriteRequest(stream, request);
 
-                        Response transferResponse = new Response();
-                        int intSoa = 0;
-                        int intMessageSize = 0;
-
-                        while (true)
-                        {
-                            Int32 intLength = bs.ReadByte() << 8 | bs.ReadByte();
-                            if (intLength <= 0)
-                            {
-                                tcpClient.Close();
-                                this.Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
-                                throw new SocketException(); // next try
-                            }
-
-                            intMessageSize += intLength;
-
-                            data = new Byte[intLength];
-                            bs.Read(data, 0, intLength);
-                            Response response = new Response(this.dnsServers[intDnsServer], data);
-
-                            if (response.Header.ResponseCode != ResponseCode.NoError)
-                            {
-                                return response;
-                            }
-
-                            if (response.Questions[0].QuestionType != QuestionType.AXFR)
-                            {
-                                this.AddToCache(response);
-                                return response;
-                            }
-
-                            // Zone transfer!!
-                            if (transferResponse.Questions.Count == 0)
-                            {
-                                transferResponse.Questions.AddRange(response.Questions);
-                            }
-
-                            transferResponse.Answers.AddRange(response.Answers);
-                            transferResponse.Authorities.AddRange(response.Authorities);
-                            transferResponse.Additionals.AddRange(response.Additionals);
-
-                            if (response.Answers[0].Type == RecordType.SOA)
-                            {
-                                    intSoa++;
-                            }
-
-                            if (intSoa == 2)
-                            {
-                                transferResponse.Header.QuestionCount = (UInt16)transferResponse.Questions.Count;
-                                transferResponse.Header.AnswerCount = (UInt16)transferResponse.Answers.Count;
-                                transferResponse.Header.NameserverCount = (UInt16)transferResponse.Authorities.Count;
-                                transferResponse.Header.AdditionalRecordsCount = (UInt16)transferResponse.Additionals.Count;
-                                transferResponse.MessageSize = intMessageSize;
-                                return transferResponse;
-                            }
-                        }
-                    } // try
-                    catch (SocketException)
+                        return this.ReceiveResponse(stream, server);
+                    }
+                    catch(SocketException)
                     {
-                        continue; // next try
+                        continue;
                     }
                     finally
                     {
                         this.unique++;
-
-                        // close the socket
-                        tcpClient.Close();
+                        client.Close();
                     }
                 }
             }
@@ -608,6 +546,75 @@ namespace Ubiety.Dns.Core
             Response responseTimeout = new Response();
             responseTimeout.Error = "Timeout Error";
             return responseTimeout;
+        }
+
+        private static void WriteRequest(BufferedStream stream, Request request)
+        {
+            Byte[] data = request.GetData();
+            stream.WriteByte((Byte)((data.Length >> 8) & 0xFF));
+            stream.WriteByte((Byte)(data.Length & 0xFF));
+            stream.Write(data, 0, data.Length);
+            stream.Flush();
+        }
+
+        private Response ReceiveResponse(BufferedStream stream,  IPEndPoint server)
+        {
+            Response transferResponse = new Response();
+            Int32 soa = 0;
+            Int32 messageSize = 0;
+
+            while (true)
+            {
+                Int32 length = stream.ReadByte() << 8 | stream.ReadByte();
+                if (length <= 0)
+                {
+                    this.Verbose($"Connection to nameserver {server.Address} failed");
+                    throw new SocketException();
+                }
+
+                messageSize += length;
+
+                Byte[] data = new Byte[length];
+                stream.Read(data, 0, length);
+
+                Response response = new Response(server, data);
+
+                if (response.Header.ResponseCode != ResponseCode.NoError)
+                {
+                    return response;
+                }
+
+                if (response.Questions[0].QuestionType != QuestionType.AXFR)
+                {
+                    this.AddToCache(response);
+                    return response;
+                }
+
+                if (transferResponse.Questions.Count == 0)
+                {
+                    transferResponse.Questions.AddRange(response.Questions);
+                }
+
+                transferResponse.Answers.AddRange(response.Answers);
+                transferResponse.Authorities.AddRange(response.Authorities);
+                transferResponse.Additionals.AddRange(response.Additionals);
+
+                if (response.Answers[0].Type == RecordType.SOA)
+                {
+                    soa++;
+                }
+
+                if (soa == 2)
+                {
+                    transferResponse.Header.QuestionCount = (UInt16)transferResponse.Questions.Count;
+                    transferResponse.Header.AnswerCount = (UInt16)transferResponse.Answers.Count;
+                    transferResponse.Header.NameserverCount = (UInt16)transferResponse.Authorities.Count;
+                    transferResponse.Header.AdditionalRecordsCount = (UInt16)transferResponse.Additionals.Count;
+                    transferResponse.MessageSize = messageSize;
+
+                    return transferResponse;
+                }
+            }
         }
     } // class
 }
