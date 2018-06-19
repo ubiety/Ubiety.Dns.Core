@@ -37,5 +37,3 @@ deploy:
     artifact: /.*\.nupkg/
     draft: true
     prerelease: true
-    on:
-      branch: develop
