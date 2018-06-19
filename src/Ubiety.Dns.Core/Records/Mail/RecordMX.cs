@@ -75,7 +75,10 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
+        /// Does this instance equal an object
         /// </summary>
+        /// <param name="obj">Object to compare to</param>
+        /// <returns>Boolean indicating whether the objects are equal</returns>
         public override Boolean Equals(object obj)
         {
             if (obj is null)
@@ -97,14 +100,19 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
+        /// Gets the record hash code
         /// </summary>
+        /// <returns>Integer representing the hash code</returns>
         public override Int32 GetHashCode()
         {
             return Exchange.GetHashCode();
         }
 
         /// <summary>
+        /// Does this instance equal another instance of RecordMx
         /// </summary>
+        /// <param name="other">RecordMx to compare to</param>
+        /// <returns>Boolean indicating whether the objects are equal</returns>
         public Boolean Equals(RecordMx other)
         {
             if (other is null)
