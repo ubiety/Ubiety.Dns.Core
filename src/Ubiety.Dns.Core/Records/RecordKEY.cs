@@ -1,4 +1,4 @@
-using System;
+
 
 /* http://www.ietf.org/rfc/rfc2535.txt
  *
@@ -46,39 +46,39 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordKey(RecordReader rr)
         {
-            this.Flags = rr.ReadUInt16();
-            this.Protocol = rr.ReadByte();
-            this.Algorithm = rr.ReadByte();
-            this.PublicKey = rr.ReadString();
+            Flags = rr.ReadUInt16();
+            Protocol = rr.ReadByte();
+            Algorithm = rr.ReadByte();
+            PublicKey = rr.ReadString();
         }
 
         /// <summary>
         ///     Gets or sets the flags
         /// </summary>
-        public UInt16 Flags { get; set; }
+        public ushort Flags { get; set; }
 
         /// <summary>
         ///     Gets or sets the protocol
         /// </summary>
-        public Byte Protocol { get; set; }
+        public byte Protocol { get; set; }
 
         /// <summary>
         ///     Gets or sets the algorithm
         /// </summary>
-        public Byte Algorithm { get; set; }
+        public byte Algorithm { get; set; }
 
         /// <summary>
         ///     Gets or sets the public key
         /// </summary>
-        public String PublicKey { get; set; }
+        public string PublicKey { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>String version of the record</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return $"{this.Flags} {this.Protocol} {this.Algorithm} \"{this.PublicKey}\"";
+            return $"{Flags} {Protocol} {Algorithm} \"{PublicKey}\"";
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Text;
 using Ubiety.Dns.Core.Common;
@@ -46,7 +45,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     /// </summary>
     public class RecordNxt : Record
     {
-        private readonly Byte[] bitmap;
+        private readonly byte[] bitmap;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNxt" /> class
@@ -54,55 +53,46 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordNxt(RecordReader rr)
         {
-            UInt16 length = rr.ReadUInt16(-2);
-            this.NextDomainName = rr.ReadDomainName();
-            length -= (UInt16)rr.Position;
-            this.bitmap = new byte[length];
-            this.bitmap = rr.ReadBytes(length);
+            var length = rr.ReadUInt16(-2);
+            NextDomainName = rr.ReadDomainName();
+            length -= (ushort) rr.Position;
+            bitmap = new byte[length];
+            bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
         ///     Gets or sets the next domain name
         /// </summary>
-        public String NextDomainName { get; set; }
+        public string NextDomainName { get; set; }
 
         /// <summary>
         ///     Gets the record bitmap
         /// </summary>
-        public Collection<Byte> Bitmap { get => new Collection<Byte>(this.bitmap); }
+        public Collection<byte> Bitmap => new Collection<byte>(bitmap);
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>String version of the data</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            for (Int32 bitNr = 1; bitNr < (this.bitmap.Length * 8); bitNr++)
-            {
-                if (this.IsSet(bitNr))
-                {
-                    sb.Append(" " + (RecordType)bitNr);
-                }
-            }
+            var sb = new StringBuilder();
+            for (var bitNr = 1; bitNr < bitmap.Length * 8; bitNr++)
+                if (IsSet(bitNr))
+                    sb.Append(" " + (RecordType) bitNr);
 
-            return $"{this.NextDomainName}{sb.ToString()}";
+            return $"{NextDomainName}{sb}";
         }
 
-        private bool IsSet(Int32 bitNr)
+        private bool IsSet(int bitNr)
         {
-            Int32 intByte = bitNr / 8;
-            Int32 intOffset = bitNr % 8;
-            Byte b = this.bitmap[intByte];
-            Int32 intTest = 1 << intOffset;
+            var intByte = bitNr / 8;
+            var intOffset = bitNr % 8;
+            var b = bitmap[intByte];
+            var intTest = 1 << intOffset;
             if ((b & intTest) == 0)
-            {
                 return false;
-            }
-            else
-            {
-                return true;
-            }
+            return true;
         }
     }
 }

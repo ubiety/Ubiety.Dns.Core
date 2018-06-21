@@ -1,4 +1,4 @@
-using System;
+
 
 /*
 3.3.6. MG RDATA format (EXPERIMENTAL)
@@ -29,21 +29,21 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordMg(RecordReader rr)
         {
-            this.MgmName = rr.ReadDomainName();
+            MgmName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the mail group name
+        ///     Gets the mail group name
         /// </summary>
-        public String MgmName { get; set; }
+        public string MgmName { get; }
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>Mail group name as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return this.MgmName;
+            return MgmName;
         }
     }
 }

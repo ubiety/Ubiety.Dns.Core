@@ -1,4 +1,4 @@
-using System;
+
 
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
@@ -43,27 +43,27 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordRp(RecordReader rr)
         {
-            this.MailboxDomain = rr.ReadDomainName();
-            this.TxtDomain = rr.ReadDomainName();
+            MailboxDomain = rr.ReadDomainName();
+            TxtDomain = rr.ReadDomainName();
         }
 
         /// <summary>
         ///     Gets or sets the mailbox domain
         /// </summary>
-        public String MailboxDomain { get; set; }
+        public string MailboxDomain { get; set; }
 
         /// <summary>
         ///     Gets or sets the text domain
         /// </summary>
-        public String TxtDomain { get; set; }
+        public string TxtDomain { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Domains as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return $"{this.MailboxDomain} {this.TxtDomain}";
+            return $"{MailboxDomain} {TxtDomain}";
         }
     }
 }

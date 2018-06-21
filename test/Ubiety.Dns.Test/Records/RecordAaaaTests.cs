@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using Shouldly;
 using Ubiety.Dns.Core;
@@ -9,9 +8,6 @@ namespace Ubiety.Dns.Test.Records
 {
     public class RecordAaaaTests
     {
-        private readonly Byte[] data = new Byte[16];
-        private readonly RecordReader reader;
-
         public RecordAaaaTests()
         {
             data[0] = 0x20;
@@ -33,6 +29,9 @@ namespace Ubiety.Dns.Test.Records
 
             reader = new RecordReader(data);
         }
+
+        private readonly byte[] data = new byte[16];
+        private readonly RecordReader reader;
 
         [Fact]
         public void TestRecordAddress()

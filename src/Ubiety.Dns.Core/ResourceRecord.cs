@@ -60,68 +60,62 @@ namespace Ubiety.Dns.Core
     */
 
     /// <summary>
-    /// Resource Record (rfc1034 3.6.)
+    ///     Resource Record (rfc1034 3.6.)
     /// </summary>
     public class ResourceRecord
     {
-        private UInt32 ttl;
+        private uint _ttl;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ResourceRecord" /> class
         /// </summary>
         /// <param name="rr">Record reader of the record data</param>
-        public ResourceRecord(RecordReader rr)
+        protected ResourceRecord(RecordReader rr)
         {
-            this.TimeLived = 0;
-            this.Name = rr.ReadDomainName();
-            this.Type = (RecordType)rr.ReadUInt16();
-            this.Class = (OperationClass)rr.ReadUInt16();
-            this.TTL = rr.ReadUInt32();
-            this.RecordLength = rr.ReadUInt16();
-            this.Record = rr.ReadRecord(this.Type);
-            this.Record.ResourceRecord = this;
+            TimeLived = 0;
+            Name = rr.ReadDomainName();
+            Type = (RecordType)rr.ReadUInt16();
+            Class = (OperationClass)rr.ReadUInt16();
+            Ttl = rr.ReadUInt32();
+            RecordLength = rr.ReadUInt16();
+            Record = rr.ReadRecord(Type);
+            Record.ResourceRecord = this;
         }
 
         /// <summary>
-        ///     Gets or sets the name of the node to which this resource record pertains
+        ///     Gets the name of the node to which this resource record pertains
         /// </summary>
-        public String Name { get; set; }
+        public String Name { get; }
 
         /// <summary>
-        ///     Gets or sets the type of resource record
+        ///     Gets the type of resource record
         /// </summary>
-        public RecordType Type { get; set; }
+        public RecordType Type { get; }
 
         /// <summary>
-        ///     Gets or sets the type class of resource record, mostly IN but can be CS, CH or HS
+        ///     Gets the type class of resource record, mostly IN but can be CS, CH or HS
         /// </summary>
-        public OperationClass Class { get; set; }
+        public OperationClass Class { get; }
 
         /// <summary>
-        ///     Gets or sets the time to live, the time interval that the resource record may be cached
+        ///     Gets the time to live, the time interval that the resource record may be cached
         /// </summary>
-        public UInt32 TTL
+        public UInt32 Ttl
         {
-            get
-            {
-                return (UInt32)Math.Max(0, this.ttl - this.TimeLived);
-            }
+            get => (UInt32)Math.Max(0, _ttl - TimeLived);
 
-            set
-            {
-                this.ttl = value;
-            }
+            private set => _ttl = value;
         }
 
         /// <summary>
-        ///     Gets or sets the record length
+        ///     Gets the record length
         /// </summary>
-        public UInt16 RecordLength { get; set; }
+        public UInt16 RecordLength { get; }
 
         /// <summary>
-        ///     Gets or sets one of the Record* classes
+        ///     Gets one of the Record* classes
         /// </summary>
-        public Record Record { get; set; }
+        public Record Record { get; }
 
         /// <summary>
         ///     Gets or sets the time lived
@@ -134,7 +128,7 @@ namespace Ubiety.Dns.Core
         /// <returns>String of the resource</returns>
         public override String ToString()
         {
-            return $"{this.Name, -32} {this.TTL}\t{this.Class}\t{this.Type}\t{this.Record}";
+            return $"{Name,-32} {Ttl}\t{Class}\t{Type}\t{Record}";
         }
     }
 }

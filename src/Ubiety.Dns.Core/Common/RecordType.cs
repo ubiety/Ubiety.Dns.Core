@@ -1,5 +1,3 @@
-using System;
-
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>

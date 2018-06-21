@@ -1,4 +1,4 @@
-using System;
+
 
 /*
  3.3.2. HINFO RDATA format
@@ -23,6 +23,8 @@ main use is for protocols such as FTP that can use special procedures
 when talking between machines or operating systems of the same type.
  */
 
+using System;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -36,27 +38,27 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordHinfo(RecordReader rr)
         {
-            this.Cpu = rr.ReadString();
-            this.Os = rr.ReadString();
+            Cpu = rr.ReadString();
+            Os = rr.ReadString();
         }
 
         /// <summary>
-        ///     Gets or sets the CPU
+        ///     Gets the CPU
         /// </summary>
-        public String Cpu { get; set; }
+        public String Cpu { get; }
 
         /// <summary>
-        ///     Gets or sets the OS
+        ///     Gets the OS
         /// </summary>
-        public string Os { get; set; }
+        public String Os { get; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>String version of the record</returns>
-        public override string ToString()
+        public override String ToString()
         {
-            return $"CPU={this.Cpu} OS={this.Os}";
+            return $"CPU={Cpu} OS={Os}";
         }
     }
 }

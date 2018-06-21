@@ -1,5 +1,3 @@
-using System;
-
 /*
  *
 3.3.1. CNAME RDATA format
@@ -33,13 +31,13 @@ namespace Ubiety.Dns.Core.Records.General
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordCname(RecordReader rr)
         {
-            this.Cname = rr.ReadDomainName();
+            Cname = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the canonical name
+        ///     Gets the canonical name
         /// </summary>
-        public String Cname { get; set; }
+        public string Cname { get; }
 
         /// <summary>
         ///     String representation of the record
@@ -47,7 +45,7 @@ namespace Ubiety.Dns.Core.Records.General
         /// <returns>String version of the cname</returns>
         public override string ToString()
         {
-            return this.Cname;
+            return Cname;
         }
     }
 }

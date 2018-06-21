@@ -1,4 +1,4 @@
-using System;
+
 
 /*
  * http://tools.ietf.org/rfc/rfc1712.txt
@@ -39,6 +39,8 @@ using System;
 
  */
 
+using System;
+
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
@@ -52,25 +54,25 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordGpos(RecordReader rr)
         {
-            this.Longitude = rr.ReadString();
-            this.Latitude = rr.ReadString();
-            this.Altitude = rr.ReadString();
+            Longitude = rr.ReadString();
+            Latitude = rr.ReadString();
+            Altitude = rr.ReadString();
         }
 
         /// <summary>
-        ///     Gets or sets the longitude
+        ///     Gets the longitude
         /// </summary>
-        public String Longitude { get; set; }
+        public String Longitude { get; }
 
         /// <summary>
-        ///     Gets or sets the latitude
+        ///     Gets the latitude
         /// </summary>
-        public String Latitude { get; set; }
+        public String Latitude { get; }
 
         /// <summary>
-        ///     Gets or sets the altitude
+        ///     Gets the altitude
         /// </summary>
-        public String Altitude { get; set; }
+        public String Altitude { get; }
 
         /// <summary>
         ///     String representation of the position
@@ -78,7 +80,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <returns>String of the version</returns>
         public override String ToString()
         {
-            return $"{this.Longitude} {this.Latitude} {this.Altitude}";
+            return $"{Longitude} {Latitude} {Altitude}";
         }
     }
 }

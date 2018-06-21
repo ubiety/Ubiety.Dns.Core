@@ -1,4 +1,4 @@
-using System;
+
 
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
@@ -66,27 +66,27 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordRt(RecordReader rr)
         {
-            this.Preference = rr.ReadUInt16();
-            this.IntermediateHost = rr.ReadDomainName();
+            Preference = rr.ReadUInt16();
+            IntermediateHost = rr.ReadDomainName();
         }
 
         /// <summary>
         ///     Gets or sets the route preference
         /// </summary>
-        public UInt16 Preference { get; set; }
+        public ushort Preference { get; set; }
 
         /// <summary>
         ///     Gets or sets the intermediate host
         /// </summary>
-        public String IntermediateHost { get; set; }
+        public string IntermediateHost { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Preference and host as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return $"{this.Preference} {this.IntermediateHost}";
+            return $"{Preference} {IntermediateHost}";
         }
     }
 }

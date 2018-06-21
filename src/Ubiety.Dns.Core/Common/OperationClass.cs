@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Ubiety.Dns.Core.Common
@@ -7,7 +6,7 @@ namespace Ubiety.Dns.Core.Common
     ///     Resource record class
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1717", Justification = "Class is not plural")]
-    public enum OperationClass : UInt16
+    public enum OperationClass : ushort
     {
         /// <summary>
         ///     Internet class

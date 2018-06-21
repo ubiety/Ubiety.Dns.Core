@@ -1,4 +1,4 @@
-using System;
+
 
 /*
 3.3.4. MD RDATA format (Obsolete)
@@ -22,6 +22,9 @@ the new scheme.  The recommended policy for dealing with MD RRs found in
 a master file is to reject them, or to convert them to MX RRs with a
 preference of 0.
  * */
+
+using System;
+
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
@@ -35,13 +38,13 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordMd(RecordReader rr)
         {
-            this.MadName = rr.ReadDomainName();
+            MadName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the mail domain
+        ///     Gets the mail domain
         /// </summary>
-        public String MadName { get; set; }
+        public String MadName { get; }
 
         /// <summary>
         ///     String representing the mail domain
@@ -49,7 +52,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <returns>String version of the record</returns>
         public override String ToString()
         {
-            return this.MadName;
+            return MadName;
         }
     }
 }

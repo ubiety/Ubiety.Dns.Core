@@ -1,4 +1,4 @@
-using System;
+
 
 /*
  * http://tools.ietf.org/rfc/rfc2672.txt
@@ -15,6 +15,9 @@ using System;
 
  *
  */
+
+using System;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -28,13 +31,13 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record</param>
         public RecordDname(RecordReader rr)
         {
-            this.Target = rr.ReadDomainName();
+            Target = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the target
+        ///     Gets the target
         /// </summary>
-        public String Target { get; set; }
+        public String Target { get; }
 
         /// <summary>
         ///     String representation of the record data
@@ -42,7 +45,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>String of the target</returns>
         public override String ToString()
         {
-            return this.Target;
+            return Target;
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+
 
 /*
 3.3.3. MB RDATA format (EXPERIMENTAL)
@@ -30,21 +30,21 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordMb(RecordReader rr)
         {
-            this.MadName = rr.ReadDomainName();
+            MadName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the mailbox domain
+        ///     Gets the mailbox domain
         /// </summary>
-        public String MadName { get; set; }
+        public string MadName { get; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>String version of the domain</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return this.MadName;
+            return MadName;
         }
     }
 }

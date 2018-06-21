@@ -1,4 +1,4 @@
-using System;
+
 
 /*
  * http://tools.ietf.org/rfc/rfc2163.txt
@@ -82,33 +82,33 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordPx(RecordReader rr)
         {
-            this.Preference = rr.ReadUInt16();
-            this.Map822 = rr.ReadDomainName();
-            this.MapX400 = rr.ReadDomainName();
+            Preference = rr.ReadUInt16();
+            Map822 = rr.ReadDomainName();
+            MapX400 = rr.ReadDomainName();
         }
 
         /// <summary>
         ///     Gets or sets the preference
         /// </summary>
-        public UInt16 Preference { get; set; }
+        public ushort Preference { get; set; }
 
         /// <summary>
         ///     Gets or sets the map to 822
         /// </summary>
-        public String Map822 { get; set; }
+        public string Map822 { get; set; }
 
         /// <summary>
         ///     Gets or sets the map to X.400
         /// </summary>
-        public String MapX400 { get; set; }
+        public string MapX400 { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Mappings as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return $"{this.Preference} {this.Map822} {this.MapX400}";
+            return $"{Preference} {Map822} {MapX400}";
         }
     }
 }

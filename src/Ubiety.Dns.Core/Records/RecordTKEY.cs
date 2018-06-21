@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -31,8 +30,8 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordTkey : Record
     {
-        private readonly Byte[] keyData;
-        private readonly Byte[] otherData;
+        private readonly byte[] keyData;
+        private readonly byte[] otherData;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTkey" /> class
@@ -40,76 +39,76 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordTkey(RecordReader rr)
         {
-            this.Algorithm = rr.ReadDomainName();
-            this.Inception = rr.ReadUInt32();
-            this.Expiration = rr.ReadUInt32();
-            this.Mode = rr.ReadUInt16();
-            this.Error = rr.ReadUInt16();
-            this.KeySize = rr.ReadUInt16();
-            this.keyData = rr.ReadBytes(this.KeySize);
-            this.OtherSize = rr.ReadUInt16();
-            this.otherData = rr.ReadBytes(this.OtherSize);
+            Algorithm = rr.ReadDomainName();
+            Inception = rr.ReadUInt32();
+            Expiration = rr.ReadUInt32();
+            Mode = rr.ReadUInt16();
+            Error = rr.ReadUInt16();
+            KeySize = rr.ReadUInt16();
+            keyData = rr.ReadBytes(KeySize);
+            OtherSize = rr.ReadUInt16();
+            otherData = rr.ReadBytes(OtherSize);
         }
 
         /// <summary>
         ///     Gets the key algorithm
         /// </summary>
-        public String Algorithm { get; }
+        public string Algorithm { get; }
 
         /// <summary>
         ///     Gets the inception time of the key
         /// </summary>
-        public UInt32 Inception { get; }
+        public uint Inception { get; }
 
         /// <summary>
         ///     Gets the expiration time of the key
         /// </summary>
-        public UInt32 Expiration { get; }
+        public uint Expiration { get; }
 
         /// <summary>
         ///     Gets the key agreement mode
         /// </summary>
-        public UInt16 Mode { get; }
+        public ushort Mode { get; }
 
         /// <summary>
         ///     Gets the error code of the record
         /// </summary>
-        public UInt16 Error { get; }
+        public ushort Error { get; }
 
         /// <summary>
         ///     Gets the key size from the record
         /// </summary>
-        public UInt16 KeySize { get; }
+        public ushort KeySize { get; }
 
         /// <summary>
         ///     Gets the key data
         /// </summary>
-        public List<Byte> KeyData { get => new List<Byte>(this.keyData); }
+        public List<byte> KeyData => new List<byte>(keyData);
 
         /// <summary>
         ///     Gets the other size from the record (Future use)
         /// </summary>
-        public UInt16 OtherSize { get; }
+        public ushort OtherSize { get; }
 
         /// <summary>
         ///     Gets the other data from the record (Future use)
         /// </summary>
-        public List<Byte> OtherData { get => new List<Byte>(this.otherData); }
+        public List<byte> OtherData => new List<byte>(otherData);
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Key data as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0} {1} {2} {3} {4}",
-                this.Algorithm,
-                this.Inception,
-                this.Expiration,
-                this.Mode,
-                this.Error);
+                Algorithm,
+                Inception,
+                Expiration,
+                Mode,
+                Error);
         }
     }
 }

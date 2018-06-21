@@ -1,4 +1,4 @@
-using System;
+
 
 /*
  3.3.11. NS RDATA format
@@ -38,21 +38,21 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordNs(RecordReader rr)
         {
-            this.NameserverDomain = rr.ReadDomainName();
+            NameserverDomain = rr.ReadDomainName();
         }
 
         /// <summary>
         ///     Gets or sets the nameserver domain
         /// </summary>
-        public String NameserverDomain { get; set; }
+        public string NameserverDomain { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Nameserver domain as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return this.NameserverDomain;
+            return NameserverDomain;
         }
     }
 }

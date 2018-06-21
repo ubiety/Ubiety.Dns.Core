@@ -30,8 +30,8 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordTsig : Record
     {
-        private readonly Byte[] mac;
-        private readonly Byte[] otherData;
+        private readonly byte[] mac;
+        private readonly byte[] otherData;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTsig" /> class
@@ -39,79 +39,79 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordTsig(RecordReader rr)
         {
-            this.AlgorithmName = rr.ReadDomainName();
-            this.TimeSigned = rr.ReadUInt32() << 32 | rr.ReadUInt32();
-            this.Fudge = rr.ReadUInt16();
-            this.MacSize = rr.ReadUInt16();
-            this.mac = rr.ReadBytes(this.MacSize);
-            this.OriginalId = rr.ReadUInt16();
-            this.Error = rr.ReadUInt16();
-            this.OtherLength = rr.ReadUInt16();
-            this.otherData = rr.ReadBytes(this.OtherLength);
+            AlgorithmName = rr.ReadDomainName();
+            TimeSigned = (rr.ReadUInt32() << 32) | rr.ReadUInt32();
+            Fudge = rr.ReadUInt16();
+            MacSize = rr.ReadUInt16();
+            mac = rr.ReadBytes(MacSize);
+            OriginalId = rr.ReadUInt16();
+            Error = rr.ReadUInt16();
+            OtherLength = rr.ReadUInt16();
+            otherData = rr.ReadBytes(OtherLength);
         }
 
         /// <summary>
         ///     Gets or sets the algorithm name
         /// </summary>
-        public String AlgorithmName { get; set; }
+        public string AlgorithmName { get; set; }
 
         /// <summary>
         ///     Gets or sets the time signed
         /// </summary>
-        public Int64 TimeSigned { get; set; }
+        public long TimeSigned { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of seconds of error
         /// </summary>
-        public UInt16 Fudge { get; set; }
+        public ushort Fudge { get; set; }
 
         /// <summary>
         ///     Gets or sets the MAC size
         /// </summary>
-        public UInt16 MacSize { get; set; }
+        public ushort MacSize { get; set; }
 
         /// <summary>
         ///     Gets the MAC
         /// </summary>
-        public List<Byte> Mac { get => new List<Byte>(this.mac); }
+        public List<byte> Mac => new List<byte>(mac);
 
         /// <summary>
         ///     Gets or sets the original id
         /// </summary>
-        public UInt16 OriginalId { get; set; }
+        public ushort OriginalId { get; set; }
 
         /// <summary>
         ///     Gets or sets the record error
         /// </summary>
-        public UInt16 Error { get; set; }
+        public ushort Error { get; set; }
 
         /// <summary>
         ///     Gets or sets the length of other data
         /// </summary>
-        public UInt16 OtherLength { get; set; }
+        public ushort OtherLength { get; set; }
 
         /// <summary>
         ///     Gets the other record data
         /// </summary>
-        public List<Byte> OtherData { get => new List<Byte>(this.otherData); }
+        public List<byte> OtherData => new List<byte>(otherData);
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Signature as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            dateTime = dateTime.AddSeconds(this.TimeSigned);
-            String printDate = dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString();
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            dateTime = dateTime.AddSeconds(TimeSigned);
+            var printDate = dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString();
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0} {1} {2} {3} {4}",
-                this.AlgorithmName,
+                AlgorithmName,
                 printDate,
-                this.Fudge,
-                this.OriginalId,
-                this.Error);
+                Fudge,
+                OriginalId,
+                Error);
         }
     }
 }

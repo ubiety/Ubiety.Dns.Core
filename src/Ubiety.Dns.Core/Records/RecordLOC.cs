@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using System.Text;
 
@@ -110,99 +109,96 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr">Record reader of the record data</param>
         public RecordLoc(RecordReader rr)
         {
-            this.Version = rr.ReadByte(); // must be 0!
-            this.Size = rr.ReadByte();
-            this.HorizontalPrecision = rr.ReadByte();
-            this.VerticalPrecision = rr.ReadByte();
-            this.Latitude = rr.ReadUInt32();
-            this.Longitude = rr.ReadUInt32();
-            this.Altitude = rr.ReadUInt32();
+            Version = rr.ReadByte(); // must be 0!
+            Size = rr.ReadByte();
+            HorizontalPrecision = rr.ReadByte();
+            VerticalPrecision = rr.ReadByte();
+            Latitude = rr.ReadUInt32();
+            Longitude = rr.ReadUInt32();
+            Altitude = rr.ReadUInt32();
         }
 
         /// <summary>
         ///     Gets the version of the representation
         /// </summary>
-        public Byte Version { get; }
+        public byte Version { get; }
 
         /// <summary>
         ///     Gets the diameter of the sphere enclosing the entity
         /// </summary>
-        public Byte Size { get; }
+        public byte Size { get; }
 
         /// <summary>
         ///     Gets the horizontal precision of the data
         /// </summary>
-        public Byte HorizontalPrecision { get; }
+        public byte HorizontalPrecision { get; }
 
         /// <summary>
         ///     Gets the vertical precision or the data
         /// </summary>
-        public Byte VerticalPrecision { get; }
+        public byte VerticalPrecision { get; }
 
         /// <summary>
         ///     Gets the latitude of the location
         /// </summary>
-        public UInt32 Latitude { get; }
+        public uint Latitude { get; }
 
         /// <summary>
         ///     Gets the longitude of the location
         /// </summary>
-        public UInt32 Longitude { get; }
+        public uint Longitude { get; }
 
         /// <summary>
         ///     Gets the altitude of the location
         /// </summary>
-        public UInt32 Altitude { get; }
+        public uint Altitude { get; }
 
         /// <summary>
         ///     Gets a string of the location
         /// </summary>
         /// <returns>String of the location</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0} {1} {2} {3} {4} {5}",
-                ToTime(this.Latitude, 'S', 'N'),
-                ToTime(this.Longitude, 'W', 'E'),
-                ToAlt(this.Altitude),
-                SizeToString(this.Size),
-                SizeToString(this.HorizontalPrecision),
-                SizeToString(this.VerticalPrecision));
+                ToTime(Latitude, 'S', 'N'),
+                ToTime(Longitude, 'W', 'E'),
+                ToAlt(Altitude),
+                SizeToString(Size),
+                SizeToString(HorizontalPrecision),
+                SizeToString(VerticalPrecision));
         }
 
-        private static String ToAlt(UInt32 a)
+        private static string ToAlt(uint a)
         {
-            Double alt = (a / 100.0) - 100000.00;
+            var alt = a / 100.0 - 100000.00;
             return string.Format(CultureInfo.InvariantCulture, "{0:0.00}m", alt);
         }
 
-        private static String SizeToString(Byte size)
+        private static string SizeToString(byte size)
         {
-            String unit = "cm";
-            Int32 prime = size >> 4;
-            Int32 power = size & 0x0f;
+            var unit = "cm";
+            var prime = size >> 4;
+            var power = size & 0x0f;
             if (power >= 2)
             {
                 power -= 2;
                 unit = "m";
             }
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendFormat(CultureInfo.InvariantCulture, "{0}", prime);
-            for (; power > 0; power--)
-            {
-                sb.Append('0');
-            }
+            for (; power > 0; power--) sb.Append('0');
 
             sb.Append(unit);
             return sb.ToString();
         }
 
-        private static String ToTime(UInt32 r, Char below, Char above)
+        private static string ToTime(uint r, char below, char above)
         {
-            UInt32 mid = 2147483648; // 2^31
-            Char dir;
+            var mid = 2147483648; // 2^31
+            char dir;
             if (r > mid)
             {
                 dir = above;
@@ -214,10 +210,10 @@ namespace Ubiety.Dns.Core.Records
                 r = mid - r;
             }
 
-            Double h = r / (360000.0 * 10.0);
-            Double m = 60.0 * (h - (Int32)h);
-            Double s = 60.0 * (m - (Int32)m);
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (Int32)h, (Int32)m, s, dir);
+            var h = r / (360000.0 * 10.0);
+            var m = 60.0 * (h - (int) h);
+            var s = 60.0 * (m - (int) m);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int) h, (int) m, s, dir);
         }
     }
 }

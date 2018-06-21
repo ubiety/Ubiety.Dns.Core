@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -54,7 +53,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordWks : Record
     {
-        private readonly Byte[] bitmap;
+        private readonly byte[] bitmap;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordWks" /> class
@@ -62,42 +61,42 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr">Record reader for record data</param>
         public RecordWks(RecordReader rr)
         {
-            UInt16 length = rr.ReadUInt16(-2);
-            this.Address = string.Format(
+            var length = rr.ReadUInt16(-2);
+            Address = string.Format(
                 CultureInfo.InvariantCulture,
                 "{0}.{1}.{2}.{3}",
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte());
-            this.Protocol = (Int32)rr.ReadByte();
+            Protocol = rr.ReadByte();
             length -= 5;
-            this.bitmap = new Byte[length];
-            this.bitmap = rr.ReadBytes(length);
+            bitmap = new byte[length];
+            bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
         ///     Gets or sets the address of the server
         /// </summary>
-        public String Address { get; set; }
+        public string Address { get; set; }
 
         /// <summary>
         ///     Gets or sets the protocol of the service
         /// </summary>
-        public Int32 Protocol { get; set; }
+        public int Protocol { get; set; }
 
         /// <summary>
         ///     Gets the service bitmap
         /// </summary>
-        public Collection<Byte> Bitmap { get => new Collection<Byte>(this.bitmap); }
+        public Collection<byte> Bitmap => new Collection<byte>(bitmap);
 
         /// <summary>
         ///     Return a string of the well known service record
         /// </summary>
         /// <returns>String of the record</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", this.Address, this.Protocol);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", Address, Protocol);
         }
     }
 }
