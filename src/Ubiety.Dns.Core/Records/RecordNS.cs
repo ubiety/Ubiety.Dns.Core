@@ -1,5 +1,3 @@
-
-
 /*
  3.3.11. NS RDATA format
 

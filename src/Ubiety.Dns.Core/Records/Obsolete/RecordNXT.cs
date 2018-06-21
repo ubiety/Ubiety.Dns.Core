@@ -1,4 +1,5 @@
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 using System.Text;
 using Ubiety.Dns.Core.Common;
 
@@ -45,7 +46,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     /// </summary>
     public class RecordNxt : Record
     {
-        private readonly byte[] bitmap;
+        private readonly Byte[] _bitmap;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNxt" /> class
@@ -55,44 +56,46 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         {
             var length = rr.ReadUInt16(-2);
             NextDomainName = rr.ReadDomainName();
-            length -= (ushort) rr.Position;
-            bitmap = new byte[length];
-            bitmap = rr.ReadBytes(length);
+            length -= (UInt16)rr.Position;
+            _bitmap = new Byte[length];
+            _bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
-        ///     Gets or sets the next domain name
+        ///     Gets the next domain name
         /// </summary>
-        public string NextDomainName { get; set; }
+        public String NextDomainName { get; }
 
         /// <summary>
         ///     Gets the record bitmap
         /// </summary>
-        public Collection<byte> Bitmap => new Collection<byte>(bitmap);
+        public List<Byte> Bitmap => new List<Byte>(_bitmap);
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>String version of the data</returns>
-        public override string ToString()
+        public override String ToString()
         {
             var sb = new StringBuilder();
-            for (var bitNr = 1; bitNr < bitmap.Length * 8; bitNr++)
+            for (var bitNr = 1; bitNr < _bitmap.Length * 8; bitNr++)
+            {
                 if (IsSet(bitNr))
-                    sb.Append(" " + (RecordType) bitNr);
+                {
+                    sb.Append(" " + (RecordType)bitNr);
+                }
+            }
 
             return $"{NextDomainName}{sb}";
         }
 
-        private bool IsSet(int bitNr)
+        private bool IsSet(Int32 bitNr)
         {
             var intByte = bitNr / 8;
             var intOffset = bitNr % 8;
-            var b = bitmap[intByte];
+            var b = _bitmap[intByte];
             var intTest = 1 << intOffset;
-            if ((b & intTest) == 0)
-                return false;
-            return true;
+            return (b & intTest) != 0;
         }
     }
 }

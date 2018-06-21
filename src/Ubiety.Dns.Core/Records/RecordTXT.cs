@@ -1,5 +1,3 @@
-
-
 /*
 3.3.14. TXT RDATA format
 

@@ -53,7 +53,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordWks : Record
     {
-        private readonly byte[] bitmap;
+        private readonly byte[] _bitmap;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordWks" /> class
@@ -71,8 +71,8 @@ namespace Ubiety.Dns.Core.Records
                 rr.ReadByte());
             Protocol = rr.ReadByte();
             length -= 5;
-            bitmap = new byte[length];
-            bitmap = rr.ReadBytes(length);
+            _bitmap = new byte[length];
+            _bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the service bitmap
         /// </summary>
-        public Collection<byte> Bitmap => new Collection<byte>(bitmap);
+        public Collection<byte> Bitmap => new Collection<byte>(_bitmap);
 
         /// <summary>
         ///     Return a string of the well known service record

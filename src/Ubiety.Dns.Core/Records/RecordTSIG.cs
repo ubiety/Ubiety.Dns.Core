@@ -30,8 +30,8 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordTsig : Record
     {
-        private readonly byte[] mac;
-        private readonly byte[] otherData;
+        private readonly byte[] _mac;
+        private readonly byte[] _otherData;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTsig" /> class
@@ -43,11 +43,11 @@ namespace Ubiety.Dns.Core.Records
             TimeSigned = (rr.ReadUInt32() << 32) | rr.ReadUInt32();
             Fudge = rr.ReadUInt16();
             MacSize = rr.ReadUInt16();
-            mac = rr.ReadBytes(MacSize);
+            _mac = rr.ReadBytes(MacSize);
             OriginalId = rr.ReadUInt16();
             Error = rr.ReadUInt16();
             OtherLength = rr.ReadUInt16();
-            otherData = rr.ReadBytes(OtherLength);
+            _otherData = rr.ReadBytes(OtherLength);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the MAC
         /// </summary>
-        public List<byte> Mac => new List<byte>(mac);
+        public List<byte> Mac => new List<byte>(_mac);
 
         /// <summary>
         ///     Gets or sets the original id
@@ -93,7 +93,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the other record data
         /// </summary>
-        public List<byte> OtherData => new List<byte>(otherData);
+        public List<byte> OtherData => new List<byte>(_otherData);
 
         /// <summary>
         ///     String representation of the record data

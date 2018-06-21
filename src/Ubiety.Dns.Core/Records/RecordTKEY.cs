@@ -30,8 +30,8 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordTkey : Record
     {
-        private readonly byte[] keyData;
-        private readonly byte[] otherData;
+        private readonly byte[] _keyData;
+        private readonly byte[] _otherData;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTkey" /> class
@@ -45,9 +45,9 @@ namespace Ubiety.Dns.Core.Records
             Mode = rr.ReadUInt16();
             Error = rr.ReadUInt16();
             KeySize = rr.ReadUInt16();
-            keyData = rr.ReadBytes(KeySize);
+            _keyData = rr.ReadBytes(KeySize);
             OtherSize = rr.ReadUInt16();
-            otherData = rr.ReadBytes(OtherSize);
+            _otherData = rr.ReadBytes(OtherSize);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the key data
         /// </summary>
-        public List<byte> KeyData => new List<byte>(keyData);
+        public List<byte> KeyData => new List<byte>(_keyData);
 
         /// <summary>
         ///     Gets the other size from the record (Future use)
@@ -93,7 +93,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the other data from the record (Future use)
         /// </summary>
-        public List<byte> OtherData => new List<byte>(otherData);
+        public List<byte> OtherData => new List<byte>(_otherData);
 
         /// <summary>
         ///     String representation of the record data

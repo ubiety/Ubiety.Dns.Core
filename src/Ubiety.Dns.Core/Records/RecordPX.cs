@@ -1,5 +1,3 @@
-
-
 /*
  * http://tools.ietf.org/rfc/rfc2163.txt
  *

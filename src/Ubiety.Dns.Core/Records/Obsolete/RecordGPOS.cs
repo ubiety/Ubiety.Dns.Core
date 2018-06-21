@@ -1,5 +1,3 @@
-
-
 /*
  * http://tools.ietf.org/rfc/rfc1712.txt
  *

@@ -1,5 +1,3 @@
-
-
 /*
 3.3.6. MG RDATA format (EXPERIMENTAL)
 

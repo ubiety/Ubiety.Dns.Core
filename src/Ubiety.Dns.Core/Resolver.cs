@@ -55,7 +55,7 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="dnsServer">DNS server to use</param>
         public Resolver(IPEndPoint dnsServer)
-            : this(new[] {dnsServer})
+            : this(new[] { dnsServer })
         {
         }
 
@@ -92,7 +92,7 @@ namespace Ubiety.Dns.Core
         ///     Initializes a new instance of the <see cref="Resolver" /> class
         /// </summary>
         public Resolver()
-            : this(GetDnsServers())
+            : this(GetSystemDnsServers())
         {
         }
 
@@ -116,7 +116,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the default OpenDNS servers
         /// </summary>
-        public IPEndPoint[] DefaultDnsServers { get; } =
+        public static List<IPEndPoint> DefaultDnsServers => new List<IPEndPoint>
         {
             new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort),
             new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort)
@@ -141,7 +141,10 @@ namespace Ubiety.Dns.Core
 
             set
             {
-                if (value >= 1) _retries = value;
+                if (value >= 1)
+                {
+                    _retries = value;
+                }
             }
         }
 
@@ -158,9 +161,9 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets list of DNS servers to use
         /// </summary>
-        public IPEndPoint[] DnsServers
+        public List<IPEndPoint> DnsServers
         {
-            get => _dnsServers.ToArray();
+            get => _dnsServers;
 
             set
             {
@@ -218,7 +221,7 @@ namespace Ubiety.Dns.Core
         ///     Gets a list of default DNS servers used on the Windows machine.
         /// </summary>
         /// <returns>Array of DNS servers</returns>
-        public static IEnumerable<IPEndPoint> GetDnsServers()
+        public static IEnumerable<IPEndPoint> GetSystemDnsServers()
         {
             var list = new List<IPEndPoint>();
 
@@ -266,6 +269,7 @@ namespace Ubiety.Dns.Core
 
                     return sb.ToString();
                 }
+
                 case AddressFamily.InterNetworkV6:
                 {
                     var sb = new StringBuilder();
@@ -372,7 +376,7 @@ namespace Ubiety.Dns.Core
                     return TcpRequest(request).Result;
             }
 
-            var response = new Response {Error = "Unknown TransportType"};
+            var response = new Response { Error = "Unknown TransportType" };
             return response;
         }
 
@@ -442,7 +446,10 @@ namespace Ubiety.Dns.Core
 
             lock (_responseCache)
             {
-                if (_responseCache.ContainsKey(strKey)) _responseCache.Remove(strKey);
+                if (_responseCache.ContainsKey(strKey))
+                {
+                    _responseCache.Remove(strKey);
+                }
 
                 _responseCache.Add(strKey, response);
             }
@@ -454,44 +461,47 @@ namespace Ubiety.Dns.Core
             var responseMessage = new byte[512];
 
             for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
-            for (var intDnsServer = 0; intDnsServer < _dnsServers.Count; intDnsServer++)
             {
-                var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, Timeout);
+                for (var intDnsServer = 0; intDnsServer < _dnsServers.Count; intDnsServer++)
+                {
+                    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, Timeout);
 
-                try
-                {
-                    socket.SendTo(request.GetData(), _dnsServers[intDnsServer]);
-                    var intReceived = socket.Receive(responseMessage);
-                    var data = new byte[intReceived];
-                    Array.Copy(responseMessage, data, intReceived);
-                    var response = new Response(_dnsServers[intDnsServer], data);
-                    AddToCache(response);
-                    return response;
-                }
-                catch (SocketException)
-                {
-                    Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
-                }
-                finally
-                {
-                    _unique++;
+                    try
+                    {
+                        socket.SendTo(request.GetData(), _dnsServers[intDnsServer]);
+                        var intReceived = socket.Receive(responseMessage);
+                        var data = new byte[intReceived];
+                        Array.Copy(responseMessage, data, intReceived);
+                        var response = new Response(_dnsServers[intDnsServer], data);
+                        AddToCache(response);
+                        return response;
+                    }
+                    catch (SocketException)
+                    {
+                        Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
+                    }
+                    finally
+                    {
+                        _unique++;
 
-                    // close the socket
-                    socket.Close();
+                        // close the socket
+                        socket.Close();
+                    }
                 }
             }
 
-            var responseTimeout = new Response {Error = "Timeout Error"};
+            var responseTimeout = new Response { Error = "Timeout Error" };
             return responseTimeout;
         }
 
         private async Task<Response> TcpRequest(Request request)
         {
             for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
+            {
                 foreach (var server in _dnsServers)
                 {
-                    var client = new TcpClient {ReceiveTimeout = _timeout};
+                    var client = new TcpClient { ReceiveTimeout = _timeout };
 
                     try
                     {
@@ -519,8 +529,9 @@ namespace Ubiety.Dns.Core
                         client.Close();
                     }
                 }
+            }
 
-            var responseTimeout = new Response {Error = "Timeout Error"};
+            var responseTimeout = new Response { Error = "Timeout Error" };
             return responseTimeout;
         }
 

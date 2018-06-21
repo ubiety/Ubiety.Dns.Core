@@ -1,5 +1,3 @@
-
-
 /*
  3.3.12. PTR RDATA format
 

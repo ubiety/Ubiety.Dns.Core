@@ -134,7 +134,10 @@ namespace Ubiety.Dns.Core
             Int16 length = ReadByte();
 
             var name = new StringBuilder();
-            for (var i = 0; i < length; i++) name.Append(ReadChar());
+            for (var i = 0; i < length; i++)
+            {
+                name.Append(ReadChar());
+            }
 
             return name.ToString();
         }
@@ -147,7 +150,10 @@ namespace Ubiety.Dns.Core
         public Byte[] ReadBytes(Int32 length)
         {
             var list = new List<Byte>();
-            for (var i = 0; i < length; i++) list.Add(ReadByte());
+            for (var i = 0; i < length; i++)
+            {
+                list.Add(ReadByte());
+            }
 
             return list.ToArray();
         }

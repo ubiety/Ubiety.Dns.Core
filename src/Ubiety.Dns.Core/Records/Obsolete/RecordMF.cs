@@ -1,5 +1,3 @@
-
-
 /*
  *
 3.3.5. MF RDATA format (Obsolete)

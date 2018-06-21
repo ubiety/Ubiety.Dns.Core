@@ -1,5 +1,3 @@
-
-
 /*
  * http://tools.ietf.org/rfc/rfc1348.txt
 
@@ -58,7 +56,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         }
 
         /// <summary>
-        ///     Gets or sets the owner
+        ///     Gets the owner
         /// </summary>
         public String Owner { get; }
 

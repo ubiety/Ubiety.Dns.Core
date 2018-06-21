@@ -1,5 +1,3 @@
-
-
 /* http://www.ietf.org/rfc/rfc2535.txt
  *
 3.1 KEY RDATA format

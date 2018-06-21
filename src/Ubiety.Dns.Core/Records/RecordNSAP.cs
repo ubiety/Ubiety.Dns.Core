@@ -39,7 +39,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordNsap : Record
     {
-        private readonly byte[] address;
+        private readonly byte[] _address;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNsap" /> class
@@ -48,7 +48,7 @@ namespace Ubiety.Dns.Core.Records
         public RecordNsap(RecordReader rr)
         {
             Length = rr.ReadUInt16();
-            address = rr.ReadBytes(Length);
+            _address = rr.ReadBytes(Length);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the address as a byte collection
         /// </summary>
-        public Collection<byte> NsapAddress => new Collection<byte>(address);
+        public Collection<byte> NsapAddress => new Collection<byte>(_address);
 
         /// <summary>
         ///     String representation of the record data
@@ -69,8 +69,10 @@ namespace Ubiety.Dns.Core.Records
         {
             var sb = new StringBuilder();
             sb.AppendFormat(CultureInfo.InvariantCulture, "{0} ", Length);
-            for (var i = 0; i < address.Length; i++)
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X00}", address[i]);
+            foreach (var t in _address)
+            {
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X00}", t);
+            }
 
             return sb.ToString();
         }
@@ -84,15 +86,15 @@ namespace Ubiety.Dns.Core.Records
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0:X}.{1:X}.{2:X}.{3:X}.{4:X}.{5:X}.{6:X}{7:X}.{8:X}",
-                address[0],
-                (address[1] << 8) | address[2],
-                address[3],
-                (address[4] << 16) | (address[5] << 8) | address[6],
-                (address[7] << 8) | address[8],
-                (address[9] << 8) | address[10],
-                (address[11] << 8) | address[12],
-                (address[13] << 16) | (address[14] << 8) | address[15],
-                (address[16] << 16) | (address[17] << 8) | address[18]);
+                _address[0],
+                (_address[1] << 8) | _address[2],
+                _address[3],
+                (_address[4] << 16) | (_address[5] << 8) | _address[6],
+                (_address[7] << 8) | _address[8],
+                (_address[9] << 8) | _address[10],
+                (_address[11] << 8) | _address[12],
+                (_address[13] << 16) | (_address[14] << 8) | _address[15],
+                (_address[16] << 16) | (_address[17] << 8) | _address[18]);
         }
     }
 }

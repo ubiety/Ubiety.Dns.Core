@@ -128,7 +128,7 @@ namespace Ubiety.Dns.Core
         /// <returns>String of the resource</returns>
         public override String ToString()
         {
-            return $"{Name,-32} {Ttl}\t{Class}\t{Type}\t{Record}";
+            return $"{Name, -32} {Ttl}\t{Class}\t{Type}\t{Record}";
         }
     }
 }

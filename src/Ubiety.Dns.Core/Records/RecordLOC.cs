@@ -172,7 +172,7 @@ namespace Ubiety.Dns.Core.Records
 
         private static string ToAlt(uint a)
         {
-            var alt = a / 100.0 - 100000.00;
+            var alt = (a / 100.0) - 100000.00;
             return string.Format(CultureInfo.InvariantCulture, "{0:0.00}m", alt);
         }
 
@@ -189,7 +189,10 @@ namespace Ubiety.Dns.Core.Records
 
             var sb = new StringBuilder();
             sb.AppendFormat(CultureInfo.InvariantCulture, "{0}", prime);
-            for (; power > 0; power--) sb.Append('0');
+            for (; power > 0; power--)
+            {
+                sb.Append('0');
+            }
 
             sb.Append(unit);
             return sb.ToString();
@@ -211,9 +214,9 @@ namespace Ubiety.Dns.Core.Records
             }
 
             var h = r / (360000.0 * 10.0);
-            var m = 60.0 * (h - (int) h);
-            var s = 60.0 * (m - (int) m);
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int) h, (int) m, s, dir);
+            var m = 60.0 * (h - (int)h);
+            var s = 60.0 * (m - (int)m);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int)h, (int)m, s, dir);
         }
     }
 }

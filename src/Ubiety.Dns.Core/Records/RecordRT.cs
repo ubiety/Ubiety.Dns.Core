@@ -1,5 +1,3 @@
-
-
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
 3.3. The Route Through RR

@@ -1,5 +1,3 @@
-
-
 /*
 3.3.3. MB RDATA format (EXPERIMENTAL)
 

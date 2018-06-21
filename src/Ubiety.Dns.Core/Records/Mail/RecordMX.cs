@@ -51,6 +51,50 @@ namespace Ubiety.Dns.Core.Records.Mail
         public String Exchange { get; }
 
         /// <summary>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public static Boolean operator <(RecordMx x, RecordMx y)
+        {
+            return CompareTo(x, y) < 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator >(RecordMx x, RecordMx y)
+        {
+            return CompareTo(x, y) > 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator <=(RecordMx x, RecordMx y)
+        {
+            return CompareTo(x, y) <= 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator >=(RecordMx x, RecordMx y)
+        {
+            return CompareTo(x, y) >= 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator ==(RecordMx x, RecordMx y)
+        {
+            return CompareTo(x, y) == 0;
+        }
+
+        /// <summary>
+        /// </summary>
+        public static Boolean operator !=(RecordMx x, RecordMx y)
+        {
+            return CompareTo(x, y) != 0;
+        }
+
+        /// <summary>
         ///     Compares record to an object
         /// </summary>
         /// <param name="obj">Object to compare record to</param>
@@ -111,50 +155,6 @@ namespace Ubiety.Dns.Core.Records.Mail
         public override Int32 GetHashCode()
         {
             return Exchange.GetHashCode();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public static Boolean operator <(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x, y) < 0;
-        }
-
-        /// <summary>
-        /// </summary>
-        public static Boolean operator >(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x, y) > 0;
-        }
-
-        /// <summary>
-        /// </summary>
-        public static Boolean operator <=(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x, y) <= 0;
-        }
-
-        /// <summary>
-        /// </summary>
-        public static Boolean operator >=(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x, y) >= 0;
-        }
-
-        /// <summary>
-        /// </summary>
-        public static Boolean operator ==(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x, y) == 0;
-        }
-
-        /// <summary>
-        /// </summary>
-        public static Boolean operator !=(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x, y) != 0;
         }
 
         private static Int32 CompareTo(RecordMx x, RecordMx y)

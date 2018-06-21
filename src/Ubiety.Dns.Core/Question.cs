@@ -47,7 +47,10 @@ namespace Ubiety.Dns.Core
             private set
             {
                 _questionName = value;
-                if (!_questionName.EndsWith(".", StringComparison.InvariantCulture)) _questionName += ".";
+                if (!_questionName.EndsWith(".", StringComparison.InvariantCulture))
+                {
+                    _questionName += ".";
+                }
             }
         }
 
@@ -67,7 +70,7 @@ namespace Ubiety.Dns.Core
         /// <returns>String of the question</returns>
         public override String ToString()
         {
-            return $"{QuestionName,-32}\t{QuestionClass}\t{QuestionType}";
+            return $"{QuestionName, -32}\t{QuestionClass}\t{QuestionType}";
         }
 
         /// <summary>

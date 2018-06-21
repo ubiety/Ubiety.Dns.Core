@@ -49,13 +49,25 @@ namespace Ubiety.Dns.Core
 
             Header = new Header(rr);
 
-            for (var i = 0; i < Header.QuestionCount; i++) Questions.Add(new Question(rr));
+            for (var i = 0; i < Header.QuestionCount; i++)
+            {
+                Questions.Add(new Question(rr));
+            }
 
-            for (var i = 0; i < Header.AnswerCount; i++) Answers.Add(new AnswerRR(rr));
+            for (var i = 0; i < Header.AnswerCount; i++)
+            {
+                Answers.Add(new AnswerRR(rr));
+            }
 
-            for (var i = 0; i < Header.NameserverCount; i++) Authorities.Add(new AuthorityRR(rr));
+            for (var i = 0; i < Header.NameserverCount; i++)
+            {
+                Authorities.Add(new AuthorityRR(rr));
+            }
 
-            for (var i = 0; i < Header.AdditionalRecordsCount; i++) Additionals.Add(new AdditionalRR(rr));
+            for (var i = 0; i < Header.AdditionalRecordsCount; i++)
+            {
+                Additionals.Add(new AdditionalRR(rr));
+            }
         }
 
         /// <summary>
@@ -94,7 +106,7 @@ namespace Ubiety.Dns.Core
         public int MessageSize { get; set; }
 
         /// <summary>
-        ///     Gets or sets the timestamp when cached
+        ///     Gets the timestamp when cached
         /// </summary>
         public DateTime TimeStamp { get; }
 
@@ -208,7 +220,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of AAAA records in the answers
         /// </summary>
-        public List<RecordAaaa> RecordAAAA
+        public List<RecordAaaa> RecordAaaa
         {
             get
             {
@@ -228,7 +240,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of NS records in the answers
         /// </summary>
-        public List<RecordNs> RecordNS
+        public List<RecordNs> RecordNs
         {
             get
             {
@@ -248,7 +260,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of SOA records in the answers
         /// </summary>
-        public List<RecordSoa> RecordSOA
+        public List<RecordSoa> RecordSoa
         {
             get
             {
@@ -268,7 +280,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of CERT records in the answers
         /// </summary>
-        public List<RecordCert> RecordCERT
+        public List<RecordCert> RecordCert
         {
             get
             {
@@ -288,7 +300,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of SRV records in the answers
         /// </summary>
-        public List<RecordSrv> RecordSRV
+        public List<RecordSrv> RecordSrv
         {
             get
             {
