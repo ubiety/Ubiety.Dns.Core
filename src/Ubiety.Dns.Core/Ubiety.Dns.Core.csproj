@@ -3,8 +3,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <CodeAnalysisRuleSet>../ProjectLevel.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
-    <Version>2.0.0</Version>
+    <Version>2.2.0</Version>
     <ProjectGuid>479864c2-f29b-40e4-987b-577d189c3d08</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Copyright>2018 Dieter (coder2000) Lunn</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ubiety/Ubiety.Dns.Core</PackageProjectUrl>
+    <PackageTags>dns,ubiety,.net,c#,core,standard</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.1" PrivateAssets="All" />
