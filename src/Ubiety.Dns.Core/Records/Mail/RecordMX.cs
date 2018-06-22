@@ -51,44 +51,60 @@ namespace Ubiety.Dns.Core.Records.Mail
         public String Exchange { get; }
 
         /// <summary>
+        /// Is the left less than the right
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">Left comparison object</param>
+        /// <param name="y">Right comparison object</param>
         public static Boolean operator <(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) < 0;
         }
 
         /// <summary>
+        /// Is the left greater than the right
         /// </summary>
+        /// <param name="x">Left comparison object</param>
+        /// <param name="y">Right comparison object</param>
         public static Boolean operator >(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) > 0;
         }
 
         /// <summary>
+        /// Is the left less than or equal to the right
         /// </summary>
+        /// <param name="x">Lefyt comparison object</param>
+        /// <param name="y">Right comparison object</param>
         public static Boolean operator <=(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) <= 0;
         }
 
         /// <summary>
+        /// Is the left greater than or equal to the right
         /// </summary>
+        /// <param name="x">Left comparison object</param>
+        /// <param name="y">Right comparison object</param>
         public static Boolean operator >=(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) >= 0;
         }
 
         /// <summary>
+        /// Are the left and right objects equal
         /// </summary>
+        /// <param name="x">Left comparison object</param>
+        /// <param name="y">Right comparison object</param>
         public static Boolean operator ==(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) == 0;
         }
 
         /// <summary>
+        /// Are the left and right objects not equal
         /// </summary>
+        /// <param name="x">Left comparison object</param>
+        /// <param name="y">Right comparison object</param>
         public static Boolean operator !=(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) != 0;
