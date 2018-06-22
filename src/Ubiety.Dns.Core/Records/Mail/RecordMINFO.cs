@@ -1,5 +1,3 @@
-using System;
-
 /*
  3.3.7. MINFO RDATA format (EXPERIMENTAL)
 
@@ -32,6 +30,8 @@ records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
 
+using System;
+
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
@@ -45,19 +45,19 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordMinfo(RecordReader rr)
         {
-            this.ResponsibleMailbox = rr.ReadDomainName();
-            this.ErrorMailbox = rr.ReadDomainName();
+            ResponsibleMailbox = rr.ReadDomainName();
+            ErrorMailbox = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the responsible mailbox
+        ///     Gets the responsible mailbox
         /// </summary>
-        public String ResponsibleMailbox { get; set; }
+        public String ResponsibleMailbox { get; }
 
         /// <summary>
-        ///     Gets or sets the error mailbox
+        ///     Gets the error mailbox
         /// </summary>
-        public String ErrorMailbox { get; set; }
+        public String ErrorMailbox { get; }
 
         /// <summary>
         ///     String representation of the record
@@ -65,7 +65,7 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <returns>String version of the domains</returns>
         public override String ToString()
         {
-            return $"{this.ResponsibleMailbox} {this.ErrorMailbox}";
+            return $"{ResponsibleMailbox} {ErrorMailbox}";
         }
     }
 }

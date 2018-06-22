@@ -1,5 +1,3 @@
-using System;
-
 /*
 3.3.8. MR RDATA format (EXPERIMENTAL)
 
@@ -18,6 +16,8 @@ is as a forwarding entry for a user who has moved to a different
 mailbox.
 */
 
+using System;
+
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
@@ -31,21 +31,21 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordMr(RecordReader rr)
         {
-            this.NewName = rr.ReadDomainName();
+            NewName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the new name
+        ///     Gets the new name
         /// </summary>
-        public String NewName { get; set; }
+        public String NewName { get; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Rename domain from the record</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return this.NewName;
+            return NewName;
         }
     }
 }

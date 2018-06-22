@@ -1,5 +1,3 @@
-using System;
-
 /*
 3.3.13. SOA RDATA format
 
@@ -80,49 +78,49 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordSoa(RecordReader rr)
         {
-            this.PrimaryNameserver = rr.ReadDomainName();
-            this.ResponsibleDomain = rr.ReadDomainName();
-            this.Serial = rr.ReadUInt32();
-            this.Refresh = rr.ReadUInt32();
-            this.Retry = rr.ReadUInt32();
-            this.Expire = rr.ReadUInt32();
-            this.Minimum = rr.ReadUInt32();
+            PrimaryNameserver = rr.ReadDomainName();
+            ResponsibleDomain = rr.ReadDomainName();
+            Serial = rr.ReadUInt32();
+            Refresh = rr.ReadUInt32();
+            Retry = rr.ReadUInt32();
+            Expire = rr.ReadUInt32();
+            Minimum = rr.ReadUInt32();
         }
 
         /// <summary>
         ///     Gets or sets the primary nameserver
         /// </summary>
-        public String PrimaryNameserver { get; set; }
+        public string PrimaryNameserver { get; set; }
 
         /// <summary>
         ///     Gets or sets the responsible domain
         /// </summary>
-        public String ResponsibleDomain { get; set; }
+        public string ResponsibleDomain { get; set; }
 
         /// <summary>
         ///     Gets or sets the serial
         /// </summary>
-        public UInt32 Serial { get; set; }
+        public uint Serial { get; set; }
 
         /// <summary>
         ///     Gets or sets the refresh interval
         /// </summary>
-        public UInt32 Refresh { get; set; }
+        public uint Refresh { get; set; }
 
         /// <summary>
         ///     Gets or sets the retry interval
         /// </summary>
-        public UInt32 Retry { get; set; }
+        public uint Retry { get; set; }
 
         /// <summary>
         ///     Gets or sets the expiration time
         /// </summary>
-        public UInt32 Expire { get; set; }
+        public uint Expire { get; set; }
 
         /// <summary>
         ///     Gets or sets the minimum TTL
         /// </summary>
-        public UInt32 Minimum { get; set; }
+        public uint Minimum { get; set; }
 
         /// <summary>
         ///     String representation of the record data
@@ -130,7 +128,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Record data as the string</returns>
         public override string ToString()
         {
-            return $"{this.PrimaryNameserver} {this.ResponsibleDomain} {this.Serial} {this.Refresh} {this.Retry} {this.Expire} {this.Minimum}";
+            return $"{PrimaryNameserver} {ResponsibleDomain} {Serial} {Refresh} {Retry} {Expire} {Minimum}";
         }
     }
 }

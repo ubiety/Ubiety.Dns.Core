@@ -1,4 +1,3 @@
-using System;
 using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Records.NotUsed;
@@ -8,12 +7,9 @@ namespace Ubiety.Dns.Test.Records.NotUsed
 {
     public class RecordA6Tests
     {
-        private readonly Byte[] data;
-        private readonly RecordReader reader;
-
         public RecordA6Tests()
         {
-            data = new Byte[4];
+            data = new byte[4];
             data[0] = 0;
             data[1] = 2;
             data[2] = 4;
@@ -21,6 +17,9 @@ namespace Ubiety.Dns.Test.Records.NotUsed
 
             reader = new RecordReader(data, 2);
         }
+
+        private readonly byte[] data;
+        private readonly RecordReader reader;
 
         [Fact]
         public void TestRecordData()

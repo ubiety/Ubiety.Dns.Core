@@ -1,5 +1,3 @@
-using System;
-
 /*
  *  http://www.ietf.org/rfc/rfc2782.txt
  *
@@ -77,39 +75,39 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> of the record data</param>
         public RecordSrv(RecordReader rr)
         {
-            this.Priority = rr.ReadUInt16();
-            this.Weight = rr.ReadUInt16();
-            this.Port = rr.ReadUInt16();
-            this.Target = rr.ReadDomainName();
+            Priority = rr.ReadUInt16();
+            Weight = rr.ReadUInt16();
+            Port = rr.ReadUInt16();
+            Target = rr.ReadDomainName();
         }
 
         /// <summary>
         ///     Gets or sets the record priority
         /// </summary>
-        public UInt16 Priority { get; set; }
+        public ushort Priority { get; set; }
 
         /// <summary>
         ///     Gets or sets the record weight
         /// </summary>
-        public UInt16 Weight { get; set; }
+        public ushort Weight { get; set; }
 
         /// <summary>
         ///     Gets or sets the service port
         /// </summary>
-        public UInt16 Port { get; set; }
+        public ushort Port { get; set; }
 
         /// <summary>
         ///     Gets or sets the target domain
         /// </summary>
-        public String Target { get; set; }
+        public string Target { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Record as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return $"{this.Priority} {this.Weight} {this.Port} {this.Target}";
+            return $"{Priority} {Weight} {Port} {Target}";
         }
     }
 }

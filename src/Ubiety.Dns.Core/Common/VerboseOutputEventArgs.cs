@@ -1,6 +1,6 @@
 using System;
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
     ///     Event args for verbose output
@@ -11,14 +11,14 @@ namespace Ubiety.Dns.Core
         ///     Initializes a new instance of the <see cref="VerboseOutputEventArgs" /> class
         /// </summary>
         /// <param name="message">Message to output</param>
-        public VerboseOutputEventArgs(String message)
+        public VerboseOutputEventArgs(string message)
         {
-            this.Message = message;
+            Message = message;
         }
 
         /// <summary>
-        ///     Gets or sets the string message
+        ///     Gets the string message
         /// </summary>
-        public String Message { get; set; }
+        public string Message { get; }
     }
 }

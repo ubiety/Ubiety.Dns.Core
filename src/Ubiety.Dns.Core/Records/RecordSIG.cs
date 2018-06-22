@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 
 namespace Ubiety.Dns.Core.Records
@@ -14,21 +13,21 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr">Record reader for the record data</param>
         public RecordSig(RecordReader rr)
         {
-            this.TypeCovered = rr.ReadUInt16();
-            this.Algorithm = rr.ReadByte();
-            this.Labels = rr.ReadByte();
-            this.OriginalTTL = rr.ReadUInt32();
-            this.SignatureExpiration = rr.ReadUInt32();
-            this.SignatureInception = rr.ReadUInt32();
-            this.KeyTag = rr.ReadUInt16();
-            this.SignersName = rr.ReadDomainName();
-            this.Signature = rr.ReadString();
+            TypeCovered = rr.ReadUInt16();
+            Algorithm = rr.ReadByte();
+            Labels = rr.ReadByte();
+            OriginalTTL = rr.ReadUInt32();
+            SignatureExpiration = rr.ReadUInt32();
+            SignatureInception = rr.ReadUInt32();
+            KeyTag = rr.ReadUInt16();
+            SignersName = rr.ReadDomainName();
+            Signature = rr.ReadString();
         }
 
         /// <summary>
         ///     Gets or sets the type covered
         /// </summary>
-        public UInt16 TypeCovered { get; set; }
+        public ushort TypeCovered { get; set; }
 
         /// <summary>
         ///     Gets or sets the signature algorithm
@@ -43,22 +42,22 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets or sets the original TTL
         /// </summary>
-        public UInt32 OriginalTTL { get; set; }
+        public uint OriginalTTL { get; set; }
 
         /// <summary>
         ///     Gets or sets the signature expiration
         /// </summary>
-        public UInt32 SignatureExpiration { get; set; }
+        public uint SignatureExpiration { get; set; }
 
         /// <summary>
         ///     Gets or sets the signature inception
         /// </summary>
-        public UInt32 SignatureInception { get; set; }
+        public uint SignatureInception { get; set; }
 
         /// <summary>
         ///     Gets or sets the key tag
         /// </summary>
-        public UInt16 KeyTag { get; set; }
+        public ushort KeyTag { get; set; }
 
         /// <summary>
         ///     Gets or sets the signers name
@@ -79,15 +78,15 @@ namespace Ubiety.Dns.Core.Records
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0} {1} {2} {3} {4} {5} {6} {7} \"{8}\"",
-                this.TypeCovered,
-                this.Algorithm,
-                this.Labels,
-                this.OriginalTTL,
-                this.SignatureExpiration,
-                this.SignatureInception,
-                this.KeyTag,
-                this.SignersName,
-                this.Signature);
+                TypeCovered,
+                Algorithm,
+                Labels,
+                OriginalTTL,
+                SignatureExpiration,
+                SignatureInception,
+                KeyTag,
+                SignersName,
+                Signature);
         }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-
 /*
  * http://www.faqs.org/rfcs/rfc2915.html
  *
@@ -55,51 +53,51 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordNaptr(RecordReader rr)
         {
-            this.Order = rr.ReadUInt16();
-            this.Preference = rr.ReadUInt16();
-            this.Flags = rr.ReadString();
-            this.Services = rr.ReadString();
-            this.Regexp = rr.ReadString();
-            this.Replacement = rr.ReadDomainName();
+            Order = rr.ReadUInt16();
+            Preference = rr.ReadUInt16();
+            Flags = rr.ReadString();
+            Services = rr.ReadString();
+            Regexp = rr.ReadString();
+            Replacement = rr.ReadDomainName();
         }
 
         /// <summary>
         ///     Gets or sets the order
         /// </summary>
-        public UInt16 Order { get; set; }
+        public ushort Order { get; set; }
 
         /// <summary>
         ///     Gets or sets the preference
         /// </summary>
-        public UInt16 Preference { get; set; }
+        public ushort Preference { get; set; }
 
         /// <summary>
         ///     Gets or sets the flags
         /// </summary>
-        public String Flags { get; set; }
+        public string Flags { get; set; }
 
         /// <summary>
         ///     Gets or sets the services
         /// </summary>
-        public String Services { get; set; }
+        public string Services { get; set; }
 
         /// <summary>
         ///     Gets or sets the regexp
         /// </summary>
-        public String Regexp { get; set; }
+        public string Regexp { get; set; }
 
         /// <summary>
         ///     Gets or sets the replacement
         /// </summary>
-        public String Replacement { get; set; }
+        public string Replacement { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Data as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return $"{this.Order} {this.Preference} \"{this.Flags}\" \"{this.Services}\" \"{this.Regexp}\" {this.Replacement}";
+            return $"{Order} {Preference} \"{Flags}\" \"{Services}\" \"{Regexp}\" {Replacement}";
         }
     }
 }

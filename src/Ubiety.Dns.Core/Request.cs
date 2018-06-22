@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core
@@ -10,40 +8,42 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Request
     {
-        private readonly List<Question> questions;
+        private readonly List<Question> _questions;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Request" /> class
         /// </summary>
         public Request()
         {
-            this.Header = new Header();
-            this.Header.OpCode = OperationCode.Query;
-            this.Header.QuestionCount = 0;
+            Header = new Header
+            {
+                OpCode = OperationCode.Query,
+                QuestionCount = 0
+            };
 
-            this.questions = new List<Question>();
+            _questions = new List<Question>();
         }
 
         /// <summary>
-        ///     Gets or sets the DNS record header
+        ///     Gets the DNS record header
         /// </summary>
-        public Header Header { get; set; }
+        public Header Header { get; }
 
         /// <summary>
         ///     Gets the request as a byte array
         /// </summary>
         /// <returns>Byte array of the data</returns>
-        public Byte[] GetData()
+        public byte[] GetData()
         {
-                List<Byte> data = new List<Byte>();
-                this.Header.QuestionCount = (UInt16)this.questions.Count;
-                data.AddRange(this.Header.GetData());
-                foreach (Question q in this.questions)
-                {
-                    data.AddRange(q.GetData());
-                }
+            var data = new List<byte>();
+            Header.QuestionCount = (ushort)_questions.Count;
+            data.AddRange(Header.GetData());
+            foreach (var q in _questions)
+            {
+                data.AddRange(q.GetData());
+            }
 
-                return data.ToArray();
+            return data.ToArray();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Ubiety.Dns.Core
         /// <param name="question">Question to add to the request</param>
         public void AddQuestion(Question question)
         {
-            this.questions.Add(question);
+            _questions.Add(question);
         }
     }
 }

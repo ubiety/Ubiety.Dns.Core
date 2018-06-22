@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Text;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.General;
 using Ubiety.Dns.Core.Records.Mail;
@@ -20,16 +17,16 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public Response()
         {
-            this.Questions = new List<Question>();
-            this.Answers = new List<AnswerRR>();
-            this.Authorities = new List<AuthorityRR>();
-            this.Additionals = new List<AdditionalRR>();
+            Questions = new List<Question>();
+            Answers = new List<AnswerRR>();
+            Authorities = new List<AuthorityRR>();
+            Additionals = new List<AdditionalRR>();
 
-            this.Server = new IPEndPoint(0, 0);
-            this.Error = String.Empty;
-            this.MessageSize = 0;
-            this.TimeStamp = DateTime.Now;
-            this.Header = new Header();
+            Server = new IPEndPoint(0, 0);
+            Error = string.Empty;
+            MessageSize = 0;
+            TimeStamp = DateTime.Now;
+            Header = new Header();
         }
 
         /// <summary>
@@ -37,39 +34,39 @@ namespace Ubiety.Dns.Core
         /// </summary>
         /// <param name="iPEndPoint">Address of the response</param>
         /// <param name="data">Response data</param>
-        public Response(IPEndPoint iPEndPoint, Byte[] data)
+        public Response(IPEndPoint iPEndPoint, byte[] data)
         {
-            this.Error = String.Empty;
-            this.Server = iPEndPoint;
-            this.TimeStamp = DateTime.Now;
-            this.MessageSize = data.Length;
-            RecordReader rr = new RecordReader(data);
+            Error = string.Empty;
+            Server = iPEndPoint;
+            TimeStamp = DateTime.Now;
+            MessageSize = data.Length;
+            var rr = new RecordReader(data);
 
-            this.Questions = new List<Question>();
-            this.Answers = new List<AnswerRR>();
-            this.Authorities = new List<AuthorityRR>();
-            this.Additionals = new List<AdditionalRR>();
+            Questions = new List<Question>();
+            Answers = new List<AnswerRR>();
+            Authorities = new List<AuthorityRR>();
+            Additionals = new List<AdditionalRR>();
 
-            this.Header = new Header(rr);
+            Header = new Header(rr);
 
-            for (Int32 i = 0; i < this.Header.QuestionCount; i++)
+            for (var i = 0; i < Header.QuestionCount; i++)
             {
-                this.Questions.Add(new Question(rr));
+                Questions.Add(new Question(rr));
             }
 
-            for (Int32 i = 0; i < this.Header.AnswerCount; i++)
+            for (var i = 0; i < Header.AnswerCount; i++)
             {
-                this.Answers.Add(new AnswerRR(rr));
+                Answers.Add(new AnswerRR(rr));
             }
 
-            for (Int32 i = 0; i < this.Header.NameserverCount; i++)
+            for (var i = 0; i < Header.NameserverCount; i++)
             {
-                this.Authorities.Add(new AuthorityRR(rr));
+                Authorities.Add(new AuthorityRR(rr));
             }
 
-            for (Int32 i = 0; i < this.Header.AdditionalRecordsCount; i++)
+            for (var i = 0; i < Header.AdditionalRecordsCount; i++)
             {
-                this.Additionals.Add(new AdditionalRR(rr));
+                Additionals.Add(new AdditionalRR(rr));
             }
         }
 
@@ -94,29 +91,29 @@ namespace Ubiety.Dns.Core
         public List<AdditionalRR> Additionals { get; }
 
         /// <summary>
-        ///     Gets or sets the response header
+        ///     Gets the response header
         /// </summary>
-        public Header Header { get; set; }
+        public Header Header { get; }
 
         /// <summary>
         ///     Gets or sets the error message, empty when no error
         /// </summary>
-        public String Error { get; set; }
+        public string Error { get; set; }
 
         /// <summary>
         ///     Gets or sets the size of the message
         /// </summary>
-        public Int32 MessageSize { get; set; }
+        public int MessageSize { get; set; }
 
         /// <summary>
-        ///     Gets or sets the timestamp when cached
+        ///     Gets the timestamp when cached
         /// </summary>
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; }
 
         /// <summary>
-        ///     Gets or sets the server which delivered this response
+        ///     Gets the server which delivered this response
         /// </summary>
-        public IPEndPoint Server { get; set; }
+        public IPEndPoint Server { get; }
 
         /// <summary>
         ///     Gets a list of MX records in the answers
@@ -125,10 +122,10 @@ namespace Ubiety.Dns.Core
         {
             get
             {
-                List<RecordMx> list = new List<RecordMx>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordMx>();
+                foreach (var rr in Answers)
                 {
-                    RecordMx record = answerRR.Record as RecordMx;
+                    var record = rr.Record as RecordMx;
                     if (record != null)
                     {
                         list.Add(record);
@@ -147,11 +144,10 @@ namespace Ubiety.Dns.Core
         {
             get
             {
-                List<RecordTxt> list = new List<RecordTxt>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordTxt>();
+                foreach (var rr in Answers)
                 {
-                    RecordTxt record = answerRR.Record as RecordTxt;
-                    if (record != null)
+                    if (rr.Record is RecordTxt record)
                     {
                         list.Add(record);
                     }
@@ -168,11 +164,10 @@ namespace Ubiety.Dns.Core
         {
             get
             {
-                List<RecordA> list = new List<RecordA>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordA>();
+                foreach (var rr in Answers)
                 {
-                    RecordA record = answerRR.Record as RecordA;
-                    if (record != null)
+                    if (rr.Record is RecordA record)
                     {
                         list.Add(record);
                     }
@@ -189,11 +184,10 @@ namespace Ubiety.Dns.Core
         {
             get
             {
-                List<RecordPtr> list = new List<RecordPtr>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordPtr>();
+                foreach (var rr in Answers)
                 {
-                    RecordPtr record = answerRR.Record as RecordPtr;
-                    if (record != null)
+                    if (rr.Record is RecordPtr record)
                     {
                         list.Add(record);
                     }
@@ -210,11 +204,10 @@ namespace Ubiety.Dns.Core
         {
             get
             {
-                List<RecordCname> list = new List<RecordCname>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordCname>();
+                foreach (var rr in Answers)
                 {
-                    RecordCname record = answerRR.Record as RecordCname;
-                    if (record != null)
+                    if (rr.Record is RecordCname record)
                     {
                         list.Add(record);
                     }
@@ -227,15 +220,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of AAAA records in the answers
         /// </summary>
-        public List<RecordAaaa> RecordAAAA
+        public List<RecordAaaa> RecordAaaa
         {
             get
             {
-                List<RecordAaaa> list = new List<RecordAaaa>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordAaaa>();
+                foreach (var rr in Answers)
                 {
-                    RecordAaaa record = answerRR.Record as RecordAaaa;
-                    if (record != null)
+                    if (rr.Record is RecordAaaa record)
                     {
                         list.Add(record);
                     }
@@ -248,15 +240,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of NS records in the answers
         /// </summary>
-        public List<RecordNs> RecordNS
+        public List<RecordNs> RecordNs
         {
             get
             {
-                List<RecordNs> list = new List<RecordNs>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordNs>();
+                foreach (var rr in Answers)
                 {
-                    RecordNs record = answerRR.Record as RecordNs;
-                    if (record != null)
+                    if (rr.Record is RecordNs record)
                     {
                         list.Add(record);
                     }
@@ -269,15 +260,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of SOA records in the answers
         /// </summary>
-        public List<RecordSoa> RecordSOA
+        public List<RecordSoa> RecordSoa
         {
             get
             {
-                List<RecordSoa> list = new List<RecordSoa>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordSoa>();
+                foreach (var rr in Answers)
                 {
-                    RecordSoa record = answerRR.Record as RecordSoa;
-                    if (record != null)
+                    if (rr.Record is RecordSoa record)
                     {
                         list.Add(record);
                     }
@@ -290,15 +280,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of CERT records in the answers
         /// </summary>
-        public List<RecordCert> RecordCERT
+        public List<RecordCert> RecordCert
         {
             get
             {
-                List<RecordCert> list = new List<RecordCert>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordCert>();
+                foreach (var rr in Answers)
                 {
-                    RecordCert record = answerRR.Record as RecordCert;
-                    if (record != null)
+                    if (rr.Record is RecordCert record)
                     {
                         list.Add(record);
                     }
@@ -311,15 +300,14 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of SRV records in the answers
         /// </summary>
-        public List<RecordSrv> RecordSRV
+        public List<RecordSrv> RecordSrv
         {
             get
             {
-                List<RecordSrv> list = new List<RecordSrv>();
-                foreach (AnswerRR answerRR in this.Answers)
+                var list = new List<RecordSrv>();
+                foreach (var rr in Answers)
                 {
-                    RecordSrv record = answerRR.Record as RecordSrv;
-                    if (record != null)
+                    if (rr.Record is RecordSrv record)
                     {
                         list.Add(record);
                     }
@@ -332,27 +320,27 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of resource records in the answers
         /// </summary>
-        public List<ResourceRecord> ResourceRecords
+        public IEnumerable<ResourceRecord> ResourceRecords
         {
             get
             {
-                List<ResourceRecord> list = new List<ResourceRecord>();
-                foreach (ResourceRecord rr in this.Answers)
+                var list = new List<ResourceRecord>();
+                foreach (var rr in Answers)
                 {
                     list.Add(rr);
                 }
 
-                foreach (ResourceRecord rr in this.Answers)
+                foreach (var rr in Answers)
                 {
                     list.Add(rr);
                 }
 
-                foreach (ResourceRecord rr in this.Authorities)
+                foreach (var rr in Authorities)
                 {
                     list.Add(rr);
                 }
 
-                foreach (ResourceRecord rr in this.Additionals)
+                foreach (var rr in Additionals)
                 {
                     list.Add(rr);
                 }

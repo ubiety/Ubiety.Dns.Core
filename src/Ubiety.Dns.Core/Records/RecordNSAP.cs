@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
@@ -40,7 +39,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordNsap : Record
     {
-        private readonly Byte[] address;
+        private readonly byte[] _address;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNsap" /> class
@@ -48,31 +47,31 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordNsap(RecordReader rr)
         {
-            this.Length = rr.ReadUInt16();
-            this.address = rr.ReadBytes(this.Length);
+            Length = rr.ReadUInt16();
+            _address = rr.ReadBytes(Length);
         }
 
         /// <summary>
         ///     Gets or sets the length
         /// </summary>
-        public UInt16 Length { get; set; }
+        public ushort Length { get; set; }
 
         /// <summary>
         ///     Gets the address as a byte collection
         /// </summary>
-        public Collection<Byte> NsapAddress { get => new Collection<Byte>(this.address); }
+        public Collection<byte> NsapAddress => new Collection<byte>(_address);
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>NSAP address as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat(CultureInfo.InvariantCulture, "{0} ", this.Length);
-            for (Int32 i = 0; i < this.address.Length; i++)
+            var sb = new StringBuilder();
+            sb.AppendFormat(CultureInfo.InvariantCulture, "{0} ", Length);
+            foreach (var t in _address)
             {
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X00}", this.address[i]);
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X00}", t);
             }
 
             return sb.ToString();
@@ -82,20 +81,20 @@ namespace Ubiety.Dns.Core.Records
         ///     Converts the address to a readable string
         /// </summary>
         /// <returns>String of the address in IPv2 format</returns>
-        public String ToGOSIPV2()
+        public string ToGOSIPV2()
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0:X}.{1:X}.{2:X}.{3:X}.{4:X}.{5:X}.{6:X}{7:X}.{8:X}",
-                this.address[0],
-                this.address[1] << 8 | this.address[2],
-                this.address[3],
-                this.address[4] << 16 | this.address[5] << 8 | this.address[6],
-                this.address[7] << 8 | this.address[8],
-                this.address[9] << 8 | this.address[10],
-                this.address[11] << 8 | this.address[12],
-                this.address[13] << 16 | this.address[14] << 8 | this.address[15],
-                this.address[16] << 16 | this.address[17] << 8 | this.address[18]);
+                _address[0],
+                (_address[1] << 8) | _address[2],
+                _address[3],
+                (_address[4] << 16) | (_address[5] << 8) | _address[6],
+                (_address[7] << 8) | _address[8],
+                (_address[9] << 8) | _address[10],
+                (_address[11] << 8) | _address[12],
+                (_address[13] << 16) | (_address[14] << 8) | _address[15],
+                (_address[16] << 16) | (_address[17] << 8) | _address[18]);
         }
     }
 }

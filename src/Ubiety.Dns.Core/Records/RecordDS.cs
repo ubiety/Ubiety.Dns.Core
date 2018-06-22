@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordDs : Record
     {
-        private readonly Byte[] digest;
+        private readonly Byte[] _digest;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordDs" /> class
@@ -46,34 +46,34 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> of the record data</param>
         public RecordDs(RecordReader rr)
         {
-            UInt16 length = rr.ReadUInt16(-2);
-            this.KeyTag = rr.ReadUInt16();
-            this.Algorithm = rr.ReadByte();
-            this.DigestType = rr.ReadByte();
+            var length = rr.ReadUInt16(-2);
+            KeyTag = rr.ReadUInt16();
+            Algorithm = rr.ReadByte();
+            DigestType = rr.ReadByte();
             length -= 4;
-            this.digest = new Byte[length];
-            this.digest = rr.ReadBytes(length);
+            _digest = new Byte[length];
+            _digest = rr.ReadBytes(length);
         }
 
         /// <summary>
-        ///     Gets or sets the key tag
+        ///     Gets the key tag
         /// </summary>
-        public UInt16 KeyTag { get; set; }
+        public UInt16 KeyTag { get; }
 
         /// <summary>
-        ///     Gets or sets the algorithm
+        ///     Gets the algorithm
         /// </summary>
-        public Byte Algorithm { get; set; }
+        public Byte Algorithm { get; }
 
         /// <summary>
-        ///     Gets or sets the digest type
+        ///     Gets the digest type
         /// </summary>
-        public Byte DigestType { get; set; }
+        public Byte DigestType { get; }
 
         /// <summary>
         ///     Gets the digest
         /// </summary>
-        public Collection<Byte> Digest { get => new Collection<Byte>(this.digest); }
+        public List<Byte> Digest => new List<Byte>(_digest);
 
         /// <summary>
         ///     String version of the record
@@ -81,13 +81,13 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>String of the data</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            for (Int32 i = 0; i < this.digest.Length; i++)
+            var sb = new StringBuilder();
+            foreach (var t in _digest)
             {
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:x2}", this.digest[i]);
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:x2}", t);
             }
 
-            return $"{this.KeyTag} {this.Algorithm} {this.DigestType} {sb.ToString()}";
+            return $"{KeyTag} {Algorithm} {DigestType} {sb}";
         }
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 /*
 3.3.10. NULL RDATA format (EXPERIMENTAL)
@@ -24,7 +24,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordNull : Record
     {
-        private readonly Byte[] data;
+        private readonly Byte[] _data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNull" /> class
@@ -33,15 +33,15 @@ namespace Ubiety.Dns.Core.Records
         public RecordNull(RecordReader rr)
         {
             rr.Position -= 2;
-            UInt16 recordLength = rr.ReadUInt16();
-            this.data = new Byte[recordLength];
-            this.data = rr.ReadBytes(recordLength);
+            var recordLength = rr.ReadUInt16();
+            _data = new Byte[recordLength];
+            _data = rr.ReadBytes(recordLength);
         }
 
         /// <summary>
         ///     Gets the record data
         /// </summary>
-        public Collection<Byte> Data { get => new Collection<Byte>(this.data); }
+        public List<Byte> Data => new List<Byte>(_data);
 
         /// <summary>
         ///     String representation of the data
@@ -49,7 +49,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Record data as a string</returns>
         public override String ToString()
         {
-            return $"...binary data... ({this.data.Length}) bytes";
+            return $"...binary data... ({_data.Length}) bytes";
         }
     }
 }

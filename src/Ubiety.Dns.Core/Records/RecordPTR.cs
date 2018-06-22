@@ -1,5 +1,3 @@
-using System;
-
 /*
  3.3.12. PTR RDATA format
 
@@ -32,13 +30,13 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordPtr(RecordReader rr)
         {
-            this.PointerDomain = rr.ReadDomainName();
+            PointerDomain = rr.ReadDomainName();
         }
 
         /// <summary>
         ///     Gets or sets the pointer domain
         /// </summary>
-        public String PointerDomain { get; set; }
+        public string PointerDomain { get; set; }
 
         /// <summary>
         ///     String representation of the record data
@@ -46,7 +44,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Pointer domain as a string</returns>
         public override string ToString()
         {
-            return this.PointerDomain;
+            return PointerDomain;
         }
     }
 }

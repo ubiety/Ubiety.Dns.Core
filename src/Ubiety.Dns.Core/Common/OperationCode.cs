@@ -83,6 +83,6 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     Reserved
         /// </summary>
-        RESERVED15 = 15,
+        RESERVED15 = 15
     }
 }

@@ -11,14 +11,14 @@ namespace Ubiety.Dns.Core.Common
         ///     Initializes a new instance of the <see cref="VerboseEventArgs" /> class
         /// </summary>
         /// <param name="message">Verbose message</param>
-        public VerboseEventArgs(String message)
+        public VerboseEventArgs(string message)
         {
-            this.Message = message;
+            Message = message;
         }
 
         /// <summary>
         ///     Gets or sets the message to output
         /// </summary>
-        public String Message { get; set; }
+        public string Message { get; set; }
     }
 }

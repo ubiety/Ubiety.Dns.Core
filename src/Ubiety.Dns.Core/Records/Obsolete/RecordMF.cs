@@ -1,5 +1,3 @@
-using System;
-
 /*
  *
 3.3.5. MF RDATA format (Obsolete)
@@ -22,6 +20,9 @@ MF is obsolete.  See the definition of MX and [RFC-974] for details ofw
 the new scheme.  The recommended policy for dealing with MD RRs found in
 a master file is to reject them, or to convert them to MX RRs with a
 preference of 10. */
+
+using System;
+
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
@@ -35,13 +36,13 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordMf(RecordReader rr)
         {
-            this.MadName = rr.ReadDomainName();
+            MadName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the mail domain
+        ///     Gets the mail domain
         /// </summary>
-        public String MadName { get; set; }
+        public String MadName { get; }
 
         /// <summary>
         ///     String representation of the record
@@ -49,7 +50,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <returns>String of the mail domain</returns>
         public override String ToString()
         {
-            return this.MadName;
+            return MadName;
         }
     }
 }

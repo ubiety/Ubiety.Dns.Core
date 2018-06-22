@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 /*
 
@@ -22,7 +22,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordCert : Record
     {
-        private readonly Byte[] rawKey;
+        private readonly Byte[] _rawKey;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordCert" /> class
@@ -31,40 +31,40 @@ namespace Ubiety.Dns.Core.Records
         public RecordCert(RecordReader rr)
         {
             // re-read length
-            UInt16 recordLength = rr.ReadUInt16(-2);
+            var recordLength = rr.ReadUInt16(-2);
 
-            this.Type = rr.ReadUInt16();
-            this.KeyTag = rr.ReadUInt16();
-            this.Algorithm = rr.ReadByte();
+            Type = rr.ReadUInt16();
+            KeyTag = rr.ReadUInt16();
+            Algorithm = rr.ReadByte();
             var length = recordLength - 5;
-            this.rawKey = rr.ReadBytes(length);
-            this.PublicKey = Convert.ToBase64String(this.rawKey);
+            _rawKey = rr.ReadBytes(length);
+            PublicKey = Convert.ToBase64String(_rawKey);
         }
 
         /// <summary>
-        ///     Gets or sets the record type
+        ///     Gets the record type
         /// </summary>
-        public UInt16 Type { get; set; }
+        public UInt16 Type { get; }
 
         /// <summary>
-        ///     Gets or sets the key tag
+        ///     Gets the key tag
         /// </summary>
-        public UInt16 KeyTag { get; set; }
+        public UInt16 KeyTag { get; }
 
         /// <summary>
-        ///     Gets or sets the algorithm
+        ///     Gets the algorithm
         /// </summary>
-        public Byte Algorithm { get; set; }
+        public Byte Algorithm { get; }
 
         /// <summary>
-        ///     Gets or sets the public key
+        ///     Gets the public key
         /// </summary>
-        public String PublicKey { get; set; }
+        public String PublicKey { get; }
 
         /// <summary>
         ///     Gets the raw key
         /// </summary>
-        public Collection<Byte> RawKey { get => new Collection<Byte>(this.rawKey); }
+        public List<Byte> RawKey => new List<Byte>(_rawKey);
 
         /// <summary>
         ///     String version of the record
@@ -72,7 +72,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>String of the public key</returns>
         public override String ToString()
         {
-            return this.PublicKey;
+            return PublicKey;
         }
     }
 }

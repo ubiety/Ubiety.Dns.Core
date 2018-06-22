@@ -7,6 +7,9 @@
             "indentationSize": 4,
             "tabSize": 4
         },
+        "readabilityRules": {
+          "allowBuiltInTypeAliases": true  
+        },
         "orderingRules": {
             "usingDirectivesPlacement": "outsideNamespace"
         }

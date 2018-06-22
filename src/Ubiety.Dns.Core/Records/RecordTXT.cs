@@ -1,5 +1,3 @@
-using System;
-
 /*
 3.3.14. TXT RDATA format
 
@@ -29,21 +27,21 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordTxt(RecordReader rr)
         {
-            this.Text = rr.ReadString();
+            Text = rr.ReadString();
         }
 
         /// <summary>
         ///     Gets or sets the text
         /// </summary>
-        public String Text { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>Text as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return $"\"{this.Text}\"";
+            return $"\"{Text}\"";
         }
     }
 }

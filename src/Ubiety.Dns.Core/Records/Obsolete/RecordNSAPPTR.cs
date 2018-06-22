@@ -1,5 +1,3 @@
-using System;
-
 /*
  * http://tools.ietf.org/rfc/rfc1348.txt
 
@@ -39,6 +37,8 @@ using System;
 
  */
 
+using System;
+
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
@@ -52,13 +52,13 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
         public RecordNsapPtr(RecordReader rr)
         {
-            this.Owner = rr.ReadString();
+            Owner = rr.ReadString();
         }
 
         /// <summary>
-        ///     Gets or sets the owner
+        ///     Gets the owner
         /// </summary>
-        public String Owner { get; set; }
+        public String Owner { get; }
 
         /// <summary>
         ///     String representation of the record
@@ -66,7 +66,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <returns>String version of the data</returns>
         public override String ToString()
         {
-            return this.Owner;
+            return Owner;
         }
     }
 }
