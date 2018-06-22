@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <CodeAnalysisRuleSet>../ProjectLevel.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
-    <Version>2.2.0</Version>
+    <Version>2.2.1</Version>
     <ProjectGuid>479864c2-f29b-40e4-987b-577d189c3d08</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
