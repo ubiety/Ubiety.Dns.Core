@@ -181,8 +181,7 @@ namespace Ubiety.Dns.Core
 
             set
             {
-                IPAddress ip;
-                if (IPAddress.TryParse(value, out ip))
+                if (IPAddress.TryParse(value, out var ip))
                 {
                     _dnsServers.Clear();
                     _dnsServers.Add(new IPEndPoint(ip, DefaultPort));
