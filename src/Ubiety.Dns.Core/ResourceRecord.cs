@@ -85,7 +85,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the name of the node to which this resource record pertains
         /// </summary>
-        public String Name { get; }
+        public string Name { get; }
 
         /// <summary>
         ///     Gets the type of resource record
@@ -100,9 +100,9 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the time to live, the time interval that the resource record may be cached
         /// </summary>
-        public UInt32 Ttl
+        public uint Ttl
         {
-            get => (UInt32)Math.Max(0, _ttl - TimeLived);
+            get => (uint)Math.Max(0, _ttl - TimeLived);
 
             private set => _ttl = value;
         }
@@ -110,7 +110,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the record length
         /// </summary>
-        public UInt16 RecordLength { get; }
+        public ushort RecordLength { get; }
 
         /// <summary>
         ///     Gets one of the Record* classes
@@ -120,13 +120,13 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the time lived
         /// </summary>
-        public Int32 TimeLived { get; set; }
+        public int TimeLived { get; set; }
 
         /// <summary>
         ///     String version of the resource record
         /// </summary>
         /// <returns>String of the resource</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"{Name, -32} {Ttl}\t{Class}\t{Type}\t{Record}";
         }

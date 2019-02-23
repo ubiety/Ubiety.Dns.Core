@@ -40,7 +40,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the question name
         /// </summary>
-        public String QuestionName
+        public string QuestionName
         {
             get => _questionName;
 
@@ -68,7 +68,7 @@ namespace Ubiety.Dns.Core
         ///     String representation of the question
         /// </summary>
         /// <returns>String of the question</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"{QuestionName, -32}\t{QuestionClass}\t{QuestionType}";
         }
@@ -77,16 +77,16 @@ namespace Ubiety.Dns.Core
         ///     Gets the question as a byte array
         /// </summary>
         /// <returns>Byte array of the question data</returns>
-        public IEnumerable<Byte> GetData()
+        public IEnumerable<byte> GetData()
         {
-            var data = new List<Byte>();
+            var data = new List<byte>();
             data.AddRange(WriteName(QuestionName));
-            data.AddRange(WriteShort((UInt16)QuestionType));
-            data.AddRange(WriteShort((UInt16)QuestionClass));
+            data.AddRange(WriteShort((ushort)QuestionType));
+            data.AddRange(WriteShort((ushort)QuestionClass));
             return data.ToArray();
         }
 
-        private static IEnumerable<Byte> WriteName(String src)
+        private static IEnumerable<byte> WriteName(string src)
         {
             if (!src.EndsWith(".", StringComparison.InvariantCulture))
             {
@@ -95,11 +95,11 @@ namespace Ubiety.Dns.Core
 
             if (src == ".")
             {
-                return new Byte[1];
+                return new byte[1];
             }
 
             var sb = new StringBuilder();
-            Int32 intI, intJ, intLen = src.Length;
+            int intI, intJ, intLen = src.Length;
             sb.Append('\0');
             for (intI = 0, intJ = 0; intI < intLen; intI++, intJ++)
             {
@@ -109,7 +109,7 @@ namespace Ubiety.Dns.Core
                     continue;
                 }
 
-                sb[intI - intJ] = (Char)(intJ & 0xff);
+                sb[intI - intJ] = (char)(intJ & 0xff);
                 intJ = -1;
             }
 
@@ -117,9 +117,9 @@ namespace Ubiety.Dns.Core
             return Encoding.ASCII.GetBytes(sb.ToString());
         }
 
-        private static Byte[] WriteShort(UInt16 value)
+        private static byte[] WriteShort(ushort value)
         {
-            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((Int16)value));
+            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)value));
         }
     }
 }

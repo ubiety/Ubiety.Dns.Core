@@ -159,17 +159,11 @@ namespace Ubiety.Dns.Core
         public TransportType TransportType { get; set; }
 
         /// <summary>
-        ///     Gets or sets list of DNS servers to use
+        ///     Gets a list of DNS servers to use
         /// </summary>
         public List<IPEndPoint> DnsServers
         {
             get => _dnsServers;
-
-            set
-            {
-                _dnsServers.Clear();
-                _dnsServers.AddRange(value);
-            }
         }
 
         /// <summary>
@@ -209,7 +203,12 @@ namespace Ubiety.Dns.Core
             set
             {
                 _useCache = value;
-                if (!_useCache)
+                if (_useCache)
+                {
+                    return;
+                }
+
+                lock (_responseCache)
                 {
                     _responseCache.Clear();
                 }
@@ -262,11 +261,11 @@ namespace Ubiety.Dns.Core
                     var sb = new StringBuilder();
                     sb.Append("in-addr.arpa.");
                     foreach (var b in ip.GetAddressBytes())
-                    {
-                        sb.Insert(0, $"{b}.");
-                    }
+                        {
+                            sb.Insert(0, $"{b}.");
+                        }
 
-                    return sb.ToString();
+                        return sb.ToString();
                 }
 
                 case AddressFamily.InterNetworkV6:
@@ -309,7 +308,10 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public void ClearCache()
         {
-            _responseCache.Clear();
+            lock (_responseCache)
+            {
+                _responseCache.Clear();
+            }
         }
 
         /// <summary>
