@@ -46,7 +46,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
     /// </summary>
     public class RecordNxt : Record
     {
-        private readonly Byte[] _bitmap;
+        private readonly byte[] _bitmap;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNxt" /> class
@@ -56,26 +56,26 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         {
             var length = rr.ReadUInt16(-2);
             NextDomainName = rr.ReadDomainName();
-            length -= (UInt16)rr.Position;
-            _bitmap = new Byte[length];
+            length -= (ushort)rr.Position;
+            _bitmap = new byte[length];
             _bitmap = rr.ReadBytes(length);
         }
 
         /// <summary>
         ///     Gets the next domain name
         /// </summary>
-        public String NextDomainName { get; }
+        public string NextDomainName { get; }
 
         /// <summary>
         ///     Gets the record bitmap
         /// </summary>
-        public List<Byte> Bitmap => new List<Byte>(_bitmap);
+        public List<byte> Bitmap => new List<byte>(_bitmap);
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>String version of the data</returns>
-        public override String ToString()
+        public override string ToString()
         {
             var sb = new StringBuilder();
             for (var bitNr = 1; bitNr < _bitmap.Length * 8; bitNr++)
@@ -89,7 +89,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
             return $"{NextDomainName}{sb}";
         }
 
-        private bool IsSet(Int32 bitNr)
+        private bool IsSet(int bitNr)
         {
             var intByte = bitNr / 8;
             var intOffset = bitNr % 8;

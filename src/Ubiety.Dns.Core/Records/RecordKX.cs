@@ -53,19 +53,19 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the preference
         /// </summary>
-        public UInt16 Preference { get; }
+        public ushort Preference { get; }
 
         /// <summary>
         ///     Gets the exchanger
         /// </summary>
-        public String Exchanger { get; }
+        public string Exchanger { get; }
 
         /// <summary>
         /// Is the left less than the right
         /// </summary>
         /// <param name="x">Left comparison object</param>
         /// <param name="y">Right comparison object</param>
-        public static Boolean operator <(RecordKx x, RecordKx y)
+        public static bool operator <(RecordKx x, RecordKx y)
         {
             return CompareTo(x, y) < 0;
         }
@@ -75,7 +75,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="x">Left comparison object</param>
         /// <param name="y">Right comparison object</param>
-        public static Boolean operator >(RecordKx x, RecordKx y)
+        public static bool operator >(RecordKx x, RecordKx y)
         {
             return CompareTo(x, y) > 0;
         }
@@ -85,7 +85,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="x">Left comparison object</param>
         /// <param name="y">Right comparison object</param>
-        public static Boolean operator <=(RecordKx x, RecordKx y)
+        public static bool operator <=(RecordKx x, RecordKx y)
         {
             return CompareTo(x, y) <= 0;
         }
@@ -95,7 +95,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="x">Left comparison object</param>
         /// <param name="y">Right comparison object</param>
-        public static Boolean operator >=(RecordKx x, RecordKx y)
+        public static bool operator >=(RecordKx x, RecordKx y)
         {
             return CompareTo(x, y) >= 0;
         }
@@ -105,7 +105,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="x">Left comparison object</param>
         /// <param name="y">Right comparison object</param>
-        public static Boolean operator ==(RecordKx x, RecordKx y)
+        public static bool operator ==(RecordKx x, RecordKx y)
         {
             return CompareTo(x, y) == 0;
         }
@@ -115,7 +115,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="x">Left comparison object</param>
         /// <param name="y">Right comparison object</param>
-        public static Boolean operator !=(RecordKx x, RecordKx y)
+        public static bool operator !=(RecordKx x, RecordKx y)
         {
             return CompareTo(x, y) != 0;
         }
@@ -125,7 +125,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>Integer representing the comparison</returns>
-        public Int32 CompareTo(Object obj)
+        public int CompareTo(object obj)
         {
             return CompareTo(this, (RecordKx)obj);
         }
@@ -135,7 +135,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="other"><see cref="RecordKx" /> to compare to</param>
         /// <returns>Boolean indicating whether the two instances are equal</returns>
-        public Boolean Equals(RecordKx other)
+        public bool Equals(RecordKx other)
         {
             if (other == null)
             {
@@ -149,7 +149,7 @@ namespace Ubiety.Dns.Core.Records
         ///     String representation of the record data
         /// </summary>
         /// <returns>String version of the record</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"{Preference} {Exchanger}";
         }
@@ -159,7 +159,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>Boolean indicating whether the instances are equal</returns>
-        public override Boolean Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (obj is null)
             {
@@ -178,19 +178,19 @@ namespace Ubiety.Dns.Core.Records
         ///     Gets the hash code
         /// </summary>
         /// <returns>Integer value of the hash</returns>
-        public override Int32 GetHashCode()
+        public override int GetHashCode()
         {
             unchecked
             {
                 var hashcode = 13;
                 hashcode = (hashcode * 397) ^ Preference;
-                var exHash = !String.IsNullOrEmpty(Exchanger) ? Exchanger.GetHashCode() : 0;
+                var exHash = !string.IsNullOrEmpty(Exchanger) ? Exchanger.GetHashCode() : 0;
                 hashcode = (hashcode * 397) ^ exHash;
                 return hashcode;
             }
         }
 
-        private static Int32 CompareTo(RecordKx x, RecordKx y)
+        private static int CompareTo(RecordKx x, RecordKx y)
         {
             if (y == null)
             {
@@ -207,7 +207,7 @@ namespace Ubiety.Dns.Core.Records
                 return -1;
             }
 
-            return String.Compare(x.Exchanger, y.Exchanger, true, CultureInfo.InvariantCulture);
+            return string.Compare(x.Exchanger, y.Exchanger, true, CultureInfo.InvariantCulture);
         }
     }
 }

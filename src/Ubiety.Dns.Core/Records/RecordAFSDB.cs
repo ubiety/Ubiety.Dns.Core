@@ -43,19 +43,19 @@ namespace Ubiety.Dns.Core.Records
         ///     Gets the subtype
         /// </summary>
         /// <value>AFSDB subtype as an unsigned short</value>
-        public UInt16 SubType { get; }
+        public ushort SubType { get; }
 
         /// <summary>
         ///     Gets the hostname
         /// </summary>
         /// <value>AFSDB hostname as a string</value>
-        public String Hostname { get; }
+        public string Hostname { get; }
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>String version of the data</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"{SubType}{Hostname}";
         }

@@ -52,18 +52,18 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <summary>
         ///     Gets the responsible mailbox
         /// </summary>
-        public String ResponsibleMailbox { get; }
+        public string ResponsibleMailbox { get; }
 
         /// <summary>
         ///     Gets the error mailbox
         /// </summary>
-        public String ErrorMailbox { get; }
+        public string ErrorMailbox { get; }
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>String version of the domains</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"{ResponsibleMailbox} {ErrorMailbox}";
         }

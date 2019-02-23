@@ -35,13 +35,13 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the target
         /// </summary>
-        public String Target { get; }
+        public string Target { get; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>String of the target</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return Target;
         }

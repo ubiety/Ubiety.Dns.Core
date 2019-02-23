@@ -43,18 +43,18 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the CPU
         /// </summary>
-        public String Cpu { get; }
+        public string Cpu { get; }
 
         /// <summary>
         ///     Gets the OS
         /// </summary>
-        public String Os { get; }
+        public string Os { get; }
 
         /// <summary>
         ///     String representation of the record data
         /// </summary>
         /// <returns>String version of the record</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"CPU={Cpu} OS={Os}";
         }

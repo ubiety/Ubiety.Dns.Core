@@ -37,7 +37,7 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <summary>
         ///     Gets the new name
         /// </summary>
-        public String NewName { get; }
+        public string NewName { get; }
 
         /// <summary>
         ///     String representation of the record data

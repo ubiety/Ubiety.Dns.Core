@@ -60,23 +60,23 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <summary>
         ///     Gets the longitude
         /// </summary>
-        public String Longitude { get; }
+        public string Longitude { get; }
 
         /// <summary>
         ///     Gets the latitude
         /// </summary>
-        public String Latitude { get; }
+        public string Latitude { get; }
 
         /// <summary>
         ///     Gets the altitude
         /// </summary>
-        public String Altitude { get; }
+        public string Altitude { get; }
 
         /// <summary>
         ///     String representation of the position
         /// </summary>
         /// <returns>String of the version</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"{Longitude} {Latitude} {Altitude}";
         }

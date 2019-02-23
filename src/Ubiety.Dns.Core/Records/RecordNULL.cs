@@ -24,7 +24,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordNull : Record
     {
-        private readonly Byte[] _data;
+        private readonly byte[] _data;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNull" /> class
@@ -34,20 +34,20 @@ namespace Ubiety.Dns.Core.Records
         {
             rr.Position -= 2;
             var recordLength = rr.ReadUInt16();
-            _data = new Byte[recordLength];
+            _data = new byte[recordLength];
             _data = rr.ReadBytes(recordLength);
         }
 
         /// <summary>
         ///     Gets the record data
         /// </summary>
-        public List<Byte> Data => new List<Byte>(_data);
+        public List<byte> Data => new List<byte>(_data);
 
         /// <summary>
         ///     String representation of the data
         /// </summary>
         /// <returns>Record data as a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return $"...binary data... ({_data.Length}) bytes";
         }

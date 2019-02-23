@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Ubiety.Dns.Core.Records
@@ -22,14 +21,14 @@ namespace Ubiety.Dns.Core.Records
         protected Record(RecordReader reader)
         {
             var length = reader.ReadUInt16(-2);
-            RecordData = new List<Byte>(reader.ReadBytes(length));
+            RecordData = new List<byte>(reader.ReadBytes(length));
         }
 
         /// <summary>
         ///     Gets the record data
         /// </summary>
         /// <value>Byte list of the raw record data</value>
-        public List<Byte> RecordData { get; }
+        public List<byte> RecordData { get; }
 
         /// <summary>
         ///     Gets or sets the resource record this record is a part of

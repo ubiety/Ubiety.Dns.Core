@@ -6,7 +6,7 @@ namespace Ubiety.Dns.Core.Common
     ///     Resource record class
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1717", Justification = "Class is not plural")]
-    public enum OperationClass : ushort
+    public enum OperationClass
     {
         /// <summary>
         ///     Internet class

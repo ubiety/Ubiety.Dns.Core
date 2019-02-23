@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordDs : Record
     {
-        private readonly Byte[] _digest;
+        private readonly byte[] _digest;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordDs" /> class
@@ -51,29 +51,29 @@ namespace Ubiety.Dns.Core.Records
             Algorithm = rr.ReadByte();
             DigestType = rr.ReadByte();
             length -= 4;
-            _digest = new Byte[length];
+            _digest = new byte[length];
             _digest = rr.ReadBytes(length);
         }
 
         /// <summary>
         ///     Gets the key tag
         /// </summary>
-        public UInt16 KeyTag { get; }
+        public ushort KeyTag { get; }
 
         /// <summary>
         ///     Gets the algorithm
         /// </summary>
-        public Byte Algorithm { get; }
+        public byte Algorithm { get; }
 
         /// <summary>
         ///     Gets the digest type
         /// </summary>
-        public Byte DigestType { get; }
+        public byte DigestType { get; }
 
         /// <summary>
         ///     Gets the digest
         /// </summary>
-        public List<Byte> Digest => new List<Byte>(_digest);
+        public List<byte> Digest => new List<byte>(_digest);
 
         /// <summary>
         ///     String version of the record

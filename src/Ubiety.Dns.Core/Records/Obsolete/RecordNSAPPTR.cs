@@ -58,13 +58,13 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <summary>
         ///     Gets the owner
         /// </summary>
-        public String Owner { get; }
+        public string Owner { get; }
 
         /// <summary>
         ///     String representation of the record
         /// </summary>
         /// <returns>String version of the data</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return Owner;
         }
