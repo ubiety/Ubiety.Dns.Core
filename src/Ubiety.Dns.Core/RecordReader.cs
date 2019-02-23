@@ -2,10 +2,6 @@ using System.Collections.Generic;
 using System.Text;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
-using Ubiety.Dns.Core.Records.General;
-using Ubiety.Dns.Core.Records.Mail;
-using Ubiety.Dns.Core.Records.NotUsed;
-using Ubiety.Dns.Core.Records.Obsolete;
 
 namespace Ubiety.Dns.Core
 {
@@ -164,129 +160,7 @@ namespace Ubiety.Dns.Core
         /// <returns>Record read from the data</returns>
         public Record ReadRecord(RecordType type)
         {
-            switch (type)
-            {
-                case RecordType.A:
-                    return new RecordA(this);
-                case RecordType.NS:
-                    return new RecordNs(this);
-                case RecordType.MD:
-                    return new RecordMd(this);
-                case RecordType.MF:
-                    return new RecordMf(this);
-                case RecordType.CNAME:
-                    return new RecordCname(this);
-                case RecordType.SOA:
-                    return new RecordSoa(this);
-                case RecordType.MB:
-                    return new RecordMb(this);
-                case RecordType.MG:
-                    return new RecordMg(this);
-                case RecordType.MR:
-                    return new RecordMr(this);
-                case RecordType.NULL:
-                    return new RecordNull(this);
-                case RecordType.WKS:
-                    return new RecordWks(this);
-                case RecordType.PNTR:
-                    return new RecordPtr(this);
-                case RecordType.HINFO:
-                    return new RecordHinfo(this);
-                case RecordType.MINFO:
-                    return new RecordMinfo(this);
-                case RecordType.MX:
-                    return new RecordMx(this);
-                case RecordType.TXT:
-                    return new RecordTxt(this);
-                case RecordType.RP:
-                    return new RecordRp(this);
-                case RecordType.AFSDB:
-                    return new RecordAfsdb(this);
-                case RecordType.X25:
-                    return new RecordX25(this);
-                case RecordType.ISDN:
-                    return new RecordIsdn(this);
-                case RecordType.RT:
-                    return new RecordRt(this);
-                case RecordType.NSAP:
-                    return new RecordNsap(this);
-                case RecordType.NSAPPTR:
-                    return new RecordNsapPtr(this);
-                case RecordType.SIG:
-                    return new RecordSig(this);
-                case RecordType.KEY:
-                    return new RecordKey(this);
-                case RecordType.PX:
-                    return new RecordPx(this);
-                case RecordType.GPOS:
-                    return new RecordGpos(this);
-                case RecordType.AAAA:
-                    return new RecordAaaa(this);
-                case RecordType.LOC:
-                    return new RecordLoc(this);
-                case RecordType.NXT:
-                    return new RecordNxt(this);
-                case RecordType.EID:
-                    return new RecordEid(this);
-                case RecordType.NIMLOC:
-                    return new RecordNimloc(this);
-                case RecordType.SRV:
-                    return new RecordSrv(this);
-                case RecordType.ATMA:
-                    return new RecordAtma(this);
-                case RecordType.NAPTR:
-                    return new RecordNaptr(this);
-                case RecordType.KX:
-                    return new RecordKx(this);
-                case RecordType.CERT:
-                    return new RecordCert(this);
-                case RecordType.A6:
-                    return new RecordA6(this);
-                case RecordType.DNAME:
-                    return new RecordDname(this);
-                case RecordType.SINK:
-                    return new RecordSink(this);
-                case RecordType.OPT:
-                    return new RecordOpt(this);
-                case RecordType.APL:
-                    return new RecordApl(this);
-                case RecordType.DS:
-                    return new RecordDs(this);
-                case RecordType.SSHFP:
-                    return new RecordSshfp(this);
-                case RecordType.IPSECKEY:
-                    return new RecordIpsecKey(this);
-                case RecordType.RRSIG:
-                    return new RecordRrsig(this);
-                case RecordType.NSEC:
-                    return new RecordNsec(this);
-                case RecordType.DNSKEY:
-                    return new RecordDnsKey(this);
-                case RecordType.DHCID:
-                    return new RecordDhcid(this);
-                case RecordType.NSEC3:
-                    return new RecordNsec3(this);
-                case RecordType.NSEC3PARAM:
-                    return new RecordNsec3Param(this);
-                case RecordType.HIP:
-                    return new RecordHip(this);
-                case RecordType.SPF:
-                    return new RecordSpf(this);
-                case RecordType.UINFO:
-                    return new RecordUinfo(this);
-                case RecordType.UID:
-                    return new RecordUid(this);
-                case RecordType.GID:
-                    return new RecordGid(this);
-                case RecordType.UNSPEC:
-                    return new RecordUnspec(this);
-                case RecordType.TKEY:
-                    return new RecordTkey(this);
-                case RecordType.TSIG:
-                    return new RecordTsig(this);
-                default:
-                    return new RecordUnknown(this);
-            }
+            return type.GetRecord(this);
         }
     }
 }

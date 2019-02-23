@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Common;
 
@@ -17,8 +16,7 @@ namespace Dns.Sample
                 UseCache = true,
                 Timeout = 1000,
                 Retries = 3,
-                TransportType = TransportType.Tcp,
-                DnsServer = "8.8.8.8"
+                TransportType = TransportType.Tcp
             };
         }
 
@@ -32,6 +30,23 @@ namespace Dns.Sample
             var response = _resolver.Query(name, questionType, questionClass);
 
             foreach (var record in response.RecordCert)
+            {
+                records.Add(record.ToString());
+            }
+
+            return records;
+        }
+
+        public IList<string> ARecords(string name)
+        {
+            IList<string> records = new List<string>();
+
+            const QuestionType questionType = QuestionType.A;
+            const QuestionClass questionClass = QuestionClass.IN;
+
+            var response = _resolver.Query(name, questionType, questionClass);
+
+            foreach (var record in response.RecordA)
             {
                 records.Add(record.ToString());
             }

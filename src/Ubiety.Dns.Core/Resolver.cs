@@ -22,9 +22,6 @@ namespace Ubiety.Dns.Core
         ///     Default DNS port
         /// </summary>
         public const int DefaultPort = 53;
-
-        private readonly List<IPEndPoint> _dnsServers;
-
         private readonly Dictionary<string, Response> _responseCache;
         private int _retries;
         private int _timeout;
@@ -39,8 +36,8 @@ namespace Ubiety.Dns.Core
         public Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
             _responseCache = new Dictionary<string, Response>();
-            _dnsServers = new List<IPEndPoint>();
-            _dnsServers.AddRange(dnsServers);
+            DnsServers = new List<IPEndPoint>();
+            DnsServers.AddRange(dnsServers);
 
             _unique = (ushort)new Random().Next();
             _retries = 3;
@@ -161,24 +158,21 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of DNS servers to use
         /// </summary>
-        public List<IPEndPoint> DnsServers
-        {
-            get => _dnsServers;
-        }
+        public List<IPEndPoint> DnsServers { get; }
 
         /// <summary>
         ///     Gets or sets the first DNS server address or sets single DNS server to use
         /// </summary>
         public string DnsServer
         {
-            get => _dnsServers[0].Address.ToString();
+            get => DnsServers[0].Address.ToString();
 
             set
             {
                 if (IPAddress.TryParse(value, out var ip))
                 {
-                    _dnsServers.Clear();
-                    _dnsServers.Add(new IPEndPoint(ip, DefaultPort));
+                    DnsServers.Clear();
+                    DnsServers.Add(new IPEndPoint(ip, DefaultPort));
                     return;
                 }
 
@@ -188,8 +182,8 @@ namespace Ubiety.Dns.Core
                     return;
                 }
 
-                _dnsServers.Clear();
-                _dnsServers.Add(new IPEndPoint(response.RecordA[0].Address, DefaultPort));
+                DnsServers.Clear();
+                DnsServers.Add(new IPEndPoint(response.RecordA[0].Address, DefaultPort));
             }
         }
 
@@ -463,18 +457,18 @@ namespace Ubiety.Dns.Core
 
             for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
             {
-                for (var intDnsServer = 0; intDnsServer < _dnsServers.Count; intDnsServer++)
+                for (var intDnsServer = 0; intDnsServer < DnsServers.Count; intDnsServer++)
                 {
                     var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, Timeout);
 
                     try
                     {
-                        socket.SendTo(request.GetData(), _dnsServers[intDnsServer]);
+                        socket.SendTo(request.GetData(), DnsServers[intDnsServer]);
                         var intReceived = socket.Receive(responseMessage);
                         var data = new byte[intReceived];
                         Array.Copy(responseMessage, data, intReceived);
-                        var response = new Response(_dnsServers[intDnsServer], data);
+                        var response = new Response(DnsServers[intDnsServer], data);
                         AddToCache(response);
                         return response;
                     }
@@ -500,7 +494,7 @@ namespace Ubiety.Dns.Core
         {
             for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
             {
-                foreach (var server in _dnsServers)
+                foreach (var server in DnsServers)
                 {
                     var client = new TcpClient { ReceiveTimeout = _timeout };
 
@@ -521,8 +515,10 @@ namespace Ubiety.Dns.Core
 
                         return ReceiveResponse(stream, server);
                     }
-                    catch (SocketException)
+                    catch (SocketException e)
                     {
+                        Verbose(e.Message);
+                        throw;
                     }
                     finally
                     {

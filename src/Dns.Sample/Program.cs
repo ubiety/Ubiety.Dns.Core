@@ -13,6 +13,11 @@ namespace Dns.Sample
             {
                 Console.WriteLine(record);
             }
+
+            foreach (var record in test.ARecords("direct.sitenv.org"))
+            {
+                Console.WriteLine(record);
+            }
         }
     }
 }
