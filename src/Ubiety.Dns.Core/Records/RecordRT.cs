@@ -31,7 +31,7 @@
    For example,
 
    sh.prime.com.      IN   RT   2    Relay.Prime.COM.
-                      IN   RT   10   NET.Prime.COM.
+					  IN   RT   10   NET.Prime.COM.
    *.prime.com.       IN   RT   90   Relay.Prime.COM.
 
    When a host is looking up DNS records to attempt to route a datagram,
@@ -53,38 +53,38 @@
 
 namespace Ubiety.Dns.Core.Records
 {
-    /// <summary>
-    ///     Route through DNS record
-    /// </summary>
-    public class RecordRt : Record
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordRt" /> class
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordRt(RecordReader rr)
-        {
-            Preference = rr.ReadUInt16();
-            IntermediateHost = rr.ReadDomainName();
-        }
+	/// <summary>
+	///     Route through DNS record.
+	/// </summary>
+	public class RecordRt : Record
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="RecordRt" /> class.
+		/// </summary>
+		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+		public RecordRt(RecordReader rr)
+		{
+			Preference = rr.ReadUInt16();
+			IntermediateHost = rr.ReadDomainName();
+		}
 
-        /// <summary>
-        ///     Gets or sets the route preference
-        /// </summary>
-        public ushort Preference { get; set; }
+		/// <summary>
+		///     Gets or sets the route preference.
+		/// </summary>
+		public ushort Preference { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the intermediate host
-        /// </summary>
-        public string IntermediateHost { get; set; }
+		/// <summary>
+		///     Gets or sets the intermediate host.
+		/// </summary>
+		public string IntermediateHost { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data
-        /// </summary>
-        /// <returns>Preference and host as a string</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {IntermediateHost}";
-        }
-    }
+		/// <summary>
+		///     String representation of the record data.
+		/// </summary>
+		/// <returns>Preference and host as a string.</returns>
+		public override string ToString()
+		{
+			return $"{Preference} {IntermediateHost}";
+		}
+	}
 }

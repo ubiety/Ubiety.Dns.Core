@@ -1,15 +1,15 @@
 /*
  3.3.11. NS RDATA format
 
-    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    /                   NSDNAME                     /
-    /                                               /
-    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+	/                   NSDNAME                     /
+	/                                               /
+	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
 where:
 
 NSDNAME         A <domain-name> which specifies a host which should be
-                authoritative for the specified class and domain.
+				authoritative for the specified class and domain.
 
 NS records cause both the usual additional section processing to locate
 a type A record, and, when used in a referral, a special search of the
@@ -25,32 +25,32 @@ class information are normally queried using IN class protocols.
 
 namespace Ubiety.Dns.Core.Records
 {
-    /// <summary>
-    ///     Nameserver DNS record
-    /// </summary>
-    public class RecordNs : Record
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNs" /> class
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordNs(RecordReader rr)
-        {
-            NameserverDomain = rr.ReadDomainName();
-        }
+	/// <summary>
+	///     Nameserver DNS record.
+	/// </summary>
+	public class RecordNs : Record
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="RecordNs" /> class.
+		/// </summary>
+		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+		public RecordNs(RecordReader rr)
+		{
+			NameserverDomain = rr.ReadDomainName();
+		}
 
-        /// <summary>
-        ///     Gets or sets the nameserver domain
-        /// </summary>
-        public string NameserverDomain { get; set; }
+		/// <summary>
+		///     Gets or sets the nameserver domain.
+		/// </summary>
+		public string NameserverDomain { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data
-        /// </summary>
-        /// <returns>Nameserver domain as a string</returns>
-        public override string ToString()
-        {
-            return NameserverDomain;
-        }
-    }
+		/// <summary>
+		///     String representation of the record data.
+		/// </summary>
+		/// <returns>Nameserver domain as a string.</returns>
+		public override string ToString()
+		{
+			return NameserverDomain;
+		}
+	}
 }

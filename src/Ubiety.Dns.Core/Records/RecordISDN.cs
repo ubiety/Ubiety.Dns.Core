@@ -68,38 +68,38 @@
 
 namespace Ubiety.Dns.Core.Records
 {
-    /// <summary>
-    ///     ISDN DNS record
-    /// </summary>
-    public class RecordIsdn : Record
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordIsdn" /> class
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordIsdn(RecordReader rr)
-        {
-            IsdnAddress = rr.ReadString();
-            SA = rr.ReadString();
-        }
+	/// <summary>
+	///     ISDN DNS record.
+	/// </summary>
+	public class RecordIsdn : Record
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="RecordIsdn" /> class.
+		/// </summary>
+		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+		public RecordIsdn(RecordReader rr)
+		{
+			IsdnAddress = rr.ReadString();
+			SA = rr.ReadString();
+		}
 
-        /// <summary>
-        ///     Gets or sets the ISDN address
-        /// </summary>
-        public string IsdnAddress { get; set; }
+		/// <summary>
+		///     Gets or sets the ISDN address.
+		/// </summary>
+		public string IsdnAddress { get; set; }
 
-        /// <summary>
-        ///     Gets or sets SA
-        /// </summary>
-        public string SA { get; set; }
+		/// <summary>
+		///     Gets or sets SA.
+		/// </summary>
+		public string SA { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data
-        /// </summary>
-        /// <returns>String version of the data</returns>
-        public override string ToString()
-        {
-            return $"{IsdnAddress} {SA}";
-        }
-    }
+		/// <summary>
+		///     String representation of the record data.
+		/// </summary>
+		/// <returns>String version of the data.</returns>
+		public override string ToString()
+		{
+			return $"{IsdnAddress} {SA}";
+		}
+	}
 }

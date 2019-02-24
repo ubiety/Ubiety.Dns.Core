@@ -30,38 +30,38 @@
 
 namespace Ubiety.Dns.Core.Records
 {
-    /// <summary>
-    ///     Responsible person DNS record
-    /// </summary>
-    public class RecordRp : Record
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordRp" /> class
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordRp(RecordReader rr)
-        {
-            MailboxDomain = rr.ReadDomainName();
-            TxtDomain = rr.ReadDomainName();
-        }
+	/// <summary>
+	///     Responsible person DNS record.
+	/// </summary>
+	public class RecordRp : Record
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="RecordRp" /> class.
+		/// </summary>
+		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+		public RecordRp(RecordReader rr)
+		{
+			MailboxDomain = rr.ReadDomainName();
+			TxtDomain = rr.ReadDomainName();
+		}
 
-        /// <summary>
-        ///     Gets or sets the mailbox domain
-        /// </summary>
-        public string MailboxDomain { get; set; }
+		/// <summary>
+		///     Gets or sets the mailbox domain.
+		/// </summary>
+		public string MailboxDomain { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the text domain
-        /// </summary>
-        public string TxtDomain { get; set; }
+		/// <summary>
+		///     Gets or sets the text domain.
+		/// </summary>
+		public string TxtDomain { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data
-        /// </summary>
-        /// <returns>Domains as a string</returns>
-        public override string ToString()
-        {
-            return $"{MailboxDomain} {TxtDomain}";
-        }
-    }
+		/// <summary>
+		///     String representation of the record data.
+		/// </summary>
+		/// <returns>Domains as a string.</returns>
+		public override string ToString()
+		{
+			return $"{MailboxDomain} {TxtDomain}";
+		}
+	}
 }

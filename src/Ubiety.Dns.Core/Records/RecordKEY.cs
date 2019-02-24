@@ -5,8 +5,8 @@
    The RDATA for a KEY RR consists of flags, a protocol octet, the
    algorithm number octet, and the public key itself.  The format is as
    follows:
-                        1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+						1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
+	0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |             flags             |    protocol   |   algorithm   |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -33,50 +33,50 @@
 
 namespace Ubiety.Dns.Core.Records
 {
-    /// <summary>
-    ///     Key DNS record
-    /// </summary>
-    public class RecordKey : Record
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordKey" /> class
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordKey(RecordReader rr)
-        {
-            Flags = rr.ReadUInt16();
-            Protocol = rr.ReadByte();
-            Algorithm = rr.ReadByte();
-            PublicKey = rr.ReadString();
-        }
+	/// <summary>
+	///     Key DNS record.
+	/// </summary>
+	public class RecordKey : Record
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="RecordKey" /> class.
+		/// </summary>
+		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+		public RecordKey(RecordReader rr)
+		{
+			Flags = rr.ReadUInt16();
+			Protocol = rr.ReadByte();
+			Algorithm = rr.ReadByte();
+			PublicKey = rr.ReadString();
+		}
 
-        /// <summary>
-        ///     Gets or sets the flags
-        /// </summary>
-        public ushort Flags { get; set; }
+		/// <summary>
+		///     Gets or sets the flags.
+		/// </summary>
+		public ushort Flags { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the protocol
-        /// </summary>
-        public byte Protocol { get; set; }
+		/// <summary>
+		///     Gets or sets the protocol.
+		/// </summary>
+		public byte Protocol { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the algorithm
-        /// </summary>
-        public byte Algorithm { get; set; }
+		/// <summary>
+		///     Gets or sets the algorithm.
+		/// </summary>
+		public byte Algorithm { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the public key
-        /// </summary>
-        public string PublicKey { get; set; }
+		/// <summary>
+		///     Gets or sets the public key.
+		/// </summary>
+		public string PublicKey { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data
-        /// </summary>
-        /// <returns>String version of the record</returns>
-        public override string ToString()
-        {
-            return $"{Flags} {Protocol} {Algorithm} \"{PublicKey}\"";
-        }
-    }
+		/// <summary>
+		///     String representation of the record data.
+		/// </summary>
+		/// <returns>String version of the record.</returns>
+		public override string ToString()
+		{
+			return $"{Flags} {Protocol} {Algorithm} \"{PublicKey}\"";
+		}
+	}
 }

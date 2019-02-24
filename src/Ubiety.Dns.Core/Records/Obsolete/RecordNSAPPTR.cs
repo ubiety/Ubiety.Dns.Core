@@ -41,32 +41,32 @@ using System;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-    /// <summary>
-    ///     NSAP PTR DNS Record
-    /// </summary>
-    public class RecordNsapPtr : Record
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNsapPtr" /> class
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordNsapPtr(RecordReader rr)
-        {
-            Owner = rr.ReadString();
-        }
+	/// <summary>
+	///     NSAP PTR DNS Record.
+	/// </summary>
+	public class RecordNsapPtr : Record
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="RecordNsapPtr" /> class.
+		/// </summary>
+		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+		public RecordNsapPtr(RecordReader rr)
+		{
+			Owner = rr.ReadString();
+		}
 
-        /// <summary>
-        ///     Gets the owner
-        /// </summary>
-        public string Owner { get; }
+		/// <summary>
+		///     Gets the owner.
+		/// </summary>
+		public string Owner { get; }
 
-        /// <summary>
-        ///     String representation of the record
-        /// </summary>
-        /// <returns>String version of the data</returns>
-        public override string ToString()
-        {
-            return Owner;
-        }
-    }
+		/// <summary>
+		///     String representation of the record.
+		/// </summary>
+		/// <returns>String version of the data.</returns>
+		public override string ToString()
+		{
+			return Owner;
+		}
+	}
 }

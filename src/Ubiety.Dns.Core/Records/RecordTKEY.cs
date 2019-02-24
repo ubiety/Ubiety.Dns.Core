@@ -25,90 +25,90 @@ Other Data:  octet-stream  undefined by this specification
 
 namespace Ubiety.Dns.Core.Records
 {
-    /// <summary>
-    ///     Transaction key DNS resource record
-    /// </summary>
-    public class RecordTkey : Record
-    {
-        private readonly byte[] _keyData;
-        private readonly byte[] _otherData;
+	/// <summary>
+	///     Transaction key DNS resource record.
+	/// </summary>
+	public class RecordTkey : Record
+	{
+		private readonly byte[] _keyData;
+		private readonly byte[] _otherData;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordTkey" /> class
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
-        public RecordTkey(RecordReader rr)
-        {
-            Algorithm = rr.ReadDomainName();
-            Inception = rr.ReadUInt32();
-            Expiration = rr.ReadUInt32();
-            Mode = rr.ReadUInt16();
-            Error = rr.ReadUInt16();
-            KeySize = rr.ReadUInt16();
-            _keyData = rr.ReadBytes(KeySize);
-            OtherSize = rr.ReadUInt16();
-            _otherData = rr.ReadBytes(OtherSize);
-        }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="RecordTkey" /> class.
+		/// </summary>
+		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+		public RecordTkey(RecordReader rr)
+		{
+			Algorithm = rr.ReadDomainName();
+			Inception = rr.ReadUInt32();
+			Expiration = rr.ReadUInt32();
+			Mode = rr.ReadUInt16();
+			Error = rr.ReadUInt16();
+			KeySize = rr.ReadUInt16();
+			_keyData = rr.ReadBytes(KeySize);
+			OtherSize = rr.ReadUInt16();
+			_otherData = rr.ReadBytes(OtherSize);
+		}
 
-        /// <summary>
-        ///     Gets the key algorithm
-        /// </summary>
-        public string Algorithm { get; }
+		/// <summary>
+		///     Gets the key algorithm.
+		/// </summary>
+		public string Algorithm { get; }
 
-        /// <summary>
-        ///     Gets the inception time of the key
-        /// </summary>
-        public uint Inception { get; }
+		/// <summary>
+		///     Gets the inception time of the key.
+		/// </summary>
+		public uint Inception { get; }
 
-        /// <summary>
-        ///     Gets the expiration time of the key
-        /// </summary>
-        public uint Expiration { get; }
+		/// <summary>
+		///     Gets the expiration time of the key.
+		/// </summary>
+		public uint Expiration { get; }
 
-        /// <summary>
-        ///     Gets the key agreement mode
-        /// </summary>
-        public ushort Mode { get; }
+		/// <summary>
+		///     Gets the key agreement mode.
+		/// </summary>
+		public ushort Mode { get; }
 
-        /// <summary>
-        ///     Gets the error code of the record
-        /// </summary>
-        public ushort Error { get; }
+		/// <summary>
+		///     Gets the error code of the record.
+		/// </summary>
+		public ushort Error { get; }
 
-        /// <summary>
-        ///     Gets the key size from the record
-        /// </summary>
-        public ushort KeySize { get; }
+		/// <summary>
+		///     Gets the key size from the record.
+		/// </summary>
+		public ushort KeySize { get; }
 
-        /// <summary>
-        ///     Gets the key data
-        /// </summary>
-        public List<byte> KeyData => new List<byte>(_keyData);
+		/// <summary>
+		///     Gets the key data.
+		/// </summary>
+		public List<byte> KeyData => new List<byte>(_keyData);
 
-        /// <summary>
-        ///     Gets the other size from the record (Future use)
-        /// </summary>
-        public ushort OtherSize { get; }
+		/// <summary>
+		///     Gets the other size from the record (Future use).
+		/// </summary>
+		public ushort OtherSize { get; }
 
-        /// <summary>
-        ///     Gets the other data from the record (Future use)
-        /// </summary>
-        public List<byte> OtherData => new List<byte>(_otherData);
+		/// <summary>
+		///     Gets the other data from the record (Future use).
+		/// </summary>
+		public List<byte> OtherData => new List<byte>(_otherData);
 
-        /// <summary>
-        ///     String representation of the record data
-        /// </summary>
-        /// <returns>Key data as a string</returns>
-        public override string ToString()
-        {
-            return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0} {1} {2} {3} {4}",
-                Algorithm,
-                Inception,
-                Expiration,
-                Mode,
-                Error);
-        }
-    }
+		/// <summary>
+		///     String representation of the record data.
+		/// </summary>
+		/// <returns>Key data as a string.</returns>
+		public override string ToString()
+		{
+			return string.Format(
+				CultureInfo.InvariantCulture,
+				"{0} {1} {2} {3} {4}",
+				Algorithm,
+				Inception,
+				Expiration,
+				Mode,
+				Error);
+		}
+	}
 }
