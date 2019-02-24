@@ -70,7 +70,7 @@ namespace Ubiety.Dns.Core
 		/// <returns>String of the question.</returns>
 		public override string ToString()
 		{
-			return $"{QuestionName, -32}\t{QuestionClass}\t{QuestionType}";
+			return $"{QuestionName,-32}\t{QuestionClass}\t{QuestionType}";
 		}
 
 		/// <summary>

@@ -128,13 +128,7 @@ namespace Ubiety.Dns.Core
 		{
 			short length = ReadByte();
 
-			var name = new StringBuilder();
-			for (var i = 0; i < length; i++)
-			{
-				name.Append(ReadChar());
-			}
-
-			return name.ToString();
+			return Encoding.UTF8.GetString(ReadBytes(length));
 		}
 
 		/// <summary>
