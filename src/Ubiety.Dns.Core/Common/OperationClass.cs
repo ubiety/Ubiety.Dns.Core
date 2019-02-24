@@ -26,6 +26,6 @@ namespace Ubiety.Dns.Core.Common
 		/// <summary>
 		///     Hesiod class
 		/// </summary>
-		HS = 4
+		HS = 4,
 	}
 }

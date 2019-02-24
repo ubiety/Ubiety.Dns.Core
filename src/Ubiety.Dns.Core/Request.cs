@@ -18,7 +18,7 @@ namespace Ubiety.Dns.Core
 			Header = new Header
 			{
 				OpCode = OperationCode.Query,
-				QuestionCount = 0
+				QuestionCount = 0,
 			};
 
 			_questions = new List<Question>();

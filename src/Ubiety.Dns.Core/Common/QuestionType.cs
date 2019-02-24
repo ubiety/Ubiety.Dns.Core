@@ -333,6 +333,6 @@ namespace Ubiety.Dns.Core.Common
 		/// <summary>
 		///     DNSSEC lookaside validation
 		/// </summary>
-		DLV = RecordType.DLV
+		DLV = RecordType.DLV,
 	}
 }

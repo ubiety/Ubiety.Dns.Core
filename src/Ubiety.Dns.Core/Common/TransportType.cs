@@ -13,6 +13,6 @@ namespace Ubiety.Dns.Core.Common
 		/// <summary>
 		///     Use the TCP transport
 		/// </summary>
-		Tcp
+		Tcp,
 	}
 }

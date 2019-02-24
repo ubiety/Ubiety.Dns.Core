@@ -31,6 +31,6 @@ namespace Ubiety.Dns.Core.Common
 		/// <summary>
 		///     Any question class
 		/// </summary>
-		Any = 255
+		Any = 255,
 	}
 }

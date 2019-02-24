@@ -118,6 +118,6 @@ namespace Ubiety.Dns.Core.Common
 		/// <summary>
 		///     Bad truncation
 		/// </summary>
-		BADTRUNC = 22
+		BADTRUNC = 22,
 	}
 }

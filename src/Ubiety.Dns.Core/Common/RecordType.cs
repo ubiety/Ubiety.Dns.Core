@@ -375,6 +375,6 @@ namespace Ubiety.Dns.Core.Common
 		///     DNSSEC lookaside validation
 		/// </summary>
 		[Record(typeof(RecordUnknown))]
-		DLV = 32769
+		DLV = 32769,
 	}
 }
