@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 
 namespace Ubiety.Dns.Core.Records.General
@@ -24,22 +23,20 @@ namespace Ubiety.Dns.Core.Records.General
     /// </remarks>
     public class RecordA : Record
     {
-        private readonly String _address;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordA" /> class.
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data</param>
         public RecordA(RecordReader reader)
         {
-            _address = $"{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}";
+            Address = IPAddress.Parse($"{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}");
         }
 
         /// <summary>
         ///     Gets the IP address
         /// </summary>
         /// <value>IP address of the A record</value>
-        public IPAddress Address => IPAddress.Parse(_address);
+        public IPAddress Address { get; }
 
         /// <summary>
         ///     String representation of the address
@@ -47,7 +44,7 @@ namespace Ubiety.Dns.Core.Records.General
         /// <returns>String of the IP address</returns>
         public override string ToString()
         {
-            return _address;
+            return Address.ToString();
         }
     }
 }

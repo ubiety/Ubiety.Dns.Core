@@ -6,7 +6,7 @@ namespace Ubiety.Dns.Core.Common
     ///     Question class
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1717", Justification = "Class is not plural")]
-    public enum QuestionClass : ushort
+    public enum QuestionClass
     {
         /// <summary>
         ///     Internet class

@@ -42,13 +42,13 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <summary>
         ///     Gets the mail domain
         /// </summary>
-        public String MadName { get; }
+        public string MadName { get; }
 
         /// <summary>
         ///     String representing the mail domain
         /// </summary>
         /// <returns>String version of the record</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return MadName;
         }

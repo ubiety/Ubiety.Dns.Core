@@ -22,7 +22,7 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordCert : Record
     {
-        private readonly Byte[] _rawKey;
+        private readonly byte[] _rawKey;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordCert" /> class
@@ -44,33 +44,33 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the record type
         /// </summary>
-        public UInt16 Type { get; }
+        public ushort Type { get; }
 
         /// <summary>
         ///     Gets the key tag
         /// </summary>
-        public UInt16 KeyTag { get; }
+        public ushort KeyTag { get; }
 
         /// <summary>
         ///     Gets the algorithm
         /// </summary>
-        public Byte Algorithm { get; }
+        public byte Algorithm { get; }
 
         /// <summary>
         ///     Gets the public key
         /// </summary>
-        public String PublicKey { get; }
+        public string PublicKey { get; }
 
         /// <summary>
         ///     Gets the raw key
         /// </summary>
-        public List<Byte> RawKey => new List<Byte>(_rawKey);
+        public List<byte> RawKey => new List<byte>(_rawKey);
 
         /// <summary>
         ///     String version of the record
         /// </summary>
         /// <returns>String of the public key</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return PublicKey;
         }
