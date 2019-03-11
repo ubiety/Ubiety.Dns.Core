@@ -1,53 +1,53 @@
 /*
 3.3.13. SOA RDATA format
 
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	/                     MNAME                     /
-	/                                               /
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	/                     RNAME                     /
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    SERIAL                     |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    REFRESH                    |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                     RETRY                     |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    EXPIRE                     |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	|                    MINIMUM                    |
-	|                                               |
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                     MNAME                     /
+    /                                               /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                     RNAME                     /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    SERIAL                     |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    REFRESH                    |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                     RETRY                     |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    EXPIRE                     |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    MINIMUM                    |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
 where:
 
 MNAME           The <domain-name> of the name server that was the
-				original or primary source of data for this zone.
+                original or primary source of data for this zone.
 
 RNAME           A <domain-name> which specifies the mailbox of the
-				person responsible for this zone.
+                person responsible for this zone.
 
 SERIAL          The unsigned 32 bit version number of the original copy
-				of the zone.  Zone transfers preserve this value.  This
-				value wraps and should be compared using sequence space
-				arithmetic.
+                of the zone.  Zone transfers preserve this value.  This
+                value wraps and should be compared using sequence space
+                arithmetic.
 
 REFRESH         A 32 bit time interval before the zone should be
-				refreshed.
+                refreshed.
 
 RETRY           A 32 bit time interval that should elapse before a
-				failed refresh should be retried.
+                failed refresh should be retried.
 
 EXPIRE          A 32 bit time value that specifies the upper limit on
-				the time interval that can elapse before the zone is no
-				longer authoritative.
+                the time interval that can elapse before the zone is no
+                longer authoritative.
 
 MINIMUM         The unsigned 32 bit minimum TTL field that should be
-				exported with any RR from this zone.
+                exported with any RR from this zone.
 
 SOA records cause no additional section processing.
 
@@ -67,68 +67,68 @@ change the SOA RR with known semantics.
 
 namespace Ubiety.Dns.Core.Records
 {
-	/// <summary>
-	///     DNS Start of Authority record.
-	/// </summary>
-	public class RecordSoa : Record
-	{
-		/// <summary>
-		///     Initializes a new instance of the <see cref="RecordSoa" /> class.
-		/// </summary>
-		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-		public RecordSoa(RecordReader rr)
-		{
-			PrimaryNameserver = rr.ReadDomainName();
-			ResponsibleDomain = rr.ReadDomainName();
-			Serial = rr.ReadUInt32();
-			Refresh = rr.ReadUInt32();
-			Retry = rr.ReadUInt32();
-			Expire = rr.ReadUInt32();
-			Minimum = rr.ReadUInt32();
-		}
+    /// <summary>
+    ///     DNS Start of Authority record.
+    /// </summary>
+    public class RecordSoa : Record
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordSoa" /> class.
+        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+        public RecordSoa(RecordReader rr)
+        {
+            PrimaryNameserver = rr.ReadDomainName();
+            ResponsibleDomain = rr.ReadDomainName();
+            Serial = rr.ReadUInt32();
+            Refresh = rr.ReadUInt32();
+            Retry = rr.ReadUInt32();
+            Expire = rr.ReadUInt32();
+            Minimum = rr.ReadUInt32();
+        }
 
-		/// <summary>
-		///     Gets or sets the primary nameserver.
-		/// </summary>
-		public string PrimaryNameserver { get; set; }
+        /// <summary>
+        ///     Gets or sets the primary nameserver.
+        /// </summary>
+        public string PrimaryNameserver { get; set; }
 
-		/// <summary>
-		///     Gets or sets the responsible domain.
-		/// </summary>
-		public string ResponsibleDomain { get; set; }
+        /// <summary>
+        ///     Gets or sets the responsible domain.
+        /// </summary>
+        public string ResponsibleDomain { get; set; }
 
-		/// <summary>
-		///     Gets or sets the serial.
-		/// </summary>
-		public uint Serial { get; set; }
+        /// <summary>
+        ///     Gets or sets the serial.
+        /// </summary>
+        public uint Serial { get; set; }
 
-		/// <summary>
-		///     Gets or sets the refresh interval.
-		/// </summary>
-		public uint Refresh { get; set; }
+        /// <summary>
+        ///     Gets or sets the refresh interval.
+        /// </summary>
+        public uint Refresh { get; set; }
 
-		/// <summary>
-		///     Gets or sets the retry interval.
-		/// </summary>
-		public uint Retry { get; set; }
+        /// <summary>
+        ///     Gets or sets the retry interval.
+        /// </summary>
+        public uint Retry { get; set; }
 
-		/// <summary>
-		///     Gets or sets the expiration time.
-		/// </summary>
-		public uint Expire { get; set; }
+        /// <summary>
+        ///     Gets or sets the expiration time.
+        /// </summary>
+        public uint Expire { get; set; }
 
-		/// <summary>
-		///     Gets or sets the minimum TTL.
-		/// </summary>
-		public uint Minimum { get; set; }
+        /// <summary>
+        ///     Gets or sets the minimum TTL.
+        /// </summary>
+        public uint Minimum { get; set; }
 
-		/// <summary>
-		///     String representation of the record data.
-		/// </summary>
-		/// <returns>Record data as the string.</returns>
-		public override string ToString()
-		{
-			return $"{PrimaryNameserver} {ResponsibleDomain} {Serial} {Refresh} {Retry} {Expire} {Minimum}";
-		}
-	}
+        /// <summary>
+        ///     String representation of the record data.
+        /// </summary>
+        /// <returns>Record data as the string.</returns>
+        public override string ToString()
+        {
+            return $"{PrimaryNameserver} {ResponsibleDomain} {Serial} {Refresh} {Retry} {Expire} {Minimum}";
+        }
+    }
 }

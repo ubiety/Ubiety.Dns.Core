@@ -48,55 +48,55 @@ or decimal numbers.
 */
 namespace Ubiety.Dns.Core.Records
 {
-	/// <summary>
-	///     DNS well known services record.
-	/// </summary>
-	public class RecordWks : Record
-	{
-		private readonly byte[] _bitmap;
+    /// <summary>
+    ///     DNS well known services record.
+    /// </summary>
+    public class RecordWks : Record
+    {
+        private readonly byte[] _bitmap;
 
-		/// <summary>
-		///     Initializes a new instance of the <see cref="RecordWks" /> class.
-		/// </summary>
-		/// <param name="rr">Record reader for record data.</param>
-		public RecordWks(RecordReader rr)
-		{
-			var length = rr.ReadUInt16(-2);
-			Address = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0}.{1}.{2}.{3}",
-				rr.ReadByte(),
-				rr.ReadByte(),
-				rr.ReadByte(),
-				rr.ReadByte());
-			Protocol = rr.ReadByte();
-			length -= 5;
-			_bitmap = new byte[length];
-			_bitmap = rr.ReadBytes(length);
-		}
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordWks" /> class.
+        /// </summary>
+        /// <param name="rr">Record reader for record data.</param>
+        public RecordWks(RecordReader rr)
+        {
+            var length = rr.ReadUInt16(-2);
+            Address = string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}.{1}.{2}.{3}",
+                rr.ReadByte(),
+                rr.ReadByte(),
+                rr.ReadByte(),
+                rr.ReadByte());
+            Protocol = rr.ReadByte();
+            length -= 5;
+            _bitmap = new byte[length];
+            _bitmap = rr.ReadBytes(length);
+        }
 
-		/// <summary>
-		///     Gets or sets the address of the server.
-		/// </summary>
-		public string Address { get; set; }
+        /// <summary>
+        ///     Gets or sets the address of the server.
+        /// </summary>
+        public string Address { get; set; }
 
-		/// <summary>
-		///     Gets or sets the protocol of the service.
-		/// </summary>
-		public int Protocol { get; set; }
+        /// <summary>
+        ///     Gets or sets the protocol of the service.
+        /// </summary>
+        public int Protocol { get; set; }
 
-		/// <summary>
-		///     Gets the service bitmap.
-		/// </summary>
-		public Collection<byte> Bitmap => new Collection<byte>(_bitmap);
+        /// <summary>
+        ///     Gets the service bitmap.
+        /// </summary>
+        public Collection<byte> Bitmap => new Collection<byte>(_bitmap);
 
-		/// <summary>
-		///     Return a string of the well known service record.
-		/// </summary>
-		/// <returns>String of the record.</returns>
-		public override string ToString()
-		{
-			return string.Format(CultureInfo.InvariantCulture, "{0} {1}", Address, Protocol);
-		}
-	}
+        /// <summary>
+        ///     Return a string of the well known service record.
+        /// </summary>
+        /// <returns>String of the record.</returns>
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", Address, Protocol);
+        }
+    }
 }

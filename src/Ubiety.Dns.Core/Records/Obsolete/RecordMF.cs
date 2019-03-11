@@ -2,16 +2,16 @@
  *
 3.3.5. MF RDATA format (Obsolete)
 
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-	/                   MADNAME                     /
-	/                                               /
-	+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                   MADNAME                     /
+    /                                               /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
 where:
 
 MADNAME         A <domain-name> which specifies a host which has a mail
-				agent for the domain which will accept mail for
-				forwarding to the domain.
+                agent for the domain which will accept mail for
+                forwarding to the domain.
 
 MF records cause additional section processing which looks up an A type
 record corresponding to MADNAME.
@@ -25,32 +25,32 @@ using System;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-	/// <summary>
-	///     Mail forwarder record (Obsolete - use MX).
-	/// </summary>
-	public class RecordMf : Record
-	{
-		/// <summary>
-		///     Initializes a new instance of the <see cref="RecordMf" /> class.
-		/// </summary>
-		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-		public RecordMf(RecordReader rr)
-		{
-			MadName = rr.ReadDomainName();
-		}
+    /// <summary>
+    ///     Mail forwarder record (Obsolete - use MX).
+    /// </summary>
+    public class RecordMf : Record
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordMf" /> class.
+        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+        public RecordMf(RecordReader rr)
+        {
+            MadName = rr.ReadDomainName();
+        }
 
-		/// <summary>
-		///     Gets the mail domain.
-		/// </summary>
-		public string MadName { get; }
+        /// <summary>
+        ///     Gets the mail domain.
+        /// </summary>
+        public string MadName { get; }
 
-		/// <summary>
-		///     String representation of the record.
-		/// </summary>
-		/// <returns>String of the mail domain.</returns>
-		public override string ToString()
-		{
-			return MadName;
-		}
-	}
+        /// <summary>
+        ///     String representation of the record.
+        /// </summary>
+        /// <returns>String of the mail domain.</returns>
+        public override string ToString()
+        {
+            return MadName;
+        }
+    }
 }

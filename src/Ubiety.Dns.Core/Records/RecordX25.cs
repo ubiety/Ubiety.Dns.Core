@@ -31,32 +31,32 @@
 
 namespace Ubiety.Dns.Core.Records
 {
-	/// <summary>
-	///     X25 DNS record.
-	/// </summary>
-	public class RecordX25 : Record
-	{
-		/// <summary>
-		///     Initializes a new instance of the <see cref="RecordX25" /> class.
-		/// </summary>
-		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-		public RecordX25(RecordReader rr)
-		{
-			PSDNAdress = rr.ReadString();
-		}
+    /// <summary>
+    ///     X25 DNS record.
+    /// </summary>
+    public class RecordX25 : Record
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordX25" /> class.
+        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+        public RecordX25(RecordReader rr)
+        {
+            PSDNAdress = rr.ReadString();
+        }
 
-		/// <summary>
-		///     Gets or sets the PSDN address.
-		/// </summary>
-		public string PSDNAdress { get; set; }
+        /// <summary>
+        ///     Gets or sets the PSDN address.
+        /// </summary>
+        public string PSDNAdress { get; set; }
 
-		/// <summary>
-		///     String representation of the record data.
-		/// </summary>
-		/// <returns>PSDN address as a string.</returns>
-		public override string ToString()
-		{
-			return PSDNAdress;
-		}
-	}
+        /// <summary>
+        ///     String representation of the record data.
+        /// </summary>
+        /// <returns>PSDN address as a string.</returns>
+        public override string ToString()
+        {
+            return PSDNAdress;
+        }
+    }
 }

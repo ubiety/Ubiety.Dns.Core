@@ -13,13 +13,13 @@ using Ubiety.Dns.Core.Common;
 
    The type number for the NXT RR is 30.
 
-						   1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
-	   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-	  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	  |         next domain name                                      /
-	  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	  |                    type bit map                               /
-	  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                           1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |         next domain name                                      /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                    type bit map                               /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
    The NXT RR type bit map is one bit per RR type present for the owner
    name similar to the WKS socket bit map.  The first bit represents RR
@@ -41,61 +41,61 @@ using Ubiety.Dns.Core.Common;
  */
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
-	/// <summary>
-	///     NXT DNS Record.
-	/// </summary>
-	public class RecordNxt : Record
-	{
-		private readonly byte[] _bitmap;
+    /// <summary>
+    ///     NXT DNS Record.
+    /// </summary>
+    public class RecordNxt : Record
+    {
+        private readonly byte[] _bitmap;
 
-		/// <summary>
-		///     Initializes a new instance of the <see cref="RecordNxt" /> class.
-		/// </summary>
-		/// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-		public RecordNxt(RecordReader rr)
-		{
-			var length = rr.ReadUInt16(-2);
-			NextDomainName = rr.ReadDomainName();
-			length -= (ushort)rr.Position;
-			_bitmap = new byte[length];
-			_bitmap = rr.ReadBytes(length);
-		}
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordNxt" /> class.
+        /// </summary>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
+        public RecordNxt(RecordReader rr)
+        {
+            var length = rr.ReadUInt16(-2);
+            NextDomainName = rr.ReadDomainName();
+            length -= (ushort)rr.Position;
+            _bitmap = new byte[length];
+            _bitmap = rr.ReadBytes(length);
+        }
 
-		/// <summary>
-		///     Gets the next domain name.
-		/// </summary>
-		public string NextDomainName { get; }
+        /// <summary>
+        ///     Gets the next domain name.
+        /// </summary>
+        public string NextDomainName { get; }
 
-		/// <summary>
-		///     Gets the record bitmap.
-		/// </summary>
-		public List<byte> Bitmap => new List<byte>(_bitmap);
+        /// <summary>
+        ///     Gets the record bitmap.
+        /// </summary>
+        public List<byte> Bitmap => new List<byte>(_bitmap);
 
-		/// <summary>
-		///     String representation of the record.
-		/// </summary>
-		/// <returns>String version of the data.</returns>
-		public override string ToString()
-		{
-			var sb = new StringBuilder();
-			for (var bitNr = 1; bitNr < _bitmap.Length * 8; bitNr++)
-			{
-				if (IsSet(bitNr))
-				{
-					sb.Append(" " + (RecordType)bitNr);
-				}
-			}
+        /// <summary>
+        ///     String representation of the record.
+        /// </summary>
+        /// <returns>String version of the data.</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            for (var bitNr = 1; bitNr < _bitmap.Length * 8; bitNr++)
+            {
+                if (IsSet(bitNr))
+                {
+                    sb.Append(" " + (RecordType)bitNr);
+                }
+            }
 
-			return $"{NextDomainName}{sb}";
-		}
+            return $"{NextDomainName}{sb}";
+        }
 
-		private bool IsSet(int bitNr)
-		{
-			var intByte = bitNr / 8;
-			var intOffset = bitNr % 8;
-			var b = _bitmap[intByte];
-			var intTest = 1 << intOffset;
-			return (b & intTest) != 0;
-		}
-	}
+        private bool IsSet(int bitNr)
+        {
+            var intByte = bitNr / 8;
+            var intOffset = bitNr % 8;
+            var b = _bitmap[intByte];
+            var intTest = 1 << intOffset;
+            return (b & intTest) != 0;
+        }
+    }
 }
