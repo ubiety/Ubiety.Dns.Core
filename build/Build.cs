@@ -5,12 +5,12 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.SonarScanner;
+using Nuke.Common.Tools.DotNetSonarScanner;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
+using static Nuke.Common.Tools.DotNetSonarScanner.DotNetSonarScannerTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -72,11 +72,11 @@ class Build : NukeBuild
         .Unlisted()
         .Executes(() =>
         {
-            SonarScannerBegin(s => s
+            DotNetSonarScannerBegin(s => s
                 .SetLogin(SonarKey)
                 .SetVersion(GitVersion.NuGetVersionV2)
                 .SetProjectKey("ubiety_Ubiety.Dns.Core")
-                .SetArgumentConfigurator(a => a.Add("/d:sonar.organization=\"ubiety\""))
+                .SetOrganization("ubiety")
                 .SetServer("https://sonarcloud.io"));
         });
 
@@ -86,7 +86,7 @@ class Build : NukeBuild
         .Unlisted()
         .Executes(() =>
         {
-            SonarScannerEnd(s => s
+            DotNetSonarScannerEnd(s => s
                 .SetLogin(SonarKey));
         });
 
