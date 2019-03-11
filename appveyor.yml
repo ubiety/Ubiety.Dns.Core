@@ -12,31 +12,7 @@ environment:
     secure: f/oEZedvaPFnnyih3qfwV0G1p9mKfZNpla+8/tkjmOzhKAuFsb+56DurMR2vxW3n
 
 init:
-  - ps: dotnet install tool --global dotnet-sonarscanner
+  - ps: dotnet tool install --global dotnet-sonarscanner
 
 build_script:
   - ps: .\build.ps1 sonar
-
-artifacts:
-  - path: 'src\**\*.nupkg'
-
-deploy:
-  - provider: GitHub
-    release: Ubiety.Dns.Core-v$(appveyor_build_version)
-    description: Ubiety DNS for .NET Standard
-    auth_token:
-      secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
-    artifact: /.*\.nupkg/
-    draft: true
-    prerelease: false
-    on:
-      branch: master
-
-  - provider: GitHub
-    release: Ubiety.Dns.Core.beta-v$(appveyor_build_version)
-    description: Ubiety DNS Beta
-    auth_token:
-      secure: +fxguAe7QHo5zfhN7YRoOqMf4x8ZG4mR29Q8HMY0Y9d4gvwv+NP5daWbQyc0R/BJ
-    artifact: /.*\.nupkg/
-    draft: true
-    prerelease: true
