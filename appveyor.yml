@@ -12,7 +12,7 @@ environment:
     secure: f/oEZedvaPFnnyih3qfwV0G1p9mKfZNpla+8/tkjmOzhKAuFsb+56DurMR2vxW3n
 
 init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: dotnet install tool --global dotnet-sonarscanner
 
 build_script:
   - ps: .\build.ps1 sonar
