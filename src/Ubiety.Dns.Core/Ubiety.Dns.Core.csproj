@@ -13,6 +13,7 @@
     <Authors>Dieter Lunn</Authors>
     <PackageIconUrl>https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/images/library64.png</PackageIconUrl>
     <LangVersion>7.1</LangVersion>
+    <Description>DNS library for .NET Standard 2.0</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3" PrivateAssets="All" />

@@ -13,7 +13,7 @@ environment:
   APPVEYOR_RDP_PASSWORD: dnsappveyor2019
 
 init:
-  iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 build_script:
   - ps: .\build.ps1 sonar
