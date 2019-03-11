@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/git,cake,wyam,rider,dotsettings,visualstudio,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=git,cake,wyam,rider,dotsettings,visualstudio,visualstudiocode
+# Created by https://www.gitignore.io/api/git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
 
 ### Cake ###
 tools/*
@@ -91,6 +91,19 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
+### SonarQube ###
+# SonarQube ignore files.
+#
+# https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
+# Sonar Scanner working directories
+.sonar/
+.scannerwork/
+.sonarqube/
+
+# http://www.sonarlint.org/commandline/
+# SonarLint working directories, configuration files (including credentials)
+.sonarlint/
 
 ### VisualStudioCode ###
 .vscode/*
@@ -454,4 +467,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# End of https://www.gitignore.io/api/git,cake,wyam,rider,dotsettings,visualstudio,visualstudiocode
+# End of https://www.gitignore.io/api/git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
