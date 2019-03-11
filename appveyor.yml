@@ -12,7 +12,7 @@ environment:
     secure: f/oEZedvaPFnnyih3qfwV0G1p9mKfZNpla+8/tkjmOzhKAuFsb+56DurMR2vxW3n
 
 build_script:
-  - ps: .\build.ps1 sonar
+  - cmd: PowerShell -Version 2.0 .\build.ps1 sonar
 
 artifacts:
   - path: 'src\**\*.nupkg'
