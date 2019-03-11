@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  3.3.7. MINFO RDATA format (EXPERIMENTAL)
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -29,8 +34,6 @@ MINFO records cause no additional section processing.  Although these
 records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
-
-using System;
 
 namespace Ubiety.Dns.Core.Records.Mail
 {

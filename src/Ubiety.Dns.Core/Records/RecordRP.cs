@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
 2.2. The Responsible Person RR

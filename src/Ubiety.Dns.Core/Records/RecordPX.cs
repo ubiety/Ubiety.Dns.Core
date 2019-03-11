@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://tools.ietf.org/rfc/rfc2163.txt
  *
 4. The new DNS resource record for MIXER mapping rules: PX

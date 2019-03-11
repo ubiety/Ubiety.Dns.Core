@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  *  http://www.ietf.org/rfc/rfc2782.txt
  *
    Priority

@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://tools.ietf.org/rfc/rfc1712.txt
  *
 3. RDATA Format
@@ -36,8 +41,6 @@
    length.
 
  */
-
-using System;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {

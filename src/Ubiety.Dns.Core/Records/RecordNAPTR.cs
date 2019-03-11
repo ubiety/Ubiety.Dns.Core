@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://www.faqs.org/rfcs/rfc2915.html
  *
  8. DNS Packet Format

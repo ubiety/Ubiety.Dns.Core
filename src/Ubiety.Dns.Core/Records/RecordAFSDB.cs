@@ -1,4 +1,7 @@
-using System;
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
 
 namespace Ubiety.Dns.Core.Records
 {

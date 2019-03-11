@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
