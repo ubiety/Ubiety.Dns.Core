@@ -7,6 +7,7 @@ using Nuke.Common.Tools.CoverallsNet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.DotNetSonarScanner;
+using Nuke.Common.Utilities;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
@@ -40,6 +41,8 @@ class Build : NukeBuild
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+
+    readonly string MasterBranch = "master";
 
     Target Clean => _ => _
         .Before(Restore)
@@ -133,6 +136,9 @@ class Build : NukeBuild
 
     Target Publish => _ => _
         .DependsOn(Pack)
+        .Requires(() => NuGetKey)
+        .Requires(() => Configuration.Equals(Configuration.Release))
+        .Requires(() => GitRepository.Branch.EqualsOrdinalIgnoreCase(MasterBranch))
         .Executes(() =>
         {
             DotNetNuGetPush(s => s
