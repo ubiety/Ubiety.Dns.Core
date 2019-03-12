@@ -85,7 +85,7 @@ class Build : NukeBuild
         });
 
     Target SonarEnd => _ => _
-        .After(Compile)
+        .After(Test)
         .Requires(() => SonarKey)
         .Unlisted()
         .Executes(() =>
@@ -95,7 +95,7 @@ class Build : NukeBuild
         });
 
     Target Sonar => _ => _
-        .DependsOn(SonarBegin, Test, SonarEnd);
+        .DependsOn(SonarBegin, Coverage, SonarEnd);
 
     Target Test => _ => _
         .DependsOn(Compile)
@@ -112,9 +112,11 @@ class Build : NukeBuild
         });
 
     Target Coverage => _ => _
+        .DependsOn(Test)
         .Executes(() =>
         {
             CoverallsNet(s => s
-                .SetOpenCover(true));
+                .SetOpenCover(true)
+                .SetInput(ArtifactsDirectory / "coverage.opencover.xml"));
         });
 }

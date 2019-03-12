@@ -9,6 +9,8 @@ environment:
     secure: u3sH5Rwmc8zeqtB33llZiMi5bSrB1wy7xlTk4px5OMnRu0WEDzpsDe0y14e0un18
   NuGetKey:
     secure: f/oEZedvaPFnnyih3qfwV0G1p9mKfZNpla+8/tkjmOzhKAuFsb+56DurMR2vxW3n
+  COVERALLS_REPO_TOKEN:
+    secure: pmewtxEuv8kMwIMIpzrxUgLtEK8DEf90Iu96AiDjXwMObZAaI7ZTByXRZRp5dYYJ
 
 init:
   - ps: dotnet tool install --global dotnet-sonarscanner
