@@ -83,7 +83,7 @@ namespace Ubiety.Dns.Core
             Class = (OperationClass)rr.ReadUInt16();
             Ttl = rr.ReadUInt32();
             RecordLength = rr.ReadUInt16();
-            Record = rr.ReadRecord(Type);
+            Record = rr.ReadRecord(Type, RecordLength);
             Record.ResourceRecord = this;
         }
 

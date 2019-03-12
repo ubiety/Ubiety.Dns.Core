@@ -19,6 +19,9 @@ depends on the domain where it is found.
  *
 */
 
+using System.Collections.Generic;
+using System.Text;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -30,15 +33,21 @@ namespace Ubiety.Dns.Core.Records
         ///     Initializes a new instance of the <see cref="RecordTxt" /> class.
         /// </summary>
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordTxt(RecordReader rr)
+        /// <param name="length">Record length.</param>
+        public RecordTxt(RecordReader rr, int length)
         {
-            Text = rr.ReadString();
+            var position = rr.Position;
+            Text = new List<string>();
+            while ((rr.Position - position) < length)
+            {
+                Text.Add(rr.ReadString());
+            }
         }
 
         /// <summary>
-        ///     Gets or sets the text.
+        ///     Gets the text.
         /// </summary>
-        public string Text { get; set; }
+        public List<string> Text { get; }
 
         /// <summary>
         ///     String representation of the record data.
@@ -46,7 +55,13 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Text as a string.</returns>
         public override string ToString()
         {
-            return $"\"{Text}\"";
+            var sb = new StringBuilder();
+            foreach (var item in Text)
+            {
+                sb.Append(item);
+            }
+
+            return sb.ToString().TrimEnd();
         }
     }
 }
