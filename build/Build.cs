@@ -119,4 +119,7 @@ class Build : NukeBuild
                 .SetOpenCover(true)
                 .SetInput(ArtifactsDirectory / "coverage.opencover.xml"));
         });
+
+    Target Complete => _ => _
+        .DependsOn(Clean, Sonar);
 }

@@ -12,9 +12,6 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: pmewtxEuv8kMwIMIpzrxUgLtEK8DEf90Iu96AiDjXwMObZAaI7ZTByXRZRp5dYYJ
 
-init:
-  - ps: dotnet tool install --global dotnet-sonarscanner
-
 build_script:
   - ps: .\build.ps1 sonar
 
