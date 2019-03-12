@@ -122,6 +122,7 @@ class Build : NukeBuild
         });
 
     Target Pack => _ => _
+        .After(SonarEnd)
         .DependsOn(Test)
         .Executes(() =>
         {
@@ -136,7 +137,7 @@ class Build : NukeBuild
         {
             DotNetNuGetPush(s => s
                 .SetApiKey(NuGetKey)
-                .SetSource("https://api.nuget.com/v3/index.json")
+                .SetSource("https://api.nuget.org/v3/index.json")
                 .CombineWith(
                     ArtifactsDirectory.GlobFiles("*.nupkg").NotEmpty(), (cs, v) => cs.SetTargetPath(v)),
                 5,
