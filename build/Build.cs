@@ -24,12 +24,13 @@ class Build : NukeBuild
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main () => Execute<Build>(x => x.Compile);
+    public static int Main () => Execute<Build>(x => x.Complete);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter] readonly string SonarKey;
+    [Parameter] readonly string NuGetKey;
     [Parameter] readonly bool? Cover = true;
 
     [Solution] readonly Solution Solution;
@@ -95,7 +96,7 @@ class Build : NukeBuild
         });
 
     Target Sonar => _ => _
-        .DependsOn(SonarBegin, Coverage, SonarEnd);
+        .DependsOn(SonarBegin, Test, SonarEnd);
 
     Target Test => _ => _
         .DependsOn(Compile)
@@ -120,6 +121,28 @@ class Build : NukeBuild
                 .SetInput(ArtifactsDirectory / "coverage.opencover.xml"));
         });
 
+    Target Pack => _ => _
+        .DependsOn(Test)
+        .Executes(() =>
+        {
+            DotNetPack(s => s
+                .SetOutputDirectory(ArtifactsDirectory)
+                .SetVersion(GitVersion.NuGetVersionV2));
+        });
+
+    Target Publish => _ => _
+        .DependsOn(Pack)
+        .Executes(() =>
+        {
+            DotNetNuGetPush(s => s
+                .SetApiKey(NuGetKey)
+                .SetSource("https://api.nuget.com/v3/index.json")
+                .CombineWith(
+                    ArtifactsDirectory.GlobFiles("*.nupkg").NotEmpty(), (cs, v) => cs.SetTargetPath(v)),
+                5,
+                true);
+        });
+
     Target Complete => _ => _
-        .DependsOn(Clean, Sonar);
+        .DependsOn(Clean, Sonar, Publish);
 }

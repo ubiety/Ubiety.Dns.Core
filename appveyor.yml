@@ -17,7 +17,7 @@ init:
   - ps: dotnet tool install --global coveralls.net
 
 build_script:
-  - ps: .\build.ps1 sonar
+  - ps: .\build.ps1
 
 test: off
 deploy: off
