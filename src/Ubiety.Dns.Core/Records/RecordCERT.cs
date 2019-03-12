@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 
@@ -18,16 +23,16 @@ using System.Collections.Generic;
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Certificate DNS record
+    ///     Certificate DNS record.
     /// </summary>
     public class RecordCert : Record
     {
         private readonly byte[] _rawKey;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordCert" /> class
+        ///     Initializes a new instance of the <see cref="RecordCert" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordCert(RecordReader rr)
         {
             // re-read length
@@ -42,34 +47,34 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the record type
+        ///     Gets the record type.
         /// </summary>
         public ushort Type { get; }
 
         /// <summary>
-        ///     Gets the key tag
+        ///     Gets the key tag.
         /// </summary>
         public ushort KeyTag { get; }
 
         /// <summary>
-        ///     Gets the algorithm
+        ///     Gets the algorithm.
         /// </summary>
         public byte Algorithm { get; }
 
         /// <summary>
-        ///     Gets the public key
+        ///     Gets the public key.
         /// </summary>
         public string PublicKey { get; }
 
         /// <summary>
-        ///     Gets the raw key
+        ///     Gets the raw key.
         /// </summary>
         public List<byte> RawKey => new List<byte>(_rawKey);
 
         /// <summary>
-        ///     String version of the record
+        ///     String version of the record.
         /// </summary>
-        /// <returns>String of the public key</returns>
+        /// <returns>String of the public key.</returns>
         public override string ToString()
         {
             return PublicKey;

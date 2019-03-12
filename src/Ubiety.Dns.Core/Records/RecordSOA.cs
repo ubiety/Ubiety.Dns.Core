@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
 3.3.13. SOA RDATA format
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -68,14 +73,14 @@ change the SOA RR with known semantics.
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     DNS Start of Authority record
+    ///     DNS Start of Authority record.
     /// </summary>
     public class RecordSoa : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordSoa" /> class
+        ///     Initializes a new instance of the <see cref="RecordSoa" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordSoa(RecordReader rr)
         {
             PrimaryNameserver = rr.ReadDomainName();
@@ -88,44 +93,44 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the primary nameserver
+        ///     Gets or sets the primary nameserver.
         /// </summary>
         public string PrimaryNameserver { get; set; }
 
         /// <summary>
-        ///     Gets or sets the responsible domain
+        ///     Gets or sets the responsible domain.
         /// </summary>
         public string ResponsibleDomain { get; set; }
 
         /// <summary>
-        ///     Gets or sets the serial
+        ///     Gets or sets the serial.
         /// </summary>
         public uint Serial { get; set; }
 
         /// <summary>
-        ///     Gets or sets the refresh interval
+        ///     Gets or sets the refresh interval.
         /// </summary>
         public uint Refresh { get; set; }
 
         /// <summary>
-        ///     Gets or sets the retry interval
+        ///     Gets or sets the retry interval.
         /// </summary>
         public uint Retry { get; set; }
 
         /// <summary>
-        ///     Gets or sets the expiration time
+        ///     Gets or sets the expiration time.
         /// </summary>
         public uint Expire { get; set; }
 
         /// <summary>
-        ///     Gets or sets the minimum TTL
+        ///     Gets or sets the minimum TTL.
         /// </summary>
         public uint Minimum { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Record data as the string</returns>
+        /// <returns>Record data as the string.</returns>
         public override string ToString()
         {
             return $"{PrimaryNameserver} {ResponsibleDomain} {Serial} {Refresh} {Retry} {Expire} {Minimum}";

@@ -1,7 +1,12 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     DNS question type
+    ///     DNS question type.
     /// </summary>
     public enum QuestionType
     {
@@ -333,6 +338,6 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     DNSSEC lookaside validation
         /// </summary>
-        DLV = RecordType.DLV
+        DLV = RecordType.DLV,
     }
 }

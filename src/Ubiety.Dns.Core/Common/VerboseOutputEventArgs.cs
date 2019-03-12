@@ -1,23 +1,28 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Event args for verbose output
+    ///     Event args for verbose output.
     /// </summary>
     public class VerboseOutputEventArgs : EventArgs
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="VerboseOutputEventArgs" /> class
+        ///     Initializes a new instance of the <see cref="VerboseOutputEventArgs" /> class.
         /// </summary>
-        /// <param name="message">Message to output</param>
+        /// <param name="message">Message to output.</param>
         public VerboseOutputEventArgs(string message)
         {
             Message = message;
         }
 
         /// <summary>
-        ///     Gets the string message
+        ///     Gets the string message.
         /// </summary>
         public string Message { get; }
     }

@@ -1,7 +1,12 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
     /// <summary>
-    ///     Historic IPv6 record lookup
+    ///     Historic IPv6 record lookup.
     /// </summary>
     /// <remarks>
     ///     > [!WARNING]
@@ -23,14 +28,14 @@ namespace Ubiety.Dns.Core.Records.NotUsed
     ///     to 7 leading pad bits to make this field an integral number of
     ///     octets. Pad bits, if present, MUST be set to zero when loading a
     ///     zone file and ignored.
-    ///     ```
+    ///     ```.
     /// </remarks>
     public class RecordA6 : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordA6" /> class
+        ///     Initializes a new instance of the <see cref="RecordA6" /> class.
         /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordA6(RecordReader reader)
             : base(reader)
         {

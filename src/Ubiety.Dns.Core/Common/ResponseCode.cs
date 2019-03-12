@@ -1,7 +1,12 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     DNS Server response code
+    ///     DNS Server response code.
     /// </summary>
     public enum ResponseCode
     {
@@ -118,6 +123,6 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     Bad truncation
         /// </summary>
-        BADTRUNC = 22
+        BADTRUNC = 22,
     }
 }

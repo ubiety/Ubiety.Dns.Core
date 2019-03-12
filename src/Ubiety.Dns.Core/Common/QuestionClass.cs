@@ -1,9 +1,14 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Question class
+    ///     Question class.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1717", Justification = "Class is not plural")]
     public enum QuestionClass
@@ -31,6 +36,6 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     Any question class
         /// </summary>
-        Any = 255
+        Any = 255,
     }
 }

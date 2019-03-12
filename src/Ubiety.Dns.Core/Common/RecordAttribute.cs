@@ -1,24 +1,29 @@
-﻿using System;
+﻿/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+using System;
 
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Record attribute
+    ///     Record attribute.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class RecordAttribute : Attribute
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAttribute"/> class.
         /// </summary>
-        /// <param name="record">Record to use</param>
+        /// <param name="record">Record to use.</param>
         public RecordAttribute(Type record)
         {
             RecordType = record;
         }
 
         /// <summary>
-        ///     Gets the record type
+        ///     Gets the record type.
         /// </summary>
         public Type RecordType { get; }
     }

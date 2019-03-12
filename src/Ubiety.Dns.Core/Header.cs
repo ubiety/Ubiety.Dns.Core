@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -6,7 +11,7 @@ using Ubiety.Dns.Core.Common;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS Record header
+    ///     DNS Record header.
     /// </summary>
     public class Header
     {
@@ -14,16 +19,16 @@ namespace Ubiety.Dns.Core
         private ushort _flags;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Header" /> class
+        ///     Initializes a new instance of the <see cref="Header" /> class.
         /// </summary>
         public Header()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Header" /> class
+        ///     Initializes a new instance of the <see cref="Header" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record</param>
+        /// <param name="rr"><see cref="RecordReader" /> of the record.</param>
         public Header(RecordReader rr)
         {
             Id = rr.ReadUInt16();
@@ -35,32 +40,32 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the unique identifier of the record
+        ///     Gets or sets the unique identifier of the record.
         /// </summary>
         public ushort Id { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of questions in the record
+        ///     Gets or sets the number of questions in the record.
         /// </summary>
         public ushort QuestionCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of answers in the record
+        ///     Gets or sets the number of answers in the record.
         /// </summary>
         public ushort AnswerCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of name servers in the record
+        ///     Gets or sets the number of name servers in the record.
         /// </summary>
         public ushort NameserverCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of additional records in the record
+        ///     Gets or sets the number of additional records in the record.
         /// </summary>
         public ushort AdditionalRecordsCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the record is a query or response
+        ///     Gets or sets a value indicating whether the record is a query or response.
         /// </summary>
         public bool QueryResponse
         {
@@ -69,7 +74,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the record opcode flag
+        ///     Gets or sets the record opcode flag.
         /// </summary>
         public OperationCode OpCode
         {
@@ -78,7 +83,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the record is an authoritative answer
+        ///     Gets or sets a value indicating whether the record is an authoritative answer.
         /// </summary>
         public bool AuthoritativeAnswer
         {
@@ -87,7 +92,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the truncation flag is set
+        ///     Gets or sets a value indicating whether the truncation flag is set.
         /// </summary>
         public bool Truncation
         {
@@ -96,7 +101,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the recursion flag is set
+        ///     Gets or sets a value indicating whether the recursion flag is set.
         /// </summary>
         public bool Recursion
         {
@@ -105,7 +110,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the recursion available flag is set
+        ///     Gets or sets a value indicating whether the recursion available flag is set.
         /// </summary>
         public bool RA
         {
@@ -114,7 +119,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a record reserved flag
+        ///     Gets or sets a record reserved flag.
         /// </summary>
         public ushort Z
         {
@@ -123,7 +128,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the record response code
+        ///     Gets or sets the record response code.
         /// </summary>
         public ResponseCode ResponseCode
         {
@@ -132,9 +137,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the header as a byte array
+        ///     Gets the header as a byte array.
         /// </summary>
-        /// <returns>Byte array of the header data</returns>
+        /// <returns>Byte array of the header data.</returns>
         public IEnumerable<byte> GetData()
         {
             var data = new List<byte>();

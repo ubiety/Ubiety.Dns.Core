@@ -1,9 +1,14 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Net;
 
 namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
-    ///     IPv6 Address record
+    ///     IPv6 Address record.
     /// </summary>
     /// <remarks>
     ///     # [Description](#tab/description)
@@ -13,14 +18,14 @@ namespace Ubiety.Dns.Core.Records.General
     ///     ```
     ///     A 128 bit IPv6 address is encoded in the data portion of an AAAA
     ///     resource record in network byte order (high-order byte first)
-    ///     ```
+    ///     ```.
     /// </remarks>
     public class RecordAaaa : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAaaa" /> class.
         /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordAaaa(RecordReader reader)
         {
             Address = IPAddress.Parse(
@@ -28,15 +33,15 @@ namespace Ubiety.Dns.Core.Records.General
         }
 
         /// <summary>
-        ///     Gets the IP address of the record
+        ///     Gets the IP address of the record.
         /// </summary>
-        /// <value>IP address of the AAAA record</value>
+        /// <value>IP address of the AAAA record.</value>
         public IPAddress Address { get; }
 
         /// <summary>
-        ///     String version of the record
+        ///     String version of the record.
         /// </summary>
-        /// <returns>String of the address</returns>
+        /// <returns>String of the address.</returns>
         public override string ToString()
         {
             return Address.ToString();

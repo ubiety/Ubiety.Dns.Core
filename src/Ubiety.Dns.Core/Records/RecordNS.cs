@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  3.3.11. NS RDATA format
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -26,28 +31,28 @@ class information are normally queried using IN class protocols.
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Nameserver DNS record
+    ///     Nameserver DNS record.
     /// </summary>
     public class RecordNs : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNs" /> class
+        ///     Initializes a new instance of the <see cref="RecordNs" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNs(RecordReader rr)
         {
             NameserverDomain = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the nameserver domain
+        ///     Gets or sets the nameserver domain.
         /// </summary>
         public string NameserverDomain { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Nameserver domain as a string</returns>
+        /// <returns>Nameserver domain as a string.</returns>
         public override string ToString()
         {
             return NameserverDomain;

@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
@@ -35,16 +40,16 @@ using System.Text;
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Network service access point DNS record
+    ///     Network service access point DNS record.
     /// </summary>
     public class RecordNsap : Record
     {
         private readonly byte[] _address;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNsap" /> class
+        ///     Initializes a new instance of the <see cref="RecordNsap" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNsap(RecordReader rr)
         {
             Length = rr.ReadUInt16();
@@ -52,19 +57,19 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the length
+        ///     Gets or sets the length.
         /// </summary>
         public ushort Length { get; set; }
 
         /// <summary>
-        ///     Gets the address as a byte collection
+        ///     Gets the address as a byte collection.
         /// </summary>
         public Collection<byte> NsapAddress => new Collection<byte>(_address);
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>NSAP address as a string</returns>
+        /// <returns>NSAP address as a string.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -78,9 +83,9 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Converts the address to a readable string
+        ///     Converts the address to a readable string.
         /// </summary>
-        /// <returns>String of the address in IPv2 format</returns>
+        /// <returns>String of the address in IPv2 format.</returns>
         public string ToGOSIPV2()
         {
             return string.Format(

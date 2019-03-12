@@ -1,38 +1,43 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Collections.Generic;
 using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS request
+    ///     DNS request.
     /// </summary>
     public class Request
     {
         private readonly List<Question> _questions;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Request" /> class
+        ///     Initializes a new instance of the <see cref="Request" /> class.
         /// </summary>
         public Request()
         {
             Header = new Header
             {
                 OpCode = OperationCode.Query,
-                QuestionCount = 0
+                QuestionCount = 0,
             };
 
             _questions = new List<Question>();
         }
 
         /// <summary>
-        ///     Gets the DNS record header
+        ///     Gets the DNS record header.
         /// </summary>
         public Header Header { get; }
 
         /// <summary>
-        ///     Gets the request as a byte array
+        ///     Gets the request as a byte array.
         /// </summary>
-        /// <returns>Byte array of the data</returns>
+        /// <returns>Byte array of the data.</returns>
         public byte[] GetData()
         {
             var data = new List<byte>();
@@ -47,9 +52,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Add a question to the request
+        ///     Add a question to the request.
         /// </summary>
-        /// <param name="question">Question to add to the request</param>
+        /// <param name="question">Question to add to the request.</param>
         public void AddQuestion(Question question)
         {
             _questions.Add(question);

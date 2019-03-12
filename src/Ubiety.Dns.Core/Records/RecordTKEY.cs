@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -26,7 +31,7 @@ Other Data:  octet-stream  undefined by this specification
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Transaction key DNS resource record
+    ///     Transaction key DNS resource record.
     /// </summary>
     public class RecordTkey : Record
     {
@@ -34,9 +39,9 @@ namespace Ubiety.Dns.Core.Records
         private readonly byte[] _otherData;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordTkey" /> class
+        ///     Initializes a new instance of the <see cref="RecordTkey" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordTkey(RecordReader rr)
         {
             Algorithm = rr.ReadDomainName();
@@ -51,54 +56,54 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the key algorithm
+        ///     Gets the key algorithm.
         /// </summary>
         public string Algorithm { get; }
 
         /// <summary>
-        ///     Gets the inception time of the key
+        ///     Gets the inception time of the key.
         /// </summary>
         public uint Inception { get; }
 
         /// <summary>
-        ///     Gets the expiration time of the key
+        ///     Gets the expiration time of the key.
         /// </summary>
         public uint Expiration { get; }
 
         /// <summary>
-        ///     Gets the key agreement mode
+        ///     Gets the key agreement mode.
         /// </summary>
         public ushort Mode { get; }
 
         /// <summary>
-        ///     Gets the error code of the record
+        ///     Gets the error code of the record.
         /// </summary>
         public ushort Error { get; }
 
         /// <summary>
-        ///     Gets the key size from the record
+        ///     Gets the key size from the record.
         /// </summary>
         public ushort KeySize { get; }
 
         /// <summary>
-        ///     Gets the key data
+        ///     Gets the key data.
         /// </summary>
         public List<byte> KeyData => new List<byte>(_keyData);
 
         /// <summary>
-        ///     Gets the other size from the record (Future use)
+        ///     Gets the other size from the record (Future use).
         /// </summary>
         public ushort OtherSize { get; }
 
         /// <summary>
-        ///     Gets the other data from the record (Future use)
+        ///     Gets the other data from the record (Future use).
         /// </summary>
         public List<byte> OtherData => new List<byte>(_otherData);
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Key data as a string</returns>
+        /// <returns>Key data as a string.</returns>
         public override string ToString()
         {
             return string.Format(

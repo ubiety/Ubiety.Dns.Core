@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  *
 3.3.5. MF RDATA format (Obsolete)
 
@@ -26,28 +31,28 @@ using System;
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
-    ///     Mail forwarder record (Obsolete - use MX)
+    ///     Mail forwarder record (Obsolete - use MX).
     /// </summary>
     public class RecordMf : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMf" /> class
+        ///     Initializes a new instance of the <see cref="RecordMf" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordMf(RecordReader rr)
         {
             MadName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets the mail domain
+        ///     Gets the mail domain.
         /// </summary>
         public string MadName { get; }
 
         /// <summary>
-        ///     String representation of the record
+        ///     String representation of the record.
         /// </summary>
-        /// <returns>String of the mail domain</returns>
+        /// <returns>String of the mail domain.</returns>
         public override string ToString()
         {
             return MadName;

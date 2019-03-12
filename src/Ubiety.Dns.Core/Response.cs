@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -8,12 +13,12 @@ using Ubiety.Dns.Core.Records.Mail;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS response
+    ///     DNS response.
     /// </summary>
     public class Response
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Response" /> class
+        ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
         public Response()
         {
@@ -30,10 +35,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Response" /> class
+        ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
-        /// <param name="iPEndPoint">Address of the response</param>
-        /// <param name="data">Response data</param>
+        /// <param name="iPEndPoint">Address of the response.</param>
+        /// <param name="data">Response data.</param>
         public Response(IPEndPoint iPEndPoint, byte[] data)
         {
             Error = string.Empty;
@@ -71,52 +76,52 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the list of question records
+        ///     Gets the list of question records.
         /// </summary>
         public List<Question> Questions { get; }
 
         /// <summary>
-        ///     Gets the list of answer resource records
+        ///     Gets the list of answer resource records.
         /// </summary>
         public List<AnswerRR> Answers { get; }
 
         /// <summary>
-        ///     Gets the list of authority resource records
+        ///     Gets the list of authority resource records.
         /// </summary>
         public List<AuthorityRR> Authorities { get; }
 
         /// <summary>
-        ///     Gets the list of additional resource records
+        ///     Gets the list of additional resource records.
         /// </summary>
         public List<AdditionalRR> Additionals { get; }
 
         /// <summary>
-        ///     Gets the response header
+        ///     Gets the response header.
         /// </summary>
         public Header Header { get; }
 
         /// <summary>
-        ///     Gets or sets the error message, empty when no error
+        ///     Gets or sets the error message, empty when no error.
         /// </summary>
         public string Error { get; set; }
 
         /// <summary>
-        ///     Gets or sets the size of the message
+        ///     Gets or sets the size of the message.
         /// </summary>
         public int MessageSize { get; set; }
 
         /// <summary>
-        ///     Gets the timestamp when cached
+        ///     Gets the timestamp when cached.
         /// </summary>
         public DateTime TimeStamp { get; }
 
         /// <summary>
-        ///     Gets the server which delivered this response
+        ///     Gets the server which delivered this response.
         /// </summary>
         public IPEndPoint Server { get; }
 
         /// <summary>
-        ///     Gets a list of MX records in the answers
+        ///     Gets a list of MX records in the answers.
         /// </summary>
         public List<RecordMx> RecordMx
         {
@@ -138,7 +143,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of TXT records in the answers
+        ///     Gets a list of TXT records in the answers.
         /// </summary>
         public List<RecordTxt> RecordTxt
         {
@@ -158,7 +163,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of A records in the answers
+        ///     Gets a list of A records in the answers.
         /// </summary>
         public List<RecordA> RecordA
         {
@@ -178,7 +183,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of PTR records from the answers
+        ///     Gets a list of PTR records from the answers.
         /// </summary>
         public List<RecordPtr> RecordPtr
         {
@@ -198,7 +203,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of CNAME records from the answers
+        ///     Gets a list of CNAME records from the answers.
         /// </summary>
         public List<RecordCname> RecordCname
         {
@@ -218,7 +223,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of AAAA records in the answers
+        ///     Gets a list of AAAA records in the answers.
         /// </summary>
         public List<RecordAaaa> RecordAaaa
         {
@@ -238,7 +243,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of NS records in the answers
+        ///     Gets a list of NS records in the answers.
         /// </summary>
         public List<RecordNs> RecordNs
         {
@@ -258,7 +263,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of SOA records in the answers
+        ///     Gets a list of SOA records in the answers.
         /// </summary>
         public List<RecordSoa> RecordSoa
         {
@@ -278,7 +283,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of CERT records in the answers
+        ///     Gets a list of CERT records in the answers.
         /// </summary>
         public List<RecordCert> RecordCert
         {
@@ -298,7 +303,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of SRV records in the answers
+        ///     Gets a list of SRV records in the answers.
         /// </summary>
         public List<RecordSrv> RecordSrv
         {
@@ -318,7 +323,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of resource records in the answers
+        ///     Gets a list of resource records in the answers.
         /// </summary>
         public IEnumerable<ResourceRecord> ResourceRecords
         {

@@ -1,7 +1,12 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     DNS Record OpCode
+    ///     DNS Record OpCode.
     /// </summary>
     public enum OperationCode
     {
@@ -83,6 +88,6 @@ namespace Ubiety.Dns.Core.Common
         /// <summary>
         ///     Reserved
         /// </summary>
-        RESERVED15 = 15
+        RESERVED15 = 15,
     }
 }

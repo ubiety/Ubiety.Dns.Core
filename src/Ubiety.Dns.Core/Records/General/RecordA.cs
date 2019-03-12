@@ -1,9 +1,14 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Net;
 
 namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
-    ///     IPv4 Address DNS record
+    ///     IPv4 Address DNS record.
     /// </summary>
     /// <remarks>
     ///     # [Description](#tab/description)
@@ -19,29 +24,29 @@ namespace Ubiety.Dns.Core.Records.General
     ///     ADDRESS     A 32 bit internet address
     ///     Hosts that have multiple internet address will have multiple A
     ///     records.
-    ///     ```
+    ///     ```.
     /// </remarks>
     public class RecordA : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordA" /> class.
         /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordA(RecordReader reader)
         {
             Address = IPAddress.Parse($"{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}");
         }
 
         /// <summary>
-        ///     Gets the IP address
+        ///     Gets the IP address.
         /// </summary>
-        /// <value>IP address of the A record</value>
+        /// <value>IP address of the A record.</value>
         public IPAddress Address { get; }
 
         /// <summary>
-        ///     String representation of the address
+        ///     String representation of the address.
         /// </summary>
-        /// <returns>String of the IP address</returns>
+        /// <returns>String of the IP address.</returns>
         public override string ToString()
         {
             return Address.ToString();

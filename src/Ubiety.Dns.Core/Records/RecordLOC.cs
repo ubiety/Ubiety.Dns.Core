@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Globalization;
 using System.Text;
 
@@ -99,14 +104,14 @@ ALTITUDE     The altitude of the center of the sphere described by the
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     DNS location recod
+    ///     DNS location recod.
     /// </summary>
     public class RecordLoc : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordLoc" /> class
+        ///     Initializes a new instance of the <see cref="RecordLoc" /> class.
         /// </summary>
-        /// <param name="rr">Record reader of the record data</param>
+        /// <param name="rr">Record reader of the record data.</param>
         public RecordLoc(RecordReader rr)
         {
             Version = rr.ReadByte(); // must be 0!
@@ -119,44 +124,44 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the version of the representation
+        ///     Gets the version of the representation.
         /// </summary>
         public byte Version { get; }
 
         /// <summary>
-        ///     Gets the diameter of the sphere enclosing the entity
+        ///     Gets the diameter of the sphere enclosing the entity.
         /// </summary>
         public byte Size { get; }
 
         /// <summary>
-        ///     Gets the horizontal precision of the data
+        ///     Gets the horizontal precision of the data.
         /// </summary>
         public byte HorizontalPrecision { get; }
 
         /// <summary>
-        ///     Gets the vertical precision or the data
+        ///     Gets the vertical precision or the data.
         /// </summary>
         public byte VerticalPrecision { get; }
 
         /// <summary>
-        ///     Gets the latitude of the location
+        ///     Gets the latitude of the location.
         /// </summary>
         public uint Latitude { get; }
 
         /// <summary>
-        ///     Gets the longitude of the location
+        ///     Gets the longitude of the location.
         /// </summary>
         public uint Longitude { get; }
 
         /// <summary>
-        ///     Gets the altitude of the location
+        ///     Gets the altitude of the location.
         /// </summary>
         public uint Altitude { get; }
 
         /// <summary>
-        ///     Gets a string of the location
+        ///     Gets a string of the location.
         /// </summary>
-        /// <returns>String of the location</returns>
+        /// <returns>String of the location.</returns>
         public override string ToString()
         {
             return string.Format(

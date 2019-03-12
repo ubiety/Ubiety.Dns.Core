@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -49,16 +54,16 @@ or decimal numbers.
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     DNS well known services record
+    ///     DNS well known services record.
     /// </summary>
     public class RecordWks : Record
     {
         private readonly byte[] _bitmap;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordWks" /> class
+        ///     Initializes a new instance of the <see cref="RecordWks" /> class.
         /// </summary>
-        /// <param name="rr">Record reader for record data</param>
+        /// <param name="rr">Record reader for record data.</param>
         public RecordWks(RecordReader rr)
         {
             var length = rr.ReadUInt16(-2);
@@ -76,24 +81,24 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the address of the server
+        ///     Gets or sets the address of the server.
         /// </summary>
         public string Address { get; set; }
 
         /// <summary>
-        ///     Gets or sets the protocol of the service
+        ///     Gets or sets the protocol of the service.
         /// </summary>
         public int Protocol { get; set; }
 
         /// <summary>
-        ///     Gets the service bitmap
+        ///     Gets the service bitmap.
         /// </summary>
         public Collection<byte> Bitmap => new Collection<byte>(_bitmap);
 
         /// <summary>
-        ///     Return a string of the well known service record
+        ///     Return a string of the well known service record.
         /// </summary>
-        /// <returns>String of the record</returns>
+        /// <returns>String of the record.</returns>
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "{0} {1}", Address, Protocol);

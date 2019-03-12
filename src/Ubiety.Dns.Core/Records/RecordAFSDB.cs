@@ -1,9 +1,12 @@
-using System;
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
 
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     DNS AFSDB Record
+    ///     DNS AFSDB Record.
     /// </summary>
     /// <remarks>
     ///     # [Description](#tab/description)
@@ -25,14 +28,14 @@ namespace Ubiety.Dns.Core.Records
     ///     [owner] [ttl] [class] AFSDB [subtype] [hostname]
     ///     Both RDATA fields are required in all AFSDB RRs. The [subtype] field
     ///     is a 16 bit integer. The [hostname] field is a domain name of a host
-    ///     that has a server for the cell named by the owner name of the RR
+    ///     that has a server for the cell named by the owner name of the RR.
     /// </remarks>
     public class RecordAfsdb : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAfsdb" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordAfsdb(RecordReader rr)
         {
             SubType = rr.ReadUInt16();
@@ -40,21 +43,21 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the subtype
+        ///     Gets the subtype.
         /// </summary>
-        /// <value>AFSDB subtype as an unsigned short</value>
+        /// <value>AFSDB subtype as an unsigned short.</value>
         public ushort SubType { get; }
 
         /// <summary>
-        ///     Gets the hostname
+        ///     Gets the hostname.
         /// </summary>
-        /// <value>AFSDB hostname as a string</value>
+        /// <value>AFSDB hostname as a string.</value>
         public string Hostname { get; }
 
         /// <summary>
-        ///     String representation of the record
+        ///     String representation of the record.
         /// </summary>
-        /// <returns>String version of the data</returns>
+        /// <returns>String version of the data.</returns>
         public override string ToString()
         {
             return $"{SubType}{Hostname}";

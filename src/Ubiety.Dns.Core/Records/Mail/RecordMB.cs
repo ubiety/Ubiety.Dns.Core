@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
 3.3.3. MB RDATA format (EXPERIMENTAL)
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -18,28 +23,28 @@ RRs corresponding to MADNAME.
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
-    ///     Mailbox DNS record
+    ///     Mailbox DNS record.
     /// </summary>
     public class RecordMb : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMb" /> class
+        ///     Initializes a new instance of the <see cref="RecordMb" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordMb(RecordReader rr)
         {
             MadName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets the mailbox domain
+        ///     Gets the mailbox domain.
         /// </summary>
         public string MadName { get; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>String version of the domain</returns>
+        /// <returns>String version of the domain.</returns>
         public override string ToString()
         {
             return MadName;

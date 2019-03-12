@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,7 +31,7 @@ using System.Globalization;
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Transaction signature DNS record
+    ///     Transaction signature DNS record.
     /// </summary>
     public class RecordTsig : Record
     {
@@ -34,9 +39,9 @@ namespace Ubiety.Dns.Core.Records
         private readonly byte[] _otherData;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordTsig" /> class
+        ///     Initializes a new instance of the <see cref="RecordTsig" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordTsig(RecordReader rr)
         {
             AlgorithmName = rr.ReadDomainName();
@@ -51,54 +56,54 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the algorithm name
+        ///     Gets or sets the algorithm name.
         /// </summary>
         public string AlgorithmName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the time signed
+        ///     Gets or sets the time signed.
         /// </summary>
         public long TimeSigned { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of seconds of error
+        ///     Gets or sets the number of seconds of error.
         /// </summary>
         public ushort Fudge { get; set; }
 
         /// <summary>
-        ///     Gets or sets the MAC size
+        ///     Gets or sets the MAC size.
         /// </summary>
         public ushort MacSize { get; set; }
 
         /// <summary>
-        ///     Gets the MAC
+        ///     Gets the MAC.
         /// </summary>
         public List<byte> Mac => new List<byte>(_mac);
 
         /// <summary>
-        ///     Gets or sets the original id
+        ///     Gets or sets the original id.
         /// </summary>
         public ushort OriginalId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the record error
+        ///     Gets or sets the record error.
         /// </summary>
         public ushort Error { get; set; }
 
         /// <summary>
-        ///     Gets or sets the length of other data
+        ///     Gets or sets the length of other data.
         /// </summary>
         public ushort OtherLength { get; set; }
 
         /// <summary>
-        ///     Gets the other record data
+        ///     Gets the other record data.
         /// </summary>
         public List<byte> OtherData => new List<byte>(_otherData);
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Signature as a string</returns>
+        /// <returns>Signature as a string.</returns>
         public override string ToString()
         {
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);

@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 /* http://tools.ietf.org/rfc/rfc1183.txt
 
 3.1. The X25 RR
@@ -32,28 +37,28 @@
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     X25 DNS record
+    ///     X25 DNS record.
     /// </summary>
     public class RecordX25 : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordX25" /> class
+        ///     Initializes a new instance of the <see cref="RecordX25" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordX25(RecordReader rr)
         {
             PSDNAdress = rr.ReadString();
         }
 
         /// <summary>
-        ///     Gets or sets the PSDN address
+        ///     Gets or sets the PSDN address.
         /// </summary>
         public string PSDNAdress { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>PSDN address as a string</returns>
+        /// <returns>PSDN address as a string.</returns>
         public override string ToString()
         {
             return PSDNAdress;

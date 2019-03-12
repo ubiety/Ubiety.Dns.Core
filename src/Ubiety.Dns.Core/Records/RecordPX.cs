@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://tools.ietf.org/rfc/rfc2163.txt
  *
 4. The new DNS resource record for MIXER mapping rules: PX
@@ -70,14 +75,14 @@
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     PX DNS record
+    ///     PX DNS record.
     /// </summary>
     public class RecordPx : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordPx" /> class
+        ///     Initializes a new instance of the <see cref="RecordPx" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordPx(RecordReader rr)
         {
             Preference = rr.ReadUInt16();
@@ -86,24 +91,24 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the preference
+        ///     Gets or sets the preference.
         /// </summary>
         public ushort Preference { get; set; }
 
         /// <summary>
-        ///     Gets or sets the map to 822
+        ///     Gets or sets the map to 822.
         /// </summary>
         public string Map822 { get; set; }
 
         /// <summary>
-        ///     Gets or sets the map to X.400
+        ///     Gets or sets the map to X.400.
         /// </summary>
         public string MapX400 { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Mappings as a string</returns>
+        /// <returns>Mappings as a string.</returns>
         public override string ToString()
         {
             return $"{Preference} {Map822} {MapX400}";

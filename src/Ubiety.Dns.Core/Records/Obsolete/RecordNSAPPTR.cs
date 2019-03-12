@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://tools.ietf.org/rfc/rfc1348.txt
 
  * The NSAP-PTR RR
@@ -42,28 +47,28 @@ using System;
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
-    ///     NSAP PTR DNS Record
+    ///     NSAP PTR DNS Record.
     /// </summary>
     public class RecordNsapPtr : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNsapPtr" /> class
+        ///     Initializes a new instance of the <see cref="RecordNsapPtr" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNsapPtr(RecordReader rr)
         {
             Owner = rr.ReadString();
         }
 
         /// <summary>
-        ///     Gets the owner
+        ///     Gets the owner.
         /// </summary>
         public string Owner { get; }
 
         /// <summary>
-        ///     String representation of the record
+        ///     String representation of the record.
         /// </summary>
-        /// <returns>String version of the data</returns>
+        /// <returns>String version of the data.</returns>
         public override string ToString()
         {
             return Owner;

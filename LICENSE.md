@@ -1,8 +1,8 @@
 The MIT License (MIT)
 
-Copyright (c) 2008-2013 Alphons van der Heijden <avanderheijden@moneywise.nl>
-Copyright (c) 2014 Geoffrey Huntley <ghuntley@ghuntley.com>
-Copyright (c) 2018 Dieter Lunn <coder2000@gmail.com>
+- Copyright (c) 2008-2013 Alphons van der Heijden <avanderheijden@moneywise.nl>
+- Copyright (c) 2014 Geoffrey Huntley <ghuntley@ghuntley.com>
+- Copyright (c) 2018 Dieter Lunn <coder2000@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

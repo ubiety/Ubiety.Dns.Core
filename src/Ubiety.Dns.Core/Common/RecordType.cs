@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.General;
 using Ubiety.Dns.Core.Records.Mail;
@@ -7,7 +12,7 @@ using Ubiety.Dns.Core.Records.Obsolete;
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     DNS record type
+    ///     DNS record type.
     /// </summary>
     public enum RecordType
     {
@@ -375,6 +380,6 @@ namespace Ubiety.Dns.Core.Common
         ///     DNSSEC lookaside validation
         /// </summary>
         [Record(typeof(RecordUnknown))]
-        DLV = 32769
+        DLV = 32769,
     }
 }

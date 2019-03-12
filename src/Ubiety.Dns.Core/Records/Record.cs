@@ -1,9 +1,14 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Collections.Generic;
 
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Abstract record
+    ///     Abstract record.
     /// </summary>
     public abstract class Record
     {
@@ -15,9 +20,9 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Record" /> class
+        ///     Initializes a new instance of the <see cref="Record" /> class.
         /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         protected Record(RecordReader reader)
         {
             var length = reader.ReadUInt16(-2);
@@ -25,21 +30,21 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the record data
+        ///     Gets the record data.
         /// </summary>
-        /// <value>Byte list of the raw record data</value>
+        /// <value>Byte list of the raw record data.</value>
         public List<byte> RecordData { get; }
 
         /// <summary>
-        ///     Gets or sets the resource record this record is a part of
+        ///     Gets or sets the resource record this record is a part of.
         /// </summary>
-        /// <value>Resource record of the data</value>
+        /// <value>Resource record of the data.</value>
         public ResourceRecord ResourceRecord { get; set; }
 
         /// <summary>
-        ///     String representation of the record
+        ///     String representation of the record.
         /// </summary>
-        /// <returns>String version of the data</returns>
+        /// <returns>String version of the data.</returns>
         public override string ToString()
         {
             return $"{GetType().Name} is not-used";

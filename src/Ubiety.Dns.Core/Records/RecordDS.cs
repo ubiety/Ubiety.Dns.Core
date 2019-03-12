@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,16 +39,16 @@ using System.Text;
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     DS DNS Record
+    ///     DS DNS Record.
     /// </summary>
     public class RecordDs : Record
     {
         private readonly byte[] _digest;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordDs" /> class
+        ///     Initializes a new instance of the <see cref="RecordDs" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> of the record data.</param>
         public RecordDs(RecordReader rr)
         {
             var length = rr.ReadUInt16(-2);
@@ -56,29 +61,29 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the key tag
+        ///     Gets the key tag.
         /// </summary>
         public ushort KeyTag { get; }
 
         /// <summary>
-        ///     Gets the algorithm
+        ///     Gets the algorithm.
         /// </summary>
         public byte Algorithm { get; }
 
         /// <summary>
-        ///     Gets the digest type
+        ///     Gets the digest type.
         /// </summary>
         public byte DigestType { get; }
 
         /// <summary>
-        ///     Gets the digest
+        ///     Gets the digest.
         /// </summary>
         public List<byte> Digest => new List<byte>(_digest);
 
         /// <summary>
-        ///     String version of the record
+        ///     String version of the record.
         /// </summary>
-        /// <returns>String of the data</returns>
+        /// <returns>String of the data.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();

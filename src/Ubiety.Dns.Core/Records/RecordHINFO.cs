@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  3.3.2. HINFO RDATA format
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -26,14 +31,14 @@ using System;
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Hardware info DNS record
+    ///     Hardware info DNS record.
     /// </summary>
     public class RecordHinfo : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordHinfo" /> class
+        ///     Initializes a new instance of the <see cref="RecordHinfo" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordHinfo(RecordReader rr)
         {
             Cpu = rr.ReadString();
@@ -41,19 +46,19 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the CPU
+        ///     Gets the CPU.
         /// </summary>
         public string Cpu { get; }
 
         /// <summary>
-        ///     Gets the OS
+        ///     Gets the OS.
         /// </summary>
         public string Os { get; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>String version of the record</returns>
+        /// <returns>String version of the record.</returns>
         public override string ToString()
         {
             return $"CPU={Cpu} OS={Os}";

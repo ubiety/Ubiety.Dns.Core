@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
@@ -67,9 +72,9 @@ namespace Ubiety.Dns.Core
         private uint _ttl;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ResourceRecord" /> class
+        ///     Initializes a new instance of the <see cref="ResourceRecord" /> class.
         /// </summary>
-        /// <param name="rr">Record reader of the record data</param>
+        /// <param name="rr">Record reader of the record data.</param>
         protected ResourceRecord(RecordReader rr)
         {
             TimeLived = 0;
@@ -83,22 +88,22 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the name of the node to which this resource record pertains
+        ///     Gets the name of the node to which this resource record pertains.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        ///     Gets the type of resource record
+        ///     Gets the type of resource record.
         /// </summary>
         public RecordType Type { get; }
 
         /// <summary>
-        ///     Gets the type class of resource record, mostly IN but can be CS, CH or HS
+        ///     Gets the type class of resource record, mostly IN but can be CS, CH or HS.
         /// </summary>
         public OperationClass Class { get; }
 
         /// <summary>
-        ///     Gets the time to live, the time interval that the resource record may be cached
+        ///     Gets the time to live, the time interval that the resource record may be cached.
         /// </summary>
         public uint Ttl
         {
@@ -108,27 +113,27 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the record length
+        ///     Gets the record length.
         /// </summary>
         public ushort RecordLength { get; }
 
         /// <summary>
-        ///     Gets one of the Record* classes
+        ///     Gets one of the Record* classes.
         /// </summary>
         public Record Record { get; }
 
         /// <summary>
-        ///     Gets or sets the time lived
+        ///     Gets or sets the time lived.
         /// </summary>
         public int TimeLived { get; set; }
 
         /// <summary>
-        ///     String version of the resource record
+        ///     String version of the resource record.
         /// </summary>
-        /// <returns>String of the resource</returns>
+        /// <returns>String of the resource.</returns>
         public override string ToString()
         {
-            return $"{Name, -32} {Ttl}\t{Class}\t{Type}\t{Record}";
+            return $"{Name,-32} {Ttl}\t{Class}\t{Type}\t{Record}";
         }
     }
 }

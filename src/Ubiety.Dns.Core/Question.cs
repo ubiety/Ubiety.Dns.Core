@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -7,18 +12,18 @@ using Ubiety.Dns.Core.Common;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS Question record
+    ///     DNS Question record.
     /// </summary>
     public class Question
     {
         private string _questionName;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Question" /> class
+        ///     Initializes a new instance of the <see cref="Question" /> class.
         /// </summary>
-        /// <param name="questionName">Query name</param>
-        /// <param name="questionType">Question type</param>
-        /// <param name="questionClass">Question class</param>
+        /// <param name="questionName">Query name.</param>
+        /// <param name="questionType">Question type.</param>
+        /// <param name="questionClass">Question class.</param>
         public Question(string questionName, QuestionType questionType, QuestionClass questionClass)
         {
             QuestionName = questionName;
@@ -27,9 +32,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Question" /> class
+        ///     Initializes a new instance of the <see cref="Question" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record</param>
+        /// <param name="rr"><see cref="RecordReader" /> of the record.</param>
         public Question(RecordReader rr)
         {
             QuestionName = rr.ReadDomainName();
@@ -38,7 +43,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the question name
+        ///     Gets the question name.
         /// </summary>
         public string QuestionName
         {
@@ -55,28 +60,28 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the query type
+        ///     Gets the query type.
         /// </summary>
         public QuestionType QuestionType { get; }
 
         /// <summary>
-        ///     Gets the query class
+        ///     Gets the query class.
         /// </summary>
         public QuestionClass QuestionClass { get; }
 
         /// <summary>
-        ///     String representation of the question
+        ///     String representation of the question.
         /// </summary>
-        /// <returns>String of the question</returns>
+        /// <returns>String of the question.</returns>
         public override string ToString()
         {
-            return $"{QuestionName, -32}\t{QuestionClass}\t{QuestionType}";
+            return $"{QuestionName,-32}\t{QuestionClass}\t{QuestionType}";
         }
 
         /// <summary>
-        ///     Gets the question as a byte array
+        ///     Gets the question as a byte array.
         /// </summary>
-        /// <returns>Byte array of the question data</returns>
+        /// <returns>Byte array of the question data.</returns>
         public IEnumerable<byte> GetData()
         {
             var data = new List<byte>();
@@ -117,7 +122,7 @@ namespace Ubiety.Dns.Core
             return Encoding.ASCII.GetBytes(sb.ToString());
         }
 
-        private static byte[] WriteShort(ushort value)
+        private static IEnumerable<byte> WriteShort(ushort value)
         {
             return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)value));
         }

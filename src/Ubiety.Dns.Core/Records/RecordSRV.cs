@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  *  http://www.ietf.org/rfc/rfc2782.txt
  *
    Priority
@@ -65,14 +70,14 @@
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Service DNS record
+    ///     Service DNS record.
     /// </summary>
     public class RecordSrv : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordSrv" /> class
+        ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> of the record data.</param>
         public RecordSrv(RecordReader rr)
         {
             Priority = rr.ReadUInt16();
@@ -82,29 +87,29 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the record priority
+        ///     Gets or sets the record priority.
         /// </summary>
         public ushort Priority { get; set; }
 
         /// <summary>
-        ///     Gets or sets the record weight
+        ///     Gets or sets the record weight.
         /// </summary>
         public ushort Weight { get; set; }
 
         /// <summary>
-        ///     Gets or sets the service port
+        ///     Gets or sets the service port.
         /// </summary>
         public ushort Port { get; set; }
 
         /// <summary>
-        ///     Gets or sets the target domain
+        ///     Gets or sets the target domain.
         /// </summary>
         public string Target { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Record as a string</returns>
+        /// <returns>Record as a string.</returns>
         public override string ToString()
         {
             return $"{Priority} {Weight} {Port} {Target}";

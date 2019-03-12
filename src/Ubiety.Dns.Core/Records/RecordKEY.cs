@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 /* http://www.ietf.org/rfc/rfc2535.txt
  *
 3.1 KEY RDATA format
@@ -34,14 +39,14 @@
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Key DNS record
+    ///     Key DNS record.
     /// </summary>
     public class RecordKey : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordKey" /> class
+        ///     Initializes a new instance of the <see cref="RecordKey" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordKey(RecordReader rr)
         {
             Flags = rr.ReadUInt16();
@@ -51,29 +56,29 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the flags
+        ///     Gets or sets the flags.
         /// </summary>
         public ushort Flags { get; set; }
 
         /// <summary>
-        ///     Gets or sets the protocol
+        ///     Gets or sets the protocol.
         /// </summary>
         public byte Protocol { get; set; }
 
         /// <summary>
-        ///     Gets or sets the algorithm
+        ///     Gets or sets the algorithm.
         /// </summary>
         public byte Algorithm { get; set; }
 
         /// <summary>
-        ///     Gets or sets the public key
+        ///     Gets or sets the public key.
         /// </summary>
         public string PublicKey { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>String version of the record</returns>
+        /// <returns>String version of the record.</returns>
         public override string ToString()
         {
             return $"{Flags} {Protocol} {Algorithm} \"{PublicKey}\"";

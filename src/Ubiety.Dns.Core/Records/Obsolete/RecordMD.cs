@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
 3.3.4. MD RDATA format (Obsolete)
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -26,28 +31,28 @@ using System;
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
-    ///     Mail domain record
+    ///     Mail domain record.
     /// </summary>
     public class RecordMd : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMd" /> class
+        ///     Initializes a new instance of the <see cref="RecordMd" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordMd(RecordReader rr)
         {
             MadName = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets the mail domain
+        ///     Gets the mail domain.
         /// </summary>
         public string MadName { get; }
 
         /// <summary>
-        ///     String representing the mail domain
+        ///     String representing the mail domain.
         /// </summary>
-        /// <returns>String version of the record</returns>
+        /// <returns>String version of the record.</returns>
         public override string ToString()
         {
             return MadName;

@@ -1,14 +1,19 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 namespace Ubiety.Dns.Core.Records.NotUsed
 {
     /// <summary>
-    ///     UNSPEC DNS record
+    ///     UNSPEC DNS record.
     /// </summary>
     public class RecordUnspec : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordUnspec" /> class
+        ///     Initializes a new instance of the <see cref="RecordUnspec" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordUnspec(RecordReader rr)
             : base(rr)
         {

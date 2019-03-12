@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  3.3.7. MINFO RDATA format (EXPERIMENTAL)
 
     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -30,19 +35,17 @@ records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
 
-using System;
-
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
-    ///     Mail list DNS record
+    ///     Mail list DNS record.
     /// </summary>
     public class RecordMinfo : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMinfo" /> class
+        ///     Initializes a new instance of the <see cref="RecordMinfo" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordMinfo(RecordReader rr)
         {
             ResponsibleMailbox = rr.ReadDomainName();
@@ -50,19 +53,19 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     Gets the responsible mailbox
+        ///     Gets the responsible mailbox.
         /// </summary>
         public string ResponsibleMailbox { get; }
 
         /// <summary>
-        ///     Gets the error mailbox
+        ///     Gets the error mailbox.
         /// </summary>
         public string ErrorMailbox { get; }
 
         /// <summary>
-        ///     String representation of the record
+        ///     String representation of the record.
         /// </summary>
-        /// <returns>String version of the domains</returns>
+        /// <returns>String version of the domains.</returns>
         public override string ToString()
         {
             return $"{ResponsibleMailbox} {ErrorMailbox}";

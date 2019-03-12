@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://tools.ietf.org/rfc/rfc2672.txt
  *
 3. The DNAME Resource Record
@@ -19,28 +24,28 @@ using System;
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     DNAME DNS Record
+    ///     DNAME DNS Record.
     /// </summary>
     public class RecordDname : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordDname" /> class
+        ///     Initializes a new instance of the <see cref="RecordDname" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record.</param>
         public RecordDname(RecordReader rr)
         {
             Target = rr.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets the target
+        ///     Gets the target.
         /// </summary>
         public string Target { get; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>String of the target</returns>
+        /// <returns>String of the target.</returns>
         public override string ToString()
         {
             return Target;

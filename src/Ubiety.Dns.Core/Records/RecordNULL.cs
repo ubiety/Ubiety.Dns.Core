@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 
@@ -20,16 +25,16 @@ experimental extensions of the DNS.
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Null DNS record
+    ///     Null DNS record.
     /// </summary>
     public class RecordNull : Record
     {
         private readonly byte[] _data;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNull" /> class
+        ///     Initializes a new instance of the <see cref="RecordNull" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNull(RecordReader rr)
         {
             rr.Position -= 2;
@@ -39,14 +44,14 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets the record data
+        ///     Gets the record data.
         /// </summary>
         public List<byte> Data => new List<byte>(_data);
 
         /// <summary>
-        ///     String representation of the data
+        ///     String representation of the data.
         /// </summary>
-        /// <returns>Record data as a string</returns>
+        /// <returns>Record data as a string.</returns>
         public override string ToString()
         {
             return $"...binary data... ({_data.Length}) bytes";

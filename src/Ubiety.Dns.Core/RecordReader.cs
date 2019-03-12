@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System.Collections.Generic;
 using System.Text;
 using Ubiety.Dns.Core.Common;
@@ -6,16 +11,16 @@ using Ubiety.Dns.Core.Records;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS record reader
+    ///     DNS record reader.
     /// </summary>
     public class RecordReader
     {
         private readonly byte[] _data;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordReader" /> class
+        ///     Initializes a new instance of the <see cref="RecordReader" /> class.
         /// </summary>
-        /// <param name="data">Byte array of the record</param>
+        /// <param name="data">Byte array of the record.</param>
         public RecordReader(byte[] data)
         {
             _data = data;
@@ -23,10 +28,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordReader" /> class
+        ///     Initializes a new instance of the <see cref="RecordReader" /> class.
         /// </summary>
-        /// <param name="data">Byte array of the record</param>
-        /// <param name="position">Position of the cursor in the record</param>
+        /// <param name="data">Byte array of the record.</param>
+        /// <param name="position">Position of the cursor in the record.</param>
         public RecordReader(byte[] data, int position)
         {
             _data = data;
@@ -34,42 +39,42 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the position of the cursor in the record
+        ///     Gets or sets the position of the cursor in the record.
         /// </summary>
         public int Position { get; set; }
 
         /// <summary>
-        ///     Read a byte from the record
+        ///     Read a byte from the record.
         /// </summary>
-        /// <returns>Next available byte of the record</returns>
+        /// <returns>Next available byte of the record.</returns>
         public byte ReadByte()
         {
             return Position >= _data.Length ? (byte)0 : _data[Position++];
         }
 
         /// <summary>
-        ///     Read a char from the record
+        ///     Read a char from the record.
         /// </summary>
-        /// <returns>Next available char of the record</returns>
+        /// <returns>Next available char of the record.</returns>
         public char ReadChar()
         {
             return (char)ReadByte();
         }
 
         /// <summary>
-        ///     Read an unsigned int 16 from the record
+        ///     Read an unsigned int 16 from the record.
         /// </summary>
-        /// <returns>Next available unsigned int 16 of the record</returns>
+        /// <returns>Next available unsigned int 16 of the record.</returns>
         public ushort ReadUInt16()
         {
             return (ushort)((ReadByte() << 8) | ReadByte());
         }
 
         /// <summary>
-        ///     Read an unsigned int 16 from the offset of the record
+        ///     Read an unsigned int 16 from the offset of the record.
         /// </summary>
-        /// <param name="offset">Offset to start reading from</param>
-        /// <returns>Next unsigned int 16 from the offset</returns>
+        /// <param name="offset">Offset to start reading from.</param>
+        /// <returns>Next unsigned int 16 from the offset.</returns>
         public ushort ReadUInt16(int offset)
         {
             Position += offset;
@@ -77,18 +82,18 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Read an unsigned int 32 from the record
+        ///     Read an unsigned int 32 from the record.
         /// </summary>
-        /// <returns>Next available unsigned int 32 in the record</returns>
+        /// <returns>Next available unsigned int 32 in the record.</returns>
         public uint ReadUInt32()
         {
             return (uint)((ReadUInt16() << 16) | ReadUInt16());
         }
 
         /// <summary>
-        ///     Read the domain name from the record
+        ///     Read the domain name from the record.
         /// </summary>
-        /// <returns>Domain name of the record</returns>
+        /// <returns>Domain name of the record.</returns>
         public string ReadDomainName()
         {
             var name = new StringBuilder();
@@ -121,27 +126,21 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Read a string from the record
+        ///     Read a string from the record.
         /// </summary>
-        /// <returns>String read from the record</returns>
+        /// <returns>String read from the record.</returns>
         public string ReadString()
         {
             short length = ReadByte();
 
-            var name = new StringBuilder();
-            for (var i = 0; i < length; i++)
-            {
-                name.Append(ReadChar());
-            }
-
-            return name.ToString();
+            return Encoding.UTF8.GetString(ReadBytes(length));
         }
 
         /// <summary>
-        ///     Read a series of bytes from the record
+        ///     Read a series of bytes from the record.
         /// </summary>
-        /// <param name="length">Length to read from the record</param>
-        /// <returns>Byte array read from the record</returns>
+        /// <param name="length">Length to read from the record.</param>
+        /// <returns>Byte array read from the record.</returns>
         public byte[] ReadBytes(int length)
         {
             var list = new List<byte>();
@@ -154,10 +153,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Read record from the data
+        ///     Read record from the data.
         /// </summary>
-        /// <param name="type">Type of the record to read</param>
-        /// <returns>Record read from the data</returns>
+        /// <param name="type">Type of the record to read.</param>
+        /// <returns>Record read from the data.</returns>
         public Record ReadRecord(RecordType type)
         {
             return type.GetRecord(this);

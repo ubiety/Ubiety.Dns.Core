@@ -1,10 +1,15 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Globalization;
 
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
-    ///     Mail exchange DNS record
+    ///     Mail exchange DNS record.
     /// </summary>
     /// <remarks>
     ///     # [Description](#tab/description)
@@ -26,14 +31,14 @@ namespace Ubiety.Dns.Core.Records.Mail
     ///     MX records cause type A additional section processing for the host
     ///     specified by EXCHANGE.  The use of MX RRs is explained in detail in
     ///     [RFC-974].
-    ///     ```
+    ///     ```.
     /// </remarks>
     public sealed class RecordMx : Record, IComparable, IEquatable<RecordMx>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMx" /> class
+        ///     Initializes a new instance of the <see cref="RecordMx" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordMx(RecordReader rr)
         {
             Preference = rr.ReadUInt16();
@@ -41,90 +46,90 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     Gets the preference
+        ///     Gets the preference.
         /// </summary>
         public ushort Preference { get; }
 
         /// <summary>
-        ///     Gets the exchange
+        ///     Gets the exchange.
         /// </summary>
         public string Exchange { get; }
 
         /// <summary>
-        /// Is the left less than the right
+        /// Is the left less than the right.
         /// </summary>
-        /// <param name="x">Left comparison object</param>
-        /// <param name="y">Right comparison object</param>
+        /// <param name="x">Left comparison object.</param>
+        /// <param name="y">Right comparison object.</param>
         public static bool operator <(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) < 0;
         }
 
         /// <summary>
-        /// Is the left greater than the right
+        /// Is the left greater than the right.
         /// </summary>
-        /// <param name="x">Left comparison object</param>
-        /// <param name="y">Right comparison object</param>
+        /// <param name="x">Left comparison object.</param>
+        /// <param name="y">Right comparison object.</param>
         public static bool operator >(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) > 0;
         }
 
         /// <summary>
-        /// Is the left less than or equal to the right
+        /// Is the left less than or equal to the right.
         /// </summary>
-        /// <param name="x">Lefyt comparison object</param>
-        /// <param name="y">Right comparison object</param>
+        /// <param name="x">Lefyt comparison object.</param>
+        /// <param name="y">Right comparison object.</param>
         public static bool operator <=(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) <= 0;
         }
 
         /// <summary>
-        /// Is the left greater than or equal to the right
+        /// Is the left greater than or equal to the right.
         /// </summary>
-        /// <param name="x">Left comparison object</param>
-        /// <param name="y">Right comparison object</param>
+        /// <param name="x">Left comparison object.</param>
+        /// <param name="y">Right comparison object.</param>
         public static bool operator >=(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) >= 0;
         }
 
         /// <summary>
-        /// Are the left and right objects equal
+        /// Are the left and right objects equal.
         /// </summary>
-        /// <param name="x">Left comparison object</param>
-        /// <param name="y">Right comparison object</param>
+        /// <param name="x">Left comparison object.</param>
+        /// <param name="y">Right comparison object.</param>
         public static bool operator ==(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) == 0;
         }
 
         /// <summary>
-        /// Are the left and right objects not equal
+        /// Are the left and right objects not equal.
         /// </summary>
-        /// <param name="x">Left comparison object</param>
-        /// <param name="y">Right comparison object</param>
+        /// <param name="x">Left comparison object.</param>
+        /// <param name="y">Right comparison object.</param>
         public static bool operator !=(RecordMx x, RecordMx y)
         {
             return CompareTo(x, y) != 0;
         }
 
         /// <summary>
-        ///     Compares record to an object
+        ///     Compares record to an object.
         /// </summary>
-        /// <param name="obj">Object to compare record to</param>
-        /// <returns>Int value of the comparison</returns>
+        /// <param name="obj">Object to compare record to.</param>
+        /// <returns>Int value of the comparison.</returns>
         public int CompareTo(object obj)
         {
             return CompareTo(this, obj as RecordMx);
         }
 
         /// <summary>
-        ///     Does this instance equal another instance of RecordMx
+        ///     Does this instance equal another instance of RecordMx.
         /// </summary>
-        /// <param name="other">RecordMx to compare to</param>
-        /// <returns>Boolean indicating whether the objects are equal</returns>
+        /// <param name="other">RecordMx to compare to.</param>
+        /// <returns>Boolean indicating whether the objects are equal.</returns>
         public bool Equals(RecordMx other)
         {
             if (other is null)
@@ -136,19 +141,19 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Exchange and preference as a string</returns>
+        /// <returns>Exchange and preference as a string.</returns>
         public override string ToString()
         {
             return $"{Preference} {Exchange}";
         }
 
         /// <summary>
-        ///     Does this instance equal an object
+        ///     Does this instance equal an object.
         /// </summary>
-        /// <param name="obj">Object to compare to</param>
-        /// <returns>Boolean indicating whether the objects are equal</returns>
+        /// <param name="obj">Object to compare to.</param>
+        /// <returns>Boolean indicating whether the objects are equal.</returns>
         public override bool Equals(object obj)
         {
             if (obj is null)
@@ -165,9 +170,9 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     Gets the record hash code
+        ///     Gets the record hash code.
         /// </summary>
-        /// <returns>Integer representing the hash code</returns>
+        /// <returns>Integer representing the hash code.</returns>
         public override int GetHashCode()
         {
             return Exchange.GetHashCode();

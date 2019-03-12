@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://www.faqs.org/rfcs/rfc2915.html
  *
  8. DNS Packet Format
@@ -43,14 +48,14 @@
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     NAPTR DNS record
+    ///     NAPTR DNS record.
     /// </summary>
     public class RecordNaptr : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNaptr" /> class
+        ///     Initializes a new instance of the <see cref="RecordNaptr" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNaptr(RecordReader rr)
         {
             Order = rr.ReadUInt16();
@@ -62,39 +67,39 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the order
+        ///     Gets or sets the order.
         /// </summary>
         public ushort Order { get; set; }
 
         /// <summary>
-        ///     Gets or sets the preference
+        ///     Gets or sets the preference.
         /// </summary>
         public ushort Preference { get; set; }
 
         /// <summary>
-        ///     Gets or sets the flags
+        ///     Gets or sets the flags.
         /// </summary>
         public string Flags { get; set; }
 
         /// <summary>
-        ///     Gets or sets the services
+        ///     Gets or sets the services.
         /// </summary>
         public string Services { get; set; }
 
         /// <summary>
-        ///     Gets or sets the regexp
+        ///     Gets or sets the regexp.
         /// </summary>
         public string Regexp { get; set; }
 
         /// <summary>
-        ///     Gets or sets the replacement
+        ///     Gets or sets the replacement.
         /// </summary>
         public string Replacement { get; set; }
 
         /// <summary>
-        ///     String representation of the record data
+        ///     String representation of the record data.
         /// </summary>
-        /// <returns>Data as a string</returns>
+        /// <returns>Data as a string.</returns>
         public override string ToString()
         {
             return $"{Order} {Preference} \"{Flags}\" \"{Services}\" \"{Regexp}\" {Replacement}";

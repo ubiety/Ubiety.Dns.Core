@@ -1,3 +1,8 @@
+/*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,16 +47,16 @@ using Ubiety.Dns.Core.Common;
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
-    ///     NXT DNS Record
+    ///     NXT DNS Record.
     /// </summary>
     public class RecordNxt : Record
     {
         private readonly byte[] _bitmap;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNxt" /> class
+        ///     Initializes a new instance of the <see cref="RecordNxt" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNxt(RecordReader rr)
         {
             var length = rr.ReadUInt16(-2);
@@ -62,19 +67,19 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         }
 
         /// <summary>
-        ///     Gets the next domain name
+        ///     Gets the next domain name.
         /// </summary>
         public string NextDomainName { get; }
 
         /// <summary>
-        ///     Gets the record bitmap
+        ///     Gets the record bitmap.
         /// </summary>
         public List<byte> Bitmap => new List<byte>(_bitmap);
 
         /// <summary>
-        ///     String representation of the record
+        ///     String representation of the record.
         /// </summary>
-        /// <returns>String version of the data</returns>
+        /// <returns>String version of the data.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();

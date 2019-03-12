@@ -1,4 +1,9 @@
 /*
+ * Licensed under the MIT license
+ * See the LICENSE file in the project root for more information
+ */
+
+/*
  * http://tools.ietf.org/rfc/rfc1712.txt
  *
 3. RDATA Format
@@ -37,19 +42,17 @@
 
  */
 
-using System;
-
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
-    ///     GPOS DNS record
+    ///     GPOS DNS record.
     /// </summary>
     public class RecordGpos : Record
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordGpos" /> class
+        ///     Initializes a new instance of the <see cref="RecordGpos" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data</param>
+        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordGpos(RecordReader rr)
         {
             Longitude = rr.ReadString();
@@ -58,24 +61,24 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         }
 
         /// <summary>
-        ///     Gets the longitude
+        ///     Gets the longitude.
         /// </summary>
         public string Longitude { get; }
 
         /// <summary>
-        ///     Gets the latitude
+        ///     Gets the latitude.
         /// </summary>
         public string Latitude { get; }
 
         /// <summary>
-        ///     Gets the altitude
+        ///     Gets the altitude.
         /// </summary>
         public string Altitude { get; }
 
         /// <summary>
-        ///     String representation of the position
+        ///     String representation of the position.
         /// </summary>
-        /// <returns>String of the version</returns>
+        /// <returns>String of the version.</returns>
         public override string ToString()
         {
             return $"{Longitude} {Latitude} {Altitude}";
