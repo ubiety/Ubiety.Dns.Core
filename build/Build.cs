@@ -89,7 +89,7 @@ class Build : NukeBuild
         });
 
     Target SonarEnd => _ => _
-        .After(Test)
+        .After(Test, SonarBegin)
         .Requires(() => SonarKey)
         .Unlisted()
         .Executes(() =>
@@ -116,7 +116,7 @@ class Build : NukeBuild
         });
 
     Target Coverage => _ => _
-        .DependsOn(Test)
+        .After(Test)
         .Executes(() =>
         {
             CoverallsNet(s => s
