@@ -2,6 +2,8 @@ using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
+using Nuke.Common.Tools.CoverallsNet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.DotNetSonarScanner;
@@ -10,6 +12,7 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.DotNetSonarScanner.DotNetSonarScannerTasks;
+using static Nuke.Common.Tools.CoverallsNet.CoverallsNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -27,6 +30,7 @@ class Build : NukeBuild
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter] readonly string SonarKey;
+    [Parameter] readonly bool? Cover = true;
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
@@ -76,7 +80,8 @@ class Build : NukeBuild
                 .SetVersion(GitVersion.NuGetVersionV2)
                 .SetProjectKey("ubiety_Ubiety.Dns.Core")
                 .SetOrganization("ubiety")
-                .SetServer("https://sonarcloud.io"));
+                .SetServer("https://sonarcloud.io")
+                .SetOpenCoverPaths(ArtifactsDirectory / "coverage.opencover.xml"));
         });
 
     Target SonarEnd => _ => _
@@ -90,5 +95,26 @@ class Build : NukeBuild
         });
 
     Target Sonar => _ => _
-        .DependsOn(SonarBegin, Compile, SonarEnd);
+        .DependsOn(SonarBegin, Test, SonarEnd);
+
+    Target Test => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            DotNetTest(s => s
+                .SetProjectFile(Solution.GetProject("Ubiety.Dns.Test"))
+                .EnableNoBuild()
+                .SetConfiguration(Configuration)
+                .SetArgumentConfigurator(a => a.Add("/p:CollectCoverage={0}", Cover)
+                    .Add("/p:CoverletOutput={0}", ArtifactsDirectory / "coverage")
+                    .Add("/p:CoverletOutputFormat={0}", "opencover")
+                    .Add("/p:Exclude={0}", "[xunit.*]*")));
+        });
+
+    Target Coverage => _ => _
+        .Executes(() =>
+        {
+            CoverallsNet(s => s
+                .SetOpenCover(true));
+        });
 }

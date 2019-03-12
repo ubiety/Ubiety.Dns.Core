@@ -1,5 +1,4 @@
-image: Visual Studio 2019 Preview
-skip_tags: true
+image: Visual Studio 2017
 
 branches:
   except:
@@ -16,3 +15,6 @@ init:
 
 build_script:
   - ps: .\build.ps1 sonar
+
+test: off
+deploy: off
