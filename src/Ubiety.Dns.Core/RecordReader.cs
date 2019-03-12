@@ -156,8 +156,9 @@ namespace Ubiety.Dns.Core
         ///     Read record from the data.
         /// </summary>
         /// <param name="type">Type of the record to read.</param>
+        /// <param name="length">Length of the record.</param>
         /// <returns>Record read from the data.</returns>
-        public Record ReadRecord(RecordType type)
+        public Record ReadRecord(RecordType type, int length)
         {
             return type.GetRecord(this);
         }
