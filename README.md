@@ -1,12 +1,12 @@
-# ![Logo](https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/images/library64.png) Ubiety.Dns.Core
+# ![Logo](https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/images/library64.png) Ubiety.Dns.Core ![Nuget](https://img.shields.io/nuget/v/Ubiety.Dns.Core.svg?style=flat-square)
 > A reusable DNS resolver for .NET Standard 2.0
 
 [Professionally supported Ubiety.Dns.Core is coming soon](https://tidelift.com/subscription/pkg/nuget-ubiety-dns-core?utm_source=nuget-ubiety-dns-core&utm_medium=referral&utm_campaign=readme)
 
-| Branch  | Quality                                                                                                                                                                                  | Travis CI | Appveyor                                                                                                                                                                           | Coverage                                                                                                                                                                     |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core/badge)](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core)                            |           | [![Build status](https://ci.appveyor.com/api/projects/status/d987cu46fasa23nx/branch/master?svg=true)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/master)   | [![Coverage Status](https://coveralls.io/repos/github/ubiety/Ubiety.Dns.Core/badge.svg?branch=master)](https://coveralls.io/github/ubiety/Ubiety.Dns.Core?branch=master)   |
-| Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.xmpp.core/badge/develop)](https://www.codefactor.io/repository/github/ubiety/ubiety.xmpp.core/overview/develop) |           | [![Build status](https://ci.appveyor.com/api/projects/status/d987cu46fasa23nx/branch/develop?svg=true)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/develop) | [![Coverage Status](https://coveralls.io/repos/github/ubiety/Ubiety.Dns.Core/badge.svg?branch=develop)](https://coveralls.io/github/ubiety/Ubiety.Dns.Core?branch=develop) |
+| Branch  | Quality                                                                                                                                                                                                   | Travis CI | Appveyor                                                                                                                                                                                   | Coverage                                                                                                                                                                                      |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core/badge?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core)                           |           | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/master.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/master)   | [![Coveralls github branch](https://img.shields.io/coveralls/github/ubiety/ubiety-dns-core/master.svg?style=flat-square)](https://coveralls.io/github/ubiety/Ubiety.Dns.Core?branch=master)   |
+| Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core/badge/develop?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.xmpp.core/overview/develop) |           | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/develop.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/develop) | [![Coveralls github branch](https://img.shields.io/coveralls/github/ubiety/ubiety-dns-core/develop.svg?style=flat-square)](https://coveralls.io/github/ubiety/Ubiety.Dns.Core?branch=develop) |
 
 
 ## Installing / Getting started
@@ -73,13 +73,15 @@ consideration, it is common to separate this section to its own file called
 - Project homepage: <https://dns.ubiety.ca>
 - Repository: <https://github.com/ubiety/Ubiety.Dns.Core/>
 - Issue tracker: <https://github.com/ubiety/Ubiety.Dns.Core/issues>
-  - In case of sensitive bugs like security vulnerabilities, please contact
-    issues@dieterlunn.ca directly instead of using issue tracker. We value your effort
-    to improve the security and privacy of this project!
+  - In case of sensitive bugs like security vulnerabilities, please use the 
+    [Tidelift security contact](https://tidelift.com/security) instead of using issue tracker. 
+    We value your effort to improve the security and privacy of this project! Tidelift will coordinate the fix and disclosure.
 - Related projects:
   - Ubiety VersionIt: <https://github.com/ubiety/Ubiety.VersionIt/>
   - Ubiety Toolset: <https://github.com/ubiety/Ubiety.Toolset/>
   - Ubiety Xmpp: <https://github.com/ubiety/Ubiety.Xmpp.Core/>
+  - Ubiety Stringprep: <https://github.com/ubiety/Ubiety.Stringprep.Core/>
+  - Ubiety SCRAM: <https://github.com/ubiety/Ubiety.Scram.Core/>
 
 ## Sponsors
 
