@@ -16,7 +16,7 @@ init:
   - ps: dotnet tool install --global dotnet-sonarscanner
 
 build_script:
-  - ps: .\build.ps1 complete
+  - ps: .\build.ps1 appveyor
 
 test: off
 deploy: off
