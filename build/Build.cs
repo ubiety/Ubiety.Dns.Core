@@ -3,29 +3,20 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
-using Nuke.Common.Tools.CoverallsNet;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.DotNetSonarScanner;
-using Nuke.Common.Utilities;
+using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.DotNetSonarScanner.DotNetSonarScannerTasks;
-using static Nuke.Common.Tools.CoverallsNet.CoverallsNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
-    /// Support plugins are available for:
-    ///   - JetBrains ReSharper        https://nuke.build/resharper
-    ///   - JetBrains Rider            https://nuke.build/rider
-    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
-    ///   - Microsoft VSCode           https://nuke.build/vscode
-
-    public static int Main () => Execute<Build>(x => x.Complete);
+    public static int Main() => Execute<Build>(x => x.Test);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
@@ -42,7 +33,9 @@ class Build : NukeBuild
     AbsolutePath TestsDirectory => RootDirectory / "tests";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
-    readonly string MasterBranch = "master";
+    readonly string NuGetSource = "https://api.nuget.org/v3/index.json";
+    readonly string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
+    [Unlisted] [ProjectFrom(nameof(Solution))] readonly Project UbietyDnsTestProject;
 
     Target Clean => _ => _
         .Before(Restore)
@@ -81,15 +74,16 @@ class Build : NukeBuild
         {
             DotNetSonarScannerBegin(s => s
                 .SetLogin(SonarKey)
-                .SetVersion(GitVersion.NuGetVersionV2)
-                .SetProjectKey("ubiety_Ubiety.Dns.Core")
+                .SetProjectKey(SonarProjectKey)
                 .SetOrganization("ubiety")
                 .SetServer("https://sonarcloud.io")
+                .SetVersion(GitVersion.NuGetVersionV2)
                 .SetOpenCoverPaths(ArtifactsDirectory / "coverage.opencover.xml"));
         });
 
     Target SonarEnd => _ => _
-        .After(Test, SonarBegin)
+        .After(Test)
+        .DependsOn(SonarBegin)
         .Requires(() => SonarKey)
         .Unlisted()
         .Executes(() =>
@@ -98,38 +92,28 @@ class Build : NukeBuild
                 .SetLogin(SonarKey));
         });
 
-    Target Sonar => _ => _
-        .DependsOn(SonarBegin, Test, SonarEnd);
-
     Target Test => _ => _
         .DependsOn(Compile)
         .Executes(() =>
         {
             DotNetTest(s => s
-                .SetProjectFile(Solution.GetProject("Ubiety.Dns.Test"))
+                .SetProjectFile(UbietyDnsTestProject)
                 .EnableNoBuild()
                 .SetConfiguration(Configuration)
-                .SetArgumentConfigurator(a => a.Add("/p:CollectCoverage={0}", Cover)
+                .SetArgumentConfigurator(args => args.Add("/p:CollectCoverage={0}", Cover)
                     .Add("/p:CoverletOutput={0}", ArtifactsDirectory / "coverage")
                     .Add("/p:CoverletOutputFormat={0}", "opencover")
                     .Add("/p:Exclude={0}", "[xunit.*]*")));
         });
 
-    Target Coverage => _ => _
-        .After(Test)
-        .Executes(() =>
-        {
-            CoverallsNet(s => s
-                .SetOpenCover(true)
-                .SetInput(ArtifactsDirectory / "coverage.opencover.xml"));
-        });
-
     Target Pack => _ => _
-        .After(SonarEnd)
-        .DependsOn(Test)
+        .After(Test)
+        .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
         .Executes(() =>
         {
             DotNetPack(s => s
+                .EnableNoBuild()
+                .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetVersion(GitVersion.NuGetVersionV2));
         });
@@ -138,18 +122,19 @@ class Build : NukeBuild
         .DependsOn(Pack)
         .Requires(() => NuGetKey)
         .Requires(() => Configuration.Equals(Configuration.Release))
-        .Requires(() => GitRepository.Branch.EqualsOrdinalIgnoreCase(MasterBranch))
+        .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
         .Executes(() =>
         {
             DotNetNuGetPush(s => s
-                .SetApiKey(NuGetKey)
-                .SetSource("https://api.nuget.org/v3/index.json")
-                .CombineWith(
-                    ArtifactsDirectory.GlobFiles("*.nupkg").NotEmpty(), (cs, v) => cs.SetTargetPath(v)),
+                    .SetApiKey(NuGetKey)
+                    .SetSource(NuGetSource)
+                    .CombineWith(
+                        ArtifactsDirectory.GlobFiles("*.nupkg").NotEmpty(), (cs, v) =>
+                            cs.SetTargetPath(v)),
                 5,
                 true);
         });
 
-    Target Complete => _ => _
-        .DependsOn(Clean, Sonar, Publish);
+    Target Appveyor => _ => _
+        .DependsOn(Test, SonarEnd, Publish);
 }
