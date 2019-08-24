@@ -24,10 +24,6 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Resolver
     {
-        /// <summary>
-        ///     Default DNS port.
-        /// </summary>
-        public const int DefaultPort = 53;
         private readonly Dictionary<string, Response> _responseCache;
         private int _retries;
         private int _timeout;
@@ -123,13 +119,18 @@ namespace Ubiety.Dns.Core
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         /// <summary>
-        ///     Gets the default OpenDNS servers.
+        ///     Gets the default DNS servers for OpenDNS.
         /// </summary>
         public static List<IPEndPoint> DefaultDnsServers => new List<IPEndPoint>
         {
             new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort),
             new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort),
         };
+
+        /// <summary>
+        ///     Gets or sets the default DNS port.
+        /// </summary>
+        public static int DefaultPort { get; set; } = 53;
 
         /// <summary>
         ///     Gets or sets timeout in milliseconds.
@@ -281,7 +282,7 @@ namespace Ubiety.Dns.Core
                     foreach (var b in ip.GetAddressBytes())
                     {
                         sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
-                        sb.Insert(0, $"{(b >> 0) & 0xf:x}.");
+                        sb.Insert(0, $"{b & 0xf:x}.");
                     }
 
                     return sb.ToString();
