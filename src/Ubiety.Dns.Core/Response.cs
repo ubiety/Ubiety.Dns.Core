@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.General;
@@ -323,27 +324,14 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of resource records in the answers.
+        ///     Gets a list of resource records in the <see cref="Response" />.
         /// </summary>
         public IEnumerable<ResourceRecord> ResourceRecords
         {
             get
             {
-                var list = new List<ResourceRecord>();
-                foreach (var rr in Answers)
-                {
-                    list.Add(rr);
-                }
-
-                foreach (var rr in Answers)
-                {
-                    list.Add(rr);
-                }
-
-                foreach (var rr in Authorities)
-                {
-                    list.Add(rr);
-                }
+                var list = Answers.Cast<ResourceRecord>().ToList();
+                list.AddRange(Authorities.Cast<ResourceRecord>());
 
                 foreach (var rr in Additionals)
                 {
