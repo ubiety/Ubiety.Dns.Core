@@ -144,7 +144,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of TXT records in the answers.
+        ///     Gets a list of TXT records in the <see cref="Response" />.
         /// </summary>
         public List<RecordTxt> RecordTxt
         {
@@ -164,7 +164,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of A records in the answers.
+        ///     Gets a list of A records in the <see cref="Response" />.
         /// </summary>
         public List<RecordA> RecordA
         {
@@ -184,7 +184,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of PTR records from the answers.
+        ///     Gets a list of PTR records from the <see cref="Response"/>.
         /// </summary>
         public List<RecordPtr> RecordPtr
         {
@@ -204,7 +204,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of CNAME records from the answers.
+        ///     Gets a list of CNAME records from the <see cref="Response"/>.
         /// </summary>
         public List<RecordCname> RecordCname
         {
@@ -224,7 +224,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of AAAA records in the answers.
+        ///     Gets a list of AAAA records in the <see cref="Response"/>.
         /// </summary>
         public List<RecordAaaa> RecordAaaa
         {
@@ -244,7 +244,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of NS records in the answers.
+        ///     Gets a list of NS records in the <see cref="Response"/>.
         /// </summary>
         public List<RecordNs> RecordNs
         {
@@ -264,7 +264,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of SOA records in the answers.
+        ///     Gets a list of SOA records in the <see cref="Response"/>.
         /// </summary>
         public List<RecordSoa> RecordSoa
         {
@@ -284,7 +284,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of CERT records in the answers.
+        ///     Gets a list of CERT records in the <see cref="Response"/>.
         /// </summary>
         public List<RecordCert> RecordCert
         {
@@ -304,7 +304,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of SRV records in the answers.
+        ///     Gets a list of SRV records in the <see cref="Response"/>.
         /// </summary>
         public List<RecordSrv> RecordSrv
         {
@@ -324,7 +324,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of resource records in the <see cref="Response" />.
+        ///     Gets a list of resource records in the <see cref="Response"/>.
         /// </summary>
         public IEnumerable<ResourceRecord> ResourceRecords
         {
