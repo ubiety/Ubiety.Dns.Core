@@ -331,12 +331,9 @@ namespace Ubiety.Dns.Core
             get
             {
                 var list = Answers.Cast<ResourceRecord>().ToList();
-                list.AddRange(Authorities.Cast<ResourceRecord>());
+                list.AddRange(Authorities);
 
-                foreach (var rr in Additionals)
-                {
-                    list.Add(rr);
-                }
+                list.AddRange(Additionals);
 
                 return list;
             }
