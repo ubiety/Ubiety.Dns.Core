@@ -31,8 +31,13 @@ class Build : NukeBuild
     [Parameter] readonly string SonarKey;
     readonly string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
 
-    [Unlisted] [ProjectFrom(nameof(Solution))]
+    [Unlisted]
+    [ProjectFrom(nameof(Solution))]
     readonly Project UbietyDnsTestProject;
+
+    [Unlisted]
+    [ProjectFrom(nameof(Solution))]
+    readonly Project UbietyDnsCoreProject;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -59,10 +64,10 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var settings = GitVersion is null
-                ? new DotNetBuildSettings().SetProjectFile(Solution)
+                ? new DotNetBuildSettings().SetProjectFile(UbietyDnsCoreProject)
                     .SetConfiguration(Configuration)
                     .EnableNoRestore()
-                : new DotNetBuildSettings().SetProjectFile(Solution)
+                : new DotNetBuildSettings().SetProjectFile(UbietyDnsCoreProject)
                     .SetConfiguration(Configuration)
                     .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
                     .SetFileVersion(GitVersion.GetNormalizedFileVersion())
