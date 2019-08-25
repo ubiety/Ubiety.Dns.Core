@@ -3,13 +3,15 @@
     {
       "src": [
         {
-          "files": ["**/**.csproj"],
-          "exclude": ["**/bin/**", "**/obj/**"],
-          "src": "../src"
+          "files": [
+            "**.csproj"
+          ],
+          "src": "../../src/"
         }
       ],
       "dest": "api",
-      "disableGitFeatures": false
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
     }
   ],
   "build": {
