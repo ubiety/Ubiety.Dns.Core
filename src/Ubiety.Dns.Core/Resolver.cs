@@ -510,6 +510,7 @@ namespace Ubiety.Dns.Core
                 foreach (var server in DnsServers)
                 {
                     var client = new TcpClient { ReceiveTimeout = _timeout };
+                    var stream = new BufferedStream(client.GetStream());
 
                     try
                     {
@@ -521,8 +522,6 @@ namespace Ubiety.Dns.Core
                             Verbose($";; Connection to nameserver {server.Address} failed");
                             continue;
                         }
-
-                        var stream = new BufferedStream(client.GetStream());
 
                         WriteRequest(stream, request);
 
@@ -536,7 +535,11 @@ namespace Ubiety.Dns.Core
                     finally
                     {
                         _unique++;
+                        stream.Close();
+                        stream.Dispose();
+
                         client.Close();
+                        client.Dispose();
                     }
                 }
             }
