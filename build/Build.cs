@@ -35,10 +35,6 @@ class Build : NukeBuild
     [ProjectFrom(nameof(Solution))]
     readonly Project UbietyDnsTestProject;
 
-    [Unlisted]
-    [ProjectFrom(nameof(Solution))]
-    readonly Project UbietyDnsCoreProject;
-
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
@@ -64,10 +60,10 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var settings = GitVersion is null
-                ? new DotNetBuildSettings().SetProjectFile(UbietyDnsCoreProject)
+                ? new DotNetBuildSettings().SetProjectFile(UbietyDnsTestProject)
                     .SetConfiguration(Configuration)
                     .EnableNoRestore()
-                : new DotNetBuildSettings().SetProjectFile(UbietyDnsCoreProject)
+                : new DotNetBuildSettings().SetProjectFile(UbietyDnsTestProject)
                     .SetConfiguration(Configuration)
                     .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
                     .SetFileVersion(GitVersion.GetNormalizedFileVersion())
