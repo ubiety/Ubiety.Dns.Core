@@ -14,10 +14,9 @@ environment:
 
 init:
   - ps: dotnet tool install --global dotnet-sonarscanner
-  - ps: dotnet tool install --global coveralls.net
 
 build_script:
-  - ps: .\build.ps1
+  - ps: .\build.ps1 appveyor
 
 test: off
 deploy: off

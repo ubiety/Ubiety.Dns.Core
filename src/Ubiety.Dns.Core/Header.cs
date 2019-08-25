@@ -29,7 +29,7 @@ namespace Ubiety.Dns.Core
         ///     Initializes a new instance of the <see cref="Header" /> class.
         /// </summary>
         /// <param name="rr"><see cref="RecordReader" /> of the record.</param>
-        public Header(RecordReader rr)
+        internal Header(RecordReader rr)
         {
             Id = rr.ReadUInt16();
             _flags = rr.ReadUInt16();
@@ -112,7 +112,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets a value indicating whether the recursion available flag is set.
         /// </summary>
-        public bool RA
+        public bool RecursionAvailable
         {
             get => GetBits(_flags, 7, 1) == 1;
             set => _flags = SetBits(_flags, 7, 1, value);

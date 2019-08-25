@@ -4,15 +4,13 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <RootNamespace></RootNamespace>
     <IsPackable>False</IsPackable>
     <NoWarn>CS0649;CS0169</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.SonarQube.Runner.Tool" Version="4.3.1" />
-    <PackageReference Include="Nuke.Common" Version="0.18.0-alpha0038" />
-    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.0-beta2-6">
+    <PackageReference Include="Nuke.Common" Version="0.21.2" />
+    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

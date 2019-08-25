@@ -3,6 +3,7 @@
  * See the LICENSE file in the project root for more information
  */
 
+using System;
 using System.Net;
 
 namespace Ubiety.Dns.Core.Records.General
@@ -34,6 +35,11 @@ namespace Ubiety.Dns.Core.Records.General
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordA(RecordReader reader)
         {
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             Address = IPAddress.Parse($"{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}");
         }
 
