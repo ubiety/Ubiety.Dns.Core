@@ -35,6 +35,10 @@ class Build : NukeBuild
     [ProjectFrom(nameof(Solution))]
     readonly Project UbietyDnsTestProject;
 
+    [Unlisted]
+    [ProjectFrom(nameof(Solution))]
+    readonly Project UbietyDnsCoreProject;
+
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
@@ -120,6 +124,7 @@ class Build : NukeBuild
         {
             DotNetPack(s => s
                 .EnableNoBuild()
+                .SetProject(UbietyDnsCoreProject)
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetVersion(GitVersion.NuGetVersionV2));
