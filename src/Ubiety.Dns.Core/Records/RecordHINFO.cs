@@ -26,7 +26,6 @@ main use is for protocols such as FTP that can use special procedures
 when talking between machines or operating systems of the same type.
  */
 
-using System;
 using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records

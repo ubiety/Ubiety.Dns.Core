@@ -153,15 +153,6 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>String version of the record.</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {Exchanger}";
-        }
-
-        /// <summary>
         ///     Overrides equals.
         /// </summary>
         /// <param name="obj">Object to compare to.</param>
@@ -179,6 +170,15 @@ namespace Ubiety.Dns.Core.Records
             }
 
             return ReferenceEquals(this, obj) || Equals(obj as RecordKx);
+        }
+
+        /// <summary>
+        ///     String representation of the record data.
+        /// </summary>
+        /// <returns>String version of the record.</returns>
+        public override string ToString()
+        {
+            return $"{Preference} {Exchanger}";
         }
 
         /// <summary>

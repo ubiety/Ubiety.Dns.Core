@@ -147,15 +147,6 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Exchange and preference as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {Exchange}";
-        }
-
-        /// <summary>
         ///     Does this instance equal an object.
         /// </summary>
         /// <param name="obj">Object to compare to.</param>
@@ -173,6 +164,15 @@ namespace Ubiety.Dns.Core.Records.Mail
             }
 
             return ReferenceEquals(this, obj) || Equals(obj as RecordMx);
+        }
+
+        /// <summary>
+        ///     String representation of the record data.
+        /// </summary>
+        /// <returns>Exchange and preference as a string.</returns>
+        public override string ToString()
+        {
+            return $"{Preference} {Exchange}";
         }
 
         /// <summary>
