@@ -23,6 +23,8 @@ the description of name server logic in [RFC-1034] for details.
 
  *
  */
+using System;
+
 namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
@@ -36,6 +38,11 @@ namespace Ubiety.Dns.Core.Records.General
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordCname(RecordReader rr)
         {
+            if (rr is null)
+            {
+                throw new ArgumentNullException(nameof(rr));
+            }
+
             Cname = rr.ReadDomainName();
         }
 
