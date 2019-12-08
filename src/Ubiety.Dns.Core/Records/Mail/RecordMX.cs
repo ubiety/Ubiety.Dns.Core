@@ -5,6 +5,7 @@
 
 using System;
 using System.Globalization;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records.Mail
 {
@@ -38,11 +39,16 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMx" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMx(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordMx(RecordReader reader)
         {
-            Preference = rr.ReadUInt16();
-            Exchange = rr.ReadDomainName();
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            Preference = reader.ReadUInt16();
+            Exchange = reader.ReadDomainName();
         }
 
         /// <summary>
@@ -62,7 +68,7 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="y">Right comparison object.</param>
         public static bool operator <(RecordMx x, RecordMx y)
         {
-            return CompareTo(x, y) < 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y.ThrowIfNull(nameof(y))) < 0;
         }
 
         /// <summary>
@@ -72,17 +78,17 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="y">Right comparison object.</param>
         public static bool operator >(RecordMx x, RecordMx y)
         {
-            return CompareTo(x, y) > 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) > 0;
         }
 
         /// <summary>
         /// Is the left less than or equal to the right.
         /// </summary>
-        /// <param name="x">Lefyt comparison object.</param>
+        /// <param name="x">Left comparison object.</param>
         /// <param name="y">Right comparison object.</param>
         public static bool operator <=(RecordMx x, RecordMx y)
         {
-            return CompareTo(x, y) <= 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) <= 0;
         }
 
         /// <summary>
@@ -92,7 +98,7 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="y">Right comparison object.</param>
         public static bool operator >=(RecordMx x, RecordMx y)
         {
-            return CompareTo(x, y) >= 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) >= 0;
         }
 
         /// <summary>
@@ -102,7 +108,7 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="y">Right comparison object.</param>
         public static bool operator ==(RecordMx x, RecordMx y)
         {
-            return CompareTo(x, y) == 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) == 0;
         }
 
         /// <summary>
@@ -112,7 +118,7 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <param name="y">Right comparison object.</param>
         public static bool operator !=(RecordMx x, RecordMx y)
         {
-            return CompareTo(x, y) != 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) != 0;
         }
 
         /// <summary>

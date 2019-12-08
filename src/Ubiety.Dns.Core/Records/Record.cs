@@ -4,6 +4,7 @@
  */
 
 using System.Collections.Generic;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -25,6 +26,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         protected Record(RecordReader reader)
         {
+            reader = reader.ThrowIfNull(nameof(reader));
             var length = reader.ReadUInt16(-2);
             RecordData = new List<byte>(reader.ReadBytes(length));
         }

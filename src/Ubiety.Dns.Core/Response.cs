@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.General;
 using Ubiety.Dns.Core.Records.Mail;
@@ -42,6 +43,7 @@ namespace Ubiety.Dns.Core
         /// <param name="data">Response data.</param>
         public Response(IPEndPoint iPEndPoint, byte[] data)
         {
+            data = data.ThrowIfNull(nameof(data));
             Error = string.Empty;
             Server = iPEndPoint;
             TimeStamp = DateTime.Now;

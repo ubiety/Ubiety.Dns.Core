@@ -77,6 +77,7 @@ namespace Ubiety.Dns.Core
         /// <param name="rr">Record reader of the record data.</param>
         protected ResourceRecord(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             TimeLived = 0;
             Name = rr.ReadDomainName();
             Type = (RecordType)rr.ReadUInt16();

@@ -6,6 +6,7 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 
 /*
  * http://tools.ietf.org/rfc/rfc1348.txt
@@ -52,6 +53,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNsap(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             Length = rr.ReadUInt16();
             _address = rr.ReadBytes(Length);
         }

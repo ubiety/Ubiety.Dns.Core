@@ -22,6 +22,8 @@ similar to that performed by CNAME, which identifies aliases.  See the
 description of the IN-ADDR.ARPA domain for an example.
  */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -35,7 +37,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordPtr(RecordReader rr)
         {
-            PointerDomain = rr.ReadDomainName();
+            PointerDomain = rr.ThrowIfNull(nameof(rr)).ReadDomainName();
         }
 
         /// <summary>

@@ -3,7 +3,6 @@
  * See the LICENSE file in the project root for more information
  */
 
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Ubiety.Dns.Core.Common;
@@ -59,11 +58,12 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNxt(RecordReader rr)
         {
-            var length = rr.ReadUInt16(-2);
-            NextDomainName = rr.ReadDomainName();
-            length -= (ushort)rr.Position;
+            var reader = rr.ThrowIfNull(nameof(rr));
+            var length = reader.ReadUInt16(-2);
+            NextDomainName = reader.ReadDomainName();
+            length -= (ushort)reader.Position;
             _bitmap = new byte[length];
-            _bitmap = rr.ReadBytes(length);
+            _bitmap = reader.ReadBytes(length);
         }
 
         /// <summary>

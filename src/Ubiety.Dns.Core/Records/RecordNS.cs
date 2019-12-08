@@ -28,6 +28,8 @@ hosts which are name servers for either Internet (IN) or Hesiod (HS)
 class information are normally queried using IN class protocols.
  */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -41,7 +43,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNs(RecordReader rr)
         {
-            NameserverDomain = rr.ReadDomainName();
+            NameserverDomain = rr.ThrowIfNull(nameof(rr)).ReadDomainName();
         }
 
         /// <summary>

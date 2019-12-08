@@ -261,32 +261,34 @@ namespace Ubiety.Dns.Core
         /// <returns>The 'mirrored' IPV4 or IPV6 arpa address.</returns>
         public static string GetArpaFromIp(IPAddress ip)
         {
+            ip = ip.ThrowIfNull(nameof(ip));
+
             switch (ip.AddressFamily)
             {
                 case AddressFamily.InterNetwork:
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("in-addr.arpa.");
-                    foreach (var b in ip.GetAddressBytes())
                     {
-                        sb.Insert(0, $"{b}.");
-                    }
+                        var sb = new StringBuilder();
+                        sb.Append("in-addr.arpa.");
+                        foreach (var b in ip.GetAddressBytes())
+                        {
+                            sb.Insert(0, $"{b}.");
+                        }
 
-                    return sb.ToString();
-                }
+                        return sb.ToString();
+                    }
 
                 case AddressFamily.InterNetworkV6:
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("ip6.arpa.");
-                    foreach (var b in ip.GetAddressBytes())
                     {
-                        sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
-                        sb.Insert(0, $"{b & 0xf:x}.");
-                    }
+                        var sb = new StringBuilder();
+                        sb.Append("ip6.arpa.");
+                        foreach (var b in ip.GetAddressBytes())
+                        {
+                            sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
+                            sb.Insert(0, $"{b & 0xf:x}.");
+                        }
 
-                    return sb.ToString();
-                }
+                        return sb.ToString();
+                    }
             }
 
             return "?";

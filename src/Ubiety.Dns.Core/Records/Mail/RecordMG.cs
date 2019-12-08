@@ -19,6 +19,8 @@ MGMNAME         A <domain-name> which specifies a mailbox which is a
 MG records cause no additional section processing.
 */
 
+using System;
+
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
@@ -29,10 +31,15 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMg" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMg(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordMg(RecordReader reader)
         {
-            MgmName = rr.ReadDomainName();
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            MgmName = reader.ReadDomainName();
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 
 /*
  * http://tools.ietf.org/rfc/rfc3658.txt
@@ -51,6 +52,8 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> of the record data.</param>
         public RecordDs(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
+
             var length = rr.ReadUInt16(-2);
             KeyTag = rr.ReadUInt16();
             Algorithm = rr.ReadByte();

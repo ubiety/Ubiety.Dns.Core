@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using Ubiety.Dns.Core.Common;
 
 /*
 * http://tools.ietf.org/rfc/rfc2930.txt
@@ -44,6 +45,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordTkey(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             Algorithm = rr.ReadDomainName();
             Inception = rr.ReadUInt32();
             Expiration = rr.ReadUInt32();

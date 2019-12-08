@@ -5,6 +5,7 @@
 
 using System;
 using System.Globalization;
+using Ubiety.Dns.Core.Common;
 
 /*
  * http://tools.ietf.org/rfc/rfc2230.txt
@@ -51,6 +52,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the data.</param>
         public RecordKx(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             Preference = rr.ReadUInt16();
             Exchanger = rr.ReadDomainName();
         }
@@ -72,7 +74,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="y">Right comparison object.</param>
         public static bool operator <(RecordKx x, RecordKx y)
         {
-            return CompareTo(x, y) < 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) < 0;
         }
 
         /// <summary>
@@ -82,7 +84,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="y">Right comparison object.</param>
         public static bool operator >(RecordKx x, RecordKx y)
         {
-            return CompareTo(x, y) > 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) > 0;
         }
 
         /// <summary>
@@ -92,7 +94,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="y">Right comparison object.</param>
         public static bool operator <=(RecordKx x, RecordKx y)
         {
-            return CompareTo(x, y) <= 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) <= 0;
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="y">Right comparison object.</param>
         public static bool operator >=(RecordKx x, RecordKx y)
         {
-            return CompareTo(x, y) >= 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) >= 0;
         }
 
         /// <summary>
@@ -112,7 +114,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="y">Right comparison object.</param>
         public static bool operator ==(RecordKx x, RecordKx y)
         {
-            return CompareTo(x, y) == 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) == 0;
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="y">Right comparison object.</param>
         public static bool operator !=(RecordKx x, RecordKx y)
         {
-            return CompareTo(x, y) != 0;
+            return CompareTo(x.ThrowIfNull(nameof(x)), y) != 0;
         }
 
         /// <summary>

@@ -70,6 +70,8 @@ reason for this provison is to allow future dynamic update facilities to
 change the SOA RR with known semantics.
 */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -83,6 +85,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordSoa(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             PrimaryNameserver = rr.ReadDomainName();
             ResponsibleDomain = rr.ReadDomainName();
             Serial = rr.ReadUInt32();
