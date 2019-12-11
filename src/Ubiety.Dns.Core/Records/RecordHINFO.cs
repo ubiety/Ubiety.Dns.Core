@@ -26,7 +26,7 @@ main use is for protocols such as FTP that can use special procedures
 when talking between machines or operating systems of the same type.
  */
 
-using System;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -41,6 +41,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordHinfo(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             Cpu = rr.ReadString();
             Os = rr.ReadString();
         }

@@ -35,7 +35,7 @@ namespace Ubiety.Dns.Core
         ///     Initializes a new instance of the <see cref="Question" /> class.
         /// </summary>
         /// <param name="rr"><see cref="RecordReader" /> of the record.</param>
-        public Question(RecordReader rr)
+        internal Question(RecordReader rr)
         {
             QuestionName = rr.ReadDomainName();
             QuestionType = (QuestionType)rr.ReadUInt16();

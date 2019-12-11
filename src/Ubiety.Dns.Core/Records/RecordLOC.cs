@@ -5,6 +5,7 @@
 
 using System.Globalization;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 
 /*
  * http://www.ietf.org/rfc/rfc1876.txt
@@ -114,6 +115,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr">Record reader of the record data.</param>
         public RecordLoc(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             Version = rr.ReadByte(); // must be 0!
             Size = rr.ReadByte();
             HorizontalPrecision = rr.ReadByte();

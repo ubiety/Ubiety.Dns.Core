@@ -42,7 +42,7 @@
 
  */
 
-using System;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
@@ -57,7 +57,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNsapPtr(RecordReader rr)
         {
-            Owner = rr.ReadString();
+            Owner = rr.ThrowIfNull(nameof(rr)).ReadString();
         }
 
         /// <summary>

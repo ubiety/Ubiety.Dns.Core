@@ -21,6 +21,7 @@ depends on the domain where it is found.
 
 using System.Collections.Generic;
 using System.Text;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -36,6 +37,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="length">Record length.</param>
         public RecordTxt(RecordReader rr, int length)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             var position = rr.Position;
             Text = new List<string>();
             while ((rr.Position - position) < length)

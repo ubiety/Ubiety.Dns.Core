@@ -19,7 +19,7 @@
  *
  */
 
-using System;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -34,7 +34,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record.</param>
         public RecordDname(RecordReader rr)
         {
-            Target = rr.ReadDomainName();
+            Target = rr.ThrowIfNull(nameof(rr)).ReadDomainName();
         }
 
         /// <summary>

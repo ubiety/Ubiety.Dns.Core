@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Ubiety.Dns.Core.Common;
 
 /*
 3.3.10. NULL RDATA format (EXPERIMENTAL)
@@ -37,6 +38,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNull(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             rr.Position -= 2;
             var recordLength = rr.ReadUInt16();
             _data = new byte[recordLength];

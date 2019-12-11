@@ -42,6 +42,8 @@
 
  */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
     /// <summary>
@@ -55,9 +57,10 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordGpos(RecordReader rr)
         {
-            Longitude = rr.ReadString();
-            Latitude = rr.ReadString();
-            Altitude = rr.ReadString();
+            var reader = rr.ThrowIfNull(nameof(rr));
+            Longitude = reader.ReadString();
+            Latitude = reader.ReadString();
+            Altitude = reader.ReadString();
         }
 
         /// <summary>

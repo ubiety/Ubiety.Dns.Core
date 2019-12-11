@@ -33,6 +33,8 @@
 
  */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -46,6 +48,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordRp(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             MailboxDomain = rr.ReadDomainName();
             TxtDomain = rr.ReadDomainName();
         }

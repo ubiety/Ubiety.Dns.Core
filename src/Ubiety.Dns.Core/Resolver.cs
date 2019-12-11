@@ -24,10 +24,6 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Resolver
     {
-        /// <summary>
-        ///     Default DNS port.
-        /// </summary>
-        public const int DefaultPort = 53;
         private readonly Dictionary<string, Response> _responseCache;
         private int _retries;
         private int _timeout;
@@ -123,13 +119,18 @@ namespace Ubiety.Dns.Core
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         /// <summary>
-        ///     Gets the default OpenDNS servers.
+        ///     Gets the default DNS servers for OpenDNS.
         /// </summary>
         public static List<IPEndPoint> DefaultDnsServers => new List<IPEndPoint>
         {
             new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort),
             new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort),
         };
+
+        /// <summary>
+        ///     Gets or sets the default DNS port.
+        /// </summary>
+        public static int DefaultPort { get; set; } = 53;
 
         /// <summary>
         ///     Gets or sets timeout in milliseconds.
@@ -260,32 +261,34 @@ namespace Ubiety.Dns.Core
         /// <returns>The 'mirrored' IPV4 or IPV6 arpa address.</returns>
         public static string GetArpaFromIp(IPAddress ip)
         {
+            ip = ip.ThrowIfNull(nameof(ip));
+
             switch (ip.AddressFamily)
             {
                 case AddressFamily.InterNetwork:
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("in-addr.arpa.");
-                    foreach (var b in ip.GetAddressBytes())
                     {
-                        sb.Insert(0, $"{b}.");
-                    }
+                        var sb = new StringBuilder();
+                        sb.Append("in-addr.arpa.");
+                        foreach (var b in ip.GetAddressBytes())
+                        {
+                            sb.Insert(0, $"{b}.");
+                        }
 
-                    return sb.ToString();
-                }
+                        return sb.ToString();
+                    }
 
                 case AddressFamily.InterNetworkV6:
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("ip6.arpa.");
-                    foreach (var b in ip.GetAddressBytes())
                     {
-                        sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
-                        sb.Insert(0, $"{(b >> 0) & 0xf:x}.");
-                    }
+                        var sb = new StringBuilder();
+                        sb.Append("ip6.arpa.");
+                        foreach (var b in ip.GetAddressBytes())
+                        {
+                            sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
+                            sb.Insert(0, $"{b & 0xf:x}.");
+                        }
 
-                    return sb.ToString();
-                }
+                        return sb.ToString();
+                    }
             }
 
             return "?";
@@ -509,6 +512,7 @@ namespace Ubiety.Dns.Core
                 foreach (var server in DnsServers)
                 {
                     var client = new TcpClient { ReceiveTimeout = _timeout };
+                    var stream = new BufferedStream(client.GetStream());
 
                     try
                     {
@@ -520,8 +524,6 @@ namespace Ubiety.Dns.Core
                             Verbose($";; Connection to nameserver {server.Address} failed");
                             continue;
                         }
-
-                        var stream = new BufferedStream(client.GetStream());
 
                         WriteRequest(stream, request);
 
@@ -535,7 +537,11 @@ namespace Ubiety.Dns.Core
                     finally
                     {
                         _unique++;
+                        stream.Close();
+                        stream.Dispose();
+
                         client.Close();
+                        client.Dispose();
                     }
                 }
             }

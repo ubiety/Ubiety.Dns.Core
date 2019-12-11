@@ -67,6 +67,8 @@
 
  */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -80,6 +82,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> of the record data.</param>
         public RecordSrv(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             Priority = rr.ReadUInt16();
             Weight = rr.ReadUInt16();
             Port = rr.ReadUInt16();

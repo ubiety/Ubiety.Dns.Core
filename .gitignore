@@ -2,6 +2,10 @@
 # Created by https://www.gitignore.io/api/git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
 
+### DocFx ###
+.cache
+/**/_site/
+
 ### Cake ###
 tools/*
 !tools/packages.config

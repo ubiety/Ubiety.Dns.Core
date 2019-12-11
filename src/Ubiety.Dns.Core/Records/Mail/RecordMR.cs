@@ -33,10 +33,15 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMr" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMr(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordMr(RecordReader reader)
         {
-            NewName = rr.ReadDomainName();
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            NewName = reader.ReadDomainName();
         }
 
         /// <summary>

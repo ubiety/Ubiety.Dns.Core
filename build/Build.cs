@@ -16,26 +16,32 @@ using static Nuke.Common.Tools.DotNetSonarScanner.DotNetSonarScannerTasks;
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
-    public static int Main() => Execute<Build>(x => x.Test);
-
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter] readonly string SonarKey;
-    [Parameter] readonly string NuGetKey;
     [Parameter] readonly bool? Cover = true;
+    [GitRepository] readonly GitRepository GitRepository;
+    [GitVersion(DisableOnUnix = true)] readonly GitVersion GitVersion;
+    [Parameter] readonly string NuGetKey;
+
+    readonly string NuGetSource = "https://api.nuget.org/v3/index.json";
 
     [Solution] readonly Solution Solution;
-    [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion] readonly GitVersion GitVersion;
+
+    [Parameter] readonly string SonarKey;
+    readonly string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
+
+    [Unlisted]
+    [ProjectFrom(nameof(Solution))]
+    readonly Project UbietyDnsTestProject;
+
+    [Unlisted]
+    [ProjectFrom(nameof(Solution))]
+    readonly Project UbietyDnsCoreProject;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
-
-    readonly string NuGetSource = "https://api.nuget.org/v3/index.json";
-    readonly string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
-    [Unlisted] [ProjectFrom(nameof(Solution))] readonly Project UbietyDnsTestProject;
 
     Target Clean => _ => _
         .Before(Restore)
@@ -57,13 +63,18 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            DotNetBuild(s => s
-                .SetProjectFile(Solution)
-                .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-                .SetInformationalVersion(GitVersion.InformationalVersion)
-                .EnableNoRestore());
+            var settings = GitVersion is null
+                ? new DotNetBuildSettings().SetProjectFile(UbietyDnsTestProject)
+                    .SetConfiguration(Configuration)
+                    .EnableNoRestore()
+                : new DotNetBuildSettings().SetProjectFile(UbietyDnsTestProject)
+                    .SetConfiguration(Configuration)
+                    .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
+                    .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                    .SetInformationalVersion(GitVersion.InformationalVersion)
+                    .EnableNoRestore();
+
+            DotNetBuild(settings);
         });
 
     Target SonarBegin => _ => _
@@ -113,6 +124,7 @@ class Build : NukeBuild
         {
             DotNetPack(s => s
                 .EnableNoBuild()
+                .SetProject(UbietyDnsCoreProject)
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetVersion(GitVersion.NuGetVersionV2));
@@ -137,4 +149,9 @@ class Build : NukeBuild
 
     Target Appveyor => _ => _
         .DependsOn(Test, SonarEnd, Publish);
+
+    public static int Main()
+    {
+        return Execute<Build>(x => x.Test);
+    }
 }

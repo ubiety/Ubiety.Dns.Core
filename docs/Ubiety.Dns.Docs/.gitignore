@@ -4,6 +4,5 @@
 /**/DROP/
 /**/TEMP/
 /**/packages/
-/**/bin/
-/**/obj/
-_site
+/**/_exported_templates/
+log.txt
