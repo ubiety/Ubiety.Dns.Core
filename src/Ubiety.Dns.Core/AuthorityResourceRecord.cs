@@ -8,13 +8,13 @@ namespace Ubiety.Dns.Core
     /// <summary>
     ///     Authority resource record.
     /// </summary>
-    public class AuthorityRR : ResourceRecord
+    public class AuthorityResourceRecord : ResourceRecord
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AuthorityRR" /> class.
+        ///     Initializes a new instance of the <see cref="AuthorityResourceRecord" /> class.
         /// </summary>
         /// <param name="br"><see cref="ResourceRecord" /> for the record data.</param>
-        public AuthorityRR(RecordReader br)
+        public AuthorityResourceRecord(RecordReader br)
             : base(br)
         {
         }

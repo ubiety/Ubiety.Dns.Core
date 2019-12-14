@@ -590,7 +590,7 @@ namespace Ubiety.Dns.Core
 
                 transferResponse.Answers.AddRange(response.Answers);
                 transferResponse.Authorities.AddRange(response.Authorities);
-                transferResponse.Additionals.AddRange(response.Additionals);
+                transferResponse.Additional.AddRange(response.Additional);
 
                 if (response.Answers[0].Type == RecordType.SOA)
                 {
@@ -605,7 +605,7 @@ namespace Ubiety.Dns.Core
                 transferResponse.Header.QuestionCount = (ushort)transferResponse.Questions.Count;
                 transferResponse.Header.AnswerCount = (ushort)transferResponse.Answers.Count;
                 transferResponse.Header.NameserverCount = (ushort)transferResponse.Authorities.Count;
-                transferResponse.Header.AdditionalRecordsCount = (ushort)transferResponse.Additionals.Count;
+                transferResponse.Header.AdditionalRecordsCount = (ushort)transferResponse.Additional.Count;
                 transferResponse.MessageSize = messageSize;
 
                 return transferResponse;
