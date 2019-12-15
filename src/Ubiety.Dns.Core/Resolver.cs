@@ -188,15 +188,6 @@ namespace Ubiety.Dns.Core
                     DnsServers.Add(new IPEndPoint(ip, DefaultPort));
                     return;
                 }
-
-                var response = Query(value, QuestionType.A);
-                if (response.RecordA.Count <= 0)
-                {
-                    return;
-                }
-
-                DnsServers.Clear();
-                DnsServers.Add(new IPEndPoint(response.RecordA[0].Address, DefaultPort));
             }
         }
 
