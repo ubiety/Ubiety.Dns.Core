@@ -20,24 +20,18 @@ class Build : NukeBuild
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter] readonly bool? Cover = true;
+    [Parameter] readonly string NuGetKey;
+    [Parameter] readonly string SonarKey;
+
+    [Solution] static readonly Solution Solution;
+
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion(DisableOnUnix = true)] readonly GitVersion GitVersion;
-    [Parameter] readonly string NuGetKey;
 
-    readonly string NuGetSource = "https://api.nuget.org/v3/index.json";
-
-    [Solution] readonly Solution Solution;
-
-    [Parameter] readonly string SonarKey;
     readonly string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
-
-    [Unlisted]
-    [ProjectFrom(nameof(Solution))]
-    readonly Project UbietyDnsTestProject;
-
-    [Unlisted]
-    [ProjectFrom(nameof(Solution))]
-    readonly Project UbietyDnsCoreProject;
+    readonly string NuGetSource = "https://api.nuget.org/v3/index.json";
+    readonly Project UbietyDnsTestProject = Solution.GetProject("Ubiety.Dns.Test");
+    readonly Project UbietyDnsCoreProject = Solution.GetProject("Ubiety.Dns.Core");
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -69,8 +63,8 @@ class Build : NukeBuild
                     .EnableNoRestore()
                 : new DotNetBuildSettings().SetProjectFile(UbietyDnsTestProject)
                     .SetConfiguration(Configuration)
-                    .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
-                    .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                    .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                    .SetFileVersion(GitVersion.AssemblySemFileVer)
                     .SetInformationalVersion(GitVersion.InformationalVersion)
                     .EnableNoRestore();
 

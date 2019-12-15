@@ -9,30 +9,30 @@ namespace Ubiety.Dns.Test.Records.NotUsed
     {
         public RecordAplTests()
         {
-            data = new byte[4];
-            data[0] = 0;
-            data[1] = 2;
-            data[2] = 4;
-            data[3] = 5;
+            _data = new byte[4];
+            _data[0] = 0;
+            _data[1] = 2;
+            _data[2] = 4;
+            _data[3] = 5;
 
-            reader = new RecordReader(data, 2);
+            _reader = new RecordReader(_data, 2);
         }
 
-        private readonly byte[] data;
-        private readonly RecordReader reader;
+        private readonly byte[] _data;
+        private readonly RecordReader _reader;
 
         [Fact]
         public void TestRecordData()
         {
-            var apl = new RecordApl(reader);
+            var apl = new RecordApl(_reader);
 
-            apl.RecordData[0].ShouldBe(data[2]);
+            apl.RecordData[0].ShouldBe(_data[2]);
         }
 
         [Fact]
         public void TestToString()
         {
-            var apl = new RecordApl(reader);
+            var apl = new RecordApl(_reader);
 
             apl.ToString().ShouldMatch("RecordApl is not-used");
         }
