@@ -20,7 +20,7 @@ using Ubiety.Dns.Core.Common;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS resolver runs querys against a server.
+    ///     DNS resolver runs queries against a server.
     /// </summary>
     public class Resolver
     {
@@ -34,7 +34,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="Resolver" /> class.
         /// </summary>
-        /// <param name="dnsServers">Set of DNS servers.</param>
+        /// <param name="dnsServers">Set of DNS servers to use for resolution.</param>
         public Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
             var rng = new RNGCryptoServiceProvider();
@@ -119,7 +119,7 @@ namespace Ubiety.Dns.Core
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         /// <summary>
-        ///     Gets the default DNS servers for OpenDNS.
+        ///     Gets the default DNS server addresses for OpenDNS.
         /// </summary>
         public static List<IPEndPoint> DefaultDnsServers => new List<IPEndPoint>
         {
@@ -128,12 +128,12 @@ namespace Ubiety.Dns.Core
         };
 
         /// <summary>
-        ///     Gets or sets the default DNS port.
+        ///     Gets the default DNS port.
         /// </summary>
-        public static int DefaultPort { get; set; } = 53;
+        public static int DefaultPort { get; } = 53;
 
         /// <summary>
-        ///     Gets or sets timeout in milliseconds.
+        ///     Gets or sets resolution timeout in milliseconds.
         /// </summary>
         public int Timeout
         {
@@ -174,20 +174,22 @@ namespace Ubiety.Dns.Core
         public List<IPEndPoint> DnsServers { get; }
 
         /// <summary>
-        ///     Gets or sets the first DNS server address or sets single DNS server to use.
+        ///     Gets the first DNS server address or adds a DNS server to use.
         /// </summary>
+        [Obsolete("No obvious use case. Please open an issue if you do use it.")]
         public string DnsServer
         {
             get => DnsServers[0].Address.ToString();
 
             set
             {
-                if (IPAddress.TryParse(value, out var ip))
+                if (!IPAddress.TryParse(value, out var ip))
                 {
-                    DnsServers.Clear();
-                    DnsServers.Add(new IPEndPoint(ip, DefaultPort));
                     return;
                 }
+
+                DnsServers.Clear();
+                DnsServers.Add(new IPEndPoint(ip, DefaultPort));
             }
         }
 
@@ -206,15 +208,12 @@ namespace Ubiety.Dns.Core
                     return;
                 }
 
-                lock (_responseCache)
-                {
-                    _responseCache.Clear();
-                }
+                ClearCache();
             }
         }
 
         /// <summary>
-        ///     Gets a list of default DNS servers used on the Windows machine.
+        ///     Gets a list of default DNS servers.
         /// </summary>
         /// <returns>Array of DNS servers.</returns>
         public static IEnumerable<IPEndPoint> GetSystemDnsServers()
