@@ -8,7 +8,7 @@ using System;
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Record attribute.
+    ///     Applies a record class type to the enum type.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class RecordAttribute : Attribute

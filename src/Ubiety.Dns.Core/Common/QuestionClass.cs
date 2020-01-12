@@ -3,8 +3,6 @@
  * See the LICENSE file in the project root for more information
  */
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
