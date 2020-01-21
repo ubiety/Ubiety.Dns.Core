@@ -16,6 +16,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core
 {
@@ -24,6 +25,8 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Resolver
     {
+        private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
+
         private readonly Dictionary<string, Response> _responseCache;
         private int _retries;
         private int _timeout;
@@ -110,6 +113,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Verbose messages from internal operations
         /// </summary>
+        [Obsolete("Use ResolverBuilder and enable logging.")]
         public event VerboseEventHandler OnVerbose;
 
         /// <summary>
@@ -174,7 +178,7 @@ namespace Ubiety.Dns.Core
         public List<IPEndPoint> DnsServers { get; }
 
         /// <summary>
-        ///     Gets the first DNS server address or adds a DNS server to use.
+        ///     Gets or sets the first DNS server address.
         /// </summary>
         [Obsolete("No obvious use case. Please open an issue if you do use it.")]
         public string DnsServer
@@ -317,12 +321,12 @@ namespace Ubiety.Dns.Core
         ///     Do Query on specified DNS servers.
         /// </summary>
         /// <param name="name">Name to query.</param>
-        /// <param name="qtype">Question type.</param>
-        /// <param name="qclass">Class type.</param>
+        /// <param name="questionType">Question type.</param>
+        /// <param name="questionClass">Class type.</param>
         /// <returns>Response of the query.</returns>
-        public Response Query(string name, QuestionType qtype, QuestionClass qclass)
+        public Response Query(string name, QuestionType questionType, QuestionClass questionClass)
         {
-            var question = new Question(name, qtype, qclass);
+            var question = new Question(name, questionType, questionClass);
             var response = SearchInCache(question);
             if (response != null)
             {
@@ -338,11 +342,11 @@ namespace Ubiety.Dns.Core
         ///     Do an QClass=IN Query on specified DNS servers.
         /// </summary>
         /// <param name="name">Name to query.</param>
-        /// <param name="qtype">Question type.</param>
+        /// <param name="questionType">Question type.</param>
         /// <returns>Response of the query.</returns>
-        public Response Query(string name, QuestionType qtype)
+        public Response Query(string name, QuestionType questionType)
         {
-            var question = new Question(name, qtype, QuestionClass.IN);
+            var question = new Question(name, questionType, QuestionClass.IN);
             var response = SearchInCache(question);
             if (response != null)
             {
@@ -477,8 +481,9 @@ namespace Ubiety.Dns.Core
                         AddToCache(response);
                         return response;
                     }
-                    catch (SocketException)
+                    catch (SocketException exception)
                     {
+                        _logger.Error(exception, $"Connection to nameserver {intDnsServer + 1} failed");
                         Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
                     }
                     finally
@@ -511,6 +516,7 @@ namespace Ubiety.Dns.Core
                         if (!client.Connected)
                         {
                             client.Close();
+                            _logger.Error($"Connection to nameserver {server.Address} failed");
                             Verbose($";; Connection to nameserver {server.Address} failed");
                             continue;
                         }
@@ -551,6 +557,7 @@ namespace Ubiety.Dns.Core
                 var length = (stream.ReadByte() << 8) | stream.ReadByte();
                 if (length <= 0)
                 {
+                    _logger.Error($"Connection to nameserver {server.Address} failed");
                     Verbose($"Connection to nameserver {server.Address} failed");
                     throw new SocketException();
                 }
