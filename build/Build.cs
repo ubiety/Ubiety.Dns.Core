@@ -55,7 +55,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            var project = Solution.GetProject("Ubiety.Dns.Core");
+            var project = Solution.GetProject("Ubiety.Dns.Test");
 
             var settings = GitVersion is null
                 ? new DotNetBuildSettings().SetProjectFile(project)
