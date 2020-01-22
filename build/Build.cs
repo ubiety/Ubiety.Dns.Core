@@ -23,15 +23,13 @@ class Build : NukeBuild
     [Parameter] readonly string NuGetKey;
     [Parameter] readonly string SonarKey;
 
-    [Solution] static readonly Solution Solution;
+    [Solution] readonly Solution Solution;
 
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion(DisableOnUnix = true)] readonly GitVersion GitVersion;
 
     readonly string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
     readonly string NuGetSource = "https://api.nuget.org/v3/index.json";
-    readonly Project UbietyDnsTestProject = Solution.GetProject("Ubiety.Dns.Test");
-    readonly Project UbietyDnsCoreProject = Solution.GetProject("Ubiety.Dns.Core");
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -57,11 +55,13 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
+            var project = Solution.GetProject("Ubiety.Dns.Core");
+
             var settings = GitVersion is null
-                ? new DotNetBuildSettings().SetProjectFile(UbietyDnsTestProject)
+                ? new DotNetBuildSettings().SetProjectFile(project)
                     .SetConfiguration(Configuration)
                     .EnableNoRestore()
-                : new DotNetBuildSettings().SetProjectFile(UbietyDnsTestProject)
+                : new DotNetBuildSettings().SetProjectFile(project)
                     .SetConfiguration(Configuration)
                     .SetAssemblyVersion(GitVersion.AssemblySemVer)
                     .SetFileVersion(GitVersion.AssemblySemFileVer)
@@ -101,8 +101,10 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
+            var project = Solution.GetProject("Ubiety.Dns.Test");
+
             DotNetTest(s => s
-                .SetProjectFile(UbietyDnsTestProject)
+                .SetProjectFile(project)
                 .EnableNoBuild()
                 .SetConfiguration(Configuration)
                 .SetArgumentConfigurator(args => args.Add("/p:CollectCoverage={0}", Cover)
@@ -116,9 +118,11 @@ class Build : NukeBuild
         .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
         .Executes(() =>
         {
+            var project = Solution.GetProject("Ubiety.Dns.Core");
+
             DotNetPack(s => s
                 .EnableNoBuild()
-                .SetProject(UbietyDnsCoreProject)
+                .SetProject(project)
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetVersion(GitVersion.NuGetVersionV2));
