@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IsPackable>True</IsPackable>
     <NoWarn>CS0649;CS0169</NoWarn>
@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="0.23.6" />
-    <PackageDownload Include="GitVersion.Tool" Version="[5.1.3]" />
+    <PackageDownload Include="GitVersion.Tool" Version="[5.1.1]" />
   </ItemGroup>
 
   <ItemGroup>
