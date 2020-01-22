@@ -26,7 +26,7 @@ the new scheme.  The recommended policy for dealing with MD RRs found in
 a master file is to reject them, or to convert them to MX RRs with a
 preference of 10. */
 
-using System;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
@@ -41,7 +41,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordMf(RecordReader rr)
         {
-            MadName = rr.ReadDomainName();
+            MadName = rr.ThrowIfNull(nameof(rr)).ReadDomainName();
         }
 
         /// <summary>

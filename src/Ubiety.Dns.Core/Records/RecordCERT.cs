@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Ubiety.Dns.Core.Common;
 
 /*
 
@@ -35,6 +36,8 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordCert(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
+
             // re-read length
             var recordLength = rr.ReadUInt16(-2);
 

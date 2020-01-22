@@ -34,6 +34,8 @@
 
  */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -47,7 +49,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordX25(RecordReader rr)
         {
-            PSDNAdress = rr.ReadString();
+            PSDNAdress = rr.ThrowIfNull(nameof(rr)).ReadString();
         }
 
         /// <summary>

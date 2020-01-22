@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Ubiety.Dns.Core.Common;
 
 /*
  * http://www.ietf.org/rfc/rfc2845.txt
@@ -44,6 +45,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordTsig(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             AlgorithmName = rr.ReadDomainName();
             TimeSigned = (rr.ReadUInt32() << 32) | rr.ReadUInt32();
             Fudge = rr.ReadUInt16();

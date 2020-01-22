@@ -4,6 +4,7 @@
  */
 
 using System.Globalization;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -18,6 +19,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr">Record reader for the record data.</param>
         public RecordSig(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             TypeCovered = rr.ReadUInt16();
             Algorithm = rr.ReadByte();
             Labels = rr.ReadByte();

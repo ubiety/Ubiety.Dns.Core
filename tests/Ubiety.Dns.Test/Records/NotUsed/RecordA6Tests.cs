@@ -9,30 +9,30 @@ namespace Ubiety.Dns.Test.Records.NotUsed
     {
         public RecordA6Tests()
         {
-            data = new byte[4];
-            data[0] = 0;
-            data[1] = 2;
-            data[2] = 4;
-            data[3] = 5;
+            _data = new byte[4];
+            _data[0] = 0;
+            _data[1] = 2;
+            _data[2] = 4;
+            _data[3] = 5;
 
-            reader = new RecordReader(data, 2);
+            _reader = new RecordReader(_data, 2);
         }
 
-        private readonly byte[] data;
-        private readonly RecordReader reader;
+        private readonly byte[] _data;
+        private readonly RecordReader _reader;
 
         [Fact]
         public void TestRecordData()
         {
-            var a6 = new RecordA6(reader);
+            var a6 = new RecordA6(_reader);
 
-            a6.RecordData[0].ShouldBe(data[2]);
+            a6.RecordData[0].ShouldBe(_data[2]);
         }
 
         [Fact]
         public void TestToString()
         {
-            var a6 = new RecordA6(reader);
+            var a6 = new RecordA6(_reader);
 
             a6.ToString().ShouldMatch("RecordA6 is not-used");
         }

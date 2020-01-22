@@ -5,6 +5,7 @@
 
 using System.Collections.ObjectModel;
 using System.Globalization;
+using Ubiety.Dns.Core.Common;
 
 /*
 * 3.4.2. WKS RDATA format
@@ -66,6 +67,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr">Record reader for record data.</param>
         public RecordWks(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             var length = rr.ReadUInt16(-2);
             Address = string.Format(
                 CultureInfo.InvariantCulture,

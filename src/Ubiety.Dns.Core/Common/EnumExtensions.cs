@@ -4,7 +4,6 @@
  */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Ubiety.Dns.Core.Records;
 
@@ -13,7 +12,6 @@ namespace Ubiety.Dns.Core.Common
     /// <summary>
     ///     Enumeration extension methods.
     /// </summary>
-    [SuppressMessage("ReSharper", "SA1629", Justification = "Returns does not need a period")]
     public static class EnumExtensions
     {
         /// <summary>
@@ -22,7 +20,7 @@ namespace Ubiety.Dns.Core.Common
         /// <param name="type">Type of record to get.</param>
         /// <param name="reader">Resource reader to create record with.</param>
         /// <param name="length">Length of the record.</param>
-        /// <returns><see cref="Record"/></returns>
+        /// <returns>A <see cref="Record"/> instance for the given type.</returns>
         public static Record GetRecord(this RecordType type, RecordReader reader, int length = 0)
         {
             var fieldInfo = type.GetType().GetField(type.ToString());

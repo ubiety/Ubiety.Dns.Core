@@ -45,6 +45,8 @@
 
  */
 
+using Ubiety.Dns.Core.Common;
+
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -58,6 +60,7 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordNaptr(RecordReader rr)
         {
+            rr = rr.ThrowIfNull(nameof(rr));
             Order = rr.ReadUInt16();
             Preference = rr.ReadUInt16();
             Flags = rr.ReadString();

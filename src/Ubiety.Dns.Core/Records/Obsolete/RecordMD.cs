@@ -26,7 +26,7 @@ a master file is to reject them, or to convert them to MX RRs with a
 preference of 0.
  * */
 
-using System;
+using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records.Obsolete
 {
@@ -41,7 +41,7 @@ namespace Ubiety.Dns.Core.Records.Obsolete
         /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
         public RecordMd(RecordReader rr)
         {
-            MadName = rr.ReadDomainName();
+            MadName = rr.ThrowIfNull(nameof(rr)).ReadDomainName();
         }
 
         /// <summary>

@@ -10,16 +10,17 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ubiety/Ubiety.Dns.Core</PackageProjectUrl>
     <PackageTags>dns;ubiety;.net;c#;core;standard</PackageTags>
-    <Authors>Dieter Lunn</Authors>
+    <Authors>Dieter (coder2000) Lunn</Authors>
     <PackageIconUrl>https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/images/library64.png</PackageIconUrl>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Description>DNS library for .NET Standard 2.0</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.4" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.4" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.4" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.8" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.8" PrivateAssets="All" />
     <PackageReference Include="Stylecop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+    <PackageReference Include="Ubiety.Logging.Core" Version="1.0.1" />
     <PackageReference Include="Ubiety.StyleCop" Version="0.0.5" PrivateAssets="All" />
   </ItemGroup>
 </Project>

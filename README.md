@@ -2,8 +2,6 @@
 
 > A reusable DNS resolver for .NET Standard 2.0
 
-[Professionally supported Ubiety.Dns.Core is coming soon](https://tidelift.com/subscription/pkg/nuget-ubiety-dns-core?utm_source=nuget-ubiety-dns-core&utm_medium=referral&utm_campaign=readme)
-
 | Branch  | Quality                                                                                                                                                                                                   | Travis CI                                                                                                                                                   | Appveyor                                                                                                                                                                                   | Coverage                                                                                                                                                        |
 | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core/badge?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core)                           | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Dns.Core/master.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Dns.Core)  | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/master.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/master)   | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/master.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core)  |
@@ -82,6 +80,12 @@ consideration, it is common to separate this section to its own file called
   - Ubiety Xmpp: <https://github.com/ubiety/Ubiety.Xmpp.Core/>
   - Ubiety Stringprep: <https://github.com/ubiety/Ubiety.Stringprep.Core/>
   - Ubiety SCRAM: <https://github.com/ubiety/Ubiety.Scram.Core/>
+
+## Ubiety.Dns.Core for enterprise
+
+Available as part of the Tidelift Subscription
+
+The maintainers of Ubiety.Dns.Core and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.](https://tidelift.com/subscription/pkg/nuget-ubiety-dns-core?utm_source=nuget-ubiety-dns-core&utm_medium=referral&utm_campaign=enterprise&utm_term=repo)
 
 ## Sponsors
 

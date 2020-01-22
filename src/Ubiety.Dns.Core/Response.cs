@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.General;
 using Ubiety.Dns.Core.Records.Mail;
@@ -24,9 +25,9 @@ namespace Ubiety.Dns.Core
         public Response()
         {
             Questions = new List<Question>();
-            Answers = new List<AnswerRR>();
-            Authorities = new List<AuthorityRR>();
-            Additionals = new List<AdditionalRR>();
+            Answers = new List<AnswerResourceRecord>();
+            Authorities = new List<AuthorityResourceRecord>();
+            Additional = new List<AdditionalResourceRecord>();
 
             Server = new IPEndPoint(0, 0);
             Error = string.Empty;
@@ -42,6 +43,7 @@ namespace Ubiety.Dns.Core
         /// <param name="data">Response data.</param>
         public Response(IPEndPoint iPEndPoint, byte[] data)
         {
+            data = data.ThrowIfNull(nameof(data));
             Error = string.Empty;
             Server = iPEndPoint;
             TimeStamp = DateTime.Now;
@@ -49,9 +51,9 @@ namespace Ubiety.Dns.Core
             var rr = new RecordReader(data);
 
             Questions = new List<Question>();
-            Answers = new List<AnswerRR>();
-            Authorities = new List<AuthorityRR>();
-            Additionals = new List<AdditionalRR>();
+            Answers = new List<AnswerResourceRecord>();
+            Authorities = new List<AuthorityResourceRecord>();
+            Additional = new List<AdditionalResourceRecord>();
 
             Header = new Header(rr);
 
@@ -62,17 +64,17 @@ namespace Ubiety.Dns.Core
 
             for (var i = 0; i < Header.AnswerCount; i++)
             {
-                Answers.Add(new AnswerRR(rr));
+                Answers.Add(new AnswerResourceRecord(rr));
             }
 
             for (var i = 0; i < Header.NameserverCount; i++)
             {
-                Authorities.Add(new AuthorityRR(rr));
+                Authorities.Add(new AuthorityResourceRecord(rr));
             }
 
             for (var i = 0; i < Header.AdditionalRecordsCount; i++)
             {
-                Additionals.Add(new AdditionalRR(rr));
+                Additional.Add(new AdditionalResourceRecord(rr));
             }
         }
 
@@ -84,17 +86,17 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the list of answer resource records.
         /// </summary>
-        public List<AnswerRR> Answers { get; }
+        public List<AnswerResourceRecord> Answers { get; }
 
         /// <summary>
         ///     Gets the list of authority resource records.
         /// </summary>
-        public List<AuthorityRR> Authorities { get; }
+        public List<AuthorityResourceRecord> Authorities { get; }
 
         /// <summary>
         ///     Gets the list of additional resource records.
         /// </summary>
-        public List<AdditionalRR> Additionals { get; }
+        public List<AdditionalResourceRecord> Additional { get; }
 
         /// <summary>
         ///     Gets the response header.
@@ -124,6 +126,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of MX records in the answers.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordMx> RecordMx
         {
             get
@@ -146,6 +149,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of TXT records in the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordTxt> RecordTxt
         {
             get
@@ -166,6 +170,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of A records in the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordA> RecordA
         {
             get
@@ -186,6 +191,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of PTR records from the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordPtr> RecordPtr
         {
             get
@@ -206,6 +212,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of CNAME records from the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordCname> RecordCname
         {
             get
@@ -226,6 +233,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of AAAA records in the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordAaaa> RecordAaaa
         {
             get
@@ -246,6 +254,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of NS records in the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordNs> RecordNs
         {
             get
@@ -266,6 +275,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of SOA records in the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordSoa> RecordSoa
         {
             get
@@ -286,6 +296,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of CERT records in the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordCert> RecordCert
         {
             get
@@ -306,6 +317,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets a list of SRV records in the <see cref="Response" />.
         /// </summary>
+        [Obsolete("Use GetRecords<T> instead.")]
         public List<RecordSrv> RecordSrv
         {
             get
@@ -333,10 +345,30 @@ namespace Ubiety.Dns.Core
                 var list = Answers.Cast<ResourceRecord>().ToList();
                 list.AddRange(Authorities);
 
-                list.AddRange(Additionals);
+                list.AddRange(Additional);
 
                 return list;
             }
+        }
+
+        /// <summary>
+        ///     Get a set of records from the answer.
+        /// </summary>
+        /// <typeparam name="T">Type of record to find.</typeparam>
+        /// <returns>List of records.</returns>
+        public List<T> GetRecords<T>()
+            where T : Record
+        {
+            var list = new List<T>();
+            foreach (var resource in Answers)
+            {
+                if (resource.Record is T record)
+                {
+                    list.Add(record);
+                }
+            }
+
+            return list;
         }
     }
 }
