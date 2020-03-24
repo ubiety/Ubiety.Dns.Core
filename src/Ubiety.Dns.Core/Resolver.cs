@@ -64,7 +64,7 @@ namespace Ubiety.Dns.Core
             _timeout = 1;
             Recursion = true;
             _useCache = true;
-            TransportType = TransportType.Udp;
+            TransportType = Common.TransportType.Udp;
 
             rng.Dispose();
         }
@@ -182,7 +182,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets protocol to use.
         /// </summary>
-        public TransportType TransportType { get; set; }
+        public Common.TransportType TransportType { get; set; }
 
         /// <summary>
         ///     Gets a list of DNS servers to use.
@@ -386,9 +386,9 @@ namespace Ubiety.Dns.Core
 
             switch (TransportType)
             {
-                case TransportType.Udp:
+                case Common.TransportType.Udp:
                     return UdpRequest(request);
-                case TransportType.Tcp:
+                case Common.TransportType.Tcp:
                     return TcpRequest(request).Result;
             }
 
@@ -549,7 +549,9 @@ namespace Ubiety.Dns.Core
                         stream.Dispose();
 
                         client.Close();
+#if NETSTANDARD
                         client.Dispose();
+#endif
                     }
                 }
             }
