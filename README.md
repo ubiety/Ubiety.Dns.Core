@@ -71,8 +71,8 @@ consideration, it is common to separate this section to its own file called
 - Project homepage: <https://dns.ubiety.ca>
 - Repository: <https://github.com/ubiety/Ubiety.Dns.Core/>
 - Issue tracker: <https://github.com/ubiety/Ubiety.Dns.Core/issues>
-  - In case of sensitive bugs like security vulnerabilities, please use the 
-    [Tidelift security contact](https://tidelift.com/security) instead of using issue tracker. 
+  - In case of sensitive bugs like security vulnerabilities, please use the
+    [Tidelift security contact](https://tidelift.com/security) instead of using issue tracker.
     We value your effort to improve the security and privacy of this project! Tidelift will coordinate the fix and disclosure.
 - Related projects:
   - Ubiety VersionIt: <https://github.com/ubiety/Ubiety.VersionIt/>
@@ -100,7 +100,3 @@ The maintainers of Ubiety.Dns.Core and thousands of other packages are working w
 ### Bronze Sponsors
 
 [![Bronze Sponsors](https://opencollective.com/ubiety/tiers/bronze-sponsor.svg?avatarHeight=36)](https://opencollective.com/ubiety/)
-
-## Licensing
-
-The code in this project is licensed under the Apache License version 2.

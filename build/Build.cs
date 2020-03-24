@@ -73,13 +73,11 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            var project = Solution.GetProject("Ubiety.Dns.Test");
-
             var settings = GitVersion is null
-                ? new DotNetBuildSettings().SetProjectFile(project)
+                ? new DotNetBuildSettings().SetProjectFile(Solution)
                     .SetConfiguration(Configuration)
                     .EnableNoRestore()
-                : new DotNetBuildSettings().SetProjectFile(project)
+                : new DotNetBuildSettings().SetProjectFile(Solution)
                     .SetConfiguration(Configuration)
                     .SetAssemblyVersion(GitVersion.AssemblySemVer)
                     .SetFileVersion(GitVersion.AssemblySemFileVer)
