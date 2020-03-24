@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     <Version>2.2.1</Version>
     <ProjectGuid>479864c2-f29b-40e4-987b-577d189c3d08</ProjectGuid>
@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.8" PrivateAssets="All" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.8" PrivateAssets="All" />
     <PackageReference Include="Stylecop.Analyzers" Version="1.1.118" PrivateAssets="All" />
-    <PackageReference Include="Ubiety.Logging.Core" Version="1.0.1" />
+    <PackageReference Include="Ubiety.Logging.Core" Version="1.1.0" />
     <PackageReference Include="Ubiety.StyleCop" Version="0.0.5" PrivateAssets="All" />
   </ItemGroup>
 </Project>
