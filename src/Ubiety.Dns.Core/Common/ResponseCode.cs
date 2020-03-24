@@ -66,31 +66,6 @@ namespace Ubiety.Dns.Core.Common
         NotZone = 10,
 
         /// <summary>
-        ///     Reserved
-        /// </summary>
-        RESERVED11 = 11,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        RESERVED12 = 12,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        RESERVED13 = 13,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        RESERVED14 = 14,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        RESERVED15 = 15,
-
-        /// <summary>
         ///     Bad OPT version
         /// </summary>
         BADVERSSIG = 16,
