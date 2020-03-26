@@ -79,6 +79,7 @@
 
  */
 
+using System;
 using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core.Records
@@ -86,19 +87,19 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Service DNS record.
     /// </summary>
-    public class RecordSrv : Record
+    public class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record data.</param>
-        public RecordSrv(RecordReader rr)
+        /// <param name="recordReader"><see cref="RecordReader" /> of the record data.</param>
+        public RecordSrv(RecordReader recordReader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Priority = rr.ReadUInt16();
-            Weight = rr.ReadUInt16();
-            Port = rr.ReadUInt16();
-            Target = rr.ReadDomainName();
+            recordReader = recordReader.ThrowIfNull(nameof(recordReader));
+            Priority = recordReader.ReadUInt16();
+            Weight = recordReader.ReadUInt16();
+            Port = recordReader.ReadUInt16();
+            Target = recordReader.ReadDomainName();
         }
 
         /// <summary>
@@ -120,6 +121,62 @@ namespace Ubiety.Dns.Core.Records
         ///     Gets or sets the target domain.
         /// </summary>
         public string Target { get; set; }
+
+        /// <inheritdoc />
+        public static bool operator >(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) == 1;
+        }
+
+        /// <inheritdoc />
+        public static bool operator <(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) == -1;
+        }
+
+        /// <inheritdoc />
+        public static bool operator <=(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) <= 0;
+        }
+
+        /// <inheritdoc />
+        public static bool operator >=(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
+        }
+
+        /// <summary>
+        ///     Compares instance to object.
+        /// </summary>
+        /// <param name="other">Object to compare to.</param>
+        /// <returns>Integer defining object order.</returns>
+        public int CompareTo(RecordSrv other)
+        {
+            if (other is null)
+            {
+                return 1;
+            }
+
+            if (Priority.CompareTo(other.Priority) > 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return Weight.CompareTo(other.Weight);
+            }
+        }
+
+        /// <summary>
+        ///     Compares two instances for equality.
+        /// </summary>
+        /// <param name="other">Second instance to compare.</param>
+        /// <returns>Value indicating whether the values are equal.</returns>
+        public bool Equals(RecordSrv other)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         ///     String representation of the record data.
