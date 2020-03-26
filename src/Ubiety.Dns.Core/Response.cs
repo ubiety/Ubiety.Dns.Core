@@ -1,6 +1,18 @@
 /*
- * Licensed under the MIT license
- * See the LICENSE file in the project root for more information
+ *      Copyright (C) 2020 Dieter (coder2000) Lunn
+ *
+ *      This program is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      This program is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 using System;
@@ -9,8 +21,6 @@ using System.Linq;
 using System.Net;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
-using Ubiety.Dns.Core.Records.General;
-using Ubiety.Dns.Core.Records.Mail;
 
 namespace Ubiety.Dns.Core
 {
@@ -122,218 +132,6 @@ namespace Ubiety.Dns.Core
         ///     Gets the server which delivered this response.
         /// </summary>
         public IPEndPoint Server { get; }
-
-        /// <summary>
-        ///     Gets a list of MX records in the answers.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordMx> RecordMx
-        {
-            get
-            {
-                var list = new List<RecordMx>();
-                foreach (var rr in Answers)
-                {
-                    var record = rr.Record as RecordMx;
-                    if (record != null)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                list.Sort();
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of TXT records in the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordTxt> RecordTxt
-        {
-            get
-            {
-                var list = new List<RecordTxt>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordTxt record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of A records in the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordA> RecordA
-        {
-            get
-            {
-                var list = new List<RecordA>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordA record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of PTR records from the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordPtr> RecordPtr
-        {
-            get
-            {
-                var list = new List<RecordPtr>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordPtr record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of CNAME records from the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordCname> RecordCname
-        {
-            get
-            {
-                var list = new List<RecordCname>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordCname record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of AAAA records in the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordAaaa> RecordAaaa
-        {
-            get
-            {
-                var list = new List<RecordAaaa>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordAaaa record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of NS records in the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordNs> RecordNs
-        {
-            get
-            {
-                var list = new List<RecordNs>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordNs record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of SOA records in the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordSoa> RecordSoa
-        {
-            get
-            {
-                var list = new List<RecordSoa>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordSoa record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of CERT records in the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordCert> RecordCert
-        {
-            get
-            {
-                var list = new List<RecordCert>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordCert record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
-
-        /// <summary>
-        ///     Gets a list of SRV records in the <see cref="Response" />.
-        /// </summary>
-        [Obsolete("Use GetRecords<T> instead.")]
-        public List<RecordSrv> RecordSrv
-        {
-            get
-            {
-                var list = new List<RecordSrv>();
-                foreach (var rr in Answers)
-                {
-                    if (rr.Record is RecordSrv record)
-                    {
-                        list.Add(record);
-                    }
-                }
-
-                return list;
-            }
-        }
 
         /// <summary>
         ///     Gets a list of resource records in the <see cref="Response" />.
