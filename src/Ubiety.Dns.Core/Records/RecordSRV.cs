@@ -122,28 +122,50 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         public string Target { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     Determines if the record is greater than another.
+        /// </summary>
+        /// <param name="left">Left record.</param>
+        /// <param name="right">Right record.</param>
+        /// <returns>A value indicating whether the left record is greater.</returns>
         public static bool operator >(RecordSrv left, RecordSrv right)
         {
             return left.ThrowIfNull(nameof(left)).CompareTo(right) == 1;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IComparable{T}" />
         public static bool operator <(RecordSrv left, RecordSrv right)
         {
             return left.ThrowIfNull(nameof(left)).CompareTo(right) == -1;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IComparable{T}" />
         public static bool operator <=(RecordSrv left, RecordSrv right)
         {
             return left.ThrowIfNull(nameof(left)).CompareTo(right) <= 0;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IComparable{T}" />
         public static bool operator >=(RecordSrv left, RecordSrv right)
         {
             return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
+        }
+
+        /// <inheritdoc cref="IEquatable{T}" />
+        public static bool operator ==(RecordSrv left, RecordSrv right)
+        {
+            if (left is null)
+            {
+                return right is null;
+            }
+
+            return left.Equals(right);
+        }
+
+        /// <inheritdoc cref="IEquatable{T}" />
+        public static bool operator !=(RecordSrv left, RecordSrv right)
+        {
+            return !(left == right);
         }
 
         /// <summary>
@@ -178,6 +200,21 @@ namespace Ubiety.Dns.Core.Records
             throw new NotImplementedException();
         }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj is null)
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         ///     String representation of the record data.
         /// </summary>
@@ -185,6 +222,11 @@ namespace Ubiety.Dns.Core.Records
         public override string ToString()
         {
             return $"{Priority} {Weight} {Port} {Target}";
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
         }
     }
 }
