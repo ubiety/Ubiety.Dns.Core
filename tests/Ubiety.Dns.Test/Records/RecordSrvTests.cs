@@ -74,10 +74,21 @@ namespace Ubiety.Dns.Test.Records
             record.ToString().ShouldBe("10 10 80 test.com.");
         }
 
+        [Fact]
         public void TestSrvEqualToObject()
         {
             var left = new RecordSrv(GetReader(10, 10, 80));
-            var right = new Record(GetReader(10, 10, 80));
+            var right = new RecordSrv(GetReader(10, 10, 80)) as Record;
+            
+            left.ShouldBe(right);
+        }
+
+        [Fact]
+        public void TestSrvNotEqualToNull()
+        {
+            var left = new RecordSrv(GetReader(10, 10 ,80));
+            
+            left.ShouldNotBeNull();
         }
 
         private static RecordReader GetReader(ushort priority, ushort weight, ushort port, string target = "test.com")
