@@ -86,7 +86,7 @@ using Ubiety.Dns.Core.Common.Helpers;
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Service DNS record.
+    ///     RFC 2782 - DNS resource record for service discovery.
     /// </summary>
     public class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
     {
@@ -106,24 +106,24 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
-        ///     Gets or sets the record priority.
+        ///     Gets the record priority.
         /// </summary>
-        public ushort Priority { get; set; }
+        public ushort Priority { get; }
 
         /// <summary>
-        ///     Gets or sets the record weight.
+        ///     Gets the record weight.
         /// </summary>
-        public ushort Weight { get; set; }
+        public ushort Weight { get; }
 
         /// <summary>
-        ///     Gets or sets the service port.
+        ///     Gets the service port.
         /// </summary>
-        public ushort Port { get; set; }
+        public ushort Port { get; }
 
         /// <summary>
-        ///     Gets or sets the target domain.
+        ///     Gets the target domain.
         /// </summary>
-        public string Target { get; set; }
+        public string Target { get; }
 
         /// <summary>
         ///     Determines if the record is greater than another.
@@ -204,12 +204,7 @@ namespace Ubiety.Dns.Core.Records
                 return true;
             }
 
-            if (obj is null)
-            {
-                return false;
-            }
-
-            throw new NotImplementedException();
+            return !(obj is null) && Equals(obj as RecordSrv);
         }
 
         /// <summary>
