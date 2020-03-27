@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -356,19 +357,7 @@ namespace Ubiety.Dns.Core
                 response = _responseCache[question];
             }
 
-            var timeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
-            foreach (var rr in response.ResourceRecords)
-            {
-                rr.TimeLived = timeLived;
-
-                // The TTL property calculates its actual time to live
-                if (rr.TimeToLive == 0)
-                {
-                    return null; // out of date
-                }
-            }
-
-            return response;
+            return response.ResourceRecords.Any(rr => rr.IsExpired(response.TimeStamp)) ? null : response;
         }
 
         private void AddToCache(Response response)
