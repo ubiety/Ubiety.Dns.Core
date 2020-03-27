@@ -28,6 +28,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core

@@ -17,6 +17,7 @@
 
 using System;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
 
 namespace Ubiety.Dns.Core

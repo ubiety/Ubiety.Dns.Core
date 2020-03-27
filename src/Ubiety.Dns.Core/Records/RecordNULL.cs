@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 /*
 3.3.10. NULL RDATA format (EXPERIMENTAL)

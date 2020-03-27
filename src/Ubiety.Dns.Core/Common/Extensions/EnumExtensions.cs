@@ -19,7 +19,7 @@ using System;
 using System.Reflection;
 using Ubiety.Dns.Core.Records;
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common.Extensions
 {
     /// <summary>
     ///     Enumeration extension methods.

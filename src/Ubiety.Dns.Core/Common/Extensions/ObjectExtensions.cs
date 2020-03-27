@@ -17,7 +17,7 @@
 
 using System;
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common.Extensions
 {
     /// <summary>
     ///    Object class extension methods.

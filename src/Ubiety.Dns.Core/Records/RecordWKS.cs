@@ -18,6 +18,7 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 /*
 * 3.4.2. WKS RDATA format

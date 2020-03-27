@@ -35,6 +35,7 @@ description of the IN-ADDR.ARPA domain for an example.
  */
 
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core.Records
 {

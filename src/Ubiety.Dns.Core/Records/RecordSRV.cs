@@ -80,7 +80,8 @@
  */
 
 using System;
-using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
+using Ubiety.Dns.Core.Common.Helpers;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -89,6 +90,8 @@ namespace Ubiety.Dns.Core.Records
     /// </summary>
     public class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
     {
+        private readonly EqualityHelper<RecordSrv> _equality = new EqualityHelper<RecordSrv>(r => r.Priority, r => r.Weight);
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
         /// </summary>
@@ -180,14 +183,7 @@ namespace Ubiety.Dns.Core.Records
                 return 1;
             }
 
-            if (Priority.CompareTo(other.Priority) > 0)
-            {
-                return 1;
-            }
-            else
-            {
-                return Weight.CompareTo(other.Weight);
-            }
+            return Priority.CompareTo(other.Priority) > 0 ? 1 : Weight.CompareTo(other.Weight);
         }
 
         /// <summary>
@@ -197,9 +193,10 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>Value indicating whether the values are equal.</returns>
         public bool Equals(RecordSrv other)
         {
-            throw new NotImplementedException();
+            return _equality.Equals(this, other);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))
@@ -224,9 +221,10 @@ namespace Ubiety.Dns.Core.Records
             return $"{Priority} {Weight} {Port} {Target}";
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return _equality.GetHashCode(this);
         }
     }
 }
