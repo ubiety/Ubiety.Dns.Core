@@ -139,7 +139,7 @@ namespace Ubiety.Dns.Core
             data.AddRange(WriteShort((ushort)QuestionClass));
             return data.ToArray();
         }
-        
+
         /// <inheritdoc />
         public override int GetHashCode()
         {
