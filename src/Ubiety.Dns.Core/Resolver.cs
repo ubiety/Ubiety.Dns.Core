@@ -332,10 +332,10 @@ namespace Ubiety.Dns.Core
                     return UdpRequest(request);
                 case TransportType.Tcp:
                     return TcpRequest(request).Result;
+                default:
+                    var response = new Response { Error = "Unknown TransportType" };
+                    return response;
             }
-
-            var response = new Response { Error = "Unknown TransportType" };
-            return response;
         }
 
         private Response SearchInCache(Question question)
