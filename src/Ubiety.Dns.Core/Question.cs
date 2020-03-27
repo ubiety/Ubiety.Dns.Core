@@ -102,6 +102,22 @@ namespace Ubiety.Dns.Core
                    QuestionType == other.QuestionType && QuestionClass == other.QuestionClass;
         }
 
+        /// <inheritdoc cref="IEquatable{T}" />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return obj.GetType() == GetType() && Equals((Question)obj);
+        }
+
         /// <summary>
         ///     String representation of the question.
         /// </summary>
@@ -123,23 +139,7 @@ namespace Ubiety.Dns.Core
             data.AddRange(WriteShort((ushort)QuestionClass));
             return data.ToArray();
         }
-
-        /// <inheritdoc cref="IEquatable{T}" />
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            return obj.GetType() == GetType() && Equals((Question)obj);
-        }
-
+        
         /// <inheritdoc />
         public override int GetHashCode()
         {
