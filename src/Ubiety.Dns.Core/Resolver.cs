@@ -436,7 +436,7 @@ namespace Ubiety.Dns.Core
             {
                 for (var intDnsServer = 0; intDnsServer < DnsServers.Count; intDnsServer++)
                 {
-                    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    var socket = new Socket(SocketType.Dgram, ProtocolType.Udp);
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, Timeout);
 
                     try
@@ -459,6 +459,7 @@ namespace Ubiety.Dns.Core
 
                         // close the socket
                         socket.Close();
+                        socket.Dispose();
                     }
                 }
             }
@@ -473,7 +474,10 @@ namespace Ubiety.Dns.Core
             {
                 foreach (var server in DnsServers)
                 {
-                    var client = new TcpClient { ReceiveTimeout = _timeout };
+                    var client = new TcpClient(AddressFamily.InterNetworkV6)
+                    {
+                        ReceiveTimeout = _timeout, Client = { DualMode = true },
+                    };
                     var stream = new BufferedStream(client.GetStream());
 
                     try
