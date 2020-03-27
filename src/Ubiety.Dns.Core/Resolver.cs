@@ -42,7 +42,7 @@ namespace Ubiety.Dns.Core
     {
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
 
-        private readonly Dictionary<string, Response> _responseCache;
+        private readonly Dictionary<Question, Response> _responseCache;
         private int _retries;
         private int _timeout;
 
@@ -54,7 +54,7 @@ namespace Ubiety.Dns.Core
         /// <param name="dnsServers">Set of DNS servers to use for resolution.</param>
         public Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
-            _responseCache = new Dictionary<string, Response>();
+            _responseCache = new Dictionary<Question, Response>();
             DnsServers = new List<IPEndPoint>();
             DnsServers.AddRange(dnsServers);
 
@@ -344,18 +344,16 @@ namespace Ubiety.Dns.Core
                 return null;
             }
 
-            var key = question.QuestionClass + "-" + question.QuestionType + "-" + question.DomainName;
-
             Response response;
 
             lock (_responseCache)
             {
-                if (!_responseCache.ContainsKey(key))
+                if (!_responseCache.ContainsKey(question))
                 {
                     return null;
                 }
 
-                response = _responseCache[key];
+                response = _responseCache[question];
             }
 
             var timeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
@@ -394,16 +392,14 @@ namespace Ubiety.Dns.Core
 
             var question = response.Questions[0];
 
-            var strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.DomainName;
-
             lock (_responseCache)
             {
-                if (_responseCache.ContainsKey(strKey))
+                if (_responseCache.ContainsKey(question))
                 {
-                    _responseCache.Remove(strKey);
+                    _responseCache.Remove(question);
                 }
 
-                _responseCache.Add(strKey, response);
+                _responseCache.Add(question, response);
             }
         }
 
