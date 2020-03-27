@@ -46,7 +46,6 @@ namespace Ubiety.Dns.Core
         private int _retries;
         private int _timeout;
 
-        private ushort _unique;
         private bool _useCache;
 
         /// <summary>
@@ -55,21 +54,15 @@ namespace Ubiety.Dns.Core
         /// <param name="dnsServers">Set of DNS servers to use for resolution.</param>
         public Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
-            var rng = new RNGCryptoServiceProvider();
-            var rand = new byte[16];
-            rng.GetBytes(rand);
             _responseCache = new Dictionary<string, Response>();
             DnsServers = new List<IPEndPoint>();
             DnsServers.AddRange(dnsServers);
 
-            _unique = BitConverter.ToUInt16(rand, 0);
             _retries = 3;
             _timeout = 1;
             Recursion = true;
             _useCache = true;
             TransportType = TransportType.Udp;
-
-            rng.Dispose();
         }
 
         /// <summary>
@@ -190,38 +183,6 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets a list of default DNS servers.
-        /// </summary>
-        /// <returns>Array of DNS servers.</returns>
-        public static IEnumerable<IPEndPoint> GetSystemDnsServers()
-        {
-            var list = new List<IPEndPoint>();
-
-            var adapters = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var n in adapters)
-            {
-                if (n.OperationalStatus != OperationalStatus.Up)
-                {
-                    continue;
-                }
-
-                var ipProps = n.GetIPProperties();
-
-                // thanks to Jon Webster on May 20, 2008
-                foreach (var ipAddr in ipProps.DnsAddresses)
-                {
-                    var entry = new IPEndPoint(ipAddr, DefaultPort);
-                    if (!list.Contains(entry))
-                    {
-                        list.Add(entry);
-                    }
-                }
-            }
-
-            return list.ToArray();
-        }
-
-        /// <summary>
         ///     Translates the IPV4 or IPV6 address into an arpa address.
         /// </summary>
         /// <param name="ip">IP address to get the arpa address form.</param>
@@ -262,11 +223,11 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Get ARPA address from enum.
+        ///     Get ARPA address from enumerator.
         /// </summary>
-        /// <param name="enumerator">Enum for the address.</param>
+        /// <param name="enumerator">Enumerator for the address.</param>
         /// <returns>String of the ARPA address.</returns>
-        public static string GetArpaFromEnum(string enumerator)
+        public static string GetArpaFromEnumerator(string enumerator)
         {
             var sb = new StringBuilder();
             var number = Regex.Replace(enumerator, "[^0-9]", string.Empty);
@@ -291,35 +252,15 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Do Query on specified DNS servers.
+        ///     Execute a query on a DNS server.
         /// </summary>
-        /// <param name="name">Name to query.</param>
-        /// <param name="questionType">Question type.</param>
-        /// <param name="questionClass">Class type.</param>
-        /// <returns>Response of the query.</returns>
-        public Response Query(string name, QuestionType questionType, QuestionClass questionClass)
+        /// <param name="name">Domain name to look up.</param>
+        /// <param name="questionType">Question type of the query.</param>
+        /// <param name="questionClass">Class type of the query. Defaults to Internet.</param>
+        /// <returns>DNS response for request.</returns>
+        public Response Query(string name, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
         {
             var question = new Question(name, questionType, questionClass);
-            var response = SearchInCache(question);
-            if (response != null)
-            {
-                return response;
-            }
-
-            var request = new Request();
-            request.AddQuestion(question);
-            return GetResponse(request);
-        }
-
-        /// <summary>
-        ///     Do an QClass=IN Query on specified DNS servers.
-        /// </summary>
-        /// <param name="name">Name to query.</param>
-        /// <param name="questionType">Question type.</param>
-        /// <returns>Response of the query.</returns>
-        public Response Query(string name, QuestionType questionType)
-        {
-            var question = new Question(name, questionType, QuestionClass.IN);
             var response = SearchInCache(question);
             if (response != null)
             {
@@ -340,9 +281,48 @@ namespace Ubiety.Dns.Core
             stream.Flush();
         }
 
+        private static IEnumerable<IPEndPoint> GetSystemDnsServers()
+        {
+            var servers = new List<IPEndPoint>();
+
+            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var adapter in interfaces)
+            {
+                if (adapter.OperationalStatus != OperationalStatus.Up)
+                {
+                    continue;
+                }
+
+                var interfaceProperties = adapter.GetIPProperties();
+
+                // thanks to Jon Webster on May 20, 2008
+                foreach (var address in interfaceProperties.DnsAddresses)
+                {
+                    var entry = new IPEndPoint(address, DefaultPort);
+                    if (!servers.Contains(entry))
+                    {
+                        servers.Add(entry);
+                    }
+                }
+            }
+
+            return servers;
+        }
+
+        private static ushort GetUniqueId()
+        {
+            var rng = new RNGCryptoServiceProvider();
+            var rand = new byte[16];
+            rng.GetBytes(rand);
+            var id = BitConverter.ToUInt16(rand, 0);
+            rng.Dispose();
+
+            return id;
+        }
+
         private Response GetResponse(Request request)
         {
-            request.Header.Id = _unique;
+            request.Header.Id = GetUniqueId();
             request.Header.Recursion = Recursion;
 
             switch (TransportType)
@@ -364,18 +344,18 @@ namespace Ubiety.Dns.Core
                 return null;
             }
 
-            var strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.QuestionName;
+            var key = question.QuestionClass + "-" + question.QuestionType + "-" + question.DomainName;
 
             Response response;
 
             lock (_responseCache)
             {
-                if (!_responseCache.ContainsKey(strKey))
+                if (!_responseCache.ContainsKey(key))
                 {
                     return null;
                 }
 
-                response = _responseCache[strKey];
+                response = _responseCache[key];
             }
 
             var timeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
@@ -384,7 +364,7 @@ namespace Ubiety.Dns.Core
                 rr.TimeLived = timeLived;
 
                 // The TTL property calculates its actual time to live
-                if (rr.Ttl == 0)
+                if (rr.TimeToLive == 0)
                 {
                     return null; // out of date
                 }
@@ -414,7 +394,7 @@ namespace Ubiety.Dns.Core
 
             var question = response.Questions[0];
 
-            var strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.QuestionName;
+            var strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.DomainName;
 
             lock (_responseCache)
             {
@@ -455,8 +435,6 @@ namespace Ubiety.Dns.Core
                     }
                     finally
                     {
-                        _unique++;
-
                         // close the socket
                         socket.Close();
                         socket.Dispose();
@@ -502,7 +480,6 @@ namespace Ubiety.Dns.Core
                     }
                     finally
                     {
-                        _unique++;
                         stream.Close();
                         stream.Dispose();
 
