@@ -40,7 +40,6 @@ hosts which are name servers for either Internet (IN) or Hesiod (HS)
 class information are normally queried using IN class protocols.
  */
 
-using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core.Records

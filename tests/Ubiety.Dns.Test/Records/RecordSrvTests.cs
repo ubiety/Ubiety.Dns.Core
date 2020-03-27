@@ -23,6 +23,7 @@ using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Records;
 using Xunit;
+using Record = Ubiety.Dns.Core.Records.Record;
 
 namespace Ubiety.Dns.Test.Records
 {
@@ -71,6 +72,12 @@ namespace Ubiety.Dns.Test.Records
             var record = new RecordSrv(GetReader(10,10,80));
             
             record.ToString().ShouldBe("10 10 80 test.com.");
+        }
+
+        public void TestSrvEqualToObject()
+        {
+            var left = new RecordSrv(GetReader(10, 10, 80));
+            var right = new Record(GetReader(10, 10, 80));
         }
 
         private static RecordReader GetReader(ushort priority, ushort weight, ushort port, string target = "test.com")
