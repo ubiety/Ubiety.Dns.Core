@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core
 {
@@ -28,8 +29,6 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public sealed class Question : IEquatable<Question>
     {
-        private string _questionName;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question" /> class.
         /// </summary>
@@ -38,6 +37,11 @@ namespace Ubiety.Dns.Core
         /// <param name="questionClass">Question class.</param>
         public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
+            if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith(".", StringComparison.InvariantCulture))
+            {
+                domainName += ".";
+            }
+
             DomainName = domainName;
             QuestionType = questionType;
             QuestionClass = questionClass;
@@ -57,19 +61,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the question name.
         /// </summary>
-        public string DomainName
-        {
-            get => _questionName;
-
-            private set
-            {
-                _questionName = value;
-                if (!_questionName.EndsWith(".", StringComparison.InvariantCulture))
-                {
-                    _questionName += ".";
-                }
-            }
-        }
+        public string DomainName { get; }
 
         /// <summary>
         ///     Gets the query type.
@@ -106,7 +98,7 @@ namespace Ubiety.Dns.Core
                 return true;
             }
 
-            return string.Equals(_questionName, other._questionName, StringComparison.InvariantCultureIgnoreCase) &&
+            return string.Equals(DomainName, other.DomainName, StringComparison.InvariantCultureIgnoreCase) &&
                    QuestionType == other.QuestionType && QuestionClass == other.QuestionClass;
         }
 
@@ -153,7 +145,7 @@ namespace Ubiety.Dns.Core
         {
             unchecked
             {
-                var hashCode = StringComparer.InvariantCultureIgnoreCase.GetHashCode(_questionName);
+                var hashCode = StringComparer.InvariantCultureIgnoreCase.GetHashCode(DomainName);
                 hashCode = (hashCode * 397) ^ (int)QuestionType;
                 hashCode = (hashCode * 397) ^ (int)QuestionClass;
                 return hashCode;
