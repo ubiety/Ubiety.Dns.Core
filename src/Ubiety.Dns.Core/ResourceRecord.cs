@@ -82,8 +82,6 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class ResourceRecord
     {
-        private uint _ttl;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ResourceRecord" /> class.
         /// </summary>
@@ -139,7 +137,7 @@ namespace Ubiety.Dns.Core
         {
             var timeLived = (int)((DateTime.Now.Ticks - responseTimeStamp.Ticks) / TimeSpan.TicksPerSecond);
 
-            return (uint)Math.Max(0, _ttl - timeLived) == 0;
+            return (uint)Math.Max(0, TimeToLive - timeLived) == 0;
         }
 
         /// <summary>
