@@ -88,7 +88,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     RFC 2782 - DNS resource record for service discovery.
     /// </summary>
-    public class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
+    public sealed class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
     {
         private readonly EqualityHelper<RecordSrv> _equality = new EqualityHelper<RecordSrv>(r => r.Priority, r => r.Weight);
 
