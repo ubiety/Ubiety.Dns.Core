@@ -312,11 +312,10 @@ namespace Ubiety.Dns.Core
 
         private static ushort GetUniqueId()
         {
-            var rng = new RNGCryptoServiceProvider();
+            using var rng = new RNGCryptoServiceProvider();
             var rand = new byte[16];
             rng.GetBytes(rand);
             var id = BitConverter.ToUInt16(rand, 0);
-            rng.Dispose();
 
             return id;
         }
@@ -399,24 +398,24 @@ namespace Ubiety.Dns.Core
 
             for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
             {
-                for (var intDnsServer = 0; intDnsServer < DnsServers.Count; intDnsServer++)
+                foreach (var server in DnsServers)
                 {
                     var socket = new Socket(SocketType.Dgram, ProtocolType.Udp);
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, Timeout);
 
                     try
                     {
-                        socket.SendTo(request.GetData(), DnsServers[intDnsServer]);
-                        var intReceived = socket.Receive(responseMessage);
-                        var data = new byte[intReceived];
-                        Array.Copy(responseMessage, data, intReceived);
-                        var response = new Response(DnsServers[intDnsServer], data);
+                        socket.SendTo(request.GetData(), server);
+                        var received = socket.Receive(responseMessage);
+                        var data = new byte[received];
+                        Array.Copy(responseMessage, data, received);
+                        var response = new Response(server, data);
                         AddToCache(response);
                         return response;
                     }
                     catch (SocketException exception)
                     {
-                        _logger.Error(exception, $"Connection to nameserver {intDnsServer + 1} failed");
+                        _logger.Error(exception, $"Connection to nameserver {server} failed");
                     }
                     finally
                     {
