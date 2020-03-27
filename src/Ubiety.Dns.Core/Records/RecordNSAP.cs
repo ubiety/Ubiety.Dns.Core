@@ -18,7 +18,7 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
-using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://tools.ietf.org/rfc/rfc1348.txt

@@ -17,7 +17,7 @@
 
 using System;
 using System.Globalization;
-using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core.Records.Mail
 {
@@ -193,12 +193,12 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// <returns>Integer representing the hash code.</returns>
         public override int GetHashCode()
         {
-            return Exchange.GetHashCode();
+            return Preference.GetHashCode();
         }
 
         private static int CompareTo(RecordMx x, RecordMx y)
         {
-            if (y == null)
+            if (y is null)
             {
                 return -1;
             }

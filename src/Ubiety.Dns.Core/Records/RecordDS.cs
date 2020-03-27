@@ -15,11 +15,10 @@
  *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://tools.ietf.org/rfc/rfc3658.txt

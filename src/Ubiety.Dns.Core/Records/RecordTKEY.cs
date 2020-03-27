@@ -17,7 +17,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
-using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 /*
 * http://tools.ietf.org/rfc/rfc2930.txt

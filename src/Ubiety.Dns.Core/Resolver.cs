@@ -28,7 +28,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
+#if NET452 || NET471
+using TransportType = Ubiety.Dns.Core.Common.TransportType;
+#endif
 
 namespace Ubiety.Dns.Core
 {
@@ -64,7 +68,7 @@ namespace Ubiety.Dns.Core
             _timeout = 1;
             Recursion = true;
             _useCache = true;
-            TransportType = Common.TransportType.Udp;
+            TransportType = TransportType.Udp;
 
             rng.Dispose();
         }
@@ -116,32 +120,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Verbose event handler.
-        /// </summary>
-        /// <param name="sender">Object sending the event.</param>
-        /// <param name="e">Event arguments.</param>
-        public delegate void VerboseEventHandler(object sender, VerboseEventArgs e);
-
-        /// <summary>
-        ///     Verbose messages from internal operations
-        /// </summary>
-        [Obsolete("Use ResolverBuilder and enable logging.")]
-        public event VerboseEventHandler OnVerbose;
-
-        /// <summary>
         ///     Gets the current version of the library.
         /// </summary>
         public static string Version => Assembly.GetExecutingAssembly()
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-
-        /// <summary>
-        ///     Gets the default DNS server addresses for OpenDNS.
-        /// </summary>
-        public static List<IPEndPoint> DefaultDnsServers => new List<IPEndPoint>
-        {
-            new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort),
-            new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort),
-        };
 
         /// <summary>
         ///     Gets the default DNS port.
@@ -182,32 +164,12 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets protocol to use.
         /// </summary>
-        public Common.TransportType TransportType { get; set; }
+        public TransportType TransportType { get; set; }
 
         /// <summary>
         ///     Gets a list of DNS servers to use.
         /// </summary>
         public List<IPEndPoint> DnsServers { get; }
-
-        /// <summary>
-        ///     Gets or sets the first DNS server address.
-        /// </summary>
-        [Obsolete("No obvious use case. Please open an issue if you do use it.")]
-        public string DnsServer
-        {
-            get => DnsServers[0].Address.ToString();
-
-            set
-            {
-                if (!IPAddress.TryParse(value, out var ip))
-                {
-                    return;
-                }
-
-                DnsServers.Clear();
-                DnsServers.Add(new IPEndPoint(ip, DefaultPort));
-            }
-        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to use the cache.
@@ -386,19 +348,14 @@ namespace Ubiety.Dns.Core
 
             switch (TransportType)
             {
-                case Common.TransportType.Udp:
+                case TransportType.Udp:
                     return UdpRequest(request);
-                case Common.TransportType.Tcp:
+                case TransportType.Tcp:
                     return TcpRequest(request).Result;
             }
 
             var response = new Response { Error = "Unknown TransportType" };
             return response;
-        }
-
-        private void Verbose(string format, params object[] args)
-        {
-            OnVerbose?.Invoke(this, new VerboseEventArgs(string.Format(CultureInfo.CurrentCulture, format, args)));
         }
 
         private Response SearchInCache(Question question)
@@ -496,7 +453,6 @@ namespace Ubiety.Dns.Core
                     catch (SocketException exception)
                     {
                         _logger.Error(exception, $"Connection to nameserver {intDnsServer + 1} failed");
-                        Verbose($";; Connection to nameserver {intDnsServer + 1} failed");
                     }
                     finally
                     {
@@ -529,7 +485,6 @@ namespace Ubiety.Dns.Core
                         {
                             client.Close();
                             _logger.Error($"Connection to nameserver {server.Address} failed");
-                            Verbose($";; Connection to nameserver {server.Address} failed");
                             continue;
                         }
 
@@ -539,7 +494,7 @@ namespace Ubiety.Dns.Core
                     }
                     catch (SocketException e)
                     {
-                        Verbose(e.Message);
+                        _logger.Error(e, "Socket exception occured during request.");
                         throw;
                     }
                     finally
@@ -572,7 +527,6 @@ namespace Ubiety.Dns.Core
                 if (length <= 0)
                 {
                     _logger.Error($"Connection to nameserver {server.Address} failed");
-                    Verbose($"Connection to nameserver {server.Address} failed");
                     throw new SocketException();
                 }
 

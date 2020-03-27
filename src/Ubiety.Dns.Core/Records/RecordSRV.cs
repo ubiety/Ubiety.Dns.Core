@@ -79,47 +79,133 @@
 
  */
 
-using Ubiety.Dns.Core.Common;
+using System;
+using Ubiety.Dns.Core.Common.Extensions;
+using Ubiety.Dns.Core.Common.Helpers;
 
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
-    ///     Service DNS record.
+    ///     RFC 2782 - DNS resource record for service discovery.
     /// </summary>
-    public class RecordSrv : Record
+    public sealed class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
     {
+        private readonly EqualityHelper<RecordSrv> _equality = new EqualityHelper<RecordSrv>(r => r.Priority, r => r.Weight);
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record data.</param>
-        public RecordSrv(RecordReader rr)
+        /// <param name="recordReader"><see cref="RecordReader" /> of the record data.</param>
+        public RecordSrv(RecordReader recordReader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Priority = rr.ReadUInt16();
-            Weight = rr.ReadUInt16();
-            Port = rr.ReadUInt16();
-            Target = rr.ReadDomainName();
+            recordReader = recordReader.ThrowIfNull(nameof(recordReader));
+            Priority = recordReader.ReadUInt16();
+            Weight = recordReader.ReadUInt16();
+            Port = recordReader.ReadUInt16();
+            Target = recordReader.ReadDomainName();
         }
 
         /// <summary>
-        ///     Gets or sets the record priority.
+        ///     Gets the record priority.
         /// </summary>
-        public ushort Priority { get; set; }
+        public ushort Priority { get; }
 
         /// <summary>
-        ///     Gets or sets the record weight.
+        ///     Gets the record weight.
         /// </summary>
-        public ushort Weight { get; set; }
+        public ushort Weight { get; }
 
         /// <summary>
-        ///     Gets or sets the service port.
+        ///     Gets the service port.
         /// </summary>
-        public ushort Port { get; set; }
+        public ushort Port { get; }
 
         /// <summary>
-        ///     Gets or sets the target domain.
+        ///     Gets the target domain.
         /// </summary>
-        public string Target { get; set; }
+        public string Target { get; }
+
+        /// <summary>
+        ///     Determines if the record is greater than another.
+        /// </summary>
+        /// <param name="left">Left record.</param>
+        /// <param name="right">Right record.</param>
+        /// <returns>A value indicating whether the left record is greater.</returns>
+        public static bool operator >(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) == 1;
+        }
+
+        /// <inheritdoc cref="IComparable{T}" />
+        public static bool operator <(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) == -1;
+        }
+
+        /// <inheritdoc cref="IComparable{T}" />
+        public static bool operator <=(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) <= 0;
+        }
+
+        /// <inheritdoc cref="IComparable{T}" />
+        public static bool operator >=(RecordSrv left, RecordSrv right)
+        {
+            return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
+        }
+
+        /// <inheritdoc cref="IEquatable{T}" />
+        public static bool operator ==(RecordSrv left, RecordSrv right)
+        {
+            if (left is null)
+            {
+                return right is null;
+            }
+
+            return left.Equals(right);
+        }
+
+        /// <inheritdoc cref="IEquatable{T}" />
+        public static bool operator !=(RecordSrv left, RecordSrv right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        ///     Compares instance to object.
+        /// </summary>
+        /// <param name="other">Object to compare to.</param>
+        /// <returns>Integer defining object order.</returns>
+        public int CompareTo(RecordSrv other)
+        {
+            if (other is null)
+            {
+                return 1;
+            }
+
+            return Priority.CompareTo(other.Priority) > 0 ? 1 : Weight.CompareTo(other.Weight);
+        }
+
+        /// <summary>
+        ///     Compares two instances for equality.
+        /// </summary>
+        /// <param name="other">Second instance to compare.</param>
+        /// <returns>Value indicating whether the values are equal.</returns>
+        public bool Equals(RecordSrv other)
+        {
+            return _equality.Equals(this, other);
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return !(obj is null) && Equals(obj as RecordSrv);
+        }
 
         /// <summary>
         ///     String representation of the record data.
@@ -128,6 +214,12 @@ namespace Ubiety.Dns.Core.Records
         public override string ToString()
         {
             return $"{Priority} {Weight} {Port} {Target}";
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return _equality.GetHashCode(this);
         }
     }
 }

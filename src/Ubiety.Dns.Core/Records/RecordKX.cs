@@ -17,7 +17,7 @@
 
 using System;
 using System.Globalization;
-using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://tools.ietf.org/rfc/rfc2230.txt
@@ -203,8 +203,6 @@ namespace Ubiety.Dns.Core.Records
             {
                 var hashcode = 13;
                 hashcode = (hashcode * 397) ^ Preference;
-                var exHash = !string.IsNullOrEmpty(Exchanger) ? Exchanger.GetHashCode() : 0;
-                hashcode = (hashcode * 397) ^ exHash;
                 return hashcode;
             }
         }
