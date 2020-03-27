@@ -30,6 +30,9 @@ using System.Threading.Tasks;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
+#if NET452 || NET471
+using TransportType = Ubiety.Dns.Core.Common.TransportType;
+#endif
 
 namespace Ubiety.Dns.Core
 {
@@ -65,7 +68,7 @@ namespace Ubiety.Dns.Core
             _timeout = 1;
             Recursion = true;
             _useCache = true;
-            TransportType = Common.TransportType.Udp;
+            TransportType = TransportType.Udp;
 
             rng.Dispose();
         }
@@ -134,15 +137,6 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public static string Version => Assembly.GetExecutingAssembly()
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-
-        /// <summary>
-        ///     Gets the default DNS server addresses for OpenDNS.
-        /// </summary>
-        public static List<IPEndPoint> DefaultDnsServers => new List<IPEndPoint>
-        {
-            new IPEndPoint(IPAddress.Parse("208.67.222.222"), DefaultPort),
-            new IPEndPoint(IPAddress.Parse("208.67.220.220"), DefaultPort),
-        };
 
         /// <summary>
         ///     Gets the default DNS port.
