@@ -44,7 +44,7 @@ namespace Ubiety.Dns.Test.Records
         {
             var left = new RecordSrv(GetReader(10, 30, 80));
             var right = new RecordSrv(GetReader(10, 20, 80));
-            
+
             left.ShouldBeGreaterThan(right);
         }
 
@@ -53,7 +53,7 @@ namespace Ubiety.Dns.Test.Records
         {
             var left = new RecordSrv(GetReader(20, 10, 80));
             var right = new RecordSrv(GetReader(10, 10, 80));
-            
+
             left.ShouldBeGreaterThan(right);
         }
 
@@ -62,7 +62,7 @@ namespace Ubiety.Dns.Test.Records
         {
             var left = new RecordSrv(GetReader(10,10,80));
             var right = new RecordSrv(GetReader(10,10,80));
-            
+
             left.ShouldBe(right);
         }
 
@@ -70,7 +70,7 @@ namespace Ubiety.Dns.Test.Records
         public void TestSrvToString()
         {
             var record = new RecordSrv(GetReader(10,10,80));
-            
+
             record.ToString().ShouldBe("10 10 80 test.com.");
         }
 
@@ -79,7 +79,7 @@ namespace Ubiety.Dns.Test.Records
         {
             var left = new RecordSrv(GetReader(10, 10, 80));
             var right = new RecordSrv(GetReader(10, 10, 80)) as Record;
-            
+
             left.ShouldBe(right);
         }
 
@@ -87,7 +87,7 @@ namespace Ubiety.Dns.Test.Records
         public void TestSrvNotEqualToNull()
         {
             var left = new RecordSrv(GetReader(10, 10 ,80));
-            
+
             left.ShouldNotBeNull();
         }
 
