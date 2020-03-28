@@ -52,18 +52,12 @@ namespace Ubiety.Dns.Core
         /// <param name="server"><see cref="IPEndPoint" /> of the DNS server that responded to the query.</param>
         /// <param name="data"><see cref="byte" /> array of the response data.</param>
         public Response(IPEndPoint server, byte[] data)
+            : this()
         {
             data = data.ThrowIfNull(nameof(data));
-            Error = string.Empty;
             Server = server;
-            TimeStamp = DateTime.Now;
             MessageSize = data.Length;
             var reader = new RecordReader(data);
-
-            Questions = new List<Question>();
-            Answers = new List<AnswerResourceRecord>();
-            Authorities = new List<AuthorityResourceRecord>();
-            Additional = new List<AdditionalResourceRecord>();
 
             Header = new Header(reader);
 
