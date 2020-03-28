@@ -1,4 +1,4 @@
-# ![Logo](https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/images/library64.png) Ubiety.Dns.Core ![Nuget](https://img.shields.io/nuget/v/Ubiety.Dns.Core.svg?style=flat-square)
+# ![Logo](https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/images/library64.png) Ubiety.Dns.Core [![Nuget](https://img.shields.io/nuget/v/Ubiety.Dns.Core.svg?style=flat-square)](https://www.nuget.org/packages/Ubiety.Dns.Core/)
 
 > A reusable DNS resolver for .NET Standard 2.0
 
