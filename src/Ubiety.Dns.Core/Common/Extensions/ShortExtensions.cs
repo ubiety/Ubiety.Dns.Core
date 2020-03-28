@@ -35,5 +35,77 @@ namespace Ubiety.Dns.Core.Common.Extensions
         {
             return BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value));
         }
+
+        /// <summary>
+        ///     Set a ushort flag value.
+        /// </summary>
+        /// <param name="value"><see cref="ushort" /> to set the flag value on.</param>
+        /// <param name="position">Position of the flag.</param>
+        /// <param name="flagValue">Value of the flag.</param>
+        /// <returns><see cref="ushort" /> with the flag value set.</returns>
+        public static ushort SetFlag(this ushort value, int position, bool flagValue)
+        {
+            return value.SetFlag(position, 1, flagValue ? (ushort)1 : (ushort)0);
+        }
+
+        /// <summary>
+        ///     Set a ushort flag value.
+        /// </summary>
+        /// <param name="value"><see cref="ushort" /> to set the flag value on.</param>
+        /// <param name="position">Position of the flag.</param>
+        /// <param name="length">Length of the flag.</param>
+        /// <param name="flagValue">Value of the flag.</param>
+        /// <returns><see cref="ushort" /> with the flag value set.</returns>
+        public static ushort SetFlag(this ushort value, int position, int length, ushort flagValue)
+        {
+            // sanity check
+            if (length <= 0 || position >= 16)
+            {
+                return value;
+            }
+
+            // get some mask to put on
+            var mask = (2 << (length - 1)) - 1;
+
+            // clear out value
+            value &= (ushort)~(mask << position);
+
+            // set new value
+            value |= (ushort)((flagValue & mask) << position);
+            return value;
+        }
+
+        /// <summary>
+        ///     Get the value of a boolean flag.
+        /// </summary>
+        /// <param name="value"><see cref="ushort" /> to get the value from.</param>
+        /// <param name="position">Position of the value.</param>
+        /// <returns><see cref="bool" /> of the flag.</returns>
+        public static bool GetFlag(this ushort value, int position)
+        {
+            return value.GetFlag(position, 1) == 1;
+        }
+
+        /// <summary>
+        ///     Get the value of a flag.
+        /// </summary>
+        /// <param name="value"><see cref="ushort" /> to get the value from.</param>
+        /// <param name="position">Position of the value.</param>
+        /// <param name="length">Length of the value.</param>
+        /// <returns><see cref="ushort" /> of the value.</returns>
+        public static ushort GetFlag(this ushort value, int position, int length)
+        {
+            // sanity check
+            if (length <= 0 || position >= 16)
+            {
+                return 0;
+            }
+
+            // get some mask to put on
+            var mask = (2 << (length - 1)) - 1;
+
+            // shift down to get some value and mask it
+            return (ushort)((value >> position) & mask);
+        }
     }
 }

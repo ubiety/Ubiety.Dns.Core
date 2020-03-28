@@ -80,8 +80,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool QueryResponse
         {
-            get => GetBits(_flags, 15, 1) == 1;
-            set => _flags = SetBits(_flags, 15, 1, value);
+            get => _flags.GetFlag(15);
+            set => _flags = _flags.SetFlag(15, value);
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public OperationCode OpCode
         {
-            get => (OperationCode)GetBits(_flags, 11, 4);
-            set => _flags = SetBits(_flags, 11, 4, (ushort)value);
+            get => (OperationCode)_flags.GetFlag(11, 4);
+            set => _flags = _flags.SetFlag(11, 4, (ushort)value);
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool AuthoritativeAnswer
         {
-            get => GetBits(_flags, 10, 1) == 1;
-            set => _flags = SetBits(_flags, 10, 1, value);
+            get => _flags.GetFlag(10);
+            set => _flags = _flags.SetFlag(10, value);
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool Truncation
         {
-            get => GetBits(_flags, 9, 1) == 1;
-            set => _flags = SetBits(_flags, 9, 1, value);
+            get => _flags.GetFlag(9);
+            set => _flags = _flags.SetFlag(9, value);
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool Recursion
         {
-            get => GetBits(_flags, 8, 1) == 1;
-            set => _flags = SetBits(_flags, 8, 1, value);
+            get => _flags.GetFlag(8);
+            set => _flags = _flags.SetFlag(8, value);
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public bool RecursionAvailable
         {
-            get => GetBits(_flags, 7, 1) == 1;
-            set => _flags = SetBits(_flags, 7, 1, value);
+            get => _flags.GetFlag(7);
+            set => _flags = _flags.SetFlag(7, value);
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public ushort Z
         {
-            get => GetBits(_flags, 4, 3);
-            set => _flags = SetBits(_flags, 4, 3, value);
+            get => _flags.GetFlag(4, 3);
+            set => _flags = _flags.SetFlag(4, 3, value);
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public ResponseCode ResponseCode
         {
-            get => (ResponseCode)GetBits(_flags, 0, 4);
-            set => _flags = SetBits(_flags, 0, 4, (ushort)value);
+            get => (ResponseCode)_flags.GetFlag(0, 4);
+            set => _flags = _flags.SetFlag(0, 4, (ushort)value);
         }
 
         /// <summary>
@@ -161,45 +161,6 @@ namespace Ubiety.Dns.Core
             data.AddRange(NameserverCount.GetBytes());
             data.AddRange(AdditionalRecordsCount.GetBytes());
             return data.ToArray();
-        }
-
-        private static ushort SetBits(ushort oldValue, int position, int length, bool blnValue)
-        {
-            return SetBits(oldValue, position, length, blnValue ? (ushort)1 : (ushort)0);
-        }
-
-        private static ushort SetBits(ushort oldValue, int position, int length, ushort newValue)
-        {
-            // sanity check
-            if (length <= 0 || position >= 16)
-            {
-                return oldValue;
-            }
-
-            // get some mask to put on
-            var mask = (2 << (length - 1)) - 1;
-
-            // clear out value
-            oldValue &= (ushort)~(mask << position);
-
-            // set new value
-            oldValue |= (ushort)((newValue & mask) << position);
-            return oldValue;
-        }
-
-        private static ushort GetBits(ushort oldValue, int position, int length)
-        {
-            // sanity check
-            if (length <= 0 || position >= 16)
-            {
-                return 0;
-            }
-
-            // get some mask to put on
-            var mask = (2 << (length - 1)) - 1;
-
-            // shift down to get some value and mask it
-            return (ushort)((oldValue >> position) & mask);
         }
     }
 }
