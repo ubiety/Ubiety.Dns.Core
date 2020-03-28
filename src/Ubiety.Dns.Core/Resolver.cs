@@ -297,7 +297,7 @@ namespace Ubiety.Dns.Core
             {
                 foreach (var server in DnsServers)
                 {
-                    var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
+                    using var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
 
                     try
                     {
@@ -316,12 +316,6 @@ namespace Ubiety.Dns.Core
                     {
                         _logger.Error(exception, $"Connection to nameserver {server.Address} failed");
                     }
-#if NETSTANDARD
-                    finally
-                    {
-                        client.Dispose();
-                    }
-#endif
                 }
             }
 
@@ -335,12 +329,12 @@ namespace Ubiety.Dns.Core
             {
                 foreach (var server in DnsServers)
                 {
-                    var client = new TcpClient(AddressFamily.InterNetworkV6)
+                    using var client = new TcpClient(AddressFamily.InterNetworkV6)
                     {
                         ReceiveTimeout = Timeout, Client = { DualMode = true },
                     };
 
-                    var stream = new BufferedStream(client.GetStream());
+                    using var stream = new BufferedStream(client.GetStream());
 
                     try
                     {
@@ -361,15 +355,6 @@ namespace Ubiety.Dns.Core
                     {
                         _logger.Error(e, "Socket exception occured during request.");
                         throw;
-                    }
-                    finally
-                    {
-                        stream.Close();
-                        client.Close();
-                        stream.Dispose();
-#if NETSTANDARD
-                        client.Dispose();
-#endif
                     }
                 }
             }
