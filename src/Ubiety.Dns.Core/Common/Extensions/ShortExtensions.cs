@@ -15,20 +15,25 @@
  *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Ubiety.Dns.Core
+using System;
+using System.Collections.Generic;
+using System.Net;
+
+namespace Ubiety.Dns.Core.Common.Extensions
 {
     /// <summary>
-    ///     Answer resource record.
+    ///     Extension methods for shorts.
     /// </summary>
-    public class AnswerResourceRecord : ResourceRecord
+    public static class ShortExtensions
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AnswerResourceRecord" /> class.
+        ///     Get a byte array of the short.
         /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public AnswerResourceRecord(RecordReader reader)
-            : base(reader)
+        /// <param name="value"><see cref="ushort" /> to get the bytes for.</param>
+        /// <returns><see cref="byte" /> array of the short.</returns>
+        public static IEnumerable<byte> GetBytes(this ushort value)
         {
+            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value));
         }
     }
 }

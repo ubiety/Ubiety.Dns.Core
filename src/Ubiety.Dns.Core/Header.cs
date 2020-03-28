@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core
 {
@@ -40,15 +41,15 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="Header" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record.</param>
-        internal Header(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> of the record.</param>
+        internal Header(RecordReader reader)
         {
-            Id = rr.ReadUInt16();
-            _flags = rr.ReadUInt16();
-            QuestionCount = rr.ReadUInt16();
-            AnswerCount = rr.ReadUInt16();
-            NameserverCount = rr.ReadUInt16();
-            AdditionalRecordsCount = rr.ReadUInt16();
+            Id = reader.ReadUInt16();
+            _flags = reader.ReadUInt16();
+            QuestionCount = reader.ReadUInt16();
+            AnswerCount = reader.ReadUInt16();
+            NameserverCount = reader.ReadUInt16();
+            AdditionalRecordsCount = reader.ReadUInt16();
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the record opcode flag.
+        ///     Gets or sets the record operation code flag.
         /// </summary>
         public OperationCode OpCode
         {
@@ -155,12 +156,12 @@ namespace Ubiety.Dns.Core
         public IEnumerable<byte> GetData()
         {
             var data = new List<byte>();
-            data.AddRange(WriteShort(Id));
-            data.AddRange(WriteShort(_flags));
-            data.AddRange(WriteShort(QuestionCount));
-            data.AddRange(WriteShort(AnswerCount));
-            data.AddRange(WriteShort(NameserverCount));
-            data.AddRange(WriteShort(AdditionalRecordsCount));
+            data.AddRange(Id.GetBytes());
+            data.AddRange(_flags.GetBytes());
+            data.AddRange(QuestionCount.GetBytes());
+            data.AddRange(AnswerCount.GetBytes());
+            data.AddRange(NameserverCount.GetBytes());
+            data.AddRange(AdditionalRecordsCount.GetBytes());
             return data.ToArray();
         }
 
@@ -201,11 +202,6 @@ namespace Ubiety.Dns.Core
 
             // shift down to get some value and mask it
             return (ushort)((oldValue >> position) & mask);
-        }
-
-        private static IEnumerable<byte> WriteShort(ushort value)
-        {
-            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)value));
         }
     }
 }

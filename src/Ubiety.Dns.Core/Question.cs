@@ -135,8 +135,8 @@ namespace Ubiety.Dns.Core
         {
             var data = new List<byte>();
             data.AddRange(WriteName(DomainName));
-            data.AddRange(WriteShort((ushort)QuestionType));
-            data.AddRange(WriteShort((ushort)QuestionClass));
+            data.AddRange(((ushort)QuestionType).GetBytes());
+            data.AddRange(((ushort)QuestionClass).GetBytes());
             return data.ToArray();
         }
 
@@ -180,11 +180,6 @@ namespace Ubiety.Dns.Core
 
             sb[sb.Length - 1] = '\0';
             return Encoding.ASCII.GetBytes(sb.ToString());
-        }
-
-        private static IEnumerable<byte> WriteShort(ushort value)
-        {
-            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)value));
         }
     }
 }

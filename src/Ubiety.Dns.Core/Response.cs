@@ -49,42 +49,42 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
-        /// <param name="iPEndPoint">Address of the response.</param>
-        /// <param name="data">Response data.</param>
-        public Response(IPEndPoint iPEndPoint, byte[] data)
+        /// <param name="server"><see cref="IPEndPoint" /> of the DNS server that responded to the query.</param>
+        /// <param name="data"><see cref="byte" /> array of the response data.</param>
+        public Response(IPEndPoint server, byte[] data)
         {
             data = data.ThrowIfNull(nameof(data));
             Error = string.Empty;
-            Server = iPEndPoint;
+            Server = server;
             TimeStamp = DateTime.Now;
             MessageSize = data.Length;
-            var rr = new RecordReader(data);
+            var reader = new RecordReader(data);
 
             Questions = new List<Question>();
             Answers = new List<AnswerResourceRecord>();
             Authorities = new List<AuthorityResourceRecord>();
             Additional = new List<AdditionalResourceRecord>();
 
-            Header = new Header(rr);
+            Header = new Header(reader);
 
             for (var i = 0; i < Header.QuestionCount; i++)
             {
-                Questions.Add(new Question(rr));
+                Questions.Add(new Question(reader));
             }
 
             for (var i = 0; i < Header.AnswerCount; i++)
             {
-                Answers.Add(new AnswerResourceRecord(rr));
+                Answers.Add(new AnswerResourceRecord(reader));
             }
 
             for (var i = 0; i < Header.NameserverCount; i++)
             {
-                Authorities.Add(new AuthorityResourceRecord(rr));
+                Authorities.Add(new AuthorityResourceRecord(reader));
             }
 
             for (var i = 0; i < Header.AdditionalRecordsCount; i++)
             {
-                Additional.Add(new AdditionalResourceRecord(rr));
+                Additional.Add(new AdditionalResourceRecord(reader));
             }
         }
 
@@ -129,7 +129,7 @@ namespace Ubiety.Dns.Core
         public DateTime TimeStamp { get; }
 
         /// <summary>
-        ///     Gets the server which delivered this response.
+        ///     Gets the <see cref="IPEndPoint" /> of the DNS server that responded.
         /// </summary>
         public IPEndPoint Server { get; }
 
