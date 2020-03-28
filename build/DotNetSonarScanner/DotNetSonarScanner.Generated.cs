@@ -298,7 +298,7 @@ namespace Nuke.Common.Tools.DotNetSonarScanner
         protected override Arguments ConfigureArguments(Arguments arguments)
         {
             arguments
-              .Add("sonarscanner begin")
+              .Add("begin")
               .Add("/k:{value}", ProjectKey)
               .Add("/n:{value}", Name)
               .Add("/o:{value}", Organization)
@@ -351,7 +351,7 @@ namespace Nuke.Common.Tools.DotNetSonarScanner
         protected override Arguments ConfigureArguments(Arguments arguments)
         {
             arguments
-              .Add("sonarscanner end")
+              .Add("end")
               .Add("/d:sonar.login={value}", Login, secret: true)
               .Add("/d:sonar.password={value}", Password, secret: true);
             return base.ConfigureArguments(arguments);
