@@ -45,7 +45,6 @@ namespace Ubiety.Dns.Core
 
         private readonly Dictionary<Question, Response> _responseCache;
         private int _retries;
-        private int _timeout;
 
         private bool _useCache;
 
@@ -60,7 +59,7 @@ namespace Ubiety.Dns.Core
             DnsServers.AddRange(dnsServers);
 
             _retries = 3;
-            _timeout = 1;
+            Timeout = 1000;
             Recursion = true;
             _useCache = true;
             TransportType = TransportType.Udp;
@@ -126,12 +125,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets resolution timeout in milliseconds.
         /// </summary>
-        public int Timeout
-        {
-            get => _timeout;
-
-            set => _timeout = value * 1000;
-        }
+        public int Timeout { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of retries before giving up.
@@ -393,36 +387,35 @@ namespace Ubiety.Dns.Core
 
         private Response UdpRequest(Request request)
         {
-            // RFC1035 max. size of a UDP datagram is 512 bytes
-            var responseMessage = new byte[512];
-
             for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
             {
                 foreach (var server in DnsServers)
                 {
-                    var socket = new Socket(SocketType.Dgram, ProtocolType.Udp);
-                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, Timeout);
+                    var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
 
                     try
                     {
-                        socket.SendTo(request.GetData(), server);
-                        var received = socket.Receive(responseMessage);
-                        var data = new byte[received];
-                        Array.Copy(responseMessage, data, received);
+                        var sendBytes = request.GetData();
+                        client.Send(sendBytes, sendBytes.Length, server);
+                        var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                        var data = client.Receive(ref remoteEndPoint);
+
                         var response = new Response(server, data);
                         AddToCache(response);
+
+                        client.Close();
                         return response;
                     }
                     catch (SocketException exception)
                     {
-                        _logger.Error(exception, $"Connection to nameserver {server} failed");
+                        _logger.Error(exception, $"Connection to nameserver {server.Address} failed");
                     }
+#if NETSTANDARD
                     finally
                     {
-                        // close the socket
-                        socket.Close();
-                        socket.Dispose();
+                        client.Dispose();
                     }
+#endif
                 }
             }
 
@@ -438,8 +431,9 @@ namespace Ubiety.Dns.Core
                 {
                     var client = new TcpClient(AddressFamily.InterNetworkV6)
                     {
-                        ReceiveTimeout = _timeout, Client = { DualMode = true },
+                        ReceiveTimeout = Timeout, Client = { DualMode = true },
                     };
+
                     var stream = new BufferedStream(client.GetStream());
 
                     try
@@ -465,9 +459,8 @@ namespace Ubiety.Dns.Core
                     finally
                     {
                         stream.Close();
-                        stream.Dispose();
-
                         client.Close();
+                        stream.Dispose();
 #if NETSTANDARD
                         client.Dispose();
 #endif
