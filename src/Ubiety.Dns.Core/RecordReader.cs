@@ -34,18 +34,8 @@ namespace Ubiety.Dns.Core
         ///     Initializes a new instance of the <see cref="RecordReader" /> class.
         /// </summary>
         /// <param name="data">Byte array of the record.</param>
-        public RecordReader(byte[] data)
-        {
-            _data = data;
-            Position = 0;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordReader" /> class.
-        /// </summary>
-        /// <param name="data">Byte array of the record.</param>
-        /// <param name="position">Position of the cursor in the record.</param>
-        public RecordReader(byte[] data, int position)
+        /// <param name="position">Position of the cursor in the record, defaults to 0.</param>
+        public RecordReader(byte[] data, int position = 0)
         {
             _data = data;
             Position = position;
