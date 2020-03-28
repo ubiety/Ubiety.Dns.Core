@@ -41,8 +41,8 @@ namespace Ubiety.Dns.Core
     public class Resolver
     {
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
-
         private readonly Dictionary<Question, Response> _responseCache;
+        private readonly List<IPEndPoint> _dnsServers;
 
         private bool _useCache;
 
@@ -53,8 +53,8 @@ namespace Ubiety.Dns.Core
         internal Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
             _responseCache = new Dictionary<Question, Response>();
-            DnsServers = new List<IPEndPoint>();
-            DnsServers.AddRange(dnsServers);
+            _dnsServers = new List<IPEndPoint>();
+            _dnsServers.AddRange(dnsServers);
 
             TransportType = TransportType.Udp;
         }
@@ -89,7 +89,7 @@ namespace Ubiety.Dns.Core
         ///     Gets the list of DNS servers in the resolver.
         /// </summary>
         [Obsolete("Is this needed? If you use it please open an issue.")]
-        public List<IPEndPoint> DnsServers { get; }
+        public List<IPEndPoint> DnsServers => _dnsServers;
 
         /// <summary>
         ///     Gets or sets a value indicating whether to use the cache.
@@ -295,7 +295,7 @@ namespace Ubiety.Dns.Core
         {
             for (var attempts = 0; attempts < Retries; attempts++)
             {
-                foreach (var server in DnsServers)
+                foreach (var server in _dnsServers)
                 {
                     using var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
 
@@ -327,7 +327,7 @@ namespace Ubiety.Dns.Core
         {
             for (var attempts = 0; attempts < Retries; attempts++)
             {
-                foreach (var server in DnsServers)
+                foreach (var server in _dnsServers)
                 {
                     using var client = new TcpClient(AddressFamily.InterNetworkV6)
                     {
