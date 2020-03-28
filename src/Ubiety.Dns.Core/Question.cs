@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
