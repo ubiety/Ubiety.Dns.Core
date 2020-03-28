@@ -18,8 +18,6 @@
 using Ubiety.Dns.Core.Records;
 using Ubiety.Dns.Core.Records.General;
 using Ubiety.Dns.Core.Records.Mail;
-using Ubiety.Dns.Core.Records.NotUsed;
-using Ubiety.Dns.Core.Records.Obsolete;
 
 namespace Ubiety.Dns.Core.Common
 {
@@ -39,18 +37,6 @@ namespace Ubiety.Dns.Core.Common
         /// </summary>
         [Record(typeof(RecordNs))]
         NS = 2,
-
-        /// <summary>
-        ///     Mail destination
-        /// </summary>
-        [Record(typeof(RecordMd))]
-        MD = 3,
-
-        /// <summary>
-        ///     Mail forwarder
-        /// </summary>
-        [Record(typeof(RecordMf))]
-        MF = 4,
 
         /// <summary>
         ///     Canonical name for a domain alias
@@ -161,12 +147,6 @@ namespace Ubiety.Dns.Core.Common
         NSAP = 22,
 
         /// <summary>
-        ///     Obsolete DNS type
-        /// </summary>
-        [Record(typeof(RecordNsapPtr))]
-        NSAPPTR = 23,
-
-        /// <summary>
         ///     Cryptographic public key signature
         /// </summary>
         [Record(typeof(RecordSig))]
@@ -185,12 +165,6 @@ namespace Ubiety.Dns.Core.Common
         PX = 26,
 
         /// <summary>
-        ///     Geographical position type
-        /// </summary>
-        [Record(typeof(RecordGpos))]
-        GPOS = 27,
-
-        /// <summary>
         ///     IPv6 host address
         /// </summary>
         [Record(typeof(RecordAaaa))]
@@ -203,34 +177,10 @@ namespace Ubiety.Dns.Core.Common
         LOC = 29,
 
         /// <summary>
-        ///     Next domain type
-        /// </summary>
-        [Record(typeof(RecordNxt))]
-        NXT = 30,
-
-        /// <summary>
-        ///     Endpoint identifier
-        /// </summary>
-        [Record(typeof(RecordEid))]
-        EID = 31,
-
-        /// <summary>
-        ///     Nimrod locator
-        /// </summary>
-        [Record(typeof(RecordNimloc))]
-        NIMLOC = 32,
-
-        /// <summary>
         ///     Location of services
         /// </summary>
         [Record(typeof(RecordSrv))]
         SRV = 33,
-
-        /// <summary>
-        ///     ATM address type
-        /// </summary>
-        [Record(typeof(RecordAtma))]
-        ATMA = 34,
 
         /// <summary>
         ///     Naming authority pointer
@@ -251,124 +201,16 @@ namespace Ubiety.Dns.Core.Common
         CERT = 37,
 
         /// <summary>
-        ///     IPv6 address (Historic)
-        /// </summary>
-        [Record(typeof(RecordA6))]
-        A6 = 38,
-
-        /// <summary>
         ///     Domain alias
         /// </summary>
         [Record(typeof(RecordDname))]
         DNAME = 39,
 
         /// <summary>
-        ///     SINK type
-        /// </summary>
-        [Record(typeof(RecordSink))]
-        SINK = 40,
-
-        /// <summary>
-        ///     OPT type
-        /// </summary>
-        [Record(typeof(RecordOpt))]
-        OPT = 41,
-
-        /// <summary>
-        ///     APL type
-        /// </summary>
-        [Record(typeof(RecordApl))]
-        APL = 42,
-
-        /// <summary>
         ///     Delegation signer
         /// </summary>
         [Record(typeof(RecordDs))]
         DS = 43,
-
-        /// <summary>
-        ///     SSH key fingerprint
-        /// </summary>
-        [Record(typeof(RecordSshfp))]
-        SSHFP = 44,
-
-        /// <summary>
-        ///     IPSEC key
-        /// </summary>
-        [Record(typeof(RecordIpsecKey))]
-        IPSECKEY = 45,
-
-        /// <summary>
-        ///     Resource record signature
-        /// </summary>
-        [Record(typeof(RecordRrsig))]
-        RRSIG = 46,
-
-        /// <summary>
-        ///     NSEC type
-        /// </summary>
-        [Record(typeof(RecordNsec))]
-        NSEC = 47,
-
-        /// <summary>
-        ///     DNS key
-        /// </summary>
-        [Record(typeof(RecordDnsKey))]
-        DNSKEY = 48,
-
-        /// <summary>
-        ///     DHCP information
-        /// </summary>
-        [Record(typeof(RecordDhcid))]
-        DHCID = 49,
-
-        /// <summary>
-        ///     NSEC3 type
-        /// </summary>
-        [Record(typeof(RecordNsec3))]
-        NSEC3 = 50,
-
-        /// <summary>
-        ///     NSEC3PARAM type
-        /// </summary>
-        [Record(typeof(RecordNsec3Param))]
-        NSEC3PARAM = 51,
-
-        /// <summary>
-        ///     Host Identity protocol
-        /// </summary>
-        [Record(typeof(RecordHip))]
-        HIP = 55,
-
-        /// <summary>
-        ///     SPF type
-        /// </summary>
-        [Record(typeof(RecordSpf))]
-        SPF = 99,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        [Record(typeof(RecordUinfo))]
-        UINFO = 100,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        [Record(typeof(RecordUid))]
-        UID = 101,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        [Record(typeof(RecordGid))]
-        GID = 102,
-
-        /// <summary>
-        ///     Reserved
-        /// </summary>
-        [Record(typeof(RecordUnspec))]
-        UNSPEC = 103,
 
         /// <summary>
         ///     Transaction key
@@ -381,17 +223,5 @@ namespace Ubiety.Dns.Core.Common
         /// </summary>
         [Record(typeof(RecordTsig))]
         TSIG = 250,
-
-        /// <summary>
-        ///     DNSSEC trust authorities
-        /// </summary>
-        [Record(typeof(RecordUnknown))]
-        TA = 32768,
-
-        /// <summary>
-        ///     DNSSEC lookaside validation
-        /// </summary>
-        [Record(typeof(RecordUnknown))]
-        DLV = 32769,
     }
 }

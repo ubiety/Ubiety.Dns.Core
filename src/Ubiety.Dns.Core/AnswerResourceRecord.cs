@@ -25,9 +25,9 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="AnswerResourceRecord" /> class.
         /// </summary>
-        /// <param name="br"><see cref="RecordReader" /> for the record data.</param>
-        public AnswerResourceRecord(RecordReader br)
-            : base(br)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public AnswerResourceRecord(RecordReader reader)
+            : base(reader)
         {
         }
     }

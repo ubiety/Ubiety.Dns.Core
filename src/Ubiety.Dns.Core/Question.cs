@@ -17,28 +17,31 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core
 {
     /// <summary>
     ///     DNS Question record.
     /// </summary>
-    public class Question
+    public sealed class Question : IEquatable<Question>
     {
-        private string _questionName;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="Question" /> class.
         /// </summary>
-        /// <param name="questionName">Query name.</param>
+        /// <param name="domainName">Domain name to look up with the question.</param>
         /// <param name="questionType">Question type.</param>
         /// <param name="questionClass">Question class.</param>
-        public Question(string questionName, QuestionType questionType, QuestionClass questionClass)
+        public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
-            QuestionName = questionName;
+            if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith(".", StringComparison.InvariantCulture))
+            {
+                domainName += ".";
+            }
+
+            DomainName = domainName;
             QuestionType = questionType;
             QuestionClass = questionClass;
         }
@@ -49,7 +52,7 @@ namespace Ubiety.Dns.Core
         /// <param name="rr"><see cref="RecordReader" /> of the record.</param>
         internal Question(RecordReader rr)
         {
-            QuestionName = rr.ReadDomainName();
+            DomainName = rr.ReadDomainName();
             QuestionType = (QuestionType)rr.ReadUInt16();
             QuestionClass = (QuestionClass)rr.ReadUInt16();
         }
@@ -57,19 +60,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets the question name.
         /// </summary>
-        public string QuestionName
-        {
-            get => _questionName;
-
-            private set
-            {
-                _questionName = value;
-                if (!_questionName.EndsWith(".", StringComparison.InvariantCulture))
-                {
-                    _questionName += ".";
-                }
-            }
-        }
+        public string DomainName { get; }
 
         /// <summary>
         ///     Gets the query type.
@@ -81,13 +72,58 @@ namespace Ubiety.Dns.Core
         /// </summary>
         public QuestionClass QuestionClass { get; }
 
+        /// <inheritdoc cref="IEquatable{T}" />
+        public static bool operator ==(Question left, Question right)
+        {
+            return Equals(left, right);
+        }
+
+        /// <inheritdoc cref="IEquatable{T}" />
+        public static bool operator !=(Question left, Question right)
+        {
+            return !Equals(left, right);
+        }
+
+        /// <inheritdoc cref="IEquatable{T}" />
+        public bool Equals(Question other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return string.Equals(DomainName, other.DomainName, StringComparison.InvariantCultureIgnoreCase) &&
+                   QuestionType == other.QuestionType && QuestionClass == other.QuestionClass;
+        }
+
+        /// <inheritdoc cref="IEquatable{T}" />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return obj.GetType() == GetType() && Equals((Question)obj);
+        }
+
         /// <summary>
         ///     String representation of the question.
         /// </summary>
         /// <returns>String of the question.</returns>
         public override string ToString()
         {
-            return $"{QuestionName,-32}\t{QuestionClass}\t{QuestionType}";
+            return $"{DomainName,-32}\t{QuestionClass}\t{QuestionType}";
         }
 
         /// <summary>
@@ -97,10 +133,22 @@ namespace Ubiety.Dns.Core
         public IEnumerable<byte> GetData()
         {
             var data = new List<byte>();
-            data.AddRange(WriteName(QuestionName));
-            data.AddRange(WriteShort((ushort)QuestionType));
-            data.AddRange(WriteShort((ushort)QuestionClass));
+            data.AddRange(WriteName(DomainName));
+            data.AddRange(((ushort)QuestionType).GetBytes());
+            data.AddRange(((ushort)QuestionClass).GetBytes());
             return data.ToArray();
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = StringComparer.InvariantCultureIgnoreCase.GetHashCode(DomainName);
+                hashCode = (hashCode * 397) ^ (int)QuestionType;
+                hashCode = (hashCode * 397) ^ (int)QuestionClass;
+                return hashCode;
+            }
         }
 
         private static IEnumerable<byte> WriteName(string src)
@@ -116,27 +164,21 @@ namespace Ubiety.Dns.Core
             }
 
             var sb = new StringBuilder();
-            int intI, intJ, intLen = src.Length;
             sb.Append('\0');
-            for (intI = 0, intJ = 0; intI < intLen; intI++, intJ++)
+            for (int i = 0, j = 0; i < src.Length; i++, j++)
             {
-                sb.Append(src[intI]);
-                if (src[intI] != '.')
+                sb.Append(src[i]);
+                if (src[i] != '.')
                 {
                     continue;
                 }
 
-                sb[intI - intJ] = (char)(intJ & 0xff);
-                intJ = -1;
+                sb[i - j] = (char)(j & 0xff);
+                j = -1;
             }
 
             sb[sb.Length - 1] = '\0';
             return Encoding.ASCII.GetBytes(sb.ToString());
-        }
-
-        private static IEnumerable<byte> WriteShort(ushort value)
-        {
-            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)value));
         }
     }
 }

@@ -17,10 +17,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -42,81 +41,22 @@ namespace Ubiety.Dns.Core
     public class Resolver
     {
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
+        private readonly Dictionary<Question, Response> _responseCache;
+        private readonly List<IPEndPoint> _dnsServers;
 
-        private readonly Dictionary<string, Response> _responseCache;
-        private int _retries;
-        private int _timeout;
-
-        private ushort _unique;
         private bool _useCache;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Resolver" /> class.
         /// </summary>
         /// <param name="dnsServers">Set of DNS servers to use for resolution.</param>
-        public Resolver(IEnumerable<IPEndPoint> dnsServers)
+        internal Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
-            var rng = new RNGCryptoServiceProvider();
-            var rand = new byte[16];
-            rng.GetBytes(rand);
-            _responseCache = new Dictionary<string, Response>();
-            DnsServers = new List<IPEndPoint>();
-            DnsServers.AddRange(dnsServers);
+            _responseCache = new Dictionary<Question, Response>();
+            _dnsServers = new List<IPEndPoint>();
+            _dnsServers.AddRange(dnsServers);
 
-            _unique = BitConverter.ToUInt16(rand, 0);
-            _retries = 3;
-            _timeout = 1;
-            Recursion = true;
-            _useCache = true;
             TransportType = TransportType.Udp;
-
-            rng.Dispose();
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="dnsServer">DNS server to use.</param>
-        public Resolver(IPEndPoint dnsServer)
-            : this(new[] { dnsServer })
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="serverIpAddress">DNS server to use.</param>
-        /// <param name="serverPortNumber">DNS port to use.</param>
-        public Resolver(IPAddress serverIpAddress, int serverPortNumber)
-            : this(new IPEndPoint(serverIpAddress, serverPortNumber))
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="serverIpAddress">DNS server address to use.</param>
-        /// <param name="serverPortNumber">DNS port to use.</param>
-        public Resolver(string serverIpAddress, int serverPortNumber)
-            : this(IPAddress.Parse(serverIpAddress), serverPortNumber)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="serverIpAddress">DNS server address to use.</param>
-        public Resolver(string serverIpAddress)
-            : this(IPAddress.Parse(serverIpAddress), DefaultPort)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        public Resolver()
-            : this(GetSystemDnsServers())
-        {
         }
 
         /// <summary>
@@ -126,38 +66,17 @@ namespace Ubiety.Dns.Core
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         /// <summary>
-        ///     Gets the default DNS port.
-        /// </summary>
-        public static int DefaultPort { get; } = 53;
-
-        /// <summary>
         ///     Gets or sets resolution timeout in milliseconds.
         /// </summary>
-        public int Timeout
-        {
-            get => _timeout;
-
-            set => _timeout = value * 1000;
-        }
+        public int Timeout { get; set; }
 
         /// <summary>
         ///     Gets or sets the number of retries before giving up.
         /// </summary>
-        public int Retries
-        {
-            get => _retries;
-
-            set
-            {
-                if (value >= 1)
-                {
-                    _retries = value;
-                }
-            }
-        }
+        public int Retries { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether recursion is enabled for doing queries.
+        ///     Gets or sets a value indicating whether recursion is enabled for queries.
         /// </summary>
         public bool Recursion { get; set; }
 
@@ -167,9 +86,10 @@ namespace Ubiety.Dns.Core
         public TransportType TransportType { get; set; }
 
         /// <summary>
-        ///     Gets a list of DNS servers to use.
+        ///     Gets the list of DNS servers in the resolver.
         /// </summary>
-        public List<IPEndPoint> DnsServers { get; }
+        [Obsolete("Is this needed? If you use it please open an issue.")]
+        public List<IPEndPoint> DnsServers => _dnsServers;
 
         /// <summary>
         ///     Gets or sets a value indicating whether to use the cache.
@@ -188,38 +108,6 @@ namespace Ubiety.Dns.Core
 
                 ClearCache();
             }
-        }
-
-        /// <summary>
-        ///     Gets a list of default DNS servers.
-        /// </summary>
-        /// <returns>Array of DNS servers.</returns>
-        public static IEnumerable<IPEndPoint> GetSystemDnsServers()
-        {
-            var list = new List<IPEndPoint>();
-
-            var adapters = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var n in adapters)
-            {
-                if (n.OperationalStatus != OperationalStatus.Up)
-                {
-                    continue;
-                }
-
-                var ipProps = n.GetIPProperties();
-
-                // thanks to Jon Webster on May 20, 2008
-                foreach (var ipAddr in ipProps.DnsAddresses)
-                {
-                    var entry = new IPEndPoint(ipAddr, DefaultPort);
-                    if (!list.Contains(entry))
-                    {
-                        list.Add(entry);
-                    }
-                }
-            }
-
-            return list.ToArray();
         }
 
         /// <summary>
@@ -263,11 +151,11 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Get ARPA address from enum.
+        ///     Get ARPA address from enumerator.
         /// </summary>
-        /// <param name="enumerator">Enum for the address.</param>
+        /// <param name="enumerator">Enumerator for the address.</param>
         /// <returns>String of the ARPA address.</returns>
-        public static string GetArpaFromEnum(string enumerator)
+        public static string GetArpaFromEnumerator(string enumerator)
         {
             var sb = new StringBuilder();
             var number = Regex.Replace(enumerator, "[^0-9]", string.Empty);
@@ -283,6 +171,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Clear the resolver cache.
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         public void ClearCache()
         {
             lock (_responseCache)
@@ -292,35 +181,15 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Do Query on specified DNS servers.
+        ///     Execute a query on a DNS server.
         /// </summary>
-        /// <param name="name">Name to query.</param>
-        /// <param name="questionType">Question type.</param>
-        /// <param name="questionClass">Class type.</param>
-        /// <returns>Response of the query.</returns>
-        public Response Query(string name, QuestionType questionType, QuestionClass questionClass)
+        /// <param name="name">Domain name to look up.</param>
+        /// <param name="questionType">Question type of the query.</param>
+        /// <param name="questionClass">Class type of the query. Defaults to Internet.</param>
+        /// <returns>DNS response for request.</returns>
+        public Response Query(string name, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
         {
             var question = new Question(name, questionType, questionClass);
-            var response = SearchInCache(question);
-            if (response != null)
-            {
-                return response;
-            }
-
-            var request = new Request();
-            request.AddQuestion(question);
-            return GetResponse(request);
-        }
-
-        /// <summary>
-        ///     Do an QClass=IN Query on specified DNS servers.
-        /// </summary>
-        /// <param name="name">Name to query.</param>
-        /// <param name="questionType">Question type.</param>
-        /// <returns>Response of the query.</returns>
-        public Response Query(string name, QuestionType questionType)
-        {
-            var question = new Question(name, questionType, QuestionClass.IN);
             var response = SearchInCache(question);
             if (response != null)
             {
@@ -341,9 +210,19 @@ namespace Ubiety.Dns.Core
             stream.Flush();
         }
 
+        private static ushort GetUniqueId()
+        {
+            using var rng = new RNGCryptoServiceProvider();
+            var rand = new byte[16];
+            rng.GetBytes(rand);
+            var id = BitConverter.ToUInt16(rand, 0);
+
+            return id;
+        }
+
         private Response GetResponse(Request request)
         {
-            request.Header.Id = _unique;
+            request.Header.Id = GetUniqueId();
             request.Header.Recursion = Recursion;
 
             switch (TransportType)
@@ -352,10 +231,10 @@ namespace Ubiety.Dns.Core
                     return UdpRequest(request);
                 case TransportType.Tcp:
                     return TcpRequest(request).Result;
+                default:
+                    var response = new Response { Error = "Unknown TransportType" };
+                    return response;
             }
-
-            var response = new Response { Error = "Unknown TransportType" };
-            return response;
         }
 
         private Response SearchInCache(Question question)
@@ -365,33 +244,19 @@ namespace Ubiety.Dns.Core
                 return null;
             }
 
-            var strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.QuestionName;
-
             Response response;
 
             lock (_responseCache)
             {
-                if (!_responseCache.ContainsKey(strKey))
+                if (!_responseCache.ContainsKey(question))
                 {
                     return null;
                 }
 
-                response = _responseCache[strKey];
+                response = _responseCache[question];
             }
 
-            var timeLived = (int)((DateTime.Now.Ticks - response.TimeStamp.Ticks) / TimeSpan.TicksPerSecond);
-            foreach (var rr in response.ResourceRecords)
-            {
-                rr.TimeLived = timeLived;
-
-                // The TTL property calculates its actual time to live
-                if (rr.Ttl == 0)
-                {
-                    return null; // out of date
-                }
-            }
-
-            return response;
+            return response.ResourceRecords.Any(rr => rr.IsExpired(response.TimeStamp)) ? null : response;
         }
 
         private void AddToCache(Response response)
@@ -415,51 +280,41 @@ namespace Ubiety.Dns.Core
 
             var question = response.Questions[0];
 
-            var strKey = question.QuestionClass + "-" + question.QuestionType + "-" + question.QuestionName;
-
             lock (_responseCache)
             {
-                if (_responseCache.ContainsKey(strKey))
+                if (_responseCache.ContainsKey(question))
                 {
-                    _responseCache.Remove(strKey);
+                    _responseCache.Remove(question);
                 }
 
-                _responseCache.Add(strKey, response);
+                _responseCache.Add(question, response);
             }
         }
 
         private Response UdpRequest(Request request)
         {
-            // RFC1035 max. size of a UDP datagram is 512 bytes
-            var responseMessage = new byte[512];
-
-            for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
+            for (var attempts = 0; attempts < Retries; attempts++)
             {
-                for (var intDnsServer = 0; intDnsServer < DnsServers.Count; intDnsServer++)
+                foreach (var server in _dnsServers)
                 {
-                    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, Timeout);
+                    using var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
 
                     try
                     {
-                        socket.SendTo(request.GetData(), DnsServers[intDnsServer]);
-                        var intReceived = socket.Receive(responseMessage);
-                        var data = new byte[intReceived];
-                        Array.Copy(responseMessage, data, intReceived);
-                        var response = new Response(DnsServers[intDnsServer], data);
+                        var sendBytes = request.GetData();
+                        client.Send(sendBytes, sendBytes.Length, server);
+                        var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                        var data = client.Receive(ref remoteEndPoint);
+
+                        var response = new Response(server, data);
                         AddToCache(response);
+
+                        client.Close();
                         return response;
                     }
                     catch (SocketException exception)
                     {
-                        _logger.Error(exception, $"Connection to nameserver {intDnsServer + 1} failed");
-                    }
-                    finally
-                    {
-                        _unique++;
-
-                        // close the socket
-                        socket.Close();
+                        _logger.Error(exception, $"Connection to nameserver {server.Address} failed");
                     }
                 }
             }
@@ -470,12 +325,16 @@ namespace Ubiety.Dns.Core
 
         private async Task<Response> TcpRequest(Request request)
         {
-            for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
+            for (var attempts = 0; attempts < Retries; attempts++)
             {
-                foreach (var server in DnsServers)
+                foreach (var server in _dnsServers)
                 {
-                    var client = new TcpClient { ReceiveTimeout = _timeout };
-                    var stream = new BufferedStream(client.GetStream());
+                    using var client = new TcpClient(AddressFamily.InterNetworkV6)
+                    {
+                        ReceiveTimeout = Timeout, Client = { DualMode = true },
+                    };
+
+                    using var stream = new BufferedStream(client.GetStream());
 
                     try
                     {
@@ -496,17 +355,6 @@ namespace Ubiety.Dns.Core
                     {
                         _logger.Error(e, "Socket exception occured during request.");
                         throw;
-                    }
-                    finally
-                    {
-                        _unique++;
-                        stream.Close();
-                        stream.Dispose();
-
-                        client.Close();
-#if NETSTANDARD
-                        client.Dispose();
-#endif
                     }
                 }
             }

@@ -45,7 +45,7 @@ namespace Nuke.Common.Tools.DotNetSonarScanner
         /// </summary>
         public static string DotNetSonarScannerPath =>
             ToolPathResolver.TryGetEnvironmentExecutable("DOTNETSONARSCANNER_EXE") ??
-            ToolPathResolver.GetPathExecutable("dotnet");
+            GetToolPath("netcoreapp2.1");
         public static Action<OutputType, string> DotNetSonarScannerLogger { get; set; } = ProcessTasks.DefaultLogger;
         /// <summary>
         ///   The SonarScanner for MSBuild is the recommended way to launch a SonarQube or SonarCloud analysis for projects/solutions using MSBuild or dotnet command as build tool.
@@ -298,7 +298,7 @@ namespace Nuke.Common.Tools.DotNetSonarScanner
         protected override Arguments ConfigureArguments(Arguments arguments)
         {
             arguments
-              .Add("sonarscanner begin")
+              .Add("begin")
               .Add("/k:{value}", ProjectKey)
               .Add("/n:{value}", Name)
               .Add("/o:{value}", Organization)
@@ -351,7 +351,7 @@ namespace Nuke.Common.Tools.DotNetSonarScanner
         protected override Arguments ConfigureArguments(Arguments arguments)
         {
             arguments
-              .Add("sonarscanner end")
+              .Add("end")
               .Add("/d:sonar.login={value}", Login, secret: true)
               .Add("/d:sonar.password={value}", Password, secret: true);
             return base.ConfigureArguments(arguments);

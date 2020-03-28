@@ -13,11 +13,11 @@
     <Authors>Dieter (coder2000) Lunn</Authors>
     <PacakgeIcon>library64.png</PacakgeIcon>
     <LangVersion>latest</LangVersion>
-    <Description>DNS library for .NET Standard 2.0</Description>
+    <Description>Flexible DNS library for .NET</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\images\library64.png" Pack="true" PackagePath="\" />
+    <None Include="../../images/library64.png" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>

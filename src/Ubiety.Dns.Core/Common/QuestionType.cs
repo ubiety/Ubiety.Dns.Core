@@ -33,16 +33,6 @@ namespace Ubiety.Dns.Core.Common
         NS = RecordType.NS,
 
         /// <summary>
-        ///     Mail destination type (Obsolete - Use MX)
-        /// </summary>
-        MD = RecordType.MD,
-
-        /// <summary>
-        ///     Mail forwarder type (Obsolete - use MX)
-        /// </summary>
-        MF = RecordType.MF,
-
-        /// <summary>
         ///     Canonical name DNS record type
         /// </summary>
         CNAME = RecordType.CNAME,
@@ -133,11 +123,6 @@ namespace Ubiety.Dns.Core.Common
         NSAP = RecordType.NSAP,
 
         /// <summary>
-        ///     Network service access point pointer (Obsolete)
-        /// </summary>
-        NSAPPTR = RecordType.NSAPPTR,
-
-        /// <summary>
         ///     Cryptographic public key signature
         /// </summary>
         SIG = RecordType.SIG,
@@ -153,11 +138,6 @@ namespace Ubiety.Dns.Core.Common
         PX = RecordType.PX,
 
         /// <summary>
-        ///     Global position DNS type (Obsolete)
-        /// </summary>
-        GPOS = RecordType.GPOS,
-
-        /// <summary>
         ///     IPv6 address DNS type
         /// </summary>
         AAAA = RecordType.AAAA,
@@ -168,29 +148,9 @@ namespace Ubiety.Dns.Core.Common
         LOC = RecordType.LOC,
 
         /// <summary>
-        ///     Obsolete DNS type
-        /// </summary>
-        NXT = RecordType.NXT,
-
-        /// <summary>
-        ///     Endpoint identifier
-        /// </summary>
-        EID = RecordType.EID,
-
-        /// <summary>
-        ///     Nimrod locator
-        /// </summary>
-        NIMLOC = RecordType.NIMLOC,
-
-        /// <summary>
         ///     Location of services
         /// </summary>
         SRV = RecordType.SRV,
-
-        /// <summary>
-        ///     ATM address
-        /// </summary>
-        ATMA = RecordType.ATMA,
 
         /// <summary>
         ///     Naming authority pointer
@@ -208,104 +168,9 @@ namespace Ubiety.Dns.Core.Common
         CERT = RecordType.CERT,
 
         /// <summary>
-        ///     IPv6 address type (Historic)
-        /// </summary>
-        A6 = RecordType.A6,
-
-        /// <summary>
-        ///     DNS name redirection
-        /// </summary>
-        DNAME = RecordType.DNAME,
-
-        /// <summary>
-        ///     SINK DNS type
-        /// </summary>
-        SINK = RecordType.SINK,
-
-        /// <summary>
-        ///     OPT DNS type
-        /// </summary>
-        OPT = RecordType.OPT,
-
-        /// <summary>
-        ///     APL DNS type
-        /// </summary>
-        APL = RecordType.APL,
-
-        /// <summary>
         ///     Delegation signer DNS type
         /// </summary>
         DS = RecordType.DS,
-
-        /// <summary>
-        ///     SSH key fingerprint
-        /// </summary>
-        SSHFP = RecordType.SSHFP,
-
-        /// <summary>
-        ///     IPSEC key DNS type
-        /// </summary>
-        IPSECKEY = RecordType.IPSECKEY,
-
-        /// <summary>
-        ///     Resource record signature
-        /// </summary>
-        RRSIG = RecordType.RRSIG,
-
-        /// <summary>
-        ///     NSEC DNS type
-        /// </summary>
-        NSEC = RecordType.NSEC,
-
-        /// <summary>
-        ///     DNSKEY DNS type
-        /// </summary>
-        DNSKEY = RecordType.DNSKEY,
-
-        /// <summary>
-        ///     DHCP identifier type
-        /// </summary>
-        DHCID = RecordType.DHCID,
-
-        /// <summary>
-        ///     NSEC3 DNS type
-        /// </summary>
-        NSEC3 = RecordType.NSEC3,
-
-        /// <summary>
-        ///     NSEC3PARAM DNS type
-        /// </summary>
-        NSEC3PARAM = RecordType.NSEC3PARAM,
-
-        /// <summary>
-        ///     HIP DNS type
-        /// </summary>
-        HIP = RecordType.HIP,
-
-        /// <summary>
-        ///     SPF DNS type
-        /// </summary>
-        SPF = RecordType.SPF,
-
-        /// <summary>
-        ///     UINFO DNS type
-        /// </summary>
-        UINFO = RecordType.UINFO,
-
-        /// <summary>
-        ///     UID DNS type
-        /// </summary>
-        UID = RecordType.UID,
-
-        /// <summary>
-        ///     GID DNS type
-        /// </summary>
-        GID = RecordType.GID,
-
-        /// <summary>
-        ///     UNSPEC DNS type
-        /// </summary>
-        UNSPEC = RecordType.UNSPEC,
 
         /// <summary>
         ///     Transaction key DNS type
@@ -341,15 +206,5 @@ namespace Ubiety.Dns.Core.Common
         ///     Request all records for a domain
         /// </summary>
         ANY = 255,
-
-        /// <summary>
-        ///     DNSSEC trust authorities
-        /// </summary>
-        TA = RecordType.TA,
-
-        /// <summary>
-        ///     DNSSEC lookaside validation
-        /// </summary>
-        DLV = RecordType.DLV,
     }
 }

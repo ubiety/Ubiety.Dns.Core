@@ -61,12 +61,12 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordKx" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the data.</param>
-        public RecordKx(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the data.</param>
+        public RecordKx(RecordReader reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Preference = rr.ReadUInt16();
-            Exchanger = rr.ReadDomainName();
+            reader = reader.ThrowIfNull(nameof(reader));
+            Preference = reader.ReadUInt16();
+            Exchanger = reader.ReadDomainName();
         }
 
         /// <summary>

@@ -82,22 +82,19 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class ResourceRecord
     {
-        private uint _ttl;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ResourceRecord" /> class.
         /// </summary>
-        /// <param name="rr">Record reader of the record data.</param>
-        protected ResourceRecord(RecordReader rr)
+        /// <param name="reader">Record reader of the record data.</param>
+        protected ResourceRecord(RecordReader reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            TimeLived = 0;
-            Name = rr.ReadDomainName();
-            Type = (RecordType)rr.ReadUInt16();
-            Class = (OperationClass)rr.ReadUInt16();
-            Ttl = rr.ReadUInt32();
-            RecordLength = rr.ReadUInt16();
-            Record = rr.ReadRecord(Type);
+            reader = reader.ThrowIfNull(nameof(reader));
+            Name = reader.ReadDomainName();
+            Type = (RecordType)reader.ReadUInt16();
+            Class = (OperationClass)reader.ReadUInt16();
+            TimeToLive = reader.ReadUInt32();
+            RecordLength = reader.ReadUInt16();
+            Record = reader.ReadRecord(Type);
             Record.ResourceRecord = this;
         }
 
@@ -117,14 +114,9 @@ namespace Ubiety.Dns.Core
         public OperationClass Class { get; }
 
         /// <summary>
-        ///     Gets the time to live, the time interval that the resource record may be cached.
+        ///     Gets the time to live, in seconds, that the resource record may be cached.
         /// </summary>
-        public uint Ttl
-        {
-            get => (uint)Math.Max(0, _ttl - TimeLived);
-
-            private set => _ttl = value;
-        }
+        public uint TimeToLive { get; }
 
         /// <summary>
         ///     Gets the record length.
@@ -137,9 +129,16 @@ namespace Ubiety.Dns.Core
         public Record Record { get; }
 
         /// <summary>
-        ///     Gets or sets the time lived.
+        ///     Is the record expired according to the response timestamp.
         /// </summary>
-        public int TimeLived { get; set; }
+        /// <param name="responseTimeStamp">Timestamp from the response for the record.</param>
+        /// <returns>True if the record is expired; otherwise false.</returns>
+        public bool IsExpired(DateTime responseTimeStamp)
+        {
+            var timeLived = (int)((DateTime.Now.Ticks - responseTimeStamp.Ticks) / TimeSpan.TicksPerSecond);
+
+            return (uint)Math.Max(0, TimeToLive - timeLived) == 0;
+        }
 
         /// <summary>
         ///     String version of the resource record.
@@ -147,7 +146,7 @@ namespace Ubiety.Dns.Core
         /// <returns>String of the resource.</returns>
         public override string ToString()
         {
-            return $"{Name,-32} {Ttl}\t{Class}\t{Type}\t{Record}";
+            return $"{Name,-32} {TimeToLive}\t{Class}\t{Type}\t{Record}";
         }
     }
 }
