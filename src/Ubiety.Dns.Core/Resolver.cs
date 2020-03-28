@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -44,7 +43,6 @@ namespace Ubiety.Dns.Core
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
 
         private readonly Dictionary<Question, Response> _responseCache;
-        private int _retries;
 
         private bool _useCache;
 
@@ -52,63 +50,13 @@ namespace Ubiety.Dns.Core
         ///     Initializes a new instance of the <see cref="Resolver" /> class.
         /// </summary>
         /// <param name="dnsServers">Set of DNS servers to use for resolution.</param>
-        public Resolver(IEnumerable<IPEndPoint> dnsServers)
+        internal Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
             _responseCache = new Dictionary<Question, Response>();
             DnsServers = new List<IPEndPoint>();
             DnsServers.AddRange(dnsServers);
 
-            _retries = 3;
-            Timeout = 1000;
-            Recursion = true;
-            _useCache = true;
             TransportType = TransportType.Udp;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="dnsServer">DNS server to use.</param>
-        public Resolver(IPEndPoint dnsServer)
-            : this(new[] { dnsServer })
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="serverIpAddress">DNS server to use.</param>
-        /// <param name="serverPortNumber">DNS port to use.</param>
-        public Resolver(IPAddress serverIpAddress, int serverPortNumber)
-            : this(new IPEndPoint(serverIpAddress, serverPortNumber))
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="serverIpAddress">DNS server address to use.</param>
-        /// <param name="serverPortNumber">DNS port to use.</param>
-        public Resolver(string serverIpAddress, int serverPortNumber)
-            : this(IPAddress.Parse(serverIpAddress), serverPortNumber)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="serverIpAddress">DNS server address to use.</param>
-        public Resolver(string serverIpAddress)
-            : this(IPAddress.Parse(serverIpAddress), DefaultPort)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        public Resolver()
-            : this(GetSystemDnsServers())
-        {
         }
 
         /// <summary>
@@ -118,11 +66,6 @@ namespace Ubiety.Dns.Core
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         /// <summary>
-        ///     Gets the default DNS port.
-        /// </summary>
-        public static int DefaultPort { get; } = 53;
-
-        /// <summary>
         ///     Gets or sets resolution timeout in milliseconds.
         /// </summary>
         public int Timeout { get; set; }
@@ -130,21 +73,10 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Gets or sets the number of retries before giving up.
         /// </summary>
-        public int Retries
-        {
-            get => _retries;
-
-            set
-            {
-                if (value >= 1)
-                {
-                    _retries = value;
-                }
-            }
-        }
+        public int Retries { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether recursion is enabled for doing queries.
+        ///     Gets or sets a value indicating whether recursion is enabled for queries.
         /// </summary>
         public bool Recursion { get; set; }
 
@@ -154,8 +86,9 @@ namespace Ubiety.Dns.Core
         public TransportType TransportType { get; set; }
 
         /// <summary>
-        ///     Gets a list of DNS servers to use.
+        ///     Gets the list of DNS servers in the resolver.
         /// </summary>
+        [Obsolete("Is this needed? If you use it please open an issue.")]
         public List<IPEndPoint> DnsServers { get; }
 
         /// <summary>
@@ -238,6 +171,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Clear the resolver cache.
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         public void ClearCache()
         {
             lock (_responseCache)
@@ -274,34 +208,6 @@ namespace Ubiety.Dns.Core
             stream.WriteByte((byte)(data.Length & 0xFF));
             stream.Write(data, 0, data.Length);
             stream.Flush();
-        }
-
-        private static IEnumerable<IPEndPoint> GetSystemDnsServers()
-        {
-            var servers = new List<IPEndPoint>();
-
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var adapter in interfaces)
-            {
-                if (adapter.OperationalStatus != OperationalStatus.Up)
-                {
-                    continue;
-                }
-
-                var interfaceProperties = adapter.GetIPProperties();
-
-                // thanks to Jon Webster on May 20, 2008
-                foreach (var address in interfaceProperties.DnsAddresses)
-                {
-                    var entry = new IPEndPoint(address, DefaultPort);
-                    if (!servers.Contains(entry))
-                    {
-                        servers.Add(entry);
-                    }
-                }
-            }
-
-            return servers;
         }
 
         private static ushort GetUniqueId()
@@ -387,7 +293,7 @@ namespace Ubiety.Dns.Core
 
         private Response UdpRequest(Request request)
         {
-            for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
+            for (var attempts = 0; attempts < Retries; attempts++)
             {
                 foreach (var server in DnsServers)
                 {
@@ -425,7 +331,7 @@ namespace Ubiety.Dns.Core
 
         private async Task<Response> TcpRequest(Request request)
         {
-            for (var intAttempts = 0; intAttempts < _retries; intAttempts++)
+            for (var attempts = 0; attempts < Retries; attempts++)
             {
                 foreach (var server in DnsServers)
                 {

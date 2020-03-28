@@ -16,6 +16,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Records;
@@ -29,48 +30,30 @@ namespace Dns.Sample
 
         public DnsTest()
         {
-            _resolver = new Resolver()
-            {
-                Recursion = true,
-                UseCache = true,
-                Timeout = 1000,
-                Retries = 3,
-                TransportType = TransportType.Tcp
-            };
+            _resolver = ResolverBuilder.Begin()
+                .SetTimeout(1000)
+                .EnableCache()
+                .SetRetries(3)
+                .UseRecursion()
+                .Build();
         }
 
-        public IList<string> CertRecords(string name)
+        public IEnumerable<string> CertRecords(string name)
         {
-            IList<string> records = new List<string>();
-
             const QuestionType questionType = QuestionType.CERT;
-            const QuestionClass questionClass = QuestionClass.IN;
 
-            var response = _resolver.Query(name, questionType, questionClass);
+            var response = _resolver.Query(name, questionType);
 
-            foreach (var record in response.GetRecords<RecordCert>())
-            {
-                records.Add(record.ToString());
-            }
-
-            return records;
+            return response.GetRecords<RecordCert>().Select(record => record.ToString()).ToList();
         }
 
-        public IList<string> ARecords(string name)
+        public IEnumerable<string> ARecords(string name)
         {
-            IList<string> records = new List<string>();
-
             const QuestionType questionType = QuestionType.A;
-            const QuestionClass questionClass = QuestionClass.IN;
 
-            var response = _resolver.Query(name, questionType, questionClass);
+            var response = _resolver.Query(name, questionType);
 
-            foreach (var record in response.GetRecords<RecordA>())
-            {
-                records.Add(record.ToString());
-            }
-
-            return records;
+            return response.GetRecords<RecordA>().Select(record => record.ToString()).ToList();
         }
     }
 }
