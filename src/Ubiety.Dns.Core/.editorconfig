@@ -6,5 +6,6 @@ dotnet_diagnostic.SA1633.severity = none
 dotnet_diagnostic.SA1636.severity = none
 dotnet_diagnostic.SX1101.severity = warning
 dotnet_diagnostic.SX1309.severity = warning
+dotnet_diagnostic.S4818.severity = slient
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = true
