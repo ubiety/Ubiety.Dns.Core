@@ -39,8 +39,6 @@ namespace Ubiety.Dns.Core.Records
         protected Record(RecordReader reader)
         {
             Reader = reader.ThrowIfNull(nameof(reader));
-            var length = Reader.ReadUInt16(-2);
-            RecordData = new List<byte>(Reader.ReadBytes(length));
         }
 
         /// <summary>

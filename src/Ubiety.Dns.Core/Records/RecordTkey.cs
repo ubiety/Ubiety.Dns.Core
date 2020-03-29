@@ -55,6 +55,7 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordTkey(RecordReader reader)
+            : base(reader)
         {
             Algorithm = Reader.ReadDomainName();
             Inception = Reader.ReadUInt32();
