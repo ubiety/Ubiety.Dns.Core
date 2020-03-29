@@ -15,9 +15,7 @@
  *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.ObjectModel;
-using System.Globalization;
-using Ubiety.Dns.Core.Common.Extensions;
+using System.Collections.Generic;
 
 /*
 * 3.4.2. WKS RDATA format
@@ -76,22 +74,16 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordWks" /> class.
         /// </summary>
-        /// <param name="rr">Record reader for record data.</param>
-        public RecordWks(RecordReader rr)
+        /// <param name="reader">Record reader for record data.</param>
+        public RecordWks(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            var length = rr.ReadUInt16(-2);
-            Address = string.Format(
-                CultureInfo.InvariantCulture,
-                "{0}.{1}.{2}.{3}",
-                rr.ReadByte(),
-                rr.ReadByte(),
-                rr.ReadByte(),
-                rr.ReadByte());
-            Protocol = rr.ReadByte();
+            var length = Reader.ReadUInt16(-2);
+            Address = $"{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}";
+            Protocol = Reader.ReadByte();
             length -= 5;
             _bitmap = new byte[length];
-            _bitmap = rr.ReadBytes(length);
+            _bitmap = Reader.ReadBytes(length);
         }
 
         /// <summary>
@@ -107,7 +99,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the service bitmap.
         /// </summary>
-        public Collection<byte> Bitmap => new Collection<byte>(_bitmap);
+        public IEnumerable<byte> Bitmap => new List<byte>(_bitmap);
 
         /// <summary>
         ///     Return a string of the well known service record.
@@ -115,7 +107,7 @@ namespace Ubiety.Dns.Core.Records
         /// <returns>String of the record.</returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", Address, Protocol);
+            return $"{Address} {Protocol}";
         }
     }
 }

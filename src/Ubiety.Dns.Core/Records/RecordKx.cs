@@ -63,10 +63,10 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the data.</param>
         public RecordKx(RecordReader reader)
+            : base(reader)
         {
-            reader = reader.ThrowIfNull(nameof(reader));
-            Preference = reader.ReadUInt16();
-            Exchanger = reader.ReadDomainName();
+            Preference = Reader.ReadUInt16();
+            Exchanger = Reader.ReadDomainName();
         }
 
         /// <summary>

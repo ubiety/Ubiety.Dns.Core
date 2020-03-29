@@ -47,8 +47,6 @@ records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
 
-using System;
-
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
@@ -61,14 +59,10 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordMinfo(RecordReader reader)
+            : base(reader)
         {
-            if (reader is null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            ResponsibleMailbox = reader.ReadDomainName();
-            ErrorMailbox = reader.ReadDomainName();
+            ResponsibleMailbox = Reader.ReadDomainName();
+            ErrorMailbox = Reader.ReadDomainName();
         }
 
         /// <summary>

@@ -16,7 +16,6 @@
  */
 
 using System.Globalization;
-using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core.Records
 {
@@ -28,19 +27,19 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSig" /> class.
         /// </summary>
-        /// <param name="rr">Record reader for the record data.</param>
-        public RecordSig(RecordReader rr)
+        /// <param name="reader">Record reader for the record data.</param>
+        public RecordSig(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            TypeCovered = rr.ReadUInt16();
-            Algorithm = rr.ReadByte();
-            Labels = rr.ReadByte();
-            OriginalTTL = rr.ReadUInt32();
-            SignatureExpiration = rr.ReadUInt32();
-            SignatureInception = rr.ReadUInt32();
-            KeyTag = rr.ReadUInt16();
-            SignersName = rr.ReadDomainName();
-            Signature = rr.ReadString();
+            TypeCovered = Reader.ReadUInt16();
+            Algorithm = Reader.ReadByte();
+            Labels = Reader.ReadByte();
+            OriginalTTL = Reader.ReadUInt32();
+            SignatureExpiration = Reader.ReadUInt32();
+            SignatureInception = Reader.ReadUInt32();
+            KeyTag = Reader.ReadUInt16();
+            SignersName = Reader.ReadDomainName();
+            Signature = Reader.ReadString();
         }
 
         /// <summary>

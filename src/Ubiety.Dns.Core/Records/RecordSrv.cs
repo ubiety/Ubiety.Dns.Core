@@ -95,14 +95,14 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
         /// </summary>
-        /// <param name="recordReader"><see cref="RecordReader" /> of the record data.</param>
-        public RecordSrv(RecordReader recordReader)
+        /// <param name="reader"><see cref="RecordReader" /> of the record data.</param>
+        public RecordSrv(RecordReader reader)
+            : base(reader)
         {
-            recordReader = recordReader.ThrowIfNull(nameof(recordReader));
-            Priority = recordReader.ReadUInt16();
-            Weight = recordReader.ReadUInt16();
-            Port = recordReader.ReadUInt16();
-            Target = recordReader.ReadDomainName();
+            Priority = Reader.ReadUInt16();
+            Weight = Reader.ReadUInt16();
+            Port = Reader.ReadUInt16();
+            Target = Reader.ReadDomainName();
         }
 
         /// <summary>

@@ -82,8 +82,6 @@ reason for this provison is to allow future dynamic update facilities to
 change the SOA RR with known semantics.
 */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -94,17 +92,17 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSoa" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordSoa(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordSoa(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            PrimaryNameserver = rr.ReadDomainName();
-            ResponsibleDomain = rr.ReadDomainName();
-            Serial = rr.ReadUInt32();
-            Refresh = rr.ReadUInt32();
-            Retry = rr.ReadUInt32();
-            Expire = rr.ReadUInt32();
-            Minimum = rr.ReadUInt32();
+            PrimaryNameserver = Reader.ReadDomainName();
+            ResponsibleDomain = Reader.ReadDomainName();
+            Serial = Reader.ReadUInt32();
+            Refresh = Reader.ReadUInt32();
+            Retry = Reader.ReadUInt32();
+            Expire = Reader.ReadUInt32();
+            Minimum = Reader.ReadUInt32();
         }
 
         /// <summary>

@@ -16,7 +16,6 @@
  */
 
 using System.Collections.Generic;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
 3.3.10. NULL RDATA format (EXPERIMENTAL)
@@ -46,14 +45,14 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNull" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordNull(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordNull(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            rr.Position -= 2;
-            var recordLength = rr.ReadUInt16();
+            Reader.Position -= 2;
+            var recordLength = Reader.ReadUInt16();
             _data = new byte[recordLength];
-            _data = rr.ReadBytes(recordLength);
+            _data = Reader.ReadBytes(recordLength);
         }
 
         /// <summary>

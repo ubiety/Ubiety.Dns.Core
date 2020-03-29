@@ -34,8 +34,6 @@ similar to that performed by CNAME, which identifies aliases.  See the
 description of the IN-ADDR.ARPA domain for an example.
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -46,10 +44,11 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordPtr" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordPtr(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordPtr(RecordReader reader)
+            : base(reader)
         {
-            PointerDomain = rr.ThrowIfNull(nameof(rr)).ReadDomainName();
+            PointerDomain = Reader.ReadDomainName();
         }
 
         /// <summary>

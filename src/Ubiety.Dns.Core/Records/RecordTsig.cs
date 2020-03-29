@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://www.ietf.org/rfc/rfc2845.txt
@@ -54,19 +53,19 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTsig" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordTsig(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordTsig(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            AlgorithmName = rr.ReadDomainName();
-            TimeSigned = (rr.ReadUInt32() << 32) | rr.ReadUInt32();
-            Fudge = rr.ReadUInt16();
-            MacSize = rr.ReadUInt16();
-            _mac = rr.ReadBytes(MacSize);
-            OriginalId = rr.ReadUInt16();
-            Error = rr.ReadUInt16();
-            OtherLength = rr.ReadUInt16();
-            _otherData = rr.ReadBytes(OtherLength);
+            AlgorithmName = Reader.ReadDomainName();
+            TimeSigned = (Reader.ReadUInt32() << 32) | Reader.ReadUInt32();
+            Fudge = Reader.ReadUInt16();
+            MacSize = Reader.ReadUInt16();
+            _mac = Reader.ReadBytes(MacSize);
+            OriginalId = Reader.ReadUInt16();
+            Error = Reader.ReadUInt16();
+            OtherLength = Reader.ReadUInt16();
+            _otherData = Reader.ReadBytes(OtherLength);
         }
 
         /// <summary>

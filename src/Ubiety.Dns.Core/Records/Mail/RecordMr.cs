@@ -33,8 +33,6 @@ is as a forwarding entry for a user who has moved to a different
 mailbox.
 */
 
-using System;
-
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
@@ -47,13 +45,9 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordMr(RecordReader reader)
+            : base(reader)
         {
-            if (reader is null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            NewName = reader.ReadDomainName();
+            NewName = Reader.ReadDomainName();
         }
 
         /// <summary>

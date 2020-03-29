@@ -48,8 +48,6 @@
 
 */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -60,14 +58,14 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordKey" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordKey(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordKey(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Flags = rr.ReadUInt16();
-            Protocol = rr.ReadByte();
-            Algorithm = rr.ReadByte();
-            PublicKey = rr.ReadString();
+            Flags = Reader.ReadUInt16();
+            Protocol = Reader.ReadByte();
+            Algorithm = Reader.ReadByte();
+            PublicKey = Reader.ReadString();
         }
 
         /// <summary>

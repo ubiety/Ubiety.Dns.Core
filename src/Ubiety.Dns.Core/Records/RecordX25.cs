@@ -46,8 +46,6 @@
 
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -58,10 +56,11 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordX25" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordX25(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordX25(RecordReader reader)
+            : base(reader)
         {
-            PSDNAdress = rr.ThrowIfNull(nameof(rr)).ReadString();
+            PSDNAdress = Reader.ReadString();
         }
 
         /// <summary>

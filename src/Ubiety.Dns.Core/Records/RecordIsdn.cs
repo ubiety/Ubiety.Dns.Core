@@ -83,8 +83,6 @@
 
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -95,12 +93,12 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordIsdn" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordIsdn(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordIsdn(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            IsdnAddress = rr.ReadString();
-            SA = rr.ReadString();
+            IsdnAddress = Reader.ReadString();
+            SA = Reader.ReadString();
         }
 
         /// <summary>

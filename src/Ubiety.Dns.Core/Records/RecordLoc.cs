@@ -17,7 +17,6 @@
 
 using System.Globalization;
 using System.Text;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://www.ietf.org/rfc/rfc1876.txt
@@ -124,17 +123,17 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordLoc" /> class.
         /// </summary>
-        /// <param name="rr">Record reader of the record data.</param>
-        public RecordLoc(RecordReader rr)
+        /// <param name="reader">Record reader of the record data.</param>
+        public RecordLoc(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Version = rr.ReadByte(); // must be 0!
-            Size = rr.ReadByte();
-            HorizontalPrecision = rr.ReadByte();
-            VerticalPrecision = rr.ReadByte();
-            Latitude = rr.ReadUInt32();
-            Longitude = rr.ReadUInt32();
-            Altitude = rr.ReadUInt32();
+            Version = Reader.ReadByte(); // must be 0!
+            Size = Reader.ReadByte();
+            HorizontalPrecision = Reader.ReadByte();
+            VerticalPrecision = Reader.ReadByte();
+            Latitude = Reader.ReadUInt32();
+            Longitude = Reader.ReadUInt32();
+            Altitude = Reader.ReadUInt32();
         }
 
         /// <summary>

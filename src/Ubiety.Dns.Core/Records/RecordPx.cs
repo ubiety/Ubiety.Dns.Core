@@ -84,8 +84,6 @@
 
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -96,13 +94,13 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordPx" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordPx(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordPx(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Preference = rr.ReadUInt16();
-            Map822 = rr.ReadDomainName();
-            MapX400 = rr.ReadDomainName();
+            Preference = Reader.ReadUInt16();
+            Map822 = Reader.ReadDomainName();
+            MapX400 = Reader.ReadDomainName();
         }
 
         /// <summary>

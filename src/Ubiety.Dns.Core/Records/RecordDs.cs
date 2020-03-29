@@ -18,7 +18,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://tools.ietf.org/rfc/rfc3658.txt
@@ -60,18 +59,17 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordDs" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record data.</param>
-        public RecordDs(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> of the record data.</param>
+        public RecordDs(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-
-            var length = rr.ReadUInt16(-2);
-            KeyTag = rr.ReadUInt16();
-            Algorithm = rr.ReadByte();
-            DigestType = rr.ReadByte();
+            var length = Reader.ReadUInt16(-2);
+            KeyTag = Reader.ReadUInt16();
+            Algorithm = Reader.ReadByte();
+            DigestType = Reader.ReadByte();
             length -= 4;
             _digest = new byte[length];
-            _digest = rr.ReadBytes(length);
+            _digest = Reader.ReadBytes(length);
         }
 
         /// <summary>

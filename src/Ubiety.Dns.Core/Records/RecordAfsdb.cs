@@ -15,8 +15,6 @@
  *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -49,12 +47,12 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAfsdb" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordAfsdb(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordAfsdb(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            SubType = rr.ReadUInt16();
-            Hostname = rr.ReadDomainName();
+            SubType = Reader.ReadUInt16();
+            Hostname = Reader.ReadDomainName();
         }
 
         /// <summary>

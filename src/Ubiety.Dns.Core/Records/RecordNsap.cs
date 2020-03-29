@@ -18,7 +18,6 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://tools.ietf.org/rfc/rfc1348.txt
@@ -62,12 +61,12 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNsap" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordNsap(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordNsap(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Length = rr.ReadUInt16();
-            _address = rr.ReadBytes(Length);
+            Length = Reader.ReadUInt16();
+            _address = Reader.ReadBytes(Length);
         }
 
         /// <summary>
