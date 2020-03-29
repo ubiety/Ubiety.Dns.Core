@@ -38,9 +38,9 @@ namespace Ubiety.Dns.Core.Records
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         protected Record(RecordReader reader)
         {
-            reader = reader.ThrowIfNull(nameof(reader));
-            var length = reader.ReadUInt16(-2);
-            RecordData = new List<byte>(reader.ReadBytes(length));
+            Reader = reader.ThrowIfNull(nameof(reader));
+            var length = Reader.ReadUInt16(-2);
+            RecordData = new List<byte>(Reader.ReadBytes(length));
         }
 
         /// <summary>
@@ -54,6 +54,11 @@ namespace Ubiety.Dns.Core.Records
         /// </summary>
         /// <value>Resource record of the data.</value>
         public ResourceRecord ResourceRecord { get; set; }
+
+        /// <summary>
+        ///     Gets the record reader for the record.
+        /// </summary>
+        protected RecordReader Reader { get; }
 
         /// <summary>
         ///     String representation of the record.

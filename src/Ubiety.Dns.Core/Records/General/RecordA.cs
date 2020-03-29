@@ -15,7 +15,6 @@
  *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Net;
 
 namespace Ubiety.Dns.Core.Records.General
@@ -46,13 +45,9 @@ namespace Ubiety.Dns.Core.Records.General
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordA(RecordReader reader)
+            : base(reader)
         {
-            if (reader is null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            Address = IPAddress.Parse($"{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}.{reader.ReadByte()}");
+            Address = IPAddress.Parse($"{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}");
         }
 
         /// <summary>
