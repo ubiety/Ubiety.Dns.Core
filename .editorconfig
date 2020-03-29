@@ -1,0 +1,17 @@
+root = true
+
+[*.cs]
+end_of_line = lf
+trim_trailing_whitespace = true
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+dotnet_diagnostic.SA1101.severity = none
+dotnet_diagnostic.SA1200.severity = none
+dotnet_diagnostic.SA1309.severity = none
+dotnet_diagnostic.SA1633.severity = warning
+dotnet_diagnostic.SA1636.severity = none
+dotnet_diagnostic.SX1101.severity = warning
+dotnet_diagnostic.SX1309.severity = warning
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
