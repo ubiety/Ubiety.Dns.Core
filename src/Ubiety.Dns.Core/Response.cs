@@ -32,7 +32,8 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
-        public Response()
+        /// <param name="timedOut">Sets whether the response timed out or not.</param>
+        public Response(bool timedOut = false)
         {
             Questions = new List<Question>();
             Answers = new List<AnswerResourceRecord>();
@@ -40,10 +41,10 @@ namespace Ubiety.Dns.Core
             Additional = new List<AdditionalResourceRecord>();
 
             Server = new IPEndPoint(0, 0);
-            Error = string.Empty;
             MessageSize = 0;
             TimeStamp = DateTime.Now;
             Header = new Header();
+            TimedOut = timedOut;
         }
 
         /// <summary>
@@ -108,9 +109,9 @@ namespace Ubiety.Dns.Core
         public Header Header { get; }
 
         /// <summary>
-        ///     Gets or sets the error message, empty when no error.
+        ///     Gets a value indicating whether the response timed out or not.
         /// </summary>
-        public string Error { get; set; }
+        public bool TimedOut { get; }
 
         /// <summary>
         ///     Gets or sets the size of the message.

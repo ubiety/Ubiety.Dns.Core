@@ -225,16 +225,12 @@ namespace Ubiety.Dns.Core
             request.Header.Id = GetUniqueId();
             request.Header.Recursion = Recursion;
 
-            switch (TransportType)
+            return TransportType switch
             {
-                case TransportType.Udp:
-                    return UdpRequest(request);
-                case TransportType.Tcp:
-                    return TcpRequest(request).Result;
-                default:
-                    var response = new Response { Error = "Unknown TransportType" };
-                    return response;
-            }
+                TransportType.Udp => UdpRequest(request),
+                TransportType.Tcp => TcpRequest(request).Result,
+                _ => throw new InvalidOperationException(),
+            };
         }
 
         private Response SearchInCache(Question question)
@@ -319,7 +315,7 @@ namespace Ubiety.Dns.Core
                 }
             }
 
-            var responseTimeout = new Response { Error = "Timeout Error" };
+            var responseTimeout = new Response(true);
             return responseTimeout;
         }
 
@@ -359,7 +355,7 @@ namespace Ubiety.Dns.Core
                 }
             }
 
-            var responseTimeout = new Response { Error = "Timeout Error" };
+            var responseTimeout = new Response(true);
             return responseTimeout;
         }
 
