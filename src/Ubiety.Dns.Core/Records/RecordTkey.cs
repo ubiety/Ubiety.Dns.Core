@@ -17,7 +17,6 @@
 
 using System.Collections.Generic;
 using System.Globalization;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
 * http://tools.ietf.org/rfc/rfc2930.txt
@@ -54,19 +53,19 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTkey" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordTkey(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordTkey(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Algorithm = rr.ReadDomainName();
-            Inception = rr.ReadUInt32();
-            Expiration = rr.ReadUInt32();
-            Mode = rr.ReadUInt16();
-            Error = rr.ReadUInt16();
-            KeySize = rr.ReadUInt16();
-            _keyData = rr.ReadBytes(KeySize);
-            OtherSize = rr.ReadUInt16();
-            _otherData = rr.ReadBytes(OtherSize);
+            Algorithm = Reader.ReadDomainName();
+            Inception = Reader.ReadUInt32();
+            Expiration = Reader.ReadUInt32();
+            Mode = Reader.ReadUInt16();
+            Error = Reader.ReadUInt16();
+            KeySize = Reader.ReadUInt16();
+            _keyData = Reader.ReadBytes(KeySize);
+            OtherSize = Reader.ReadUInt16();
+            _otherData = Reader.ReadBytes(OtherSize);
         }
 
         /// <summary>

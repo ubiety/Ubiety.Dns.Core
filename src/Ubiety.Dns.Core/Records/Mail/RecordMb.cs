@@ -32,8 +32,6 @@ MB records cause additional section processing which looks up an A type
 RRs corresponding to MADNAME.
 */
 
-using System;
-
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
@@ -46,13 +44,9 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordMb(RecordReader reader)
+            : base(reader)
         {
-            if (reader is null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            MadName = reader.ReadDomainName();
+            MadName = Reader.ReadDomainName();
         }
 
         /// <summary>

@@ -21,6 +21,7 @@ using System.Linq;
 using System.Net;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
+using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core
 {
@@ -29,10 +30,13 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Response
     {
+        private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
-        public Response()
+        /// <param name="timedOut">Sets whether the response timed out or not.</param>
+        public Response(bool timedOut = false)
         {
             Questions = new List<Question>();
             Answers = new List<AnswerResourceRecord>();
@@ -40,10 +44,10 @@ namespace Ubiety.Dns.Core
             Additional = new List<AdditionalResourceRecord>();
 
             Server = new IPEndPoint(0, 0);
-            Error = string.Empty;
             MessageSize = 0;
             TimeStamp = DateTime.Now;
             Header = new Header();
+            TimedOut = timedOut;
         }
 
         /// <summary>
@@ -54,6 +58,7 @@ namespace Ubiety.Dns.Core
         public Response(IPEndPoint server, byte[] data)
             : this()
         {
+            _logger.Debug("Received information from server");
             data = data.ThrowIfNull(nameof(data));
             Server = server;
             MessageSize = data.Length;
@@ -63,11 +68,13 @@ namespace Ubiety.Dns.Core
 
             for (var i = 0; i < Header.QuestionCount; i++)
             {
+                _logger.Debug("Adding questions...");
                 Questions.Add(new Question(reader));
             }
 
             for (var i = 0; i < Header.AnswerCount; i++)
             {
+                _logger.Debug("Adding answers...");
                 Answers.Add(new AnswerResourceRecord(reader));
             }
 
@@ -108,9 +115,9 @@ namespace Ubiety.Dns.Core
         public Header Header { get; }
 
         /// <summary>
-        ///     Gets or sets the error message, empty when no error.
+        ///     Gets a value indicating whether the response timed out or not.
         /// </summary>
-        public string Error { get; set; }
+        public bool TimedOut { get; }
 
         /// <summary>
         ///     Gets or sets the size of the message.

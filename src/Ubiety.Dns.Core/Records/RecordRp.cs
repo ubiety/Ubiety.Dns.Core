@@ -45,8 +45,6 @@
 
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -57,12 +55,12 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordRp" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordRp(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordRp(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            MailboxDomain = rr.ReadDomainName();
-            TxtDomain = rr.ReadDomainName();
+            MailboxDomain = Reader.ReadDomainName();
+            TxtDomain = Reader.ReadDomainName();
         }
 
         /// <summary>

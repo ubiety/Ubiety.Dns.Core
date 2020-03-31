@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
 
@@ -45,19 +44,18 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordCert" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordCert(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordCert(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-
             // re-read length
-            var recordLength = rr.ReadUInt16(-2);
+            var recordLength = Reader.ReadUInt16(-2);
 
-            Type = rr.ReadUInt16();
-            KeyTag = rr.ReadUInt16();
-            Algorithm = rr.ReadByte();
+            Type = Reader.ReadUInt16();
+            KeyTag = Reader.ReadUInt16();
+            Algorithm = Reader.ReadByte();
             var length = recordLength - 5;
-            _rawKey = rr.ReadBytes(length);
+            _rawKey = Reader.ReadBytes(length);
             PublicKey = Convert.ToBase64String(_rawKey);
         }
 

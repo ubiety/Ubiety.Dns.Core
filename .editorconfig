@@ -1,0 +1,8 @@
+root = true
+
+[*.cs]
+end_of_line = crlf
+trim_trailing_whitespace = true
+indent_size = 4
+indent_style = space
+insert_final_newline = true

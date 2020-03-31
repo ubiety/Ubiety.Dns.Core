@@ -31,8 +31,6 @@
  *
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -43,10 +41,11 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordDname" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record.</param>
-        public RecordDname(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record.</param>
+        public RecordDname(RecordReader reader)
+            : base(reader)
         {
-            Target = rr.ThrowIfNull(nameof(rr)).ReadDomainName();
+            Target = Reader.ReadDomainName();
         }
 
         /// <summary>

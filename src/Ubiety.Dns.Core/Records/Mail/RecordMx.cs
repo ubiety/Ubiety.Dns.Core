@@ -53,14 +53,10 @@ namespace Ubiety.Dns.Core.Records.Mail
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
         public RecordMx(RecordReader reader)
+            : base(reader)
         {
-            if (reader is null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            Preference = reader.ReadUInt16();
-            Exchange = reader.ReadDomainName();
+            Preference = Reader.ReadUInt16();
+            Exchange = Reader.ReadDomainName();
         }
 
         /// <summary>

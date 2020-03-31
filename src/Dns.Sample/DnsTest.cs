@@ -30,7 +30,11 @@ namespace Dns.Sample
 
         public DnsTest()
         {
+            var logManager = new TestLogManager();
+
             _resolver = ResolverBuilder.Begin()
+                .EnableLogging(logManager)
+                .AddDnsServer("1.1.1.1")
                 .SetTimeout(1000)
                 .EnableCache()
                 .SetRetries(3)
@@ -54,6 +58,13 @@ namespace Dns.Sample
             var response = _resolver.Query(name, questionType);
 
             return response.GetRecords<RecordA>().Select(record => record.ToString()).ToList();
+        }
+
+        public IEnumerable<RecordNaptr> GetNaptr(string domain)
+        {
+            var response = _resolver.Query(domain, QuestionType.NAPTR);
+
+            return response.GetRecords<RecordNaptr>().ToList();
         }
     }
 }

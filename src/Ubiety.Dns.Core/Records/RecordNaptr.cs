@@ -57,8 +57,6 @@
 
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -69,16 +67,16 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNaptr" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordNaptr(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordNaptr(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Order = rr.ReadUInt16();
-            Preference = rr.ReadUInt16();
-            Flags = rr.ReadString();
-            Services = rr.ReadString();
-            Regexp = rr.ReadString();
-            Replacement = rr.ReadDomainName();
+            Order = Reader.ReadUInt16();
+            Preference = Reader.ReadUInt16();
+            Flags = Reader.ReadString();
+            Services = Reader.ReadString();
+            Regexp = Reader.ReadString();
+            Replacement = Reader.ReadDomainName();
         }
 
         /// <summary>

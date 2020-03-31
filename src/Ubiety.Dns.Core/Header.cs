@@ -76,7 +76,7 @@ namespace Ubiety.Dns.Core
         public ushort AdditionalRecordsCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the record is a query or response.
+        ///     Gets or sets a value indicating whether the record is a query or response. False for Query, True for Response.
         /// </summary>
         public bool QueryResponse
         {
@@ -151,7 +151,7 @@ namespace Ubiety.Dns.Core
         ///     Gets the header as a byte array.
         /// </summary>
         /// <returns>Byte array of the header data.</returns>
-        public IEnumerable<byte> GetData()
+        public IEnumerable<byte> GetBytes()
         {
             var data = new List<byte>();
             data.AddRange(Id.GetBytes());

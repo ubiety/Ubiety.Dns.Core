@@ -38,8 +38,6 @@ main use is for protocols such as FTP that can use special procedures
 when talking between machines or operating systems of the same type.
  */
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
@@ -50,12 +48,12 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordHinfo" /> class.
         /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> for the record data.</param>
-        public RecordHinfo(RecordReader rr)
+        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+        public RecordHinfo(RecordReader reader)
+            : base(reader)
         {
-            rr = rr.ThrowIfNull(nameof(rr));
-            Cpu = rr.ReadString();
-            Os = rr.ReadString();
+            Cpu = Reader.ReadString();
+            Os = Reader.ReadString();
         }
 
         /// <summary>
