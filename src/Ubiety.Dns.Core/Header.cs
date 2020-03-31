@@ -76,7 +76,7 @@ namespace Ubiety.Dns.Core
         public ushort AdditionalRecordsCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the record is a query or response.
+        ///     Gets or sets a value indicating whether the record is a query or response. False for Query, True for Response.
         /// </summary>
         public bool QueryResponse
         {

@@ -34,6 +34,7 @@ namespace Ubiety.Dns.Core
         {
             Header = new Header
             {
+                QueryResponse = false,
                 OpCode = OperationCode.Query,
                 QuestionCount = 0,
             };

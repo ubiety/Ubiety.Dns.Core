@@ -31,13 +31,19 @@ namespace Dns.Sample
                 Console.WriteLine(record);
             }
 
+            Console.WriteLine();
+
             foreach (var record in test.ARecords("direct.sitenv.org"))
             {
                 Console.WriteLine(record);
             }
 
-            var naptr = test.GetNaptr("dev.nwise.se");
-            Console.WriteLine(naptr.Replacement);
+            Console.WriteLine();
+
+            foreach (var record in test.GetNaptr("dev.nwise.se"))
+            {
+                Console.WriteLine(record);
+            }
         }
     }
 }

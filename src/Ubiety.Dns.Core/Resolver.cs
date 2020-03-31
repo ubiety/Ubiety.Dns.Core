@@ -189,7 +189,7 @@ namespace Ubiety.Dns.Core
                 return null;
             }
 
-            _logger.Debug($"Received query for {name}");
+            _logger.Debug($"Received {questionType} query for {name}");
 
             var question = new Question(name, questionType, questionClass);
             var response = SearchInCache(question);
@@ -205,7 +205,7 @@ namespace Ubiety.Dns.Core
             return GetResponse(request);
         }
 
-        private void WriteRequest(Stream stream, Request request)
+        private static void WriteRequest(Stream stream, Request request)
         {
             var data = request.GetBytes();
             stream.WriteByte((byte)((data.Length >> 8) & 0xFF));

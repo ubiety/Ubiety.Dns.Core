@@ -33,7 +33,7 @@ namespace Ubiety.Dns.Core.Common.Extensions
         /// <returns><see cref="byte" /> array of the short.</returns>
         public static IEnumerable<byte> GetBytes(this ushort value)
         {
-            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value));
+            return BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)value));
         }
 
         /// <summary>
