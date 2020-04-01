@@ -35,6 +35,9 @@ namespace Dns.Sample
             {
                 Console.WriteLine(record);
             }
+
+            var naptr = test.GetNaptr("dev.nwise.se");
+            Console.WriteLine(naptr.Replacement);
         }
     }
 }

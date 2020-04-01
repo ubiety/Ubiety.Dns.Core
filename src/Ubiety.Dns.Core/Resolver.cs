@@ -56,7 +56,7 @@ namespace Ubiety.Dns.Core
             _dnsServers = new List<IPEndPoint>();
             _dnsServers.AddRange(dnsServers);
 
-            TransportType = TransportType.Udp;
+            TransportType = TransportType.Tcp;
         }
 
         /// <summary>
@@ -84,12 +84,6 @@ namespace Ubiety.Dns.Core
         ///     Gets or sets protocol to use.
         /// </summary>
         public TransportType TransportType { get; set; }
-
-        /// <summary>
-        ///     Gets the list of DNS servers in the resolver.
-        /// </summary>
-        [Obsolete("Is this needed? If you use it please open an issue.")]
-        public List<IPEndPoint> DnsServers => _dnsServers;
 
         /// <summary>
         ///     Gets or sets a value indicating whether to use the cache.
@@ -189,21 +183,31 @@ namespace Ubiety.Dns.Core
         /// <returns>DNS response for request.</returns>
         public Response Query(string name, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
         {
+            if (_dnsServers.Count <= 0)
+            {
+                _logger.Error("No DNS servers to query.");
+                return null;
+            }
+
+            _logger.Debug($"Received query for {name}");
+
             var question = new Question(name, questionType, questionClass);
             var response = SearchInCache(question);
             if (response != null)
             {
+                _logger.Debug("Returning cached response...");
                 return response;
             }
 
+            _logger.Debug("Sending request to server...");
             var request = new Request();
             request.AddQuestion(question);
             return GetResponse(request);
         }
 
-        private static void WriteRequest(Stream stream, Request request)
+        private void WriteRequest(Stream stream, Request request)
         {
-            var data = request.GetData();
+            var data = request.GetBytes();
             stream.WriteByte((byte)((data.Length >> 8) & 0xFF));
             stream.WriteByte((byte)(data.Length & 0xFF));
             stream.Write(data, 0, data.Length);
@@ -235,6 +239,7 @@ namespace Ubiety.Dns.Core
 
         private Response SearchInCache(Question question)
         {
+            _logger.Debug("Searching cache for question...");
             if (!_useCache)
             {
                 return null;
@@ -246,12 +251,14 @@ namespace Ubiety.Dns.Core
             {
                 if (!_responseCache.ContainsKey(question))
                 {
+                    _logger.Debug("Question does not exist in cache.");
                     return null;
                 }
 
                 response = _responseCache[question];
             }
 
+            _logger.Debug("Found question in cache...");
             return response.ResourceRecords.Any(rr => rr.IsExpired(response.TimeStamp)) ? null : response;
         }
 
@@ -289,15 +296,18 @@ namespace Ubiety.Dns.Core
 
         private Response UdpRequest(Request request)
         {
+            _logger.Debug("Starting UDP request...");
             for (var attempts = 0; attempts < Retries; attempts++)
             {
+                _logger.Debug($"Attempt {attempts} of {Retries}...");
                 foreach (var server in _dnsServers)
                 {
+                    _logger.Debug($"Connecting to server {server.Address}...");
                     using var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
 
                     try
                     {
-                        var sendBytes = request.GetData();
+                        var sendBytes = request.GetBytes();
                         client.Send(sendBytes, sendBytes.Length, server);
                         var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
                         var data = client.Receive(ref remoteEndPoint);
@@ -321,28 +331,34 @@ namespace Ubiety.Dns.Core
 
         private async Task<Response> TcpRequest(Request request)
         {
+            _logger.Debug("Starting TCP request...");
             for (var attempts = 0; attempts < Retries; attempts++)
             {
+                _logger.Debug($"Attempt {attempts + 1} of {Retries}...");
                 foreach (var server in _dnsServers)
                 {
-                    using var client = new TcpClient(AddressFamily.InterNetworkV6)
-                    {
-                        ReceiveTimeout = Timeout, Client = { DualMode = true },
-                    };
-
-                    using var stream = new BufferedStream(client.GetStream());
+                    _logger.Debug($"Connecting to {server.Address}...");
 
                     try
                     {
+                        using var client = new TcpClient(AddressFamily.InterNetworkV6)
+                        {
+                            ReceiveTimeout = Timeout,
+                            Client = { DualMode = true },
+                        };
+
                         await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
 
                         if (!client.Connected)
                         {
                             client.Close();
-                            _logger.Error($"Connection to nameserver {server.Address} failed");
+                            _logger.Error($"Connection to nameserver {server.Address} failed.");
                             continue;
                         }
 
+                        using var stream = new BufferedStream(client.GetStream());
+
+                        _logger.Debug("Sending request to server...");
                         WriteRequest(stream, request);
 
                         return ReceiveResponse(stream, server);
@@ -355,6 +371,7 @@ namespace Ubiety.Dns.Core
                 }
             }
 
+            _logger.Debug("Connection timed out");
             var responseTimeout = new Response(true);
             return responseTimeout;
         }
@@ -379,10 +396,12 @@ namespace Ubiety.Dns.Core
                 var data = new byte[length];
                 stream.Read(data, 0, length);
 
+                _logger.Debug("Building response...");
                 var response = new Response(server, data);
 
                 if (response.Header.ResponseCode != ResponseCode.NoError)
                 {
+                    _logger.Debug($"Error from server - {response.Header.ResponseCode}");
                     return response;
                 }
 

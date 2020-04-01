@@ -50,14 +50,13 @@ namespace Ubiety.Dns.Core
         ///     Gets the request as a byte array.
         /// </summary>
         /// <returns>Byte array of the data.</returns>
-        public byte[] GetData()
+        public byte[] GetBytes()
         {
             var data = new List<byte>();
-            Header.QuestionCount = (ushort)_questions.Count;
-            data.AddRange(Header.GetData());
+            data.AddRange(Header.GetBytes());
             foreach (var q in _questions)
             {
-                data.AddRange(q.GetData());
+                data.AddRange(q.GetBytes());
             }
 
             return data.ToArray();
@@ -69,6 +68,7 @@ namespace Ubiety.Dns.Core
         /// <param name="question">Question to add to the request.</param>
         public void AddQuestion(Question question)
         {
+            Header.QuestionCount++;
             _questions.Add(question);
         }
     }

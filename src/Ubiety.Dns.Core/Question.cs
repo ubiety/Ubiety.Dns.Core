@@ -130,7 +130,7 @@ namespace Ubiety.Dns.Core
         ///     Gets the question as a byte array.
         /// </summary>
         /// <returns>Byte array of the question data.</returns>
-        public IEnumerable<byte> GetData()
+        public IEnumerable<byte> GetBytes()
         {
             var data = new List<byte>();
             data.AddRange(WriteName(DomainName));
