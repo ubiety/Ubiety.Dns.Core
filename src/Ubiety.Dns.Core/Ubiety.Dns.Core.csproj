@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.8" PrivateAssets="All" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.8" PrivateAssets="All" />
     <PackageReference Include="Stylecop.Analyzers" Version="1.1.118" PrivateAssets="All" />
-    <PackageReference Include="Ubiety.Logging.Core" Version="1.2.1" />
+    <PackageReference Include="Ubiety.Logging.Core" Version="1.2.2" />
   </ItemGroup>
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix'">
