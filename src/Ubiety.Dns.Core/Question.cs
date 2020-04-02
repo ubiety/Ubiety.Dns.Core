@@ -23,17 +23,16 @@ using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core
 {
-    /// <summary>
-    ///     DNS Question record.
-    /// </summary>
+    /// <summary> A question. This class cannot be inherited. </summary>
+    /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+    /// <seealso cref="IEquatable{Question}"/>
     public sealed class Question : IEquatable<Question>
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Question" /> class.
-        /// </summary>
-        /// <param name="domainName">Domain name to look up with the question.</param>
-        /// <param name="questionType">Question type.</param>
-        /// <param name="questionClass">Question class.</param>
+        /// <summary> Initializes a new instance of the <see cref="Question"/> class. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="domainName">    Gets the question name. </param>
+        /// <param name="questionType">  Gets the query type. </param>
+        /// <param name="questionClass"> Gets the query class. </param>
         public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
             if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith(".", StringComparison.InvariantCulture))
@@ -46,48 +45,61 @@ namespace Ubiety.Dns.Core
             QuestionClass = questionClass;
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Question" /> class.
-        /// </summary>
-        /// <param name="rr"><see cref="RecordReader" /> of the record.</param>
-        internal Question(RecordReader rr)
+        /// <summary> Initializes a new instance of the <see cref="Question" /> class. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="reader"> <see cref="RecordReader" /> of the record. </param>
+        internal Question(RecordReader reader)
         {
-            DomainName = rr.ReadDomainName();
-            QuestionType = (QuestionType)rr.ReadUInt16();
-            QuestionClass = (QuestionClass)rr.ReadUInt16();
+            DomainName = reader.ReadDomainName();
+            QuestionType = (QuestionType)reader.ReadUInt16();
+            QuestionClass = (QuestionClass)reader.ReadUInt16();
         }
 
-        /// <summary>
-        ///     Gets the question name.
-        /// </summary>
+        /// <summary> Gets the name of the domain. </summary>
+        /// <value> The name of the domain. </value>
         public string DomainName { get; }
 
-        /// <summary>
-        ///     Gets the query type.
-        /// </summary>
+        /// <summary> Gets the type of the question. </summary>
+        /// <value> The type of the question. </value>
         public QuestionType QuestionType { get; }
 
-        /// <summary>
-        ///     Gets the query class.
-        /// </summary>
+        /// <summary> Gets the question class. </summary>
+        /// <value> The question class. </value>
         public QuestionClass QuestionClass { get; }
 
-        /// <inheritdoc cref="IEquatable{T}" />
+        /// <summary> Equality operator. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="left">  The first instance to compare. </param>
+        /// <param name="right"> The second instance to compare. </param>
+        /// <returns> The result of the operation. </returns>
         public static bool operator ==(Question left, Question right)
         {
             return Equals(left, right);
         }
 
-        /// <inheritdoc cref="IEquatable{T}" />
+        /// <summary> Inequality operator. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="left">  The first instance to compare. </param>
+        /// <param name="right"> The second instance to compare. </param>
+        /// <returns> The result of the operation. </returns>
         public static bool operator !=(Question left, Question right)
         {
             return !Equals(left, right);
         }
 
-        /// <inheritdoc cref="IEquatable{T}" />
+        /// <summary>
+        ///     Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="other"> An object to compare with this object. </param>
+        /// <returns>
+        ///     true if the current object is equal to the <paramref name="other">other</paramref>
+        ///     parameter;
+        ///     otherwise, false.
+        /// </returns>
         public bool Equals(Question other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -101,10 +113,15 @@ namespace Ubiety.Dns.Core
                    QuestionType == other.QuestionType && QuestionClass == other.QuestionClass;
         }
 
-        /// <inheritdoc cref="IEquatable{T}" />
+        /// <summary> Determines whether the specified object is equal to the current object. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="obj"> The object to compare with the current object. </param>
+        /// <returns>
+        ///     true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -117,19 +134,19 @@ namespace Ubiety.Dns.Core
             return obj.GetType() == GetType() && Equals((Question)obj);
         }
 
-        /// <summary>
-        ///     String representation of the question.
-        /// </summary>
-        /// <returns>String of the question.</returns>
+        /// <summary> Returns a string that represents the current object. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
             return $"{DomainName,-32}\t{QuestionClass}\t{QuestionType}";
         }
 
-        /// <summary>
-        ///     Gets the question as a byte array.
-        /// </summary>
-        /// <returns>Byte array of the question data.</returns>
+        /// <summary> Gets the bytes in this collection. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the bytes in this collection.
+        /// </returns>
         public IEnumerable<byte> GetBytes()
         {
             var data = new List<byte>();
@@ -139,7 +156,10 @@ namespace Ubiety.Dns.Core
             return data.ToArray();
         }
 
-        /// <inheritdoc />
+        /// <summary> Serves as the default hash function. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <returns> A hash code for the current object. </returns>
+        /// <seealso cref="object.GetHashCode()"/>
         public override int GetHashCode()
         {
             unchecked

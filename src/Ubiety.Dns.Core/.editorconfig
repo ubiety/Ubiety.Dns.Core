@@ -9,3 +9,9 @@ dotnet_diagnostic.SX1309.severity = warning
 dotnet_diagnostic.S4818.severity = none
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = true
+
+# SA1514: Element documentation header should be preceded by blank line
+dotnet_diagnostic.SA1514.severity = silent
+
+# SA1506: Element documentation headers should not be followed by blank line
+dotnet_diagnostic.SA1506.severity = silent
