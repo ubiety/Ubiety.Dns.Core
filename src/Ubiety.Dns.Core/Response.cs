@@ -25,17 +25,15 @@ using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core
 {
-    /// <summary>
-    ///     DNS response.
-    /// </summary>
+    /// <summary> DNS response. </summary>
+    /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
     public class Response
     {
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Response" /> class.
-        /// </summary>
-        /// <param name="timedOut">Sets whether the response timed out or not.</param>
+        /// <summary> Initializes a new instance of the <see cref="Response" /> class. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="timedOut"> (Optional) Sets whether the response timed out or not. </param>
         public Response(bool timedOut = false)
         {
             Questions = new List<Question>();
@@ -50,11 +48,12 @@ namespace Ubiety.Dns.Core
             TimedOut = timedOut;
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Response" /> class.
-        /// </summary>
-        /// <param name="server"><see cref="IPEndPoint" /> of the DNS server that responded to the query.</param>
-        /// <param name="data"><see cref="byte" /> array of the response data.</param>
+        /// <summary> Initializes a new instance of the <see cref="Response" /> class. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="server">
+        ///     <see cref="IPEndPoint" /> of the DNS server that responded to the query.
+        /// </param>
+        /// <param name="data">   <see cref="byte" /> array of the response data. </param>
         public Response(IPEndPoint server, byte[] data)
             : this()
         {
@@ -150,11 +149,10 @@ namespace Ubiety.Dns.Core
             }
         }
 
-        /// <summary>
-        ///     Get a set of records from the answer.
-        /// </summary>
-        /// <typeparam name="T">Type of record to find.</typeparam>
-        /// <returns>List of records.</returns>
+        /// <summary> Gets the records. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <typeparam name="T"> Generic type parameter. </typeparam>
+        /// <returns> The records. </returns>
         public List<T> GetRecords<T>()
             where T : Record
         {

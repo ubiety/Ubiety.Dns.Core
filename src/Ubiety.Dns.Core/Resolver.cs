@@ -46,10 +46,9 @@ namespace Ubiety.Dns.Core
 
         private bool _useCache;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Resolver" /> class.
-        /// </summary>
-        /// <param name="dnsServers">Set of DNS servers to use for resolution.</param>
+        /// <summary> Initializes a new instance of the <see cref="Resolver" /> class. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="dnsServers"> Set of DNS servers to use for resolution. </param>
         internal Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
             _responseCache = new Dictionary<Question, Response>();
@@ -174,14 +173,13 @@ namespace Ubiety.Dns.Core
             }
         }
 
-        /// <summary>
-        ///     Execute a query on a DNS server.
-        /// </summary>
-        /// <param name="name">Domain name to look up.</param>
-        /// <param name="questionType">Question type of the query.</param>
-        /// <param name="questionClass">Class type of the query. Defaults to Internet.</param>
-        /// <returns>DNS response for request.</returns>
-        public Response Query(string name, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
+        /// <summary> Execute a query on a DNS server. </summary>
+        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <param name="domainName">    Domain name to look up. </param>
+        /// <param name="questionType">  Question type of the query. </param>
+        /// <param name="questionClass"> (Optional) Class type of the query. Defaults to Internet. </param>
+        /// <returns> DNS response for request. </returns>
+        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
         {
             if (_dnsServers.Count <= 0)
             {
@@ -189,9 +187,9 @@ namespace Ubiety.Dns.Core
                 return null;
             }
 
-            _logger.Debug($"Received {questionType} query for {name}");
+            _logger.Debug($"Received {questionType} query for {domainName}");
 
-            var question = new Question(name, questionType, questionClass);
+            var question = new Question(domainName, questionType, questionClass);
             var response = SearchInCache(question);
             if (response != null)
             {
