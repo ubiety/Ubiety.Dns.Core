@@ -24,12 +24,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ubiety.Dns.Core\Ubiety.Dns.Core.csproj" />
   </ItemGroup>
-
-    <Target Name="RedirectReferences" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
-    <ItemGroup>
-      <ReferencePath Condition="'%(FileName)' == 'Ubiety.Dns.Core'">
-        <Aliases>signed</Aliases>
-      </ReferencePath>
-    </ItemGroup>
-  </Target>
 </Project>
