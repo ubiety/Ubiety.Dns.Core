@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
+
 using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core
@@ -96,6 +97,18 @@ namespace Ubiety.Dns.Core
             {
                 _dnsServers.Add(new IPEndPoint(serverIp, port));
             }
+
+            return this;
+        }
+
+        /// <summary>
+        ///     Add multiple DNS servers to the resolver.
+        /// </summary>
+        /// <param name="dnsServers"><see cref="IEnumerable" /> with the endpoints.</param>
+        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        public ResolverBuilder AddDnsServers(IEnumerable<IPEndPoint> dnsServers)
+        {
+            _dnsServers.AddRange(dnsServers);
 
             return this;
         }
