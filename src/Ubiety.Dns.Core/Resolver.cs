@@ -106,7 +106,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Translates the IPV4 or IPV6 address into an arpa address.
         /// </summary>
-        /// <param name="ip">IP address to get the arpa address form.</param>
+        /// <param name="ip">IP address to get the arpa address for.</param>
         /// <returns>The 'mirrored' IPV4 or IPV6 arpa address.</returns>
         public static string GetArpaFromIp(IPAddress ip)
         {
