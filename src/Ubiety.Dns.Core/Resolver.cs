@@ -174,7 +174,6 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary> Execute a query on a DNS server. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
         /// <param name="domainName">    Domain name to look up. </param>
         /// <param name="questionType">  Question type of the query. </param>
         /// <param name="questionClass"> (Optional) Class type of the query. Defaults to Internet. </param>

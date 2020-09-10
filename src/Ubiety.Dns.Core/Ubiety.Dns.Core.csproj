@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net471;net452</TargetFrameworks>
+    <TargetFrameworks>net5;netstandard2.0;netstandard2.1;net471;net452</TargetFrameworks>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     <ProjectGuid>479864c2-f29b-40e4-987b-577d189c3d08</ProjectGuid>
   </PropertyGroup>
 
   <PropertyGroup>
     <Copyright>2020 Dieter (coder2000) Lunn</Copyright>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ubiety/Ubiety.Dns.Core</PackageProjectUrl>
     <PackageTags>dns;ubiety;.net;c#;core;standard</PackageTags>
     <Authors>Dieter (coder2000) Lunn</Authors>
@@ -17,6 +17,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ubiety.dns.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+	<AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>

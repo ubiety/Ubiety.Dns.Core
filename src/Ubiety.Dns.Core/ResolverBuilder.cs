@@ -104,7 +104,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Add multiple DNS servers to the resolver.
         /// </summary>
-        /// <param name="dnsServers"><see cref="IEnumerable" /> with the endpoints.</param>
+        /// <param name="dnsServers"><see cref="IEnumerable{IPEndPoint}" /> with the endpoints.</param>
         /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
         public ResolverBuilder AddDnsServers(IEnumerable<IPEndPoint> dnsServers)
         {
