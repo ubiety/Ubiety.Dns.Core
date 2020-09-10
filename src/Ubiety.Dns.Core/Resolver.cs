@@ -29,9 +29,6 @@ using System.Threading.Tasks;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
-#if NET452 || NET471
-using TransportType = Ubiety.Dns.Core.Common.TransportType;
-#endif
 
 namespace Ubiety.Dns.Core
 {

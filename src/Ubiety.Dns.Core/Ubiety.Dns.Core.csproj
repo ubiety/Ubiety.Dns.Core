@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net5;netstandard2.0;netstandard2.1;net471;net452</TargetFrameworks>
+    <TargetFramework>net5</TargetFramework>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     <ProjectGuid>479864c2-f29b-40e4-987b-577d189c3d08</ProjectGuid>
   </PropertyGroup>
@@ -12,7 +12,7 @@
     <PackageTags>dns;ubiety;.net;c#;core;standard</PackageTags>
     <Authors>Dieter (coder2000) Lunn</Authors>
     <PacakgeIcon>library64.png</PacakgeIcon>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <Description>Flexible DNS library for .NET</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ubiety.dns.snk</AssemblyOriginatorKeyFile>
@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="3.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="3.3.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.0" PrivateAssets="All" />
     <PackageReference Include="Stylecop.Analyzers" Version="1.1.118" PrivateAssets="All" />
     <PackageReference Include="Ubiety.Logging.Core" Version="1.2.2" />
   </ItemGroup>

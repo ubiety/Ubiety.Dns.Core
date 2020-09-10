@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records.General
     ///     records.
     ///     ```.
     /// </remarks>
-    public class RecordA : Record
+    public record RecordA : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordA" /> class.

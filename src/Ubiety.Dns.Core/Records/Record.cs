@@ -23,7 +23,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Abstract record.
     /// </summary>
-    public abstract class Record
+    public abstract record Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="Record" /> class.
