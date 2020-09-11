@@ -54,7 +54,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Network service access point DNS record.
     /// </summary>
-    public class RecordNsap : Record
+    public record RecordNsap : Record
     {
         private readonly byte[] _address;
 

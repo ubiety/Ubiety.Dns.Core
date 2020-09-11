@@ -62,7 +62,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     NAPTR DNS record.
     /// </summary>
-    public class RecordNaptr : Record
+    public record RecordNaptr : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNaptr" /> class.

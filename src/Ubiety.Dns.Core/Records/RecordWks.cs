@@ -67,7 +67,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     DNS well known services record.
     /// </summary>
-    public class RecordWks : Record
+    public record RecordWks : Record
     {
         private readonly byte[] _bitmap;
 

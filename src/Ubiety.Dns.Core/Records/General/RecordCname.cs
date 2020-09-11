@@ -41,7 +41,7 @@ namespace Ubiety.Dns.Core.Records.General
     /// <summary>
     ///     Canonical name DNS record.
     /// </summary>
-    public class RecordCname : Record
+    public record RecordCname : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordCname" /> class.

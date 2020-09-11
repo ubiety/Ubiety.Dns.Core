@@ -37,7 +37,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Certificate DNS record.
     /// </summary>
-    public class RecordCert : Record
+    public record RecordCert : Record
     {
         private readonly byte[] _rawKey;
 

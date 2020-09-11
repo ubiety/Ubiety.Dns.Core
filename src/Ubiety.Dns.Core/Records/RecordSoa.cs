@@ -87,7 +87,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     DNS Start of Authority record.
     /// </summary>
-    public class RecordSoa : Record
+    public record RecordSoa : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSoa" /> class.

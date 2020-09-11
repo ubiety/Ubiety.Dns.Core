@@ -73,7 +73,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Route through DNS record.
     /// </summary>
-    public class RecordRt : Record
+    public record RecordRt : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordRt" /> class.

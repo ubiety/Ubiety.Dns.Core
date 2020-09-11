@@ -37,7 +37,7 @@ namespace Ubiety.Dns.Core.Records.Mail
     /// <summary>
     ///     Mailbox DNS record.
     /// </summary>
-    public class RecordMb : Record
+    public record RecordMb : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMb" /> class.

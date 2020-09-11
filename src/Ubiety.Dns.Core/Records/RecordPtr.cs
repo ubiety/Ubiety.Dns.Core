@@ -39,7 +39,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Pointer DNS record.
     /// </summary>
-    public class RecordPtr : Record
+    public record RecordPtr : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordPtr" /> class.

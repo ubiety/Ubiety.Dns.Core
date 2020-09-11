@@ -45,7 +45,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Transaction key DNS resource record.
     /// </summary>
-    public class RecordTkey : Record
+    public record RecordTkey : Record
     {
         private readonly byte[] _keyData;
         private readonly byte[] _otherData;

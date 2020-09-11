@@ -118,7 +118,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     DNS location recod.
     /// </summary>
-    public class RecordLoc : Record
+    public record RecordLoc : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordLoc" /> class.

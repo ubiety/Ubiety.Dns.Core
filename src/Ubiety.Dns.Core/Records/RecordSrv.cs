@@ -80,18 +80,16 @@
  */
 
 using System;
+
 using Ubiety.Dns.Core.Common.Extensions;
-using Ubiety.Dns.Core.Common.Helpers;
 
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
     ///     RFC 2782 - DNS resource record for service discovery.
     /// </summary>
-    public sealed class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
+    public sealed record RecordSrv : Record, IComparable<RecordSrv>
     {
-        private readonly EqualityHelper<RecordSrv> _equality = new EqualityHelper<RecordSrv>(r => r.Priority, r => r.Weight);
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
         /// </summary>
@@ -154,23 +152,6 @@ namespace Ubiety.Dns.Core.Records
             return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
         }
 
-        /// <inheritdoc cref="IEquatable{T}" />
-        public static bool operator ==(RecordSrv left, RecordSrv right)
-        {
-            if (left is null)
-            {
-                return right is null;
-            }
-
-            return left.Equals(right);
-        }
-
-        /// <inheritdoc cref="IEquatable{T}" />
-        public static bool operator !=(RecordSrv left, RecordSrv right)
-        {
-            return !(left == right);
-        }
-
         /// <summary>
         ///     Compares instance to object.
         /// </summary>
@@ -184,42 +165,6 @@ namespace Ubiety.Dns.Core.Records
             }
 
             return Priority.CompareTo(other.Priority) > 0 ? 1 : Weight.CompareTo(other.Weight);
-        }
-
-        /// <summary>
-        ///     Compares two instances for equality.
-        /// </summary>
-        /// <param name="other">Second instance to compare.</param>
-        /// <returns>Value indicating whether the values are equal.</returns>
-        public bool Equals(RecordSrv other)
-        {
-            return _equality.Equals(this, other);
-        }
-
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            return !(obj is null) && Equals(obj as RecordSrv);
-        }
-
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Record as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Priority} {Weight} {Port} {Target}";
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return _equality.GetHashCode(this);
         }
     }
 }

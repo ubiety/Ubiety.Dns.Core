@@ -15,10 +15,6 @@
  *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Globalization;
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
@@ -46,7 +42,7 @@ namespace Ubiety.Dns.Core.Records.Mail
     ///     [RFC-974].
     ///     ```.
     /// </remarks>
-    public sealed class RecordMx : Record, IComparable, IEquatable<RecordMx>
+    public sealed record RecordMx : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMx" /> class.
@@ -68,148 +64,5 @@ namespace Ubiety.Dns.Core.Records.Mail
         ///     Gets the exchange.
         /// </summary>
         public string Exchange { get; }
-
-        /// <summary>
-        /// Is the left less than the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator <(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y.ThrowIfNull(nameof(y))) < 0;
-        }
-
-        /// <summary>
-        /// Is the left greater than the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator >(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) > 0;
-        }
-
-        /// <summary>
-        /// Is the left less than or equal to the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator <=(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) <= 0;
-        }
-
-        /// <summary>
-        /// Is the left greater than or equal to the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator >=(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) >= 0;
-        }
-
-        /// <summary>
-        /// Are the left and right objects equal.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator ==(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) == 0;
-        }
-
-        /// <summary>
-        /// Are the left and right objects not equal.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator !=(RecordMx x, RecordMx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) != 0;
-        }
-
-        /// <summary>
-        ///     Compares record to an object.
-        /// </summary>
-        /// <param name="obj">Object to compare record to.</param>
-        /// <returns>Int value of the comparison.</returns>
-        public int CompareTo(object obj)
-        {
-            return CompareTo(this, obj as RecordMx);
-        }
-
-        /// <summary>
-        ///     Does this instance equal another instance of RecordMx.
-        /// </summary>
-        /// <param name="other">RecordMx to compare to.</param>
-        /// <returns>Boolean indicating whether the objects are equal.</returns>
-        public bool Equals(RecordMx other)
-        {
-            if (other is null)
-            {
-                return false;
-            }
-
-            return CompareTo(this, other) == 0;
-        }
-
-        /// <summary>
-        ///     Does this instance equal an object.
-        /// </summary>
-        /// <param name="obj">Object to compare to.</param>
-        /// <returns>Boolean indicating whether the objects are equal.</returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-            {
-                return false;
-            }
-
-            if (GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            return ReferenceEquals(this, obj) || Equals(obj as RecordMx);
-        }
-
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Exchange and preference as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {Exchange}";
-        }
-
-        /// <summary>
-        ///     Gets the record hash code.
-        /// </summary>
-        /// <returns>Integer representing the hash code.</returns>
-        public override int GetHashCode()
-        {
-            return Preference.GetHashCode();
-        }
-
-        private static int CompareTo(RecordMx x, RecordMx y)
-        {
-            if (y is null)
-            {
-                return -1;
-            }
-
-            if (x.Preference > y.Preference)
-            {
-                return 1;
-            }
-
-            if (x.Preference < y.Preference)
-            {
-                return -1;
-            }
-
-            return string.Compare(x.Exchange, y.Exchange, true, CultureInfo.InvariantCulture);
-        }
     }
 }

@@ -22,7 +22,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     DNS signature record.
     /// </summary>
-    public class RecordSig : Record
+    public record RecordSig : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSig" /> class.

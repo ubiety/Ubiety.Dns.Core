@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Null DNS record.
     /// </summary>
-    public class RecordNull : Record
+    public record RecordNull : Record
     {
         private readonly byte[] _data;
 

@@ -88,7 +88,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     ISDN DNS record.
     /// </summary>
-    public class RecordIsdn : Record
+    public record RecordIsdn : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordIsdn" /> class.

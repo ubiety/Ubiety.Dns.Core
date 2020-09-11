@@ -32,7 +32,7 @@ namespace Ubiety.Dns.Core.Records.General
     ///     resource record in network byte order (high-order byte first)
     ///     ```.
     /// </remarks>
-    public class RecordAaaa : Record
+    public record RecordAaaa : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAaaa" /> class.

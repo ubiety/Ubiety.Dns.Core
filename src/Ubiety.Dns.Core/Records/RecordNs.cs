@@ -45,7 +45,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Nameserver DNS record.
     /// </summary>
-    public class RecordNs : Record
+    public record RecordNs : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordNs" /> class.

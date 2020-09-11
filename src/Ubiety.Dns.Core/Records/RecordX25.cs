@@ -51,7 +51,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     X25 DNS record.
     /// </summary>
-    public class RecordX25 : Record
+    public record RecordX25 : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordX25" /> class.

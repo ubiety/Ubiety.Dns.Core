@@ -38,7 +38,7 @@ namespace Ubiety.Dns.Core.Records.Mail
     /// <summary>
     ///     Mailbox rename DNS record.
     /// </summary>
-    public class RecordMr : Record
+    public record RecordMr : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMr" /> class.

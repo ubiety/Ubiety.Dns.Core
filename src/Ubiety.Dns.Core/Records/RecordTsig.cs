@@ -45,7 +45,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Transaction signature DNS record.
     /// </summary>
-    public class RecordTsig : Record
+    public record RecordTsig : Record
     {
         private readonly byte[] _mac;
         private readonly byte[] _otherData;

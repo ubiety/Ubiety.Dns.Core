@@ -39,7 +39,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Text DNS record.
     /// </summary>
-    public class RecordTxt : Record
+    public record RecordTxt : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordTxt" /> class.

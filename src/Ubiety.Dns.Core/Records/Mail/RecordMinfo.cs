@@ -52,7 +52,7 @@ namespace Ubiety.Dns.Core.Records.Mail
     /// <summary>
     ///     Mail list DNS record.
     /// </summary>
-    public class RecordMinfo : Record
+    public record RecordMinfo : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMinfo" /> class.

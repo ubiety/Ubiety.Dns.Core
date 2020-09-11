@@ -89,7 +89,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     PX DNS record.
     /// </summary>
-    public class RecordPx : Record
+    public record RecordPx : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordPx" /> class.

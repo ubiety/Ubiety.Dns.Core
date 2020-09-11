@@ -43,7 +43,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Hardware info DNS record.
     /// </summary>
-    public class RecordHinfo : Record
+    public record RecordHinfo : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordHinfo" /> class.

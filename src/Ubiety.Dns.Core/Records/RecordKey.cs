@@ -53,7 +53,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Key DNS record.
     /// </summary>
-    public class RecordKey : Record
+    public record RecordKey : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordKey" /> class.

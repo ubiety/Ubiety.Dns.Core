@@ -36,7 +36,7 @@ namespace Ubiety.Dns.Core.Records.Mail
     /// <summary>
     ///     Mail group DNS record.
     /// </summary>
-    public class RecordMg : Record
+    public record RecordMg : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordMg" /> class.

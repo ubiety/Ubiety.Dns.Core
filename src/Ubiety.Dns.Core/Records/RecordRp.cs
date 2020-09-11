@@ -50,7 +50,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Responsible person DNS record.
     /// </summary>
-    public class RecordRp : Record
+    public record RecordRp : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordRp" /> class.

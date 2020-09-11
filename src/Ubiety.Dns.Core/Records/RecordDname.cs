@@ -36,7 +36,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     DNAME DNS Record.
     /// </summary>
-    public class RecordDname : Record
+    public record RecordDname : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordDname" /> class.

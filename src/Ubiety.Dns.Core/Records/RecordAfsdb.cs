@@ -42,7 +42,7 @@ namespace Ubiety.Dns.Core.Records
     ///     is a 16 bit integer. The [hostname] field is a domain name of a host
     ///     that has a server for the cell named by the owner name of the RR.
     /// </remarks>
-    public class RecordAfsdb : Record
+    public record RecordAfsdb : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordAfsdb" /> class.

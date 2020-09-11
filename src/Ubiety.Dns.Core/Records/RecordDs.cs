@@ -52,7 +52,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     DS DNS Record.
     /// </summary>
-    public class RecordDs : Record
+    public record RecordDs : Record
     {
         private readonly byte[] _digest;
 
