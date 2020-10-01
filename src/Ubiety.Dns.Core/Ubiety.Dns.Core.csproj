@@ -29,7 +29,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="3.3.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.0" PrivateAssets="All" />
-    <PackageReference Include="Stylecop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+    <PackageReference Include="Stylecop.Analyzers" Version="1.2.0-beta.205" PrivateAssets="All" />
     <PackageReference Include="Ubiety.Logging.Core" Version="1.2.2" />
   </ItemGroup>
 
