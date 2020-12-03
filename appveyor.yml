@@ -1,9 +1,10 @@
-image: Visual Studio 2019
+image: 
+  - Visual Studio 2019
+  - Ubuntu
 
 branches:
-  only:
-    - master
-    - develop
+  except:
+    - gh-pages
 
 skip_tags: true
 
@@ -11,12 +12,24 @@ environment:
   SonarKey:
     secure: u3sH5Rwmc8zeqtB33llZiMi5bSrB1wy7xlTk4px5OMnRu0WEDzpsDe0y14e0un18
   NuGetKey:
-    secure: 2DxptPlvqZ5bmcUo9o9wqBYDk8MiaJ6jG6EjI9woOq0W6XsRYgfRZnxsp3OjOUtz
+    secure: As9u+roieKdjFUBUu52CpoZG4EtZMbT7SJxa8jBOyKXPztdaccdMMeJKqT1XtiTZ
   COVERALLS_REPO_TOKEN:
     secure: pmewtxEuv8kMwIMIpzrxUgLtEK8DEf90Iu96AiDjXwMObZAaI7ZTByXRZRp5dYYJ
+  CODACY_PROJECT_TOKEN:
+    secure: q79UxhSz+B+d2AbIPHSFJVMFcXxrNfGbRVTSahoEkH+d7rxr1nRKBhybfJ0573TT
+  JAVA_HOME: C:\Program Files\Java\jdk15
 
 build_script:
   - ps: .\build.ps1 appveyor
+    
+for:
+  -
+    matrix:
+      except:
+        - image: Visual Studio 2019
+    build_script:
+      - sh: ./build.sh
+      - sh: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r artifacts/coverage.opencover.xml
 
 test: off
 deploy: off

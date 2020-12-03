@@ -1,23 +1,19 @@
 /*
- *      Copyright (C) 2020 Dieter (coder2000) Lunn
+ * Copyright 2020 Dieter Lunn
  *
- *      This program is free software: you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation, either version 3 of the License, or
- *      (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
+ * You may obtain a copy of the License at
  *
- *      You should have received a copy of the GNU General Public License
- *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-using System;
-using System.Globalization;
-using Ubiety.Dns.Core.Common.Extensions;
 
 /*
  * http://tools.ietf.org/rfc/rfc2230.txt
@@ -56,7 +52,7 @@ namespace Ubiety.Dns.Core.Records
     /// <summary>
     ///     Key exchange record.
     /// </summary>
-    public sealed class RecordKx : Record, IComparable, IEquatable<RecordKx>
+    public sealed record RecordKx : Record
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordKx" /> class.
@@ -78,153 +74,5 @@ namespace Ubiety.Dns.Core.Records
         ///     Gets the exchanger.
         /// </summary>
         public string Exchanger { get; }
-
-        /// <summary>
-        /// Is the left less than the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator <(RecordKx x, RecordKx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) < 0;
-        }
-
-        /// <summary>
-        /// Is the left greater than the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator >(RecordKx x, RecordKx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) > 0;
-        }
-
-        /// <summary>
-        /// Is the left less than or equal to the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator <=(RecordKx x, RecordKx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) <= 0;
-        }
-
-        /// <summary>
-        /// Is the left greater than or equal to the right.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator >=(RecordKx x, RecordKx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) >= 0;
-        }
-
-        /// <summary>
-        /// Do the objects equal each other.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator ==(RecordKx x, RecordKx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) == 0;
-        }
-
-        /// <summary>
-        /// Do the objects not equal each other.
-        /// </summary>
-        /// <param name="x">Left comparison object.</param>
-        /// <param name="y">Right comparison object.</param>
-        public static bool operator !=(RecordKx x, RecordKx y)
-        {
-            return CompareTo(x.ThrowIfNull(nameof(x)), y) != 0;
-        }
-
-        /// <summary>
-        ///     Compares instance to an object.
-        /// </summary>
-        /// <param name="obj">Object to compare to.</param>
-        /// <returns>Integer representing the comparison.</returns>
-        public int CompareTo(object obj)
-        {
-            return CompareTo(this, (RecordKx)obj);
-        }
-
-        /// <summary>
-        ///     Are two instances of <see cref="RecordKx" /> equal.
-        /// </summary>
-        /// <param name="other"><see cref="RecordKx" /> to compare to.</param>
-        /// <returns>Boolean indicating whether the two instances are equal.</returns>
-        public bool Equals(RecordKx other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return CompareTo(other) == 0;
-        }
-
-        /// <summary>
-        ///     Overrides equals.
-        /// </summary>
-        /// <param name="obj">Object to compare to.</param>
-        /// <returns>Boolean indicating whether the instances are equal.</returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-            {
-                return false;
-            }
-
-            if (GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            return ReferenceEquals(this, obj) || Equals(obj as RecordKx);
-        }
-
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>String version of the record.</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {Exchanger}";
-        }
-
-        /// <summary>
-        ///     Gets the hash code.
-        /// </summary>
-        /// <returns>Integer value of the hash.</returns>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashcode = 13;
-                hashcode = (hashcode * 397) ^ Preference;
-                return hashcode;
-            }
-        }
-
-        private static int CompareTo(RecordKx x, RecordKx y)
-        {
-            if (y == null)
-            {
-                return -1;
-            }
-
-            if (x.Preference > y.Preference)
-            {
-                return 1;
-            }
-
-            if (x.Preference < y.Preference)
-            {
-                return -1;
-            }
-
-            return string.Compare(x.Exchanger, y.Exchanger, true, CultureInfo.InvariantCulture);
-        }
     }
 }
