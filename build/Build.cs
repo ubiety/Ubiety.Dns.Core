@@ -46,7 +46,7 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
 
     [Parameter] readonly string SonarKey;
-    const string SonarProjectKey = "ubiety_Ubiety.Stringprep.Core";
+    const string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -115,7 +115,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetTest(s => s
-                .SetProjectFile(Solution.GetProject("Ubiety.Stringprep.Tests"))
+                .SetProjectFile(Solution.GetProject("Ubiety.Dns.Test"))
                 .EnableNoBuild()
                 .SetConfiguration(Configuration)
                 .SetProcessArgumentConfigurator(args => args.Add("/p:CollectCoverage={0}", Cover)
