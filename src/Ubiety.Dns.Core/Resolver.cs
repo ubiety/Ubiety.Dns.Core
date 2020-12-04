@@ -41,7 +41,7 @@ namespace Ubiety.Dns.Core
         private readonly Dictionary<Question, Response> _responseCache;
         private readonly List<IPEndPoint> _dnsServers;
 
-        private bool _useCache;
+        private readonly bool _useCache;
 
         /// <summary> Initializes a new instance of the <see cref="Resolver" /> class. </summary>
         /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
@@ -59,22 +59,23 @@ namespace Ubiety.Dns.Core
         ///     Gets the current version of the library.
         /// </summary>
         public static string Version => Assembly.GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            ?.InformationalVersion;
 
         /// <summary>
-        ///     Gets or sets resolution timeout in milliseconds.
+        ///     Gets the resolution timeout in milliseconds.
         /// </summary>
-        public int Timeout { get; set; }
+        public int Timeout { get; init; }
 
         /// <summary>
-        ///     Gets or sets the number of retries before giving up.
+        ///     Gets the number of retries before giving up.
         /// </summary>
-        public int Retries { get; set; }
+        public int Retries { get; init; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether recursion is enabled for queries.
+        ///     Gets a value indicating whether recursion is enabled for queries.
         /// </summary>
-        public bool Recursion { get; set; }
+        public bool Recursion { get; init; }
 
         /// <summary>
         ///     Gets or sets protocol to use.
@@ -82,13 +83,13 @@ namespace Ubiety.Dns.Core
         public TransportType TransportType { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to use the cache.
+        ///     Gets a value indicating whether to use the cache.
         /// </summary>
         public bool UseCache
         {
             get => _useCache;
 
-            set
+            init
             {
                 _useCache = value;
                 if (_useCache)
@@ -135,9 +136,10 @@ namespace Ubiety.Dns.Core
 
                         return sb.ToString();
                     }
-            }
 
-            return "?";
+                default:
+                    return "?";
+            }
         }
 
         /// <summary>
@@ -350,7 +352,7 @@ namespace Ubiety.Dns.Core
                             continue;
                         }
 
-                        using var stream = new BufferedStream(client.GetStream());
+                        await using var stream = new BufferedStream(client.GetStream());
 
                         _logger.Debug("Sending request to server...");
                         WriteRequest(stream, request);

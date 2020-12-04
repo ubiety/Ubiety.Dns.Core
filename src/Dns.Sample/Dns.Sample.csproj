@@ -8,4 +8,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Ubiety.Dns.Core\Ubiety.Dns.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
+    <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
+  </ItemGroup>
 </Project>
