@@ -24,15 +24,15 @@ using Ubiety.Dns.Core.Common.Extensions;
 namespace Ubiety.Dns.Core
 {
     /// <summary> A question. This class cannot be inherited. </summary>
-    /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
     /// <seealso cref="IEquatable{Question}"/>
     public sealed class Question : IEquatable<Question>
     {
-        /// <summary> Initializes a new instance of the <see cref="Question"/> class. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
-        /// <param name="domainName">    Gets the question name. </param>
-        /// <param name="questionType">  Gets the query type. </param>
-        /// <param name="questionClass"> Gets the query class. </param>
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Question"/> class.
+        /// </summary>
+        /// <param name="domainName">Gets the question name.</param>
+        /// <param name="questionType">Gets the query type.</param>
+        /// <param name="questionClass">Gets the query class.</param>
         public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
             if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith(".", StringComparison.InvariantCulture))
@@ -45,9 +45,10 @@ namespace Ubiety.Dns.Core
             QuestionClass = questionClass;
         }
 
-        /// <summary> Initializes a new instance of the <see cref="Question" /> class. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
-        /// <param name="reader"> <see cref="RecordReader" /> of the record. </param>
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Question" /> class.
+        /// </summary>
+        /// <param name="reader"><see cref="RecordReader" /> of the record.</param>
         internal Question(RecordReader reader)
         {
             DomainName = reader.ReadDomainName();
@@ -55,33 +56,41 @@ namespace Ubiety.Dns.Core
             QuestionClass = (QuestionClass)reader.ReadUInt16();
         }
 
-        /// <summary> Gets the name of the domain. </summary>
-        /// <value> The name of the domain. </value>
+        /// <summary>
+        ///     Gets the name of the domain.
+        /// </summary>
+        /// <value>The name of the domain.</value>
         public string DomainName { get; }
 
-        /// <summary> Gets the type of the question. </summary>
-        /// <value> The type of the question. </value>
+        /// <summary>
+        ///     Gets the type of the question.
+        /// </summary>
+        /// <value>The type of the question.</value>
         public QuestionType QuestionType { get; }
 
-        /// <summary> Gets the question class. </summary>
-        /// <value> The question class. </value>
+        /// <summary>
+        ///     Gets the question class.
+        /// </summary>
+        /// <value>The question class.</value>
         public QuestionClass QuestionClass { get; }
 
-        /// <summary> Equality operator. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
-        /// <param name="left">  The first instance to compare. </param>
-        /// <param name="right"> The second instance to compare. </param>
-        /// <returns> The result of the operation. </returns>
+        /// <summary>
+        ///     Equality operator.
+        /// </summary>
+        /// <param name="left">The first instance to compare.</param>
+        /// <param name="right">The second instance to compare.</param>
+        /// <returns>True if the questions are equal, otherwise false.</returns>
         public static bool operator ==(Question left, Question right)
         {
             return Equals(left, right);
         }
 
-        /// <summary> Inequality operator. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
-        /// <param name="left">  The first instance to compare. </param>
-        /// <param name="right"> The second instance to compare. </param>
-        /// <returns> The result of the operation. </returns>
+        /// <summary>
+        ///     Inequality operator.
+        /// </summary>
+        /// <param name="left">The first instance to compare.</param>
+        /// <param name="right">The second instance to compare.</param>
+        /// <returns>True if the questions are not equal, otherwise false.</returns>
         public static bool operator !=(Question left, Question right)
         {
             return !Equals(left, right);
@@ -90,7 +99,6 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
         /// <param name="other"> An object to compare with this object. </param>
         /// <returns>
         ///     true if the current object is equal to the <paramref name="other">other</paramref>
@@ -113,11 +121,12 @@ namespace Ubiety.Dns.Core
                    QuestionType == other.QuestionType && QuestionClass == other.QuestionClass;
         }
 
-        /// <summary> Determines whether the specified object is equal to the current object. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <summary>
+        ///     Determines whether the specified object is equal to the current object.
+        /// </summary>
         /// <param name="obj"> The object to compare with the current object. </param>
         /// <returns>
-        ///     true if the specified object  is equal to the current object; otherwise, false.
+        ///     true if the specified object is equal to the current object; otherwise, false.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -134,16 +143,18 @@ namespace Ubiety.Dns.Core
             return obj.GetType() == GetType() && Equals((Question)obj);
         }
 
-        /// <summary> Returns a string that represents the current object. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <summary>
+        ///     Returns a string that represents the current object.
+        /// </summary>
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
             return $"{DomainName,-32}\t{QuestionClass}\t{QuestionType}";
         }
 
-        /// <summary> Gets the bytes in this collection. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <summary>
+        ///     Gets the bytes in this collection.
+        /// </summary>
         /// <returns>
         ///     An enumerator that allows foreach to be used to process the bytes in this collection.
         /// </returns>
@@ -156,19 +167,14 @@ namespace Ubiety.Dns.Core
             return data.ToArray();
         }
 
-        /// <summary> Serves as the default hash function. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <summary>
+        ///     Serves as the default hash function.
+        /// </summary>
         /// <returns> A hash code for the current object. </returns>
         /// <seealso cref="object.GetHashCode()"/>
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = StringComparer.InvariantCultureIgnoreCase.GetHashCode(DomainName);
-                hashCode = (hashCode * 397) ^ (int)QuestionType;
-                hashCode = (hashCode * 397) ^ (int)QuestionClass;
-                return hashCode;
-            }
+            return HashCode.Combine(DomainName, QuestionClass, QuestionType);
         }
 
         private static IEnumerable<byte> WriteName(string src)
@@ -188,13 +194,11 @@ namespace Ubiety.Dns.Core
             for (int i = 0, j = 0; i < src.Length; i++, j++)
             {
                 sb.Append(src[i]);
-                if (src[i] != '.')
+                if (src[i] == '.')
                 {
-                    continue;
+                    sb[i - j] = (char)(j & 0xff);
+                    j = -1;
                 }
-
-                sb[i - j] = (char)(j & 0xff);
-                j = -1;
             }
 
             sb[^1] = '\0';

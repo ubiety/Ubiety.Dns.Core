@@ -16,7 +16,6 @@
  */
 
 using System;
-using System.CommandLine.DragonFruit;
 
 namespace Dns.Sample
 {
@@ -26,7 +25,7 @@ namespace Dns.Sample
         ///     Main application
         /// </summary>
         /// <param name="dnsIp">IP address of DNS server</param>
-        private static void Main(string dnsIp)
+        public static void Main(string dnsIp)
         {
             var test = new DnsTest(dnsIp);
 

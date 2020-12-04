@@ -25,14 +25,16 @@ using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core
 {
-    /// <summary> DNS response. </summary>
-    /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+    /// <summary>
+    ///     DNS response.
+    /// </summary>
     public class Response
     {
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
 
-        /// <summary> Initializes a new instance of the <see cref="Response" /> class. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class.
+        /// </summary>
         /// <param name="timedOut"> (Optional) Sets whether the response timed out or not. </param>
         public Response(bool timedOut = false)
         {
@@ -48,8 +50,9 @@ namespace Ubiety.Dns.Core
             TimedOut = timedOut;
         }
 
-        /// <summary> Initializes a new instance of the <see cref="Response" /> class. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class.
+        /// </summary>
         /// <param name="server">
         ///     <see cref="IPEndPoint" /> of the DNS server that responded to the query.
         /// </param>
@@ -150,7 +153,6 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary> Gets the records. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
         /// <typeparam name="T"> Generic type parameter. </typeparam>
         /// <returns> The records. </returns>
         public List<T> GetRecords<T>()
