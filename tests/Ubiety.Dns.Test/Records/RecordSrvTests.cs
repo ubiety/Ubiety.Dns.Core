@@ -23,7 +23,6 @@ using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Records;
 using Xunit;
-using Record = Ubiety.Dns.Core.Records.Record;
 
 namespace Ubiety.Dns.Test.Records
 {
@@ -63,7 +62,10 @@ namespace Ubiety.Dns.Test.Records
             var left = new RecordSrv(GetReader(10,10,80));
             var right = new RecordSrv(GetReader(10,10,80));
 
-            left.ShouldBe(right);
+            left.Priority.ShouldBe(right.Priority);
+            left.Weight.ShouldBe(right.Weight);
+            left.Port.ShouldBe(right.Port);
+            left.Target.ShouldBe(right.Target);
         }
 
         [Fact]
@@ -72,15 +74,6 @@ namespace Ubiety.Dns.Test.Records
             var record = new RecordSrv(GetReader(10,10,80));
 
             record.ToString().ShouldBe("10 10 80 test.com.");
-        }
-
-        [Fact]
-        public void TestSrvEqualToObject()
-        {
-            var left = new RecordSrv(GetReader(10, 10, 80));
-            var right = new RecordSrv(GetReader(10, 10, 80)) as Record;
-
-            left.ShouldBe(right);
         }
 
         [Fact]
