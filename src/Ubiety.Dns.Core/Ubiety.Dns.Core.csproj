@@ -7,22 +7,22 @@
 
   <PropertyGroup>
     <Copyright>2020 Dieter (coder2000) Lunn</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/ubiety/Ubiety.Dns.Core</PackageProjectUrl>
-    <PackageTags>dns;ubiety;.net;c#;core;standard</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://dns.ubiety.dev</PackageProjectUrl>
+    <PackageTags>dns;ubiety;.net;c#;.netcore;.netstandard</PackageTags>
     <Authors>Dieter (coder2000) Lunn</Authors>
-    <PacakgeIcon>library64.png</PacakgeIcon>
+    <PacakgeIcon>library128.png</PacakgeIcon>
     <LangVersion>latest</LangVersion>
     <Description>Flexible DNS library for .NET</Description>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ubiety.dns.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-	<AnalysisLevel>preview</AnalysisLevel>
-	<EnableNETAnalyzers>true</EnableNETAnalyzers>
+  	<AnalysisLevel>latest</AnalysisLevel>
+	  <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="../../images/library64.png" Pack="true" PackagePath="/" />
+    <None Include="../../library128.png" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
