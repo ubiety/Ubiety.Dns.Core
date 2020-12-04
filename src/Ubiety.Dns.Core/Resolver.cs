@@ -390,7 +390,7 @@ namespace Ubiety.Dns.Core
                 messageSize += length;
 
                 var data = new byte[length];
-                stream.Read(data, 0, length);
+                var unused = stream.Read(data, 0, length);
 
                 _logger.Debug("Building response...");
                 var response = new Response(server, data);
