@@ -46,7 +46,7 @@ namespace Ubiety.Dns.Core
         /// <returns>A <see cref="ResolverBuilder"/> instance.</returns>
         public static ResolverBuilder Begin()
         {
-            return new ResolverBuilder();
+            return new();
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace Ubiety.Dns.Core
         ///     Add a DNS server to the resolver.
         /// </summary>
         /// <param name="serverAddress"><see cref="IPAddress" /> of the server.</param>
-        /// <param name="port">Port of the server, defaults to 53.</param>
+        /// <param name="port">Port of the server.</param>
         /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
-        public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port = 53)
+        public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port)
         {
             _dnsServers.Add(new IPEndPoint(serverAddress, port));
 
@@ -88,17 +88,32 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Add a DNS server to the resolver.
         /// </summary>
-        /// <param name="serverAddress">String representing the ip address of the server.</param>
-        /// <param name="port">Port of the server, defaults to 53.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
-        public ResolverBuilder AddDnsServer(string serverAddress, int port = 53)
+        /// <param name="serverAddress"><see cref="IPAddress"/> of the server.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+        public ResolverBuilder AddDnsServer(IPAddress serverAddress)
         {
-            if (IPAddress.TryParse(serverAddress, out var serverIp))
-            {
-                _dnsServers.Add(new IPEndPoint(serverIp, port));
-            }
+            return AddDnsServer(serverAddress, 53);
+        }
 
-            return this;
+        /// <summary>
+        ///     Add a DNS server to the resolver.
+        /// </summary>
+        /// <param name="serverAddress">String representing the ip address of the server.</param>
+        /// <param name="port">Port of the server.</param>
+        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        public ResolverBuilder AddDnsServer(string serverAddress, int port)
+        {
+            return IPAddress.TryParse(serverAddress, out var serverIp) ? AddDnsServer(serverIp, port) : this;
+        }
+
+        /// <summary>
+        ///     Add a DNS server to the resolver.
+        /// </summary>
+        /// <param name="serverAddress">String representing the ip address of the server.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+        public ResolverBuilder AddDnsServer(string serverAddress)
+        {
+            return AddDnsServer(serverAddress, 53);
         }
 
         /// <summary>
