@@ -23,22 +23,22 @@ namespace Ubiety.Dns.Core.Common
     public enum OperationClass
     {
         /// <summary>
-        ///     Internet class
+        ///     Internet class.
         /// </summary>
         IN = 1,
 
         /// <summary>
-        ///     CSNET class
+        ///     CSNET class.
         /// </summary>
         CS = 2,
 
         /// <summary>
-        ///     CHAOS class
+        ///     CHAOS class.
         /// </summary>
         CH = 3,
 
         /// <summary>
-        ///     Hesiod class
+        ///     Hesiod class.
         /// </summary>
         HS = 4,
     }

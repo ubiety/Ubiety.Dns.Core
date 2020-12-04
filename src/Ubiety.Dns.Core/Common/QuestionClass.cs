@@ -23,27 +23,27 @@ namespace Ubiety.Dns.Core.Common
     public enum QuestionClass
     {
         /// <summary>
-        ///     Internet class
+        ///     Internet class.
         /// </summary>
         IN = OperationClass.IN,
 
         /// <summary>
-        ///     CSNET class
+        ///     CSNET class.
         /// </summary>
         CS = OperationClass.CS,
 
         /// <summary>
-        ///     CHAOS class
+        ///     CHAOS class.
         /// </summary>
         CH = OperationClass.CH,
 
         /// <summary>
-        ///     Hesiod class
+        ///     Hesiod class.
         /// </summary>
         HS = OperationClass.HS,
 
         /// <summary>
-        ///     Any question class
+        ///     Any question class.
         /// </summary>
         Any = 255,
     }

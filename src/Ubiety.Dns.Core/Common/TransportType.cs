@@ -23,12 +23,12 @@ namespace Ubiety.Dns.Core.Common
     public enum TransportType
     {
         /// <summary>
-        ///     Use the UDP transport
+        ///     Use the UDP transport.
         /// </summary>
         Udp,
 
         /// <summary>
-        ///     Use the TCP transport
+        ///     Use the TCP transport.
         /// </summary>
         Tcp,
     }

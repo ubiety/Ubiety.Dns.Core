@@ -23,27 +23,27 @@ namespace Ubiety.Dns.Core.Common
     public enum OperationCode
     {
         /// <summary>
-        ///     Standard DNS Query
+        ///     Standard DNS Query.
         /// </summary>
         Query = 0,
 
         /// <summary>
-        ///     Retired IQUERY code
+        ///     Retired IQUERY code.
         /// </summary>
         IQuery = 1,
 
         /// <summary>
-        ///     Server status request
+        ///     Server status request.
         /// </summary>
         Status = 2,
 
         /// <summary>
-        ///     Notify OpCode
+        ///     Notify OpCode.
         /// </summary>
         Notify = 4,
 
         /// <summary>
-        ///     Update OpCode
+        ///     Update OpCode.
         /// </summary>
         Update = 5,
     }

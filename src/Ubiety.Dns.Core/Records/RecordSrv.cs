@@ -153,6 +153,15 @@ namespace Ubiety.Dns.Core.Records
         }
 
         /// <summary>
+        ///     String representation of the record data.
+        /// </summary>
+        /// <returns>Record as a string.</returns>
+        public override string ToString()
+        {
+            return $"{Priority} {Weight} {Port} {Target}";
+        }
+
+        /// <summary>
         ///     Compares instance to object.
         /// </summary>
         /// <param name="other">Object to compare to.</param>

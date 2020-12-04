@@ -23,92 +23,92 @@ namespace Ubiety.Dns.Core.Common
     public enum ResponseCode
     {
         /// <summary>
-        ///     No error in query
+        ///     No error in query.
         /// </summary>
         NoError = 0,
 
         /// <summary>
-        ///     Format error in query
+        ///     Format error in query.
         /// </summary>
         FormErr = 1,
 
         /// <summary>
-        ///     Server failure
+        ///     Server failure.
         /// </summary>
         ServFail = 2,
 
         /// <summary>
-        ///     Non-Existent Domain
+        ///     Non-Existent Domain.
         /// </summary>
         NXDomain = 3,
 
         /// <summary>
-        ///     Not implemented
+        ///     Not implemented.
         /// </summary>
         NotImp = 4,
 
         /// <summary>
-        ///     Query refused
+        ///     Query refused.
         /// </summary>
         Refused = 5,
 
         /// <summary>
-        ///     Name exists when it should not
+        ///     Name exists when it should not.
         /// </summary>
         YXDomain = 6,
 
         /// <summary>
-        ///     RR set exists when it should not
+        ///     RR set exists when it should not.
         /// </summary>
         YXRRSet = 7,
 
         /// <summary>
-        ///     RR set that exists does not
+        ///     RR set that exists does not.
         /// </summary>
         NXRRSet = 8,
 
         /// <summary>
-        ///     Server not authoritative for zone
+        ///     Server not authoritative for zone.
         /// </summary>
         NotAuth = 9,
 
         /// <summary>
-        ///     Name not contained in zone
+        ///     Name not contained in zone.
         /// </summary>
         NotZone = 10,
 
         /// <summary>
-        ///     Bad OPT version
+        ///     Bad OPT version.
         /// </summary>
         BADVERSSIG = 16,
 
         /// <summary>
-        ///     Key not recognized
+        ///     Key not recognized.
         /// </summary>
         BADKEY = 17,
 
         /// <summary>
-        ///     Signature out of time window
+        ///     Signature out of time window.
         /// </summary>
         BADTIME = 18,
 
         /// <summary>
-        ///     Bad TKEY mode
+        ///     Bad TKEY mode.
         /// </summary>
         BADMODE = 19,
 
         /// <summary>
-        ///     Duplicate key name
+        ///     Duplicate key name.
         /// </summary>
         BADNAME = 20,
 
         /// <summary>
-        ///     Algorithm not supported
+        ///     Algorithm not supported.
         /// </summary>
         BADALG = 21,
 
         /// <summary>
-        ///     Bad truncation
+        ///     Bad truncation.
         /// </summary>
         BADTRUNC = 22,
     }

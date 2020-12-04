@@ -28,6 +28,7 @@ using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
+using _build;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -48,10 +49,13 @@ class Build : NukeBuild
     [Parameter] readonly string SonarKey;
     const string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
 
-    AbsolutePath SourceDirectory => RootDirectory / "src";
-    AbsolutePath TestsDirectory => RootDirectory / "tests";
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    static AbsolutePath SourceDirectory => RootDirectory / "src";
 
+    static AbsolutePath TestsDirectory => RootDirectory / "tests";
+
+    static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+
+#pragma warning disable IDE0051
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -60,6 +64,10 @@ class Build : NukeBuild
             TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
             EnsureCleanDirectory(ArtifactsDirectory);
         });
+
+    Target Appveyor => _ => _
+        .DependsOn(Test, SonarEnd, Publish);
+#pragma warning restore IDE0051
 
     Target Restore => _ => _
         .Executes(() =>
@@ -152,9 +160,6 @@ class Build : NukeBuild
                 5,
                 true);
         });
-
-    Target Appveyor => _ => _
-        .DependsOn(Test, SonarEnd, Publish);
 
     public static int Main() => Execute<Build>(x => x.Test);
 }
