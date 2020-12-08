@@ -1,1 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M20 21.5H7c-.827 0-1.5-.673-1.5-1.5s.673-1.5 1.5-1.5h10c1.378 0 2.5-1.121 2.5-2.5V5c0-1.379-1.122-2.5-2.5-2.5H7A2.503 2.503 0 004.5 5v15c0 1.379 1.122 2.5 2.5 2.5h13a.5.5 0 000-1zM5.5 5c0-.827.673-1.5 1.5-1.5h10c.827 0 1.5.673 1.5 1.5v11c0 .827-.673 1.5-1.5 1.5H7c-.562 0-1.082.187-1.5.501V5z"/><path d="M10 11.5a2.48 2.48 0 001.376-.416l2.77 2.77a.502.502 0 00.708 0 .5.5 0 000-.707l-2.77-2.77c.262-.396.416-.868.416-1.377 0-1.379-1.122-2.5-2.5-2.5S7.5 7.621 7.5 9s1.122 2.5 2.5 2.5zm0-4c.827 0 1.5.673 1.5 1.5s-.673 1.5-1.5 1.5S8.5 9.827 8.5 9s.673-1.5 1.5-1.5z"/><path d="M5.53 11.319c0-7.292-.027-7.013.73-7.52l.36-.24h5.36c5.163.001 5.374.009 5.706.212.19.115.44.365.556.555.203.334.21.545.211 6.15 0 6.283.018 6.083-.58 6.643l-.284.264-5.632.053c-5.103.048-5.665.07-5.972.239-.186.102-.365.185-.397.185-.032 0-.058-2.943-.058-6.541zm9.34 2.552c.37-.335.23-.566-1.25-2.06l-1.445-1.458.173-.433c.771-1.928-1.04-3.935-3.027-3.354a2.54 2.54 0 00-1.355 3.969c.61.84 2.05 1.222 3.045.806l.39-.162 1.433 1.434c.849.848 1.517 1.434 1.638 1.434a.71.71 0 00.398-.176z" fill="#c87137"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 16 20"
+   version="1.1"
+   id="svg1937"
+   sodipodi:docname="library.svg"
+   width="64"
+   height="64"
+   inkscape:export-filename="C:\Users\coder\source\repos\ubiety\Ubiety.Dns.Core\library128.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata1943">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs1941" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="987"
+     id="namedview1939"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="1.017006"
+     inkscape:cx="27.5"
+     inkscape:cy="32.712045"
+     inkscape:window-x="-8"
+     inkscape:window-y="13"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1937" />
+  <path
+     d="M 15.5,19 H 2.5 C 1.673,19 1,18.327 1,17.5 1,16.673 1.673,16 2.5,16 h 10 C 13.878,16 15,14.879 15,13.5 V 2.5 C 15,1.121 13.878,0 12.5,0 H 2.5 A 2.503,2.503 0 0 0 0,2.5 v 15 C 0,18.879 1.122,20 2.5,20 h 13 a 0.5,0.5 0 0 0 0,-1 z M 1,2.5 C 1,1.673 1.673,1 2.5,1 h 10 C 13.327,1 14,1.673 14,2.5 v 11 C 14,14.327 13.327,15 12.5,15 H 2.5 C 1.938,15 1.418,15.187 1,15.501 Z"
+     id="path1931" />
+  <path
+     d="M 5.5,9 A 2.48,2.48 0 0 0 6.876,8.584 l 2.77,2.77 a 0.502,0.502 0 0 0 0.708,0 0.5,0.5 0 0 0 0,-0.707 L 7.584,7.877 C 7.846,7.481 8,7.009 8,6.5 8,5.121 6.878,4 5.5,4 4.122,4 3,5.121 3,6.5 3,7.879 4.122,9 5.5,9 Z m 0,-4 C 6.327,5 7,5.673 7,6.5 7,7.327 6.327,8 5.5,8 4.673,8 4,7.327 4,6.5 4,5.673 4.673,5 5.5,5 Z"
+     id="path1933" />
+  <path
+     d="m 1.03,8.819 c 0,-7.292 -0.027,-7.013 0.73,-7.52 l 0.36,-0.24 h 5.36 c 5.163,0.001 5.374,0.009 5.706,0.212 0.19,0.115 0.44,0.365 0.556,0.555 0.203,0.334 0.21,0.545 0.211,6.15 0,6.283 0.018,6.083 -0.58,6.643 l -0.284,0.264 -5.632,0.053 C 2.354,14.984 1.792,15.006 1.485,15.175 1.299,15.277 1.12,15.36 1.088,15.36 1.056,15.36 1.03,12.417 1.03,8.819 Z m 9.34,2.552 C 10.74,11.036 10.6,10.805 9.12,9.311 L 7.675,7.853 7.848,7.42 C 8.619,5.492 6.808,3.485 4.821,4.066 A 2.54,2.54 0 0 0 3.466,8.035 c 0.61,0.84 2.05,1.222 3.045,0.806 l 0.39,-0.162 1.433,1.434 c 0.849,0.848 1.517,1.434 1.638,1.434 a 0.71,0.71 0 0 0 0.398,-0.176 z"
+     fill="#c87137"
+     id="path1935" />
+</svg>
