@@ -1,18 +1,18 @@
 /*
- *      Copyright (C) 2020 Dieter (coder2000) Lunn
+ * Copyright 2020 Dieter Lunn
  *
- *      This program is free software: you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation, either version 3 of the License, or
- *      (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
+ * You may obtain a copy of the License at
  *
- *      You should have received a copy of the GNU General Public License
- *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 using System;
@@ -25,16 +25,18 @@ using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core
 {
-    /// <summary> DNS response. </summary>
-    /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+    /// <summary>
+    ///     DNS response.
+    /// </summary>
     public class Response
     {
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
 
-        /// <summary> Initializes a new instance of the <see cref="Response" /> class. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
-        /// <param name="timedOut"> (Optional) Sets whether the response timed out or not. </param>
-        public Response(bool timedOut = false)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class.
+        /// </summary>
+        /// <param name="timedOut">Sets whether the response timed out or not.</param>
+        public Response(bool timedOut)
         {
             Questions = new List<Question>();
             Answers = new List<AnswerResourceRecord>();
@@ -48,8 +50,17 @@ namespace Ubiety.Dns.Core
             TimedOut = timedOut;
         }
 
-        /// <summary> Initializes a new instance of the <see cref="Response" /> class. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class.
+        /// </summary>
+        public Response()
+            : this(false)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class.
+        /// </summary>
         /// <param name="server">
         ///     <see cref="IPEndPoint" /> of the DNS server that responded to the query.
         /// </param>
@@ -150,7 +161,6 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary> Gets the records. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
         /// <typeparam name="T"> Generic type parameter. </typeparam>
         /// <returns> The records. </returns>
         public List<T> GetRecords<T>()

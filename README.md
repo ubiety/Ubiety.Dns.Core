@@ -1,13 +1,13 @@
-# ![Logo](https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/images/library64.png) Ubiety.Dns.Core [![Nuget](https://img.shields.io/nuget/v/Ubiety.Dns.Core.svg?style=flat-square)](https://www.nuget.org/packages/Ubiety.Dns.Core/)
+# ![Logo](https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/library64.png) Ubiety.Dns.Core [![Nuget](https://img.shields.io/nuget/v/Ubiety.Dns.Core.svg?style=flat-square)](https://www.nuget.org/packages/Ubiety.Dns.Core/)
 
 > A reusable DNS resolver for .NET Standard 2.0
 
 Thank you to the initial work of Alphons van der Heijden and Geoffry Huntley on this library.
 
-| Branch  | Quality                                                                                                                                                                                                   | Travis CI                                                                                                                                                   | Appveyor                                                                                                                                                                                   | Coverage                                                                                                                                                        |
-| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core/badge?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core)                           | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Dns.Core/master.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Dns.Core)  | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/master.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/master)   | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/master.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core)  |
-| Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core/badge/develop?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.dns.core/overview/develop)  | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Dns.Core/develop.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Dns.Core) | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/develop.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/develop) | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/develop.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core) |
+| Branch  | Quality                                                                                                                                                                                                                                                                                                 | Appveyor                                                                                                                                                                                   | Coverage                                                                                                                                                        |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Main    | [![Codacy branch grade](https://img.shields.io/codacy/grade/8f394c2975b44792b37aaf9b4f4bc3ec/main?style=flat-square)](https://www.codacy.com/gh/ubiety/Ubiety.Dns.Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ubiety/Ubiety.Dns.Core&amp;utm_campaign=Badge_Grade)     | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/master.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/master)   | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/master.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core)  |
+| Develop | [![Codacy branch grade](https://img.shields.io/codacy/grade/8f394c2975b44792b37aaf9b4f4bc3ec/develop?style=flat-square)](https://www.codacy.com/gh/ubiety/Ubiety.Dns.Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ubiety/Ubiety.Dns.Core&amp;utm_campaign=Badge_Grade)  | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/develop.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/develop) | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/develop.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core) |
 
 ## Installing / Getting started
 
@@ -42,35 +42,13 @@ Building is simple
 ./build.ps1
 ```
 
-### Deploying / Publishing
-
-```shell
-git pull
-versionize
-dotnet pack
-dotnet nuget push
-git push
-```
-
 ## Contributing
 
-When you publish something open source, one of the greatest motivations is that
-anyone can just jump in and start contributing to your project.
-
-These paragraphs are meant to welcome those kind souls to feel that they are
-needed. You should state something like:
-
-"If you'd like to contribute, please fork the repository and use a feature
-branch. Pull requests are warmly welcome."
-
-If there's anything else the developer needs to know (e.g. the code style
-guide), you should link it here. If there's a lot of things to take into
-consideration, it is common to separate this section to its own file called
-`CONTRIBUTING.md` (or similar). If so, you should say that it exists here.
+Thank you for your assistance. Please find more information on how to contribute in the CONTRIBUTING.md
 
 ## Links
 
-- Project homepage: <https://dns.ubiety.ca>
+- Project homepage: <https://dns.ubiety.dev>
 - Repository: <https://github.com/ubiety/Ubiety.Dns.Core/>
 - Issue tracker: <https://github.com/ubiety/Ubiety.Dns.Core/issues>
   - In case of sensitive bugs like security vulnerabilities, please use the

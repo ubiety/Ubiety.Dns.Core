@@ -1,18 +1,18 @@
 /*
- *      Copyright (C) 2020 Dieter (coder2000) Lunn
+ * Copyright 2020 Dieter Lunn
  *
- *      This program is free software: you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation, either version 3 of the License, or
- *      (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
+ * You may obtain a copy of the License at
  *
- *      You should have received a copy of the GNU General Public License
- *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 using System;
@@ -29,9 +29,6 @@ using System.Threading.Tasks;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
-#if NET452 || NET471
-using TransportType = Ubiety.Dns.Core.Common.TransportType;
-#endif
 
 namespace Ubiety.Dns.Core
 {
@@ -44,7 +41,7 @@ namespace Ubiety.Dns.Core
         private readonly Dictionary<Question, Response> _responseCache;
         private readonly List<IPEndPoint> _dnsServers;
 
-        private bool _useCache;
+        private readonly bool _useCache;
 
         /// <summary> Initializes a new instance of the <see cref="Resolver" /> class. </summary>
         /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
@@ -62,22 +59,23 @@ namespace Ubiety.Dns.Core
         ///     Gets the current version of the library.
         /// </summary>
         public static string Version => Assembly.GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            ?.InformationalVersion;
 
         /// <summary>
-        ///     Gets or sets resolution timeout in milliseconds.
+        ///     Gets the resolution timeout in milliseconds.
         /// </summary>
-        public int Timeout { get; set; }
+        public int Timeout { get; init; }
 
         /// <summary>
-        ///     Gets or sets the number of retries before giving up.
+        ///     Gets the number of retries before giving up.
         /// </summary>
-        public int Retries { get; set; }
+        public int Retries { get; init; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether recursion is enabled for queries.
+        ///     Gets a value indicating whether recursion is enabled for queries.
         /// </summary>
-        public bool Recursion { get; set; }
+        public bool Recursion { get; init; }
 
         /// <summary>
         ///     Gets or sets protocol to use.
@@ -85,13 +83,13 @@ namespace Ubiety.Dns.Core
         public TransportType TransportType { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to use the cache.
+        ///     Gets a value indicating whether to use the cache.
         /// </summary>
         public bool UseCache
         {
             get => _useCache;
 
-            set
+            init
             {
                 _useCache = value;
                 if (_useCache)
@@ -106,7 +104,7 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Translates the IPV4 or IPV6 address into an arpa address.
         /// </summary>
-        /// <param name="ip">IP address to get the arpa address form.</param>
+        /// <param name="ip">IP address to get the arpa address for.</param>
         /// <returns>The 'mirrored' IPV4 or IPV6 arpa address.</returns>
         public static string GetArpaFromIp(IPAddress ip)
         {
@@ -138,9 +136,10 @@ namespace Ubiety.Dns.Core
 
                         return sb.ToString();
                     }
-            }
 
-            return "?";
+                default:
+                    return "?";
+            }
         }
 
         /// <summary>
@@ -174,12 +173,11 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary> Execute a query on a DNS server. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
         /// <param name="domainName">    Domain name to look up. </param>
         /// <param name="questionType">  Question type of the query. </param>
-        /// <param name="questionClass"> (Optional) Class type of the query. Defaults to Internet. </param>
+        /// <param name="questionClass"> Class type of the query. </param>
         /// <returns> DNS response for request. </returns>
-        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
+        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
             if (_dnsServers.Count <= 0)
             {
@@ -201,6 +199,15 @@ namespace Ubiety.Dns.Core
             var request = new Request();
             request.AddQuestion(question);
             return GetResponse(request);
+        }
+
+        /// <summary> Execute a query on a DNS server. </summary>
+        /// <param name="domainName">    Domain name to look up. </param>
+        /// <param name="questionType">  Question type of the query. </param>
+        /// <returns> DNS response for request. </returns>
+        public Response Query(string domainName, QuestionType questionType)
+        {
+            return Query(domainName, questionType, QuestionClass.IN);
         }
 
         private static void WriteRequest(Stream stream, Request request)
@@ -339,10 +346,14 @@ namespace Ubiety.Dns.Core
 
                     try
                     {
-                        using var client = new TcpClient(AddressFamily.InterNetworkV6)
+                        using var client = Socket.OSSupportsIPv6 ? new TcpClient(AddressFamily.InterNetworkV6)
                         {
                             ReceiveTimeout = Timeout,
                             Client = { DualMode = true },
+                        }
+                        : new TcpClient(AddressFamily.InterNetwork)
+                        {
+                            ReceiveTimeout = Timeout,
                         };
 
                         await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
@@ -354,7 +365,7 @@ namespace Ubiety.Dns.Core
                             continue;
                         }
 
-                        using var stream = new BufferedStream(client.GetStream());
+                        await using var stream = new BufferedStream(client.GetStream());
 
                         _logger.Debug("Sending request to server...");
                         WriteRequest(stream, request);
@@ -392,7 +403,7 @@ namespace Ubiety.Dns.Core
                 messageSize += length;
 
                 var data = new byte[length];
-                stream.Read(data, 0, length);
+                var unused = stream.Read(data, 0, length);
 
                 _logger.Debug("Building response...");
                 var response = new Response(server, data);

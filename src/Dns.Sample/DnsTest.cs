@@ -1,18 +1,18 @@
 /*
- *      Copyright (C) 2020 Dieter (coder2000) Lunn
+ * Copyright 2020 Dieter Lunn
  *
- *      This program is free software: you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation, either version 3 of the License, or
- *      (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
+ * You may obtain a copy of the License at
  *
- *      You should have received a copy of the GNU General Public License
- *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 using System.Collections.Generic;
@@ -24,17 +24,24 @@ using Ubiety.Dns.Core.Records.General;
 
 namespace Dns.Sample
 {
+    /// <summary>
+    ///     Test DNS resolution
+    /// </summary>
     public class DnsTest
     {
         private readonly Resolver _resolver;
 
-        public DnsTest()
+        /// <summary>
+        ///     Initialize a new instance of the <see cref="DnsTest"/> class
+        /// </summary>
+        /// <param name="dnsIp">IP of DNS server to use</param>
+        public DnsTest(string dnsIp)
         {
             var logManager = new TestLogManager();
 
             _resolver = ResolverBuilder.Begin()
                 .EnableLogging(logManager)
-                .AddDnsServer("1.1.1.1")
+                .AddDnsServer(dnsIp)
                 .SetTimeout(1000)
                 .EnableCache()
                 .SetRetries(3)
@@ -42,6 +49,11 @@ namespace Dns.Sample
                 .Build();
         }
 
+        /// <summary>
+        ///     Test CERT record resolution
+        /// </summary>
+        /// <param name="name">URL of address to resolve</param>
+        /// <returns>CERT records as a list of strings</returns>
         public IEnumerable<string> CertRecords(string name)
         {
             const QuestionType questionType = QuestionType.CERT;
@@ -51,6 +63,11 @@ namespace Dns.Sample
             return response.GetRecords<RecordCert>().Select(record => record.ToString()).ToList();
         }
 
+        /// <summary>
+        ///     Test A record resolution
+        /// </summary>
+        /// <param name="name">URL of address to resolve</param>
+        /// <returns>A records as a list of strings</returns>
         public IEnumerable<string> ARecords(string name)
         {
             const QuestionType questionType = QuestionType.A;
@@ -60,6 +77,11 @@ namespace Dns.Sample
             return response.GetRecords<RecordA>().Select(record => record.ToString()).ToList();
         }
 
+        /// <summary>
+        ///     Test NAPTR record resolution
+        /// </summary>
+        /// <param name="domain">URL of address to resolve</param>
+        /// <returns>NAPTR records as a list of strings</returns>
         public IEnumerable<RecordNaptr> GetNaptr(string domain)
         {
             var response = _resolver.Query(domain, QuestionType.NAPTR);

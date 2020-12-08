@@ -1,18 +1,18 @@
 /*
- *      Copyright (C) 2020 Dieter (coder2000) Lunn
+ * Copyright 2020 Dieter Lunn
  *
- *      This program is free software: you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation, either version 3 of the License, or
- *      (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
+ * You may obtain a copy of the License at
  *
- *      You should have received a copy of the GNU General Public License
- *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /*
@@ -80,18 +80,16 @@
  */
 
 using System;
+
 using Ubiety.Dns.Core.Common.Extensions;
-using Ubiety.Dns.Core.Common.Helpers;
 
 namespace Ubiety.Dns.Core.Records
 {
     /// <summary>
     ///     RFC 2782 - DNS resource record for service discovery.
     /// </summary>
-    public sealed class RecordSrv : Record, IComparable<RecordSrv>, IEquatable<RecordSrv>
+    public sealed record RecordSrv : Record, IComparable<RecordSrv>
     {
-        private readonly EqualityHelper<RecordSrv> _equality = new EqualityHelper<RecordSrv>(r => r.Priority, r => r.Weight);
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
         /// </summary>
@@ -154,21 +152,13 @@ namespace Ubiety.Dns.Core.Records
             return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
         }
 
-        /// <inheritdoc cref="IEquatable{T}" />
-        public static bool operator ==(RecordSrv left, RecordSrv right)
+        /// <summary>
+        ///     String representation of the record data.
+        /// </summary>
+        /// <returns>Record as a string.</returns>
+        public override string ToString()
         {
-            if (left is null)
-            {
-                return right is null;
-            }
-
-            return left.Equals(right);
-        }
-
-        /// <inheritdoc cref="IEquatable{T}" />
-        public static bool operator !=(RecordSrv left, RecordSrv right)
-        {
-            return !(left == right);
+            return $"{Priority} {Weight} {Port} {Target}";
         }
 
         /// <summary>
@@ -184,42 +174,6 @@ namespace Ubiety.Dns.Core.Records
             }
 
             return Priority.CompareTo(other.Priority) > 0 ? 1 : Weight.CompareTo(other.Weight);
-        }
-
-        /// <summary>
-        ///     Compares two instances for equality.
-        /// </summary>
-        /// <param name="other">Second instance to compare.</param>
-        /// <returns>Value indicating whether the values are equal.</returns>
-        public bool Equals(RecordSrv other)
-        {
-            return _equality.Equals(this, other);
-        }
-
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            return !(obj is null) && Equals(obj as RecordSrv);
-        }
-
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Record as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Priority} {Weight} {Port} {Target}";
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return _equality.GetHashCode(this);
         }
     }
 }

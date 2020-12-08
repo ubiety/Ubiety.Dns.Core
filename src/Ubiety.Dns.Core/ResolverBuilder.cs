@@ -1,18 +1,18 @@
 /*
- *      Copyright (C) 2020 Dieter (coder2000) Lunn
+ * Copyright 2020 Dieter Lunn
  *
- *      This program is free software: you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation, either version 3 of the License, or
- *      (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
+ * You may obtain a copy of the License at
  *
- *      You should have received a copy of the GNU General Public License
- *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace Ubiety.Dns.Core
         /// <returns>A <see cref="ResolverBuilder"/> instance.</returns>
         public static ResolverBuilder Begin()
         {
-            return new ResolverBuilder();
+            return new();
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace Ubiety.Dns.Core
         ///     Add a DNS server to the resolver.
         /// </summary>
         /// <param name="serverAddress"><see cref="IPAddress" /> of the server.</param>
-        /// <param name="port">Port of the server, defaults to 53.</param>
+        /// <param name="port">Port of the server.</param>
         /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
-        public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port = 53)
+        public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port)
         {
             _dnsServers.Add(new IPEndPoint(serverAddress, port));
 
@@ -88,23 +88,38 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Add a DNS server to the resolver.
         /// </summary>
-        /// <param name="serverAddress">String representing the ip address of the server.</param>
-        /// <param name="port">Port of the server, defaults to 53.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
-        public ResolverBuilder AddDnsServer(string serverAddress, int port = 53)
+        /// <param name="serverAddress"><see cref="IPAddress"/> of the server.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+        public ResolverBuilder AddDnsServer(IPAddress serverAddress)
         {
-            if (IPAddress.TryParse(serverAddress, out var serverIp))
-            {
-                _dnsServers.Add(new IPEndPoint(serverIp, port));
-            }
+            return AddDnsServer(serverAddress, 53);
+        }
 
-            return this;
+        /// <summary>
+        ///     Add a DNS server to the resolver.
+        /// </summary>
+        /// <param name="serverAddress">String representing the ip address of the server.</param>
+        /// <param name="port">Port of the server.</param>
+        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        public ResolverBuilder AddDnsServer(string serverAddress, int port)
+        {
+            return IPAddress.TryParse(serverAddress, out var serverIp) ? AddDnsServer(serverIp, port) : this;
+        }
+
+        /// <summary>
+        ///     Add a DNS server to the resolver.
+        /// </summary>
+        /// <param name="serverAddress">String representing the ip address of the server.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+        public ResolverBuilder AddDnsServer(string serverAddress)
+        {
+            return AddDnsServer(serverAddress, 53);
         }
 
         /// <summary>
         ///     Add multiple DNS servers to the resolver.
         /// </summary>
-        /// <param name="dnsServers"><see cref="IEnumerable" /> with the endpoints.</param>
+        /// <param name="dnsServers"><see cref="IEnumerable{IPEndPoint}" /> with the endpoints.</param>
         /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
         public ResolverBuilder AddDnsServers(IEnumerable<IPEndPoint> dnsServers)
         {
