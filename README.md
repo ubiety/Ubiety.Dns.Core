@@ -70,7 +70,7 @@ consideration, it is common to separate this section to its own file called
 
 ## Links
 
-- Project homepage: <https://dns.ubiety.ca>
+- Project homepage: <https://dns.ubiety.dev>
 - Repository: <https://github.com/ubiety/Ubiety.Dns.Core/>
 - Issue tracker: <https://github.com/ubiety/Ubiety.Dns.Core/issues>
   - In case of sensitive bugs like security vulnerabilities, please use the
