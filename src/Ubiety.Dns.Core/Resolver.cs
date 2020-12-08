@@ -175,9 +175,9 @@ namespace Ubiety.Dns.Core
         /// <summary> Execute a query on a DNS server. </summary>
         /// <param name="domainName">    Domain name to look up. </param>
         /// <param name="questionType">  Question type of the query. </param>
-        /// <param name="questionClass"> (Optional) Class type of the query. Defaults to Internet. </param>
+        /// <param name="questionClass"> Class type of the query. </param>
         /// <returns> DNS response for request. </returns>
-        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
+        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
             if (_dnsServers.Count <= 0)
             {
@@ -199,6 +199,15 @@ namespace Ubiety.Dns.Core
             var request = new Request();
             request.AddQuestion(question);
             return GetResponse(request);
+        }
+
+        /// <summary> Execute a query on a DNS server. </summary>
+        /// <param name="domainName">    Domain name to look up. </param>
+        /// <param name="questionType">  Question type of the query. </param>
+        /// <returns> DNS response for request. </returns>
+        public Response Query(string domainName, QuestionType questionType)
+        {
+            return Query(domainName, questionType, QuestionClass.IN);
         }
 
         private static void WriteRequest(Stream stream, Request request)

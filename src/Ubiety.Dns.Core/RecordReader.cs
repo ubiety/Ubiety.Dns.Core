@@ -34,11 +34,20 @@ namespace Ubiety.Dns.Core
         ///     Initializes a new instance of the <see cref="RecordReader" /> class.
         /// </summary>
         /// <param name="data">Byte array of the record.</param>
-        /// <param name="position">Position of the cursor in the record, defaults to 0.</param>
-        public RecordReader(byte[] data, int position = 0)
+        /// <param name="position">Position of the cursor in the record.</param>
+        public RecordReader(byte[] data, int position)
         {
             _data = data;
             Position = position;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RecordReader" /> class.
+        /// </summary>
+        /// <param name="data">Byte array of the record.</param>
+        public RecordReader(byte[] data)
+            : this(data, 0)
+        {
         }
 
         /// <summary>
@@ -52,7 +61,7 @@ namespace Ubiety.Dns.Core
         /// <returns>Next available byte of the record.</returns>
         public byte ReadByte()
         {
-            return Position >= _data.Length ? (byte)0 : _data[Position++];
+            return Position >= _data.Length ? 0 : _data[Position++];
         }
 
         /// <summary>

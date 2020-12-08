@@ -35,8 +35,8 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
-        /// <param name="timedOut"> (Optional) Sets whether the response timed out or not. </param>
-        public Response(bool timedOut = false)
+        /// <param name="timedOut">Sets whether the response timed out or not.</param>
+        public Response(bool timedOut)
         {
             Questions = new List<Question>();
             Answers = new List<AnswerResourceRecord>();
@@ -48,6 +48,14 @@ namespace Ubiety.Dns.Core
             TimeStamp = DateTime.Now;
             Header = new Header();
             TimedOut = timedOut;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Response" /> class.
+        /// </summary>
+        public Response()
+            : this(false)
+        {
         }
 
         /// <summary>
