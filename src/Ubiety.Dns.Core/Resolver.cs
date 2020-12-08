@@ -346,10 +346,14 @@ namespace Ubiety.Dns.Core
 
                     try
                     {
-                        using var client = new TcpClient(AddressFamily.InterNetworkV6)
+                        using var client = Socket.OSSupportsIPv6 ? new TcpClient(AddressFamily.InterNetworkV6)
                         {
                             ReceiveTimeout = Timeout,
                             Client = { DualMode = true },
+                        }
+                        : new TcpClient(AddressFamily.InterNetwork)
+                        {
+                            ReceiveTimeout = Timeout,
                         };
 
                         await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
