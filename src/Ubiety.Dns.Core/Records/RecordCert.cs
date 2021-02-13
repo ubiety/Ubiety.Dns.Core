@@ -82,7 +82,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the raw key.
         /// </summary>
-        public List<byte> RawKey => new List<byte>(_rawKey);
+        public List<byte> RawKey => new(_rawKey);
 
         /// <summary>
         ///     String version of the record.

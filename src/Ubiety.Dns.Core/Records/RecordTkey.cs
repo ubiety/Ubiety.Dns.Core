@@ -101,7 +101,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the key data.
         /// </summary>
-        public List<byte> KeyData => new List<byte>(_keyData);
+        public List<byte> KeyData => new(_keyData);
 
         /// <summary>
         ///     Gets the other size from the record (Future use).
@@ -111,7 +111,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the other data from the record (Future use).
         /// </summary>
-        public List<byte> OtherData => new List<byte>(_otherData);
+        public List<byte> OtherData => new(_otherData);
 
         /// <summary>
         ///     String representation of the record data.

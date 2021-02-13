@@ -91,7 +91,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the MAC.
         /// </summary>
-        public List<byte> Mac => new List<byte>(_mac);
+        public List<byte> Mac => new(_mac);
 
         /// <summary>
         ///     Gets or sets the original id.
@@ -111,7 +111,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the other record data.
         /// </summary>
-        public List<byte> OtherData => new List<byte>(_otherData);
+        public List<byte> OtherData => new(_otherData);
 
         /// <summary>
         ///     String representation of the record data.
