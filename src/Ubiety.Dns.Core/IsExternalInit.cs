@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
 namespace System.Runtime.CompilerServices
 {
     /// <summary>
-    ///     Dummy for init properties
+    ///     Dummy for init properties.
     /// </summary>
     public class IsExternalInit
     {
