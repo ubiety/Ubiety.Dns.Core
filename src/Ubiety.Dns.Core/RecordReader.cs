@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
@@ -61,7 +62,7 @@ namespace Ubiety.Dns.Core
         /// <returns>Next available byte of the record.</returns>
         public byte ReadByte()
         {
-            return Position >= _data.Length ? 0 : _data[Position++];
+            return (byte)(Position >= _data.Length ? 0 : _data[Position++]);
         }
 
         /// <summary>

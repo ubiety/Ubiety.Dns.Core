@@ -77,7 +77,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the address as a byte collection.
         /// </summary>
-        public Collection<byte> NsapAddress => new Collection<byte>(_address);
+        public Collection<byte> NsapAddress => new(_address);
 
         /// <summary>
         ///     String representation of the record data.

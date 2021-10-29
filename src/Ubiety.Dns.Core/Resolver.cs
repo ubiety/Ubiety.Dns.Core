@@ -26,6 +26,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
@@ -365,7 +366,11 @@ namespace Ubiety.Dns.Core
                             continue;
                         }
 
+#if NETSTANDARD2_0
+                        using var stream = new BufferedStream(client.GetStream());
+#else
                         await using var stream = new BufferedStream(client.GetStream());
+#endif
 
                         _logger.Debug("Sending request to server...");
                         WriteRequest(stream, request);
@@ -403,7 +408,7 @@ namespace Ubiety.Dns.Core
                 messageSize += length;
 
                 var data = new byte[length];
-                var unused = stream.Read(data, 0, length);
+                _ = stream.Read(data, 0, length);
 
                 _logger.Debug("Building response...");
                 var response = new Response(server, data);

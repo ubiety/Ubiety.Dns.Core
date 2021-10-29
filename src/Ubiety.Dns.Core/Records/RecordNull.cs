@@ -58,7 +58,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the record data.
         /// </summary>
-        public List<byte> Data => new List<byte>(_data);
+        public List<byte> Data => new(_data);
 
         /// <summary>
         ///     String representation of the data.

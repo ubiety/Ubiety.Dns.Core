@@ -90,7 +90,7 @@ namespace Ubiety.Dns.Core.Records
         /// <summary>
         ///     Gets the digest.
         /// </summary>
-        public List<byte> Digest => new List<byte>(_digest);
+        public List<byte> Digest => new(_digest);
 
         /// <summary>
         ///     String version of the record.
