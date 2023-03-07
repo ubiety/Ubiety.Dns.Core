@@ -27,7 +27,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
@@ -185,21 +185,21 @@ namespace Ubiety.Dns.Core
         {
             if (_dnsServers.Count <= 0)
             {
-                _logger.LogError("No DNS servers to query.");
+                _logger.Error("No DNS servers to query.");
                 return null;
             }
 
-            _logger.LogDebug($"Received {questionType} query for {domainName}");
+            _logger.Debug($"Received {questionType} query for {domainName}");
 
             var question = new Question(domainName, questionType, questionClass);
             var response = SearchInCache(question);
             if (response != null)
             {
-                _logger.LogDebug("Returning cached response...");
+                _logger.Debug("Returning cached response...");
                 return response;
             }
 
-            _logger.LogDebug("Sending request to server...");
+            _logger.Debug("Sending request to server...");
             var request = new Request();
             request.AddQuestion(question);
             return GetResponse(request);
@@ -248,7 +248,7 @@ namespace Ubiety.Dns.Core
 
         private Response SearchInCache(Question question)
         {
-            _logger.LogDebug("Searching cache for question...");
+            _logger.Debug("Searching cache for question...");
             if (!_useCache)
             {
                 return null;
@@ -260,14 +260,14 @@ namespace Ubiety.Dns.Core
             {
                 if (!_responseCache.ContainsKey(question))
                 {
-                    _logger.LogDebug("Question does not exist in cache.");
+                    _logger.Debug("Question does not exist in cache.");
                     return null;
                 }
 
                 response = _responseCache[question];
             }
 
-            _logger.LogDebug("Found question in cache...");
+            _logger.Debug("Found question in cache...");
             return response.ResourceRecords.Any(rr => rr.IsExpired(response.TimeStamp)) ? null : response;
         }
 
@@ -305,13 +305,13 @@ namespace Ubiety.Dns.Core
 
         private Response UdpRequest(Request request)
         {
-            _logger.LogDebug("Starting UDP request...");
+            _logger.Debug("Starting UDP request...");
             for (var attempts = 0; attempts < Retries; attempts++)
             {
-                _logger.LogDebug($"Attempt {attempts} of {Retries}...");
+                _logger.Debug($"Attempt {attempts} of {Retries}...");
                 foreach (var server in _dnsServers)
                 {
-                    _logger.LogDebug($"Connecting to server {server.Address}...");
+                    _logger.Debug($"Connecting to server {server.Address}...");
                     using var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
 
                     try
@@ -329,7 +329,7 @@ namespace Ubiety.Dns.Core
                     }
                     catch (SocketException exception)
                     {
-                        _logger.LogError(exception, $"Connection to nameserver {server.Address} failed");
+                        _logger.Error(exception, $"Connection to nameserver {server.Address} failed");
                     }
                 }
             }
@@ -340,13 +340,13 @@ namespace Ubiety.Dns.Core
 
         private async Task<Response> TcpRequest(Request request)
         {
-            _logger.LogDebug("Starting TCP request...");
+            _logger.Debug("Starting TCP request...");
             for (var attempts = 0; attempts < Retries; attempts++)
             {
-                _logger.LogDebug($"Attempt {attempts + 1} of {Retries}...");
+                _logger.Debug($"Attempt {attempts + 1} of {Retries}...");
                 foreach (var server in _dnsServers)
                 {
-                    _logger.LogDebug($"Connecting to {server.Address}...");
+                    _logger.Debug($"Connecting to {server.Address}...");
 
                     try
                     {
@@ -365,7 +365,7 @@ namespace Ubiety.Dns.Core
                         if (!client.Connected)
                         {
                             client.Close();
-                            _logger.LogError($"Connection to nameserver {server.Address} failed.");
+                            _logger.Error($"Connection to nameserver {server.Address} failed.");
                             continue;
                         }
 
@@ -375,20 +375,20 @@ namespace Ubiety.Dns.Core
                         await using var stream = new BufferedStream(client.GetStream());
 #endif
 
-                        _logger.LogDebug("Sending request to server...");
+                        _logger.Debug("Sending request to server...");
                         WriteRequest(stream, request);
 
                         return ReceiveResponse(stream, server);
                     }
                     catch (SocketException e)
                     {
-                        _logger.LogError(e, "Socket exception occured during request.");
+                        _logger.Error(e, "Socket exception occured during request.");
                         throw;
                     }
                 }
             }
 
-            _logger.LogDebug("Connection timed out");
+            _logger.Debug("Connection timed out");
             var responseTimeout = new Response(_logger, true);
             return responseTimeout;
         }
@@ -404,7 +404,7 @@ namespace Ubiety.Dns.Core
                 var length = (stream.ReadByte() << 8) | stream.ReadByte();
                 if (length <= 0)
                 {
-                    _logger.LogError($"Connection to nameserver {server.Address} failed");
+                    _logger.Error($"Connection to nameserver {server.Address} failed");
                     throw new SocketException();
                 }
 
@@ -413,12 +413,12 @@ namespace Ubiety.Dns.Core
                 var data = new byte[length];
                 _ = stream.Read(data, 0, length);
 
-                _logger.LogDebug("Building response...");
+                _logger.Debug("Building response...");
                 var response = new Response(_logger, server, data);
 
                 if (response.Header.ResponseCode != ResponseCode.NoError)
                 {
-                    _logger.LogDebug($"Error from server - {response.Header.ResponseCode}");
+                    _logger.Debug($"Error from server - {response.Header.ResponseCode}");
                     return response;
                 }
 

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Ubiety.Dns.Core
 {

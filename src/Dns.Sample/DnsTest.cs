@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-using Microsoft.Extensions.Logging;
+using Serilog;
 using System.Collections.Generic;
 using System.Linq;
 using Ubiety.Dns.Core;
@@ -38,11 +38,7 @@ namespace Dns.Sample
         /// <param name="dnsIp">IP of DNS server to use</param>
         public DnsTest(string dnsIp)
         {
-            var factory = LoggerFactory.Create(b => b.AddConsole());
-            var logger = factory.CreateLogger<Resolver>();
-
-
-            _resolver = ResolverBuilder.Begin(logger)
+            _resolver = ResolverBuilder.Begin(Log.Logger)
                 .AddDnsServer(dnsIp)
                 .SetTimeout(1000)
                 .EnableCache()
