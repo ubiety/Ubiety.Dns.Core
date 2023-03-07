@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 
-using Ubiety.Logging.Core;
+using Microsoft.Extensions.Logging;
 
 namespace Ubiety.Dns.Core
 {
@@ -29,14 +29,17 @@ namespace Ubiety.Dns.Core
     public class ResolverBuilder
     {
         private readonly List<IPEndPoint> _dnsServers;
-        private IUbietyLogManager _logManager;
+
+        private readonly ILogger _logger;
+
         private int _timeout;
         private bool _enableCache;
         private int _retries;
         private bool _useRecursion;
 
-        private ResolverBuilder()
+        private ResolverBuilder(ILogger logger)
         {
+            _logger = logger;
             _dnsServers = new List<IPEndPoint>();
         }
 
@@ -44,20 +47,9 @@ namespace Ubiety.Dns.Core
         ///     Begin building a DNS resolver.
         /// </summary>
         /// <returns>A <see cref="ResolverBuilder"/> instance.</returns>
-        public static ResolverBuilder Begin()
+        public static ResolverBuilder Begin(ILogger logger)
         {
-            return new();
-        }
-
-        /// <summary>
-        ///     Enable logging for the resolver.
-        /// </summary>
-        /// <param name="logManager"><see cref="IUbietyLogManager"/> instance to use for logging.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder EnableLogging(IUbietyLogManager logManager)
-        {
-            _logManager = logManager;
-            return this;
+            return new(logger);
         }
 
         /// <summary>
@@ -180,11 +172,6 @@ namespace Ubiety.Dns.Core
         /// <returns>A <see cref="Resolver"/> instance.</returns>
         public Resolver Build()
         {
-            if (_logManager != null)
-            {
-                UbietyLogger.Initialize(_logManager);
-            }
-
             if (_dnsServers.Count < 1)
             {
                 AddSystemServers();
@@ -200,7 +187,7 @@ namespace Ubiety.Dns.Core
                 _retries = 1;
             }
 
-            return new Resolver(_dnsServers) { Timeout = _timeout, UseCache = _enableCache, Retries = _retries, Recursion = _useRecursion };
+            return new Resolver(_logger, _dnsServers) { Timeout = _timeout, UseCache = _enableCache, Retries = _retries, Recursion = _useRecursion };
         }
 
         private void AddSystemServers()

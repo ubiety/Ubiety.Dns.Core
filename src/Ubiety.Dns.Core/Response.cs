@@ -19,9 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+
+using Microsoft.Extensions.Logging;
+
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
-using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core
 {
@@ -30,14 +32,15 @@ namespace Ubiety.Dns.Core
     /// </summary>
     public class Response
     {
-        private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
+        private readonly ILogger _logger;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
         /// <param name="timedOut">Sets whether the response timed out or not.</param>
-        public Response(bool timedOut)
+        public Response(ILogger logger, bool timedOut)
         {
+            _logger = logger;
             Questions = new List<Question>();
             Answers = new List<AnswerResourceRecord>();
             Authorities = new List<AuthorityResourceRecord>();
@@ -53,8 +56,8 @@ namespace Ubiety.Dns.Core
         /// <summary>
         ///     Initializes a new instance of the <see cref="Response" /> class.
         /// </summary>
-        public Response()
-            : this(false)
+        public Response(ILogger logger)
+            : this(logger, false)
         {
         }
 
@@ -65,10 +68,10 @@ namespace Ubiety.Dns.Core
         ///     <see cref="IPEndPoint" /> of the DNS server that responded to the query.
         /// </param>
         /// <param name="data">   <see cref="byte" /> array of the response data. </param>
-        public Response(IPEndPoint server, byte[] data)
-            : this()
+        public Response(ILogger logger, IPEndPoint server, byte[] data)
+            : this(logger)
         {
-            _logger.Debug("Received information from server");
+            _logger.LogDebug("Received information from server");
             data = data.ThrowIfNull(nameof(data));
             Server = server;
             MessageSize = data.Length;
@@ -78,13 +81,13 @@ namespace Ubiety.Dns.Core
 
             for (var i = 0; i < Header.QuestionCount; i++)
             {
-                _logger.Debug("Adding questions...");
+                _logger.LogDebug("Adding questions...");
                 Questions.Add(new Question(reader));
             }
 
             for (var i = 0; i < Header.AnswerCount; i++)
             {
-                _logger.Debug("Adding answers...");
+                _logger.LogDebug("Adding answers...");
                 Answers.Add(new AnswerResourceRecord(reader));
             }
 
