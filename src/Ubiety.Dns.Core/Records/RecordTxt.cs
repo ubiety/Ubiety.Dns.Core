@@ -45,16 +45,13 @@ namespace Ubiety.Dns.Core.Records
         ///     Initializes a new instance of the <see cref="RecordTxt" /> class.
         /// </summary>
         /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        /// <param name="length">Record length.</param>
-        public RecordTxt(RecordReader reader, int length)
+        public RecordTxt(RecordReader reader)
             : base(reader)
         {
-            var position = Reader.Position;
-            Text = new List<string>();
-            while ((Reader.Position - position) < length)
+            Text = new List<string>
             {
-                Text.Add(Reader.ReadString());
-            }
+                Reader.ReadString()
+            };
         }
 
         /// <summary>

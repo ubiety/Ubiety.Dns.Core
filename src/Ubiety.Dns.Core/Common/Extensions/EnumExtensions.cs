@@ -31,17 +31,11 @@ namespace Ubiety.Dns.Core.Common.Extensions
         /// </summary>
         /// <param name="type">Type of record to get.</param>
         /// <param name="reader">Resource reader to create record with.</param>
-        /// <param name="length">Length of the record.</param>
         /// <returns>A <see cref="Record"/> instance for the given type.</returns>
-        public static Record GetRecord(this RecordType type, RecordReader reader, int length = 0)
+        public static Record GetRecord(this RecordType type, RecordReader reader)
         {
             var fieldInfo = type.GetType().GetField(type.ToString());
             var recordAttr = fieldInfo.GetCustomAttribute<RecordAttribute>();
-
-            if (type == RecordType.TXT)
-            {
-                return (Record)Activator.CreateInstance(recordAttr.RecordType, reader, length);
-            }
 
             return (Record)Activator.CreateInstance(recordAttr.RecordType, reader);
         }
