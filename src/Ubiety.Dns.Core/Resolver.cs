@@ -373,7 +373,11 @@ namespace Ubiety.Dns.Core
                             continue;
                         }
 
+#if NETSTANDARD2_0
+                        using var stream = new BufferedStream(client.GetStream());
+#else
                         await using var stream = new BufferedStream(client.GetStream());
+#endif
 
                         _logger.Debug("Sending request to server...");
                         WriteRequest(stream, request);

@@ -173,7 +173,20 @@ namespace Ubiety.Dns.Core
         /// <seealso cref="object.GetHashCode()"/>
         public override int GetHashCode()
         {
+#if NETSTANDARD2_0
+              unchecked
+              {
+                  int hashcode = 1500101;
+
+                  hashcode = hashcode * 1500113 ^ DomainName.GetHashCode();
+                  hashcode = hashcode * 1500113 ^ QuestionType.GetHashCode();
+                  hashcode = hashcode * 1500113 ^ QuestionClass.GetHashCode();
+
+                  return hashcode;
+              }
+#else
             return HashCode.Combine(DomainName, QuestionClass, QuestionType);
+#endif
         }
 
         private static byte[] WriteName(string src)
@@ -200,7 +213,7 @@ namespace Ubiety.Dns.Core
                 }
             }
 
-            sb[^1] = '\0';
+            sb.Append('\0');
             return Encoding.ASCII.GetBytes(sb.ToString());
         }
     }
