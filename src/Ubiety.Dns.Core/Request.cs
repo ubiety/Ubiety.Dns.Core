@@ -16,6 +16,7 @@
  */
 
 using System.Collections.Generic;
+
 using Ubiety.Dns.Core.Common;
 
 namespace Ubiety.Dns.Core

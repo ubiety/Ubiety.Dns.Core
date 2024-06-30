@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 
@@ -35,7 +36,7 @@ namespace Ubiety.Dns.Core
         /// <param name="questionClass">Gets the query class.</param>
         public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
-            if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith(".", StringComparison.InvariantCulture))
+            if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith('.'))
             {
                 domainName += ".";
             }
@@ -160,11 +161,9 @@ namespace Ubiety.Dns.Core
         /// </returns>
         public IEnumerable<byte> GetBytes()
         {
-            var data = new List<byte>();
-            data.AddRange(WriteName(DomainName));
-            data.AddRange(((ushort)QuestionType).GetBytes());
-            data.AddRange(((ushort)QuestionClass).GetBytes());
-            return data.ToArray();
+#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
+            return [.. WriteName(DomainName), .. ((ushort)QuestionType).GetBytes(), .. ((ushort)QuestionClass).GetBytes()];
+#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
         }
 
         /// <summary>
@@ -177,9 +176,9 @@ namespace Ubiety.Dns.Core
             return HashCode.Combine(DomainName, QuestionClass, QuestionType);
         }
 
-        private static IEnumerable<byte> WriteName(string src)
+        private static byte[] WriteName(string src)
         {
-            if (!src.EndsWith(".", StringComparison.InvariantCulture))
+            if (!src.EndsWith('.'))
             {
                 src += ".";
             }

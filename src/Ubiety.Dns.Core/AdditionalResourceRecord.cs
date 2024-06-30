@@ -20,15 +20,7 @@ namespace Ubiety.Dns.Core
     /// <summary>
     ///     Additional resource record.
     /// </summary>
-    public class AdditionalResourceRecord : ResourceRecord
+    public class AdditionalResourceRecord(RecordReader reader) : ResourceRecord(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AdditionalResourceRecord" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="ResourceRecord" /> for the record data.</param>
-        public AdditionalResourceRecord(RecordReader reader)
-            : base(reader)
-        {
-        }
     }
 }

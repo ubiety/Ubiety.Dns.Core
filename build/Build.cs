@@ -15,6 +15,7 @@
  *      along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using _build;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -22,15 +23,11 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.SonarScanner;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.IO.FileSystemTasks;
+using Nuke.Common.Tools.SonarScanner;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
-using _build;
 
-[CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
@@ -39,7 +36,7 @@ class Build : NukeBuild
 
     [Parameter] readonly bool? Cover = true;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(Framework = "netcoreapp3.1")] readonly GitVersion GitVersion;
+    [GitVersion] readonly GitVersion GitVersion;
     [Parameter] readonly string NuGetKey;
 
     const string NuGetSource = "https://api.nuget.org/v3/index.json";
@@ -55,19 +52,17 @@ class Build : NukeBuild
 
     static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
-#pragma warning disable IDE0051
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
         {
-            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            EnsureCleanDirectory(ArtifactsDirectory);
+            SourceDirectory.GlobDirectories("**/bin", "**/obj").DeleteDirectories();
+            TestsDirectory.GlobDirectories("**/bin", "**/obj").DeleteDirectories();
+            ArtifactsDirectory.CreateOrCleanDirectory();
         });
 
     Target Appveyor => _ => _
         .DependsOn(Test, SonarEnd, Publish);
-#pragma warning restore IDE0051
 
     Target Restore => _ => _
         .Executes(() =>
