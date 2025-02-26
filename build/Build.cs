@@ -171,8 +171,7 @@ class Build : NukeBuild
                 .SetNoBuild(InvokedTargets.Contains(Compile))
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
-                .SetVersion(GitVersion.NuGetVersionV2)
-                .SetPackageReleaseNotes(GetNuGetReleaseNotes(ChangelogFile, GitRepository)));
+                .SetVersion(GitVersion.NuGetVersionV2));
         });
 
     Target Publish => t => t
