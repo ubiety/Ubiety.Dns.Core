@@ -18,11 +18,13 @@
     <AssemblyOriginatorKeyFile>ubiety.dns.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
   	<AnalysisLevel>latest</AnalysisLevel>
-	  <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="../../library128.png" Pack="true" PackagePath="/" />
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
