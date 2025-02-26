@@ -65,7 +65,6 @@ class Build : NukeBuild
 
     [Parameter] readonly bool Cover = true;
     [Parameter] readonly string NuGetKey;
-    [Parameter] readonly string SonarKey;
     [Parameter] readonly string GitHubToken;
 
     [CI] readonly GitHubActions GitHubActions;
@@ -124,12 +123,10 @@ class Build : NukeBuild
 
     Target SonarBegin => t => t
         .Before(Compile)
-        .Requires(() => SonarKey)
         .Unlisted()
         .Executes(() =>
         {
             SonarScannerBegin(s => s
-                .SetLogin(SonarKey)
                 .SetProjectKey(SonarProjectKey)
                 .SetServer("https://sonarcloud.io")
                 .SetVersion(GitVersion.NuGetVersionV2)
@@ -141,13 +138,11 @@ class Build : NukeBuild
     Target SonarEnd => t => t
         .After(Test)
         .DependsOn(SonarBegin)
-        .Requires(() => SonarKey)
         .AssuredAfterFailure()
         .Unlisted()
         .Executes(() =>
         {
             SonarScannerEnd(s => s
-                .SetLogin(SonarKey)
                 .SetFramework("net9.0"));
         });
 
