@@ -129,7 +129,7 @@ class Build : NukeBuild
             SonarScannerBegin(s => s
                 .SetProjectKey(SonarProjectKey)
                 .SetServer("https://sonarcloud.io")
-                .SetVersion(GitVersion.NuGetVersionV2)
+                .SetVersion(GitVersion.SemVer)
                 .SetOpenCoverPaths(ArtifactsDirectory / "coverage.opencover.xml")
                 .SetOrganization("ubiety")
                 .SetFramework("net9.0"));
@@ -171,7 +171,7 @@ class Build : NukeBuild
                 .SetNoBuild(InvokedTargets.Contains(Compile))
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
-                .SetVersion(GitVersion.NuGetVersionV2));
+                .SetVersion(GitVersion.SemVer));
         });
 
     Target Publish => t => t
