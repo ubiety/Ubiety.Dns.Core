@@ -112,6 +112,9 @@
         "Cover": {
           "type": "boolean"
         },
+        "GitHubToken": {
+          "type": "string"
+        },
         "NuGetKey": {
           "type": "string"
         },

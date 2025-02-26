@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Nuke.Common;
+using Nuke.Common.CI;
 using Nuke.Common.CI.AppVeyor;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
@@ -64,10 +65,19 @@ class Build : NukeBuild
 
     [Parameter] readonly bool Cover = true;
     [Parameter] readonly string NuGetKey;
+    [Parameter] readonly string SonarKey;
+    [Parameter] readonly string GitHubToken;
+
+    [CI] readonly GitHubActions GitHubActions;
 
     const string NuGetSource = "https://api.nuget.org/v3/index.json";
+    string GitHubSource => $"https://nuget.pkg.github.com/{GitHubActions.RepositoryOwner}/index.json";
 
-    [Parameter] readonly string SonarKey;
+    bool Beta => GitRepository.IsOnDevelopBranch() || GitRepository.IsOnFeatureBranch();
+
+    string Source => Beta ? GitHubSource : NuGetSource;
+    string ApiKey => Beta ? GitHubToken : NuGetKey;
+
     const string SonarProjectKey = "ubiety_Ubiety.Dns.Core";
 
     static AbsolutePath SourceDirectory => RootDirectory / "src";
@@ -172,13 +182,23 @@ class Build : NukeBuild
 
     Target Publish => t => t
         .DependsOn(Pack)
-        .Requires(() => NuGetKey)
+        .Consumes(Pack)
+        .Requires(() => !NuGetKey.IsNullOrEmpty() || Beta)
         .Requires(() => Configuration.Equals(Configuration.Release))
         .Executes(() =>
         {
+            if (Beta)
+            {
+                DotNetNuGetAddSource(c => c
+                    .SetSource(GitHubSource)
+                    .SetUsername(GitHubActions.Actor)
+                    .SetPassword(GitHubToken)
+                    .SetStorePasswordInClearText(true));
+            }
+
             DotNetNuGetPush(s => s
-                    .SetApiKey(NuGetKey)
-                    .SetSource(NuGetSource)
+                    .SetApiKey(ApiKey)
+                    .SetSource(Source)
                     .CombineWith(PackageFiles, (f, p) => f.SetTargetPath(p)),
                 5,
                 true);
