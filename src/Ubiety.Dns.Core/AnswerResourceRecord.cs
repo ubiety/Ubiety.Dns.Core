@@ -18,8 +18,13 @@
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     Answer resource record.
+    /// Represents an answer resource record in a DNS response. An answer resource record contains information such as
+    /// the NAME, TYPE, CLASS, TTL, RDLENGTH, and RDATA fields as defined in the DNS protocol specification.
     /// </summary>
+    /// <remarks>
+    /// This class is used to parse and process the answer section of DNS messages, providing details about
+    /// resolved names and their associated data.
+    /// </remarks>
     public class AnswerResourceRecord(RecordReader reader) : ResourceRecord(reader)
     {
     }

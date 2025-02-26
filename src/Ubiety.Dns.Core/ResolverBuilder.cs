@@ -24,7 +24,7 @@ using Ubiety.Logging.Core;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     Builds a resolver instance.
+    /// Provides a builder for configuring and creating a DNS resolver.
     /// </summary>
     public class ResolverBuilder
     {
@@ -43,18 +43,18 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Begin building a DNS resolver.
+        /// Creates a new instance of the <see cref="ResolverBuilder"/> class.
         /// </summary>
-        /// <returns>A <see cref="ResolverBuilder"/> instance.</returns>
+        /// <returns>A new <see cref="ResolverBuilder"/> instance for configuring a DNS resolver.</returns>
         public static ResolverBuilder Begin()
         {
             return new();
         }
 
         /// <summary>
-        ///     Enable logging for the resolver.
+        /// Enables logging for the DNS resolver.
         /// </summary>
-        /// <param name="logManager"><see cref="IUbietyLogManager"/> instance to use for logging.</param>
+        /// <param name="logManager">An <see cref="IUbietyLogManager"/> instance to be used for logging.</param>
         /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder EnableLogging(IUbietyLogManager logManager)
         {
@@ -63,10 +63,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Add a DNS server to the resolver.
+        /// Adds a DNS server to the resolver.
         /// </summary>
-        /// <param name="server"><see cref="IPEndPoint" /> of the server.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <param name="server">The <see cref="IPEndPoint"/> representing the DNS server.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder AddDnsServer(IPEndPoint server)
         {
             _dnsServers.Add(server);
@@ -75,11 +75,11 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Add a DNS server to the resolver.
+        /// Adds a DNS server to the resolver.
         /// </summary>
-        /// <param name="serverAddress"><see cref="IPAddress" /> of the server.</param>
-        /// <param name="port">Port of the server.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <param name="serverAddress">The <see cref="IPAddress"/> of the DNS server.</param>
+        /// <param name="port">The port number of the DNS server.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port)
         {
             _dnsServers.Add(new IPEndPoint(serverAddress, port));
@@ -88,9 +88,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Add a DNS server to the resolver.
+        /// Adds a DNS server to the resolver.
         /// </summary>
-        /// <param name="serverAddress"><see cref="IPAddress"/> of the server.</param>
+        /// <param name="serverAddress">The <see cref="IPAddress"/> representing the DNS server to add.</param>
         /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder AddDnsServer(IPAddress serverAddress)
         {
@@ -98,20 +98,20 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Add a DNS server to the resolver.
+        /// Adds a DNS server to the resolver.
         /// </summary>
-        /// <param name="serverAddress">String representing the ip address of the server.</param>
-        /// <param name="port">Port of the server.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <param name="serverAddress">The string representing the DNS server to be added.</param>
+        /// <param name="port">The port number of the DNS server.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder AddDnsServer(string serverAddress, int port)
         {
             return IPAddress.TryParse(serverAddress, out var serverIp) ? AddDnsServer(serverIp, port) : this;
         }
 
         /// <summary>
-        ///     Add a DNS server to the resolver.
+        /// Adds a DNS server to the resolver.
         /// </summary>
-        /// <param name="serverAddress">String representing the ip address of the server.</param>
+        /// <param name="serverAddress">The endpoint of the DNS server to be added.</param>
         /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder AddDnsServer(string serverAddress)
         {
@@ -119,10 +119,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Add multiple DNS servers to the resolver.
+        /// Adds multiple DNS servers to the resolver.
         /// </summary>
-        /// <param name="dnsServers"><see cref="IEnumerable{IPEndPoint}" /> with the endpoints.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <param name="dnsServers">A collection of <see cref="IPEndPoint"/> representing the DNS servers to be added.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance for further configuration.</returns>
         public ResolverBuilder AddDnsServers(IEnumerable<IPEndPoint> dnsServers)
         {
             _dnsServers.AddRange(dnsServers);
@@ -131,10 +131,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Set a timeout in milliseconds for TCP requests.
+        /// Sets the timeout duration for DNS resolver requests.
         /// </summary>
-        /// <param name="timeout">Time in milliseconds to wait for a response.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <param name="timeout">The time in milliseconds to wait for a response before timing out.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder SetTimeout(int timeout)
         {
             _timeout = timeout;
@@ -143,9 +143,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Enable caching of DNS responses.
+        /// Enables caching for the DNS resolver.
         /// </summary>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder EnableCache()
         {
             _enableCache = true;
@@ -154,10 +154,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Set the number of times a request should be tried before failure.
+        /// Sets the number of retry attempts for DNS resolution.
         /// </summary>
-        /// <param name="retries">Tries to use.</param>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <param name="retries">The number of retries to attempt.</param>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder SetRetries(int retries)
         {
             _retries = retries;
@@ -166,9 +166,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Use recursion when resolving queries.
+        /// Enables recursion for the DNS resolver.
         /// </summary>
-        /// <returns>The current <see cref="ResolverBuilder" /> instance.</returns>
+        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
         public ResolverBuilder UseRecursion()
         {
             _useRecursion = true;
@@ -177,9 +177,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Build the resolver instance with options provided.
+        /// Builds and returns a configured instance of the <see cref="Resolver"/> class.
         /// </summary>
-        /// <returns>A <see cref="Resolver"/> instance.</returns>
+        /// <returns>A configured <see cref="Resolver"/> instance.</returns>
         public Resolver Build()
         {
             if (_logManager != null)

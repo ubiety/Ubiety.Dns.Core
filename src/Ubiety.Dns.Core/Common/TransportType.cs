@@ -18,17 +18,17 @@
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Network transport type.
+    /// Defines the types of transport protocols used in DNS communication.
     /// </summary>
     public enum TransportType
     {
         /// <summary>
-        ///     Use the UDP transport.
+        /// Use the UDP transport.
         /// </summary>
         Udp,
 
         /// <summary>
-        ///     Use the TCP transport.
+        /// Use the TCP transport.
         /// </summary>
         Tcp,
     }

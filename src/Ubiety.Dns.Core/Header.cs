@@ -23,7 +23,7 @@ using Ubiety.Dns.Core.Common.Extensions;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS Record header.
+    /// Represents the DNS message header, which contains metadata about a DNS request or response.
     /// </summary>
     public class Header
     {
@@ -52,32 +52,37 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the unique identifier of the record.
+        /// Gets or sets the identifier for the DNS message header,
+        /// used to match requests with responses.
         /// </summary>
         public ushort Id { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of questions in the record.
+        /// Gets or sets the number of questions in the DNS message.
+        /// This represents the count of entries in the question section of the DNS message.
         /// </summary>
         public ushort QuestionCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of answers in the record.
+        /// Gets or sets the number of answer records in the DNS message.
+        /// This corresponds to the count of resource records in the Answer section of the message.
         /// </summary>
         public ushort AnswerCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of name servers in the record.
+        /// Gets or sets the count of authoritative nameservers in a DNS response.
+        /// This property is used to track the number of resource records in the
+        /// authority section of a DNS message.
         /// </summary>
         public ushort NameserverCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the number of additional records in the record.
+        /// Gets or sets the count of additional resource records in the DNS message.
         /// </summary>
         public ushort AdditionalRecordsCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the record is a query or response. False for Query, True for Response.
+        /// Gets or sets a value indicating whether the message is a query (false) or a response (true).
         /// </summary>
         public bool QueryResponse
         {
@@ -86,7 +91,8 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the record operation code flag.
+        /// Gets or sets the operation code (OpCode) of the DNS message,
+        /// which indicates the type of query or operation being performed.
         /// </summary>
         public OperationCode OpCode
         {
@@ -95,7 +101,7 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the record is an authoritative answer.
+        /// Gets or sets a value indicating whether the responding server is authoritative for the domain name in the query.
         /// </summary>
         public bool AuthoritativeAnswer
         {
@@ -104,7 +110,8 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the truncation flag is set.
+        /// Gets or sets a value indicating whether the DNS message has been truncated.
+        /// Truncation occurs when the message size exceeds the specified limit.
         /// </summary>
         public bool Truncation
         {
@@ -113,7 +120,8 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the recursion flag is set.
+        /// Gets or sets a value indicating whether recursion is desired by the client
+        /// or allowed in the server for the DNS operation.
         /// </summary>
         public bool Recursion
         {
@@ -122,7 +130,8 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the recursion available flag is set.
+        /// Gets or sets a value indicating whether recursion is available for the DNS query.
+        /// This flag is used in DNS responses to signify if the server supports recursive queries.
         /// </summary>
         public bool RecursionAvailable
         {
@@ -131,7 +140,8 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets a record reserved flag.
+        /// Gets or sets the reserved bit field in the DNS message header.
+        /// This field is reserved for future use and must be set to zero as per RFC specifications.
         /// </summary>
         public ushort Z
         {
@@ -140,7 +150,8 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets or sets the record response code.
+        /// Gets or sets the response code, indicating the result of the DNS query processing.
+        /// This code defines the outcome of the DNS operation, such as success, failure, or specific error categories.
         /// </summary>
         public ResponseCode ResponseCode
         {
@@ -149,9 +160,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the header as a byte array.
+        /// Converts the header properties into a sequence of bytes for serialization.
         /// </summary>
-        /// <returns>Byte array of the header data.</returns>
+        /// <returns>A sequence of bytes representing the header data.</returns>
         public IEnumerable<byte> GetBytes()
         {
 #pragma warning disable SA1010 // Opening square brackets should be spaced correctly

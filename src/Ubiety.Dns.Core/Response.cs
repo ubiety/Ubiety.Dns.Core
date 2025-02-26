@@ -27,7 +27,9 @@ using Ubiety.Logging.Core;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS response.
+    /// Represents a DNS response received from a DNS server. This class contains
+    /// details about the DNS response, such as questions, answers, authorities,
+    /// additional records, and metadata.
     /// </summary>
     public class Response
     {
@@ -39,10 +41,10 @@ namespace Ubiety.Dns.Core
         /// <param name="timedOut">Sets whether the response timed out or not.</param>
         public Response(bool timedOut)
         {
-            Questions = new List<Question>();
-            Answers = new List<AnswerResourceRecord>();
-            Authorities = new List<AuthorityResourceRecord>();
-            Additional = new List<AdditionalResourceRecord>();
+            Questions = [];
+            Answers = [];
+            Authorities = [];
+            Additional = [];
 
             Server = new IPEndPoint(0, 0);
             MessageSize = 0;
@@ -101,52 +103,53 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the list of question records.
+        /// Gets the list of question resource records.
         /// </summary>
         public List<Question> Questions { get; }
 
         /// <summary>
-        ///     Gets the list of answer resource records.
+        /// Gets the list of answer resource records.
         /// </summary>
         public List<AnswerResourceRecord> Answers { get; }
 
         /// <summary>
-        ///     Gets the list of authority resource records.
+        /// Gets the list of authority resource records.
         /// </summary>
         public List<AuthorityResourceRecord> Authorities { get; }
 
         /// <summary>
-        ///     Gets the list of additional resource records.
+        /// Gets the list of additional resource records.
         /// </summary>
         public List<AdditionalResourceRecord> Additional { get; }
 
         /// <summary>
-        ///     Gets the response header.
+        /// Gets the header information of the DNS response. The header contains metadata
+        /// such as ID, flags, question count, and record counts associated with the DNS response.
         /// </summary>
         public Header Header { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether the response timed out or not.
+        /// Gets a value indicating whether the DNS response timed out.
         /// </summary>
         public bool TimedOut { get; }
 
         /// <summary>
-        ///     Gets or sets the size of the message.
+        /// Gets or sets the size of the DNS message in bytes.
         /// </summary>
         public int MessageSize { get; set; }
 
         /// <summary>
-        ///     Gets the timestamp when cached.
+        /// Gets the timestamp indicating when the response was received or created.
         /// </summary>
         public DateTime TimeStamp { get; }
 
         /// <summary>
-        ///     Gets the <see cref="IPEndPoint" /> of the DNS server that responded.
+        /// Gets the IP endpoint of the DNS server that provided the response.
         /// </summary>
         public IPEndPoint Server { get; }
 
         /// <summary>
-        ///     Gets a list of resource records in the <see cref="Response" />.
+        /// Gets the collection of all resource records, including answers, authorities, and additional records.
         /// </summary>
         public IEnumerable<ResourceRecord> ResourceRecords
         {
@@ -161,9 +164,11 @@ namespace Ubiety.Dns.Core
             }
         }
 
-        /// <summary> Gets the records. </summary>
-        /// <typeparam name="T"> Generic type parameter. </typeparam>
-        /// <returns> The records. </returns>
+        /// <summary>
+        /// Retrieves a list of DNS records of a specific type from the response.
+        /// </summary>
+        /// <typeparam name="T">The type of DNS records to retrieve, derived from <see cref="Record"/>.</typeparam>
+        /// <returns>A list of DNS records of the specified type found in the response.</returns>
         public List<T> GetRecords<T>()
             where T : Record
         {

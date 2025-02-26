@@ -18,27 +18,27 @@
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Resource record class.
+    /// Specifies the operation class for DNS queries and resource records.
     /// </summary>
     public enum OperationClass
     {
         /// <summary>
-        ///     Internet class.
+        /// Represents the Internet class used in DNS queries and resource records.
         /// </summary>
         IN = 1,
 
         /// <summary>
-        ///     CSNET class.
+        /// Represents the CS (CSNET) class, which is an obsolete class formerly used in early networking contexts.
         /// </summary>
         CS = 2,
 
         /// <summary>
-        ///     CHAOS class.
+        /// Represents the Chaos class used in DNS queries and resource records.
         /// </summary>
         CH = 3,
 
         /// <summary>
-        ///     Hesiod class.
+        /// Represents the Hesiod class used in DNS queries and resource records.
         /// </summary>
         HS = 4,
     }

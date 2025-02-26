@@ -18,32 +18,33 @@
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Question class.
+    /// Represents the class of a DNS question, specifying the scope or network context
+    /// for a DNS query, such as Internet, CSNET, Chaos, or Hesiod.
     /// </summary>
     public enum QuestionClass
     {
         /// <summary>
-        ///     Internet class.
+        /// IN class, representing the Internet class for DNS queries.
         /// </summary>
         IN = OperationClass.IN,
 
         /// <summary>
-        ///     CSNET class.
+        /// CS class, representing the CSNET (Computer Science Network) class for DNS queries.
         /// </summary>
         CS = OperationClass.CS,
 
         /// <summary>
-        ///     CHAOS class.
+        /// CH class, representing the Chaos network class for DNS queries.
         /// </summary>
         CH = OperationClass.CH,
 
         /// <summary>
-        ///     Hesiod class.
+        /// HS class, representing the Hesiod class for DNS queries.
         /// </summary>
         HS = OperationClass.HS,
 
         /// <summary>
-        ///     Any question class.
+        /// ANY class, representing a wildcard class that matches any DNS query class.
         /// </summary>
         Any = 255,
     }

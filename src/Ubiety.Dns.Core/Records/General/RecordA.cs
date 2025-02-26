@@ -20,23 +20,15 @@ using System.Net;
 namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
-    ///     IPv4 Address DNS record.
+    /// Represents a DNS A Record used to map a domain to an IPv4 address.
     /// </summary>
     /// <remarks>
-    ///     # [Description](#tab/description)
-    ///     A Records are the most basic type of DNS record and are used to point
-    ///     a domain or subdomain to an IP address.
-    ///     # [RFC](#tab/rfc)
-    ///     ```
-    ///     A RDATA format
-    ///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    ///     |                    ADDRESS                    |
-    ///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    ///     where:
-    ///     ADDRESS     A 32 bit internet address
-    ///     Hosts that have multiple internet address will have multiple A
-    ///     records.
-    ///     ```.
+    /// A Records are the most basic type of DNS record. They map a domain or subdomain
+    /// to a 32-bit IPv4 address.
+    /// Multiple A Records may exist for a single domain, each pointing to a different IP address.
+    /// This allows for techniques such as load balancing or redundancy.
+    /// The A RDATA format includes a single field:
+    /// ADDRESS - A 32-bit IPv4 internet address.
     /// </remarks>
     public record RecordA : Record
     {
@@ -47,19 +39,23 @@ namespace Ubiety.Dns.Core.Records.General
         public RecordA(RecordReader reader)
             : base(reader)
         {
-            Address = IPAddress.Parse($"{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}");
+            Address = IPAddress.Parse(
+                $"{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}");
         }
 
         /// <summary>
-        ///     Gets the IP address.
+        /// Gets the IPv4 address associated with the DNS A Record.
         /// </summary>
-        /// <value>IP address of the A record.</value>
+        /// <remarks>
+        /// Represents a 32-bit IPv4 internet address contained in the DNS A Record.
+        /// This address is used to map a domain or subdomain to a specific IPv4 address.
+        /// </remarks>
         public IPAddress Address { get; }
 
         /// <summary>
-        ///     String representation of the address.
+        /// Converts the current record's data to its string representation.
         /// </summary>
-        /// <returns>String of the IP address.</returns>
+        /// <returns>A string representation of the record, typically the IP address in this case.</returns>
         public override string ToString()
         {
             return Address.ToString();

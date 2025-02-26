@@ -18,192 +18,192 @@
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     DNS question type.
+    /// Specifies the different types of questions that can be queried in a DNS protocol.
     /// </summary>
     public enum QuestionType
     {
         /// <summary>
-        ///     IPv4 host address type.
+        /// A host address record.
         /// </summary>
         A = RecordType.A,
 
         /// <summary>
-        ///     An authoritative nameserver.
+        /// A DNS name server record.
         /// </summary>
         NS = RecordType.NS,
 
         /// <summary>
-        ///     Canonical name DNS record type.
+        /// A canonical name record used to alias one domain name to another.
         /// </summary>
         CNAME = RecordType.CNAME,
 
         /// <summary>
-        ///     Marks the start of a zone of authority.
+        /// Specifies a Start of Authority (SOA) record, which contains important information about a DNS zone, including the primary name server, administrator's email, and zone properties.
         /// </summary>
         SOA = RecordType.SOA,
 
         /// <summary>
-        ///     Mailbox domain name type (EXPERIMENTAL).
+        /// A mailbox domain name record.
         /// </summary>
         MB = RecordType.MB,
 
         /// <summary>
-        ///     Mail group member type (EXPERIMENTAL).
+        /// A mail group resource record.
         /// </summary>
         MG = RecordType.MG,
 
         /// <summary>
-        ///     Mail rename domain type (EXPERIMENTAL).
+        /// A mail rename domain name.
         /// </summary>
         MR = RecordType.MR,
 
         /// <summary>
-        ///     Null resource record type (EXPERIMENTAL).
+        /// Represents a NULL resource record.
         /// </summary>
         NULL = RecordType.NULL,
 
         /// <summary>
-        ///     Well known service description type.
+        /// A well-known service record.
         /// </summary>
         WKS = RecordType.WKS,
 
         /// <summary>
-        ///     Domain name pointer type.
+        /// A pointer record, used to map an IP address to a domain name in reverse DNS lookups.
         /// </summary>
         PNTR = RecordType.PNTR,
 
         /// <summary>
-        ///     Host information type.
+        /// Host information record, providing CPU and operating system details.
         /// </summary>
         HINFO = RecordType.HINFO,
 
         /// <summary>
-        ///     Mailbox or mail list information.
+        /// Represents a mailbox or mail group information record.
         /// </summary>
         MINFO = RecordType.MINFO,
 
         /// <summary>
-        ///     Mail exchange type.
+        /// A mail exchange record.
         /// </summary>
         MX = RecordType.MX,
 
         /// <summary>
-        ///     Text string type.
+        /// A text record used to store descriptive or configuration information.
         /// </summary>
         TXT = RecordType.TXT,
 
         /// <summary>
-        ///     Responsible person DNS type.
+        /// A resource record type for Responsible Person.
         /// </summary>
         RP = RecordType.RP,
 
         /// <summary>
-        ///     AFS database location.
+        /// A record that specifies the location of an AFS cell database server.
         /// </summary>
         AFSDB = RecordType.AFSDB,
 
         /// <summary>
-        ///     X.25 address.
+        /// An X.25 PSDN address record.
         /// </summary>
         X25 = RecordType.X25,
 
         /// <summary>
-        ///     ISDN address.
+        /// Integrated Services Digital Network address record.
         /// </summary>
         ISDN = RecordType.ISDN,
 
         /// <summary>
-        ///     Route through DNS type.
+        /// A route-through record.
         /// </summary>
         RT = RecordType.RT,
 
         /// <summary>
-        ///     Network service access point address.
+        /// Represents a Network Service Access Point (NSAP) address record.
         /// </summary>
         NSAP = RecordType.NSAP,
 
         /// <summary>
-        ///     Cryptographic public key signature.
+        /// A resource record type used for digital signatures in DNSSEC.
         /// </summary>
         SIG = RecordType.SIG,
 
         /// <summary>
-        ///     Public key for DNSSEC.
+        /// Represents a DNS security key record.
         /// </summary>
         KEY = RecordType.KEY,
 
         /// <summary>
-        ///     Pointer to X.400 mail mapping information.
+        /// Pointer to X.400/RFC822 mapping information.
         /// </summary>
         PX = RecordType.PX,
 
         /// <summary>
-        ///     IPv6 address DNS type.
+        /// A record specifying an IPv6 address.
         /// </summary>
         AAAA = RecordType.AAAA,
 
         /// <summary>
-        ///     DNS location information.
+        /// A location record.
         /// </summary>
         LOC = RecordType.LOC,
 
         /// <summary>
-        ///     Location of services.
+        /// A service locator record.
         /// </summary>
         SRV = RecordType.SRV,
 
         /// <summary>
-        ///     Naming authority pointer.
+        /// A Naming Authority Pointer record, used for service delegation in DNS.
         /// </summary>
         NAPTR = RecordType.NAPTR,
 
         /// <summary>
-        ///     Key exchange delegation record.
+        /// A key exchange resource record.
         /// </summary>
         KX = RecordType.KX,
 
         /// <summary>
-        ///     Certificate DNS record.
+        /// A resource record used for storing certificates.
         /// </summary>
         CERT = RecordType.CERT,
 
         /// <summary>
-        ///     Delegation signer DNS type.
+        /// Delegation Signer record type.
         /// </summary>
         DS = RecordType.DS,
 
         /// <summary>
-        ///     Transaction key DNS type.
+        /// Represents a Transaction Key record.
         /// </summary>
         TKEY = RecordType.TKEY,
 
         /// <summary>
-        ///     Transaction signature DNS type.
+        /// A transaction signature record used to provide authentication for DNS messages.
         /// </summary>
         TSIG = RecordType.TSIG,
 
         /// <summary>
-        ///     Incremental transfer.
+        /// Represents an incremental zone transfer request.
         /// </summary>
         IXFR = 251,
 
         /// <summary>
-        ///     Zone transfer question.
+        /// A request for a full zone transfer.
         /// </summary>
         AXFR = 252,
 
         /// <summary>
-        ///     Mailbox resource record question.
+        /// A request for a mailbox-related record.
         /// </summary>
         MAILB = 253,
 
         /// <summary>
-        ///     Mail agent resource record question.
+        /// A deprecated request for mail agent records.
         /// </summary>
         MAILA = 254,
 
         /// <summary>
-        ///     Request all records for a domain.
+        /// Represents a wildcard question type that matches any resource record.
         /// </summary>
         ANY = 255,
     }

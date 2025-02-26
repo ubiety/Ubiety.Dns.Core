@@ -23,28 +23,28 @@ using Ubiety.Dns.Core.Records;
 namespace Ubiety.Dns.Core.Common.Extensions
 {
     /// <summary>
-    ///     Enumeration extension methods.
+    /// Provides extension methods for operations related to enumerations in the DNS core library.
     /// </summary>
     public static class EnumExtensions
     {
         /// <summary>
-        ///     Gets the record for the record type.
+        /// Retrieves a record instance of the specified type, using the provided resource reader and optional length.
         /// </summary>
-        /// <param name="type">Type of record to get.</param>
-        /// <param name="reader">Resource reader to create record with.</param>
-        /// <param name="length">Length of the record.</param>
-        /// <returns>A <see cref="Record"/> instance for the given type.</returns>
+        /// <param name="type">The type of the DNS record to retrieve.</param>
+        /// <param name="reader">The resource reader used to create the record.</param>
+        /// <param name="length">The length of the record, used for certain record types. Defaults to 0.</param>
+        /// <returns>An instance of the <see cref="Record"/> class for the specified record type.</returns>
         public static Record GetRecord(this RecordType type, RecordReader reader, int length = 0)
         {
             var fieldInfo = type.GetType().GetField(type.ToString());
-            var recordAttr = fieldInfo.GetCustomAttribute<RecordAttribute>();
+            var recordAttr = fieldInfo?.GetCustomAttribute<RecordAttribute>();
 
             if (type == RecordType.TXT)
             {
-                return (Record)Activator.CreateInstance(recordAttr.RecordType, reader, length);
+                return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader, length);
             }
 
-            return (Record)Activator.CreateInstance(recordAttr.RecordType, reader);
+            return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader);
         }
     }
 }

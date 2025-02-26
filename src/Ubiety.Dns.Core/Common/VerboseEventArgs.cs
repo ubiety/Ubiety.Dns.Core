@@ -20,16 +20,13 @@ using System;
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Verbose event args.
+    /// Represents event arguments that provide a message for verbose logging purposes.
     /// </summary>
     public class VerboseEventArgs(string message) : EventArgs
     {
         /// <summary>
         ///     Gets or sets the message to output.
         /// </summary>
-        public string Message
-        {
-            get => message; set => message = value;
-        }
+        public string Message { get; set; } = message;
     }
 }

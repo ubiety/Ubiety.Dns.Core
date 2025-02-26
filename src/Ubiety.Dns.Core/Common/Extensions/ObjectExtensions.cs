@@ -20,17 +20,18 @@ using System;
 namespace Ubiety.Dns.Core.Common.Extensions
 {
     /// <summary>
-    ///    Object class extension methods.
+    /// Provides extension methods for object validation.
     /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
-        ///     Checks for null and throws an exception.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified object is null.
         /// </summary>
-        /// <param name="target">Object to check for null.</param>
-        /// <param name="name">Name of the parameter.</param>
-        /// <typeparam name="T">Type of object to check.</typeparam>
-        /// <returns>Target object if not null.</returns>
+        /// <param name="target">The object to check for null.</param>
+        /// <param name="name">The name of the parameter being validated.</param>
+        /// <typeparam name="T">The type of the object to check.</typeparam>
+        /// <returns>The non-null target object.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the target object is null.</exception>
         public static T ThrowIfNull<T>(this T target, string name)
             where T : class
         {

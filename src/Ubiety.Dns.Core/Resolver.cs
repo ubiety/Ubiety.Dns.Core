@@ -34,7 +34,8 @@ using Ubiety.Logging.Core;
 namespace Ubiety.Dns.Core
 {
     /// <summary>
-    ///     DNS resolver runs queries against a server.
+    /// Represents a DNS resolver that performs DNS queries and manages response caching
+    /// with support for customizable transport protocols and query configurations.
     /// </summary>
     public partial class Resolver
     {
@@ -45,7 +46,6 @@ namespace Ubiety.Dns.Core
         private readonly bool _useCache;
 
         /// <summary> Initializes a new instance of the <see cref="Resolver" /> class. </summary>
-        /// <remarks> Dieter (coder2000) Lunn, 2020-04-01. </remarks>
         /// <param name="dnsServers"> Set of DNS servers to use for resolution. </param>
         internal Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
@@ -58,34 +58,38 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the current version of the library.
+        /// Gets the version information for the current assembly.
         /// </summary>
         public static string Version => Assembly.GetExecutingAssembly()
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
             ?.InformationalVersion;
 
         /// <summary>
-        ///     Gets the resolution timeout in milliseconds.
+        /// Gets or initializes the timeout duration, in milliseconds, for DNS queries.
+        /// This value determines how long the resolver waits for a response before timing out.
         /// </summary>
         public int Timeout { get; init; }
 
         /// <summary>
-        ///     Gets the number of retries before giving up.
+        /// Gets or initializes the number of retry attempts for DNS queries in case of failure.
         /// </summary>
         public int Retries { get; init; }
 
         /// <summary>
-        ///     Gets a value indicating whether recursion is enabled for queries.
+        /// Gets a value indicating whether DNS recursion is enabled for the resolver.
+        /// When enabled, recursive DNS queries are performed, allowing the resolver to fetch complete DNS responses.
         /// </summary>
         public bool Recursion { get; init; }
 
         /// <summary>
-        ///     Gets or sets protocol to use.
+        /// Gets or sets the transport protocol used for DNS queries.
+        /// Determines whether queries are sent over UDP or TCP.
         /// </summary>
         public TransportType TransportType { get; set; }
 
         /// <summary>
-        ///     Gets a value indicating whether to use the cache.
+        /// Gets a value indicating whether the DNS resolver should use caching for responses.
+        /// When set to <c>false</c>, the existing cache is cleared.
         /// </summary>
         public bool UseCache
         {
@@ -104,10 +108,10 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Translates the IPV4 or IPV6 address into an arpa address.
+        /// Converts the given IP address into its corresponding reverse DNS ARPA address.
         /// </summary>
-        /// <param name="ip">IP address to get the arpa address for.</param>
-        /// <returns>The 'mirrored' IPV4 or IPV6 arpa address.</returns>
+        /// <param name="ip">The IP address to be converted into an ARPA address.</param>
+        /// <returns>A string representing the reverse DNS ARPA address for the provided IP address. If the address family is unsupported, returns "?".</returns>
         public static string GetArpaFromIp(IPAddress ip)
         {
             ip = ip.ThrowIfNull(nameof(ip));
@@ -145,18 +149,14 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Get ARPA address from enumerator.
+        /// Converts an enumerator string to its corresponding ARPA address.
         /// </summary>
-        /// <param name="enumerator">Enumerator for the address.</param>
-        /// <returns>String of the ARPA address.</returns>
+        /// <param name="enumerator">The enumerator representing a numerical address to convert.</param>
+        /// <returns>The resulting ARPA address as a string.</returns>
         public static string GetArpaFromEnumerator(string enumerator)
         {
             var sb = new StringBuilder();
-#if NET7_0_OR_GREATER
             var number = Number().Replace(enumerator, string.Empty);
-#else
-            var number = Regex.Replace(enumerator, "[^0-9]", string.Empty);
-#endif
             sb.Append("e164.arpa.");
             foreach (var c in number)
             {
@@ -167,9 +167,8 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Clear the resolver cache.
+        /// Clears all entries in the DNS response cache.
         /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
         public void ClearCache()
         {
             lock (_responseCache)
@@ -178,12 +177,12 @@ namespace Ubiety.Dns.Core
             }
         }
 
-        /// <summary> Execute a query on a DNS server. </summary>
-        /// <param name="domainName">    Domain name to look up. </param>
-        /// <param name="questionType">  Question type of the query. </param>
-        /// <param name="questionClass"> Class type of the query. </param>
-        /// <returns> DNS response for request. </returns>
-        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass)
+        /// <summary> Sends a DNS query for the specified domain name, question type, and question class. </summary>
+        /// <param name="domainName"> The domain name to resolve. </param>
+        /// <param name="questionType"> The type of DNS query (e.g., A, AAAA, MX). </param>
+        /// <param name="questionClass"> The class of DNS query (e.g., IN for Internet). </param>
+        /// <returns> A <see cref="Response"/> containing the result of the DNS query. </returns>
+        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
         {
             if (_dnsServers.Count <= 0)
             {
@@ -207,19 +206,8 @@ namespace Ubiety.Dns.Core
             return GetResponse(request);
         }
 
-        /// <summary> Execute a query on a DNS server. </summary>
-        /// <param name="domainName">    Domain name to look up. </param>
-        /// <param name="questionType">  Question type of the query. </param>
-        /// <returns> DNS response for request. </returns>
-        public Response Query(string domainName, QuestionType questionType)
-        {
-            return Query(domainName, questionType, QuestionClass.IN);
-        }
-
-#if NET7_0_OR_GREATER
         [GeneratedRegex("[^0-9]")]
         private static partial Regex Number();
-#endif
 
         private static void WriteRequest(BufferedStream stream, Request request)
         {
@@ -316,7 +304,8 @@ namespace Ubiety.Dns.Core
                 foreach (var server in _dnsServers)
                 {
                     _logger.Debug($"Connecting to server {server.Address}...");
-                    using var client = new UdpClient(AddressFamily.InterNetworkV6) { Client = { DualMode = true } };
+                    using var client = new UdpClient(AddressFamily.InterNetworkV6);
+                    client.Client.DualMode = true;
 
                     try
                     {
@@ -373,11 +362,7 @@ namespace Ubiety.Dns.Core
                             continue;
                         }
 
-#if NETSTANDARD2_0
-                        using var stream = new BufferedStream(client.GetStream());
-#else
                         await using var stream = new BufferedStream(client.GetStream());
-#endif
 
                         _logger.Debug("Sending request to server...");
                         WriteRequest(stream, request);

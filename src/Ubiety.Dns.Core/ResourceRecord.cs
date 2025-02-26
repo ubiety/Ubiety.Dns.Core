@@ -79,8 +79,11 @@ namespace Ubiety.Dns.Core
     */
 
     /// <summary>
-    ///     Resource Record (rfc1034 3.6.)
+    /// Represents a DNS resource record as defined in RFC 1035.
     /// </summary>
+    /// <remarks>
+    /// A resource record provides information about a DNS entity, including its name, type, class, time-to-live, record length, and resource data.
+    /// </remarks>
     public class ResourceRecord
     {
         /// <summary>
@@ -100,27 +103,28 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the name of the node to which this resource record pertains.
+        /// Gets the owner name of the node to which this resource record pertains.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        ///     Gets the type of resource record.
+        /// Gets the resource record type, which defines the format of the data in the RDATA field.
         /// </summary>
         public RecordType Type { get; }
 
         /// <summary>
-        ///     Gets the type class of resource record, mostly IN but can be CS, CH or HS.
+        /// Gets the class of the resource record, represented by a two-octet code as specified in the DNS RR CLASS definitions.
         /// </summary>
         public OperationClass Class { get; }
 
         /// <summary>
-        ///     Gets the time to live, in seconds, that the resource record may be cached.
+        /// Gets the time interval, in seconds, that the resource record may be cached before the source of the information must be consulted again.
+        /// A zero value indicates the record cannot be cached and is valid only for the ongoing transaction.
         /// </summary>
         public uint TimeToLive { get; }
 
         /// <summary>
-        ///     Gets the record length.
+        /// Gets the length, in octets, of the resource data (RDATA) field for this resource record.
         /// </summary>
         public ushort RecordLength { get; }
 
@@ -130,10 +134,10 @@ namespace Ubiety.Dns.Core
         public Record Record { get; }
 
         /// <summary>
-        ///     Is the record expired according to the response timestamp.
+        /// Determines whether the resource record is expired based on the response timestamp.
         /// </summary>
-        /// <param name="responseTimeStamp">Timestamp from the response for the record.</param>
-        /// <returns>True if the record is expired; otherwise false.</returns>
+        /// <param name="responseTimeStamp">The timestamp from the response for the record.</param>
+        /// <returns>True if the resource record is expired; otherwise, false.</returns>
         public bool IsExpired(DateTime responseTimeStamp)
         {
             var timeLived = (int)((DateTime.Now.Ticks - responseTimeStamp.Ticks) / TimeSpan.TicksPerSecond);
@@ -142,9 +146,9 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     String version of the resource record.
+        /// Returns a string representation of the resource record.
         /// </summary>
-        /// <returns>String of the resource.</returns>
+        /// <returns>A string containing the record's name, time-to-live, class, type, and associated record data.</returns>
         public override string ToString()
         {
             return $"{Name,-32} {TimeToLive}\t{Class}\t{Type}\t{Record}";

@@ -24,16 +24,18 @@ using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core
 {
-    /// <summary> A question. This class cannot be inherited. </summary>
-    /// <seealso cref="IEquatable{Question}"/>
+    /// <summary>
+    /// Represents a DNS question section, which contains information about the domain name being queried,
+    /// the type of query, and the class of query.
+    /// </summary>
     public sealed class Question : IEquatable<Question>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Question"/> class.
+        /// Initializes a new instance of the <see cref="Question"/> class.
         /// </summary>
-        /// <param name="domainName">Gets the question name.</param>
-        /// <param name="questionType">Gets the query type.</param>
-        /// <param name="questionClass">Gets the query class.</param>
+        /// <param name="domainName">The domain name to query.</param>
+        /// <param name="questionType">The type of query being performed.</param>
+        /// <param name="questionClass">The class of the query.</param>
         public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
         {
             if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith('.'))
@@ -58,53 +60,51 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Gets the name of the domain.
+        /// Gets the domain name associated with the DNS question.
         /// </summary>
-        /// <value>The name of the domain.</value>
+        /// <value>The domain name being queried.</value>
         public string DomainName { get; }
 
         /// <summary>
-        ///     Gets the type of the question.
+        /// Gets the type of DNS record associated with the question.
         /// </summary>
-        /// <value>The type of the question.</value>
+        /// <value>The DNS record type being queried, such as A, MX, or TXT.</value>
         public QuestionType QuestionType { get; }
 
         /// <summary>
-        ///     Gets the question class.
+        /// Gets the query class for the DNS question, determining the protocol group in use.
         /// </summary>
-        /// <value>The question class.</value>
+        /// <value>The class of the DNS query, such as IN, CS, CH, HS, or Any.</value>
         public QuestionClass QuestionClass { get; }
 
         /// <summary>
-        ///     Equality operator.
+        /// Checks whether two <see cref="Question"/> instances are equal.
         /// </summary>
         /// <param name="left">The first instance to compare.</param>
         /// <param name="right">The second instance to compare.</param>
-        /// <returns>True if the questions are equal, otherwise false.</returns>
+        /// <returns>True if the two instances are equal; otherwise, false.</returns>
         public static bool operator ==(Question left, Question right)
         {
             return Equals(left, right);
         }
 
         /// <summary>
-        ///     Inequality operator.
+        /// Determines whether two specified <see cref="Question"/> objects are not equal.
         /// </summary>
         /// <param name="left">The first instance to compare.</param>
         /// <param name="right">The second instance to compare.</param>
-        /// <returns>True if the questions are not equal, otherwise false.</returns>
+        /// <returns><c>true</c> if the two <see cref="Question"/> objects are not equal; otherwise, <c>false</c>.</returns>
         public static bool operator !=(Question left, Question right)
         {
             return !Equals(left, right);
         }
 
         /// <summary>
-        ///     Indicates whether the current object is equal to another object of the same type.
+        /// Determines whether the current <see cref="Question"/> instance is equal to another <see cref="Question"/> instance.
         /// </summary>
-        /// <param name="other"> An object to compare with this object. </param>
+        /// <param name="other">The <see cref="Question"/> instance to compare with the current instance.</param>
         /// <returns>
-        ///     true if the current object is equal to the <paramref name="other">other</paramref>
-        ///     parameter;
-        ///     otherwise, false.
+        /// true if the current <see cref="Question"/> instance is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         public bool Equals(Question other)
         {
@@ -123,11 +123,11 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Determines whether the specified object is equal to the current object.
+        /// Determines whether the specified object is equal to the current <see cref="Question"/> instance.
         /// </summary>
-        /// <param name="obj"> The object to compare with the current object. </param>
+        /// <param name="obj">The object to compare with the current instance.</param>
         /// <returns>
-        ///     true if the specified object is equal to the current object; otherwise, false.
+        /// true if the specified object is equal to the current <see cref="Question"/> instance; otherwise, false.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -145,20 +145,18 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Returns a string that represents the current object.
+        /// Converts the current <see cref="Question"/> instance to its string representation.
         /// </summary>
-        /// <returns> A string that represents the current object. </returns>
+        /// <returns>A string that represents the current object, including the domain name, class, and type of the query.</returns>
         public override string ToString()
         {
             return $"{DomainName,-32}\t{QuestionClass}\t{QuestionType}";
         }
 
         /// <summary>
-        ///     Gets the bytes in this collection.
+        /// Converts the question information into a sequence of bytes that can be used in DNS requests or responses.
         /// </summary>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the bytes in this collection.
-        /// </returns>
+        /// <returns>An enumerable collection of bytes representing the encoded DNS question fields.</returns>
         public IEnumerable<byte> GetBytes()
         {
 #pragma warning disable SA1010 // Opening square brackets should be spaced correctly
@@ -167,26 +165,12 @@ namespace Ubiety.Dns.Core
         }
 
         /// <summary>
-        ///     Serves as the default hash function.
+        /// Generates a hash code for the current instance of the <see cref="Question"/> class.
         /// </summary>
-        /// <returns> A hash code for the current object. </returns>
-        /// <seealso cref="object.GetHashCode()"/>
+        /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-#if NETSTANDARD2_0
-              unchecked
-              {
-                  int hashcode = 1500101;
-
-                  hashcode = hashcode * 1500113 ^ DomainName.GetHashCode();
-                  hashcode = hashcode * 1500113 ^ QuestionType.GetHashCode();
-                  hashcode = hashcode * 1500113 ^ QuestionClass.GetHashCode();
-
-                  return hashcode;
-              }
-#else
             return HashCode.Combine(DomainName, QuestionClass, QuestionType);
-#endif
         }
 
         private static byte[] WriteName(string src)

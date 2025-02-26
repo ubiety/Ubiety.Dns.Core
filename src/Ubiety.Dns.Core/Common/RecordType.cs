@@ -22,204 +22,206 @@ using Ubiety.Dns.Core.Records.Mail;
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     DNS record type.
+    /// Represents the type of DNS records.
     /// </summary>
     public enum RecordType
     {
         /// <summary>
-        ///     IPv4 address.
+        /// IPv4 address record.
         /// </summary>
         [Record(typeof(RecordA))]
         A = 1,
 
         /// <summary>
-        ///     Authoritative nameserver.
+        /// Name Server record.
         /// </summary>
         [Record(typeof(RecordNs))]
         NS = 2,
 
         /// <summary>
-        ///     Canonical name for a domain alias.
+        /// Canonical name record, used for aliasing one domain name to another.
         /// </summary>
         [Record(typeof(RecordCname))]
         CNAME = 5,
 
         /// <summary>
-        ///     The start of a zone of authority.
+        /// Start of Authority record.
         /// </summary>
         [Record(typeof(RecordSoa))]
         SOA = 6,
 
         /// <summary>
-        ///     Mailbox domain name.
+        /// Mailbox domain name record.
         /// </summary>
         [Record(typeof(RecordMb))]
         MB = 7,
 
         /// <summary>
-        ///     Mail group member.
+        /// Mail group record.
         /// </summary>
         [Record(typeof(RecordMg))]
         MG = 8,
 
         /// <summary>
-        ///     Mail rename domain.
+        /// Mailbox rename record.
+        /// Used to specify a mailbox that should be renamed or redirected.
         /// </summary>
         [Record(typeof(RecordMr))]
         MR = 9,
 
         /// <summary>
-        ///     Null resource record.
+        /// A NULL record used for experimental purposes, typically containing no meaningful data.
         /// </summary>
         [Record(typeof(RecordNull))]
         NULL = 10,
 
         /// <summary>
-        ///     Well known service description.
+        /// Well-known service description record.
         /// </summary>
         [Record(typeof(RecordWks))]
         WKS = 11,
 
         /// <summary>
-        ///     Domain pointer type.
+        /// Pointer record, commonly used to map an IP address to a hostname in reverse DNS lookups.
         /// </summary>
         [Record(typeof(RecordPtr))]
         PNTR = 12,
 
         /// <summary>
-        ///     Host information type.
+        /// Host information record.
         /// </summary>
         [Record(typeof(RecordHinfo))]
         HINFO = 13,
 
         /// <summary>
-        ///     Mailbox or list information.
+        /// MINFO (Mailbox Information) record.
+        /// Used to specify mailbox or mail list information.
         /// </summary>
         [Record(typeof(RecordMinfo))]
         MINFO = 14,
 
         /// <summary>
-        ///     Mail exchange type.
+        /// Mail exchange record used to specify mail servers for the domain.
         /// </summary>
         [Record(typeof(RecordMx))]
         MX = 15,
 
         /// <summary>
-        ///     Text string.
+        /// Text record, used to hold descriptive or arbitrary textual information.
         /// </summary>
         [Record(typeof(RecordTxt))]
         TXT = 16,
 
         /// <summary>
-        ///     Responsible person type.
+        /// Responsible Person record.
         /// </summary>
         [Record(typeof(RecordRp))]
         RP = 17,
 
         /// <summary>
-        ///     AFS database location.
+        /// AFS database record.
         /// </summary>
         [Record(typeof(RecordAfsdb))]
         AFSDB = 18,
 
         /// <summary>
-        ///     X.25 address type.
+        /// X.25 address record.
         /// </summary>
         [Record(typeof(RecordX25))]
         X25 = 19,
 
         /// <summary>
-        ///     ISDN address type.
+        /// ISDN address record.
         /// </summary>
         [Record(typeof(RecordIsdn))]
         ISDN = 20,
 
         /// <summary>
-        ///     Route through DNS type.
+        /// Route Through record, specifies intermediate hosts to route a message through.
         /// </summary>
         [Record(typeof(RecordRt))]
         RT = 21,
 
         /// <summary>
-        ///     Network service access point address.
+        /// NSAP address record.
         /// </summary>
         [Record(typeof(RecordNsap))]
         NSAP = 22,
 
         /// <summary>
-        ///     Cryptographic public key signature.
+        /// Signature record used in DNSSEC for digital signatures.
         /// </summary>
         [Record(typeof(RecordSig))]
         SIG = 24,
 
         /// <summary>
-        ///     DNSSEC public key.
+        /// Represents a DNS record type for cryptographic public keys.
         /// </summary>
         [Record(typeof(RecordKey))]
         KEY = 25,
 
         /// <summary>
-        ///     Pointer for X.400 mail mapping information.
+        /// Delegation of mail agent records.
         /// </summary>
         [Record(typeof(RecordPx))]
         PX = 26,
 
         /// <summary>
-        ///     IPv6 host address.
+        /// IPv6 address record.
         /// </summary>
         [Record(typeof(RecordAaaa))]
         AAAA = 28,
 
         /// <summary>
-        ///     Location information.
+        /// Location record, used to represent geographical location information.
         /// </summary>
         [Record(typeof(RecordLoc))]
         LOC = 29,
 
         /// <summary>
-        ///     Location of services.
+        /// Service locator record, used to specify the location of a specific service within a domain.
         /// </summary>
         [Record(typeof(RecordSrv))]
         SRV = 33,
 
         /// <summary>
-        ///     Naming authority pointer.
+        /// Naming Authority Pointer record, used for dynamic delegation and service discovery.
         /// </summary>
         [Record(typeof(RecordNaptr))]
         NAPTR = 35,
 
         /// <summary>
-        ///     Key exchange record type.
+        /// Key Exchange record.
         /// </summary>
         [Record(typeof(RecordKx))]
         KX = 36,
 
         /// <summary>
-        ///     Certificate.
+        /// Certificate record.
         /// </summary>
         [Record(typeof(RecordCert))]
         CERT = 37,
 
         /// <summary>
-        ///     Domain alias.
+        /// DNAME record, used for redirection of a subtree of the DNS namespace to another domain.
         /// </summary>
         [Record(typeof(RecordDname))]
         DNAME = 39,
 
         /// <summary>
-        ///     Delegation signer.
+        /// Delegation Signer record type.
         /// </summary>
         [Record(typeof(RecordDs))]
         DS = 43,
 
         /// <summary>
-        ///     Transaction key.
+        /// Transaction key record.
         /// </summary>
         [Record(typeof(RecordTkey))]
         TKEY = 249,
 
         /// <summary>
-        ///     Transaction signature.
+        /// Transaction Signature record used to provide authentication for DNS messages.
         /// </summary>
         [Record(typeof(RecordTsig))]
         TSIG = 250,

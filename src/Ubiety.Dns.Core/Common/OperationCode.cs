@@ -18,32 +18,32 @@
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     DNS Record OpCode.
+    /// Specifies the operation codes used in DNS messages.
     /// </summary>
     public enum OperationCode
     {
         /// <summary>
-        ///     Standard DNS Query.
+        /// Represents a standard DNS query operation code.
         /// </summary>
         Query = 0,
 
         /// <summary>
-        ///     Retired IQUERY code.
+        /// Represents an inverse query DNS operation code.
         /// </summary>
         IQuery = 1,
 
         /// <summary>
-        ///     Server status request.
+        /// Represents a DNS operation code indicating a status request.
         /// </summary>
         Status = 2,
 
         /// <summary>
-        ///     Notify OpCode.
+        /// Represents a DNS "Notify" operation code, used to inform secondary servers of zone changes.
         /// </summary>
         Notify = 4,
 
         /// <summary>
-        ///     Update OpCode.
+        /// Represents an operation code for updating DNS records.
         /// </summary>
         Update = 5,
     }

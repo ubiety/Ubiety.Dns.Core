@@ -20,7 +20,7 @@ using System;
 namespace Ubiety.Dns.Core.Common
 {
     /// <summary>
-    ///     Event args for verbose output.
+    /// Represents event data for verbose output events.
     /// </summary>
     public class VerboseOutputEventArgs(string message) : EventArgs
     {

@@ -39,7 +39,7 @@ the description of name server logic in [RFC-1034] for details.
 namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
-    ///     Canonical name DNS record.
+    /// Represents a DNS Canonical Name (CNAME) record used to specify that a domain name is an alias for another domain name.
     /// </summary>
     public record RecordCname : Record
     {
@@ -54,14 +54,14 @@ namespace Ubiety.Dns.Core.Records.General
         }
 
         /// <summary>
-        ///     Gets the canonical name.
+        /// Gets the canonical name (CNAME) for the DNS record, which represents the primary domain name to which the alias refers.
         /// </summary>
         public string Cname { get; }
 
         /// <summary>
-        ///     String representation of the record.
+        /// Returns a string representation of the CNAME record.
         /// </summary>
-        /// <returns>String version of the cname.</returns>
+        /// <returns>A string that represents the canonical name of the record.</returns>
         public override string ToString()
         {
             return Cname;

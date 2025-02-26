@@ -35,7 +35,7 @@ RRs corresponding to MADNAME.
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
-    ///     Mailbox DNS record.
+    /// Represents a Mailbox-related DNS record (MB Record).
     /// </summary>
     public record RecordMb : Record
     {
@@ -50,14 +50,16 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     Gets the mailbox domain.
+        /// Gets the domain name (MADNAME) that specifies a host associated with the specified mailbox.
+        /// This represents the "domain-name" in the MB (Mailbox) DNS record format, which identifies
+        /// the domain of the host for the mailbox.
         /// </summary>
         public string MadName { get; }
 
         /// <summary>
-        ///     String representation of the record data.
+        /// Converts the current record to its string representation.
         /// </summary>
-        /// <returns>String version of the domain.</returns>
+        /// <returns>A string representing the domain associated with the record.</returns>
         public override string ToString()
         {
             return MadName;

@@ -34,7 +34,7 @@ MG records cause no additional section processing.
 namespace Ubiety.Dns.Core.Records.Mail
 {
     /// <summary>
-    ///     Mail group DNS record.
+    /// Represents a mail group record (MG record) in the DNS system.
     /// </summary>
     public record RecordMg : Record
     {
@@ -49,12 +49,14 @@ namespace Ubiety.Dns.Core.Records.Mail
         }
 
         /// <summary>
-        ///     Gets the mail group name.
+        /// Gets the name of the mail group member (MGMNAME).
+        /// This represents a domain name that specifies a mailbox, which is a member
+        /// of the mail group associated with the domain name.
         /// </summary>
         public string MgmName { get; }
 
         /// <summary>
-        ///     String representation of the record.
+        /// Converts the mail group record to its string representation.
         /// </summary>
         /// <returns>Mail group name as a string.</returns>
         public override string ToString()

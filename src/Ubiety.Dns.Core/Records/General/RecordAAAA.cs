@@ -20,17 +20,11 @@ using System.Net;
 namespace Ubiety.Dns.Core.Records.General
 {
     /// <summary>
-    ///     IPv6 Address record.
+    /// Represents the DNS AAAA (IPv6) resource record type.
     /// </summary>
     /// <remarks>
-    ///     # [Description](#tab/description)
-    ///     The AAAA resource record type is a record specific to the Internet
-    ///     class that stores a single IPv6 address
-    ///     # [RFC](#tab/rfc)
-    ///     ```
-    ///     A 128 bit IPv6 address is encoded in the data portion of an AAAA
-    ///     resource record in network byte order (high-order byte first)
-    ///     ```.
+    /// The AAAA resource record is used in the Internet class to store a single IPv6 address.
+    /// It encodes a 128-bit IPv6 address in network byte order (high-order byte first) within the data portion of the record.
     /// </remarks>
     public record RecordAaaa : Record
     {
@@ -46,15 +40,17 @@ namespace Ubiety.Dns.Core.Records.General
         }
 
         /// <summary>
-        ///     Gets the IP address of the record.
+        /// Gets the IPv6 address associated with this AAAA record.
         /// </summary>
-        /// <value>IP address of the AAAA record.</value>
+        /// <remarks>
+        /// This property stores a 128-bit IPv6 address in network byte order and represents the main data of the AAAA resource record.
+        /// </remarks>
         public IPAddress Address { get; }
 
         /// <summary>
-        ///     String version of the record.
+        /// Returns the string representation of the record's address.
         /// </summary>
-        /// <returns>String of the address.</returns>
+        /// <returns>The string representation of the address.</returns>
         public override string ToString()
         {
             return Address.ToString();
