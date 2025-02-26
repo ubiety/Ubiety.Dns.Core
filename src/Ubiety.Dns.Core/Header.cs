@@ -16,6 +16,7 @@
  */
 
 using System.Collections.Generic;
+
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 
@@ -153,14 +154,9 @@ namespace Ubiety.Dns.Core
         /// <returns>Byte array of the header data.</returns>
         public IEnumerable<byte> GetBytes()
         {
-            var data = new List<byte>();
-            data.AddRange(Id.GetBytes());
-            data.AddRange(_flags.GetBytes());
-            data.AddRange(QuestionCount.GetBytes());
-            data.AddRange(AnswerCount.GetBytes());
-            data.AddRange(NameserverCount.GetBytes());
-            data.AddRange(AdditionalRecordsCount.GetBytes());
-            return data.ToArray();
+#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
+            return [..Id.GetBytes(), .._flags.GetBytes(), ..QuestionCount.GetBytes(), ..AnswerCount.GetBytes(), ..NameserverCount.GetBytes(), ..AdditionalRecordsCount.GetBytes()];
+#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
         }
     }
 }

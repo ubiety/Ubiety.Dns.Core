@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net5;netstandard2.0</TargetFrameworks>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     <ProjectGuid>479864c2-f29b-40e4-987b-577d189c3d08</ProjectGuid>
   </PropertyGroup>
@@ -20,6 +22,8 @@
   	<AnalysisLevel>latest</AnalysisLevel>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Stylecop.Analyzers" Version="1.2.0-beta.261" PrivateAssets="All" />
+    <PackageReference Include="Stylecop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="All" />
     <PackageReference Include="Ubiety.Logging.Core" Version="1.2.2" />
     <PackageReference Include="Ubiety.StyleCop" Version="0.0.5" PrivateAssets="All" />
   </ItemGroup>

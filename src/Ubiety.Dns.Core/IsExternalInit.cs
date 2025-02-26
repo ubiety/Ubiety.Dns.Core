@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_1
 namespace System.Runtime.CompilerServices
 {
     /// <summary>

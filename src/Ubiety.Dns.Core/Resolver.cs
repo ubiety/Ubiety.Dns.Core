@@ -36,7 +36,7 @@ namespace Ubiety.Dns.Core
     /// <summary>
     ///     DNS resolver runs queries against a server.
     /// </summary>
-    public class Resolver
+    public partial class Resolver
     {
         private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
         private readonly Dictionary<Question, Response> _responseCache;
@@ -49,9 +49,10 @@ namespace Ubiety.Dns.Core
         /// <param name="dnsServers"> Set of DNS servers to use for resolution. </param>
         internal Resolver(IEnumerable<IPEndPoint> dnsServers)
         {
-            _responseCache = new Dictionary<Question, Response>();
-            _dnsServers = new List<IPEndPoint>();
-            _dnsServers.AddRange(dnsServers);
+#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
+            _responseCache = [];
+            _dnsServers = [.. dnsServers];
+#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
 
             TransportType = TransportType.Tcp;
         }
@@ -151,7 +152,11 @@ namespace Ubiety.Dns.Core
         public static string GetArpaFromEnumerator(string enumerator)
         {
             var sb = new StringBuilder();
+#if NET7_0_OR_GREATER
+            var number = Number().Replace(enumerator, string.Empty);
+#else
             var number = Regex.Replace(enumerator, "[^0-9]", string.Empty);
+#endif
             sb.Append("e164.arpa.");
             foreach (var c in number)
             {
@@ -211,7 +216,12 @@ namespace Ubiety.Dns.Core
             return Query(domainName, questionType, QuestionClass.IN);
         }
 
-        private static void WriteRequest(Stream stream, Request request)
+#if NET7_0_OR_GREATER
+        [GeneratedRegex("[^0-9]")]
+        private static partial Regex Number();
+#endif
+
+        private static void WriteRequest(BufferedStream stream, Request request)
         {
             var data = request.GetBytes();
             stream.WriteByte((byte)((data.Length >> 8) & 0xFF));
@@ -222,7 +232,7 @@ namespace Ubiety.Dns.Core
 
         private static ushort GetUniqueId()
         {
-            using var rng = new RNGCryptoServiceProvider();
+            using var rng = RandomNumberGenerator.Create();
             var rand = new byte[16];
             rng.GetBytes(rand);
             var id = BitConverter.ToUInt16(rand, 0);
@@ -255,13 +265,13 @@ namespace Ubiety.Dns.Core
 
             lock (_responseCache)
             {
-                if (!_responseCache.ContainsKey(question))
+                if (!_responseCache.TryGetValue(question, out Response value))
                 {
                     _logger.Debug("Question does not exist in cache.");
                     return null;
                 }
 
-                response = _responseCache[question];
+                response = value;
             }
 
             _logger.Debug("Found question in cache...");
@@ -291,10 +301,7 @@ namespace Ubiety.Dns.Core
 
             lock (_responseCache)
             {
-                if (_responseCache.ContainsKey(question))
-                {
-                    _responseCache.Remove(question);
-                }
+                _responseCache.Remove(question);
 
                 _responseCache.Add(question, response);
             }
@@ -379,7 +386,7 @@ namespace Ubiety.Dns.Core
                     }
                     catch (SocketException e)
                     {
-                        _logger.Error(e, "Socket exception occured during request.");
+                        _logger.Error(e, "Socket exception occurred during request.");
                         throw;
                     }
                 }
