@@ -81,8 +81,6 @@
 
 using System;
 
-using Ubiety.Dns.Core.Common.Extensions;
-
 namespace Ubiety.Dns.Core.Records;
 
 /// <summary>
@@ -131,25 +129,29 @@ public sealed record RecordSrv : Record, IComparable<RecordSrv>
     /// <returns>A value indicating whether the left record is greater.</returns>
     public static bool operator >(RecordSrv left, RecordSrv right)
     {
-        return left.ThrowIfNull(nameof(left)).CompareTo(right) == 1;
+        ArgumentNullException.ThrowIfNull(left);
+        return left.CompareTo(right) == 1;
     }
 
     /// <inheritdoc cref="IComparable{T}" />
     public static bool operator <(RecordSrv left, RecordSrv right)
     {
-        return left.ThrowIfNull(nameof(left)).CompareTo(right) == -1;
+        ArgumentNullException.ThrowIfNull(left);
+        return left.CompareTo(right) == -1;
     }
 
     /// <inheritdoc cref="IComparable{T}" />
     public static bool operator <=(RecordSrv left, RecordSrv right)
     {
-        return left.ThrowIfNull(nameof(left)).CompareTo(right) <= 0;
+        ArgumentNullException.ThrowIfNull(left);
+        return left.CompareTo(right) <= 0;
     }
 
     /// <inheritdoc cref="IComparable{T}" />
     public static bool operator >=(RecordSrv left, RecordSrv right)
     {
-        return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
+        ArgumentNullException.ThrowIfNull(left);
+        return left.CompareTo(right) >= 0;
     }
 
     /// <summary>

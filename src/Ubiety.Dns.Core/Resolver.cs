@@ -28,7 +28,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Ubiety.Dns.Core.Common;
-using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
 
 namespace Ubiety.Dns.Core;
@@ -114,7 +113,7 @@ public partial class Resolver
     /// <returns>A string representing the reverse DNS ARPA address for the provided IP address. If the address family is unsupported, returns "?".</returns>
     public static string GetArpaFromIp(IPAddress ip)
     {
-        ip = ip.ThrowIfNull(nameof(ip));
+        ArgumentNullException.ThrowIfNull(ip);
 
         switch (ip.AddressFamily)
         {

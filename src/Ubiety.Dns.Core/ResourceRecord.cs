@@ -18,7 +18,6 @@
 using System;
 
 using Ubiety.Dns.Core.Common;
-using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
 
 namespace Ubiety.Dns.Core;
@@ -91,7 +90,7 @@ public class ResourceRecord
     /// <param name="reader">Record reader of the record data.</param>
     protected ResourceRecord(RecordReader reader)
     {
-        reader = reader.ThrowIfNull(nameof(reader));
+        ArgumentNullException.ThrowIfNull(reader);
         Name = reader.ReadDomainName();
         Type = (RecordType)reader.ReadUInt16();
         Class = (OperationClass)reader.ReadUInt16();

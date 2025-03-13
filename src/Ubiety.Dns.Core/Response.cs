@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Logging.Core;
 
@@ -71,8 +70,8 @@ public class Response
     public Response(IPEndPoint server, byte[] data)
         : this()
     {
+        ArgumentNullException.ThrowIfNull(data);
         _logger.Debug("Received information from server");
-        data = data.ThrowIfNull(nameof(data));
         Server = server;
         MessageSize = data.Length;
         var reader = new RecordReader(data);

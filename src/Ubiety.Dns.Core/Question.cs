@@ -38,7 +38,8 @@ public sealed class Question : IEquatable<Question>
     /// <param name="questionClass">The class of the query.</param>
     public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
     {
-        if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith('.'))
+        ArgumentNullException.ThrowIfNull(domainName);
+        if (!domainName.EndsWith('.'))
         {
             domainName += ".";
         }

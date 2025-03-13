@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
-
-using Ubiety.Dns.Core.Common.Extensions;
 
 namespace Ubiety.Dns.Core.Records;
 
@@ -39,7 +38,8 @@ public abstract record Record
     /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
     protected Record(RecordReader reader)
     {
-        Reader = reader.ThrowIfNull(nameof(reader));
+        ArgumentNullException.ThrowIfNull(reader);
+        Reader = reader;
     }
 
     /// <summary>
