@@ -20,31 +20,30 @@ using System.Reflection;
 
 using Ubiety.Dns.Core.Records;
 
-namespace Ubiety.Dns.Core.Common.Extensions
+namespace Ubiety.Dns.Core.Common.Extensions;
+
+/// <summary>
+/// Provides extension methods for operations related to enumerations in the DNS core library.
+/// </summary>
+public static class EnumExtensions
 {
     /// <summary>
-    /// Provides extension methods for operations related to enumerations in the DNS core library.
+    /// Retrieves a record instance of the specified type, using the provided resource reader and optional length.
     /// </summary>
-    public static class EnumExtensions
+    /// <param name="type">The type of the DNS record to retrieve.</param>
+    /// <param name="reader">The resource reader used to create the record.</param>
+    /// <param name="length">The length of the record, used for certain record types. Defaults to 0.</param>
+    /// <returns>An instance of the <see cref="Record"/> class for the specified record type.</returns>
+    public static Record GetRecord(this RecordType type, RecordReader reader, int length = 0)
     {
-        /// <summary>
-        /// Retrieves a record instance of the specified type, using the provided resource reader and optional length.
-        /// </summary>
-        /// <param name="type">The type of the DNS record to retrieve.</param>
-        /// <param name="reader">The resource reader used to create the record.</param>
-        /// <param name="length">The length of the record, used for certain record types. Defaults to 0.</param>
-        /// <returns>An instance of the <see cref="Record"/> class for the specified record type.</returns>
-        public static Record GetRecord(this RecordType type, RecordReader reader, int length = 0)
+        var fieldInfo = type.GetType().GetField(type.ToString());
+        var recordAttr = fieldInfo?.GetCustomAttribute<RecordAttribute>();
+
+        if (type == RecordType.TXT)
         {
-            var fieldInfo = type.GetType().GetField(type.ToString());
-            var recordAttr = fieldInfo?.GetCustomAttribute<RecordAttribute>();
-
-            if (type == RecordType.TXT)
-            {
-                return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader, length);
-            }
-
-            return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader);
+            return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader, length);
         }
+
+        return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader);
     }
 }

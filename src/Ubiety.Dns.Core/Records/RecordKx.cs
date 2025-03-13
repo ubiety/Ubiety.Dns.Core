@@ -47,32 +47,31 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Key exchange record.
+/// </summary>
+public sealed record RecordKx : Record
 {
     /// <summary>
-    ///     Key exchange record.
+    ///     Initializes a new instance of the <see cref="RecordKx" /> class.
     /// </summary>
-    public sealed record RecordKx : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the data.</param>
+    public RecordKx(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordKx" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the data.</param>
-        public RecordKx(RecordReader reader)
-            : base(reader)
-        {
-            Preference = Reader.ReadUInt16();
-            Exchanger = Reader.ReadDomainName();
-        }
-
-        /// <summary>
-        ///     Gets the preference.
-        /// </summary>
-        public ushort Preference { get; }
-
-        /// <summary>
-        ///     Gets the exchanger.
-        /// </summary>
-        public string Exchanger { get; }
+        Preference = Reader.ReadUInt16();
+        Exchanger = Reader.ReadDomainName();
     }
+
+    /// <summary>
+    ///     Gets the preference.
+    /// </summary>
+    public ushort Preference { get; }
+
+    /// <summary>
+    ///     Gets the exchanger.
+    /// </summary>
+    public string Exchanger { get; }
 }

@@ -29,11 +29,11 @@ To serve as an example page when styling markdown based Docusaurus sites.
 
 ## Emphasis
 
-Emphasis, aka italics, with *asterisks* or _underscores_.
+Emphasis, aka italics, with *asterisks* or *underscores*.
 
-Strong emphasis, aka bold, with **asterisks** or __underscores__.
+Strong emphasis, aka bold, with **asterisks** or **underscores**.
 
-Combined emphasis with **asterisks and _underscores_**.
+Combined emphasis with **asterisks and *underscores***.
 
 Strikethrough uses two tildes. ~~Scratch this.~~
 
@@ -48,11 +48,11 @@ Strikethrough uses two tildes. ~~Scratch this.~~
    1. Ordered sub-list
 1. And another item.
 
-* Unordered list can use asterisks
+- Unordered list can use asterisks
 
 - Or minuses
 
-+ Or pluses
+- Or pluses
 
 ---
 
@@ -67,8 +67,6 @@ Strikethrough uses two tildes. ~~Scratch this.~~
 [You can use numbers for reference-style link definitions][1]
 
 Or leave it empty and use the [link text itself].
-
-URLs and URLs in angle brackets will automatically get turned into links. http://www.example.com/ or <http://www.example.com/> and sometimes example.com (but not on GitHub, for example).
 
 Some text to show that the reference links can follow later.
 
@@ -133,7 +131,7 @@ There must be at least 3 dashes separating each header cell. The outer pipes (|)
 
 | Markdown | Less      | Pretty     |
 | -------- | --------- | ---------- |
-| _Still_  | `renders` | **nicely** |
+| *Still*  | `renders` | **nicely** |
 | 1        | 2         | 3          |
 
 ---
@@ -144,7 +142,7 @@ There must be at least 3 dashes separating each header cell. The outer pipes (|)
 
 Quote break.
 
-> This is a very long line that will still be quoted properly when it wraps. Oh boy let's keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can _put_ **Markdown** into a blockquote.
+> This is a very long line that will still be quoted properly when it wraps. Oh boy let's keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote.
 
 ---
 
@@ -164,9 +162,9 @@ Quote break.
 
 Here's a line for us to start with.
 
-This line is separated from the one above by two newlines, so it will be a _separate paragraph_.
+This line is separated from the one above by two newlines, so it will be a *separate paragraph*.
 
-This line is also a separate paragraph, but... This line is only separated by a single newline, so it's a separate line in the _same paragraph_.
+This line is also a separate paragraph, but... This line is only separated by a single newline, so it's a separate line in the *same paragraph*.
 
 ---
 

@@ -15,37 +15,36 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Represents the class of a DNS question, specifying the scope or network context
+/// for a DNS query, such as Internet, CSNET, Chaos, or Hesiod.
+/// </summary>
+public enum QuestionClass
 {
     /// <summary>
-    /// Represents the class of a DNS question, specifying the scope or network context
-    /// for a DNS query, such as Internet, CSNET, Chaos, or Hesiod.
+    /// IN class, representing the Internet class for DNS queries.
     /// </summary>
-    public enum QuestionClass
-    {
-        /// <summary>
-        /// IN class, representing the Internet class for DNS queries.
-        /// </summary>
-        IN = OperationClass.IN,
+    IN = OperationClass.IN,
 
-        /// <summary>
-        /// CS class, representing the CSNET (Computer Science Network) class for DNS queries.
-        /// </summary>
-        CS = OperationClass.CS,
+    /// <summary>
+    /// CS class, representing the CSNET (Computer Science Network) class for DNS queries.
+    /// </summary>
+    CS = OperationClass.CS,
 
-        /// <summary>
-        /// CH class, representing the Chaos network class for DNS queries.
-        /// </summary>
-        CH = OperationClass.CH,
+    /// <summary>
+    /// CH class, representing the Chaos network class for DNS queries.
+    /// </summary>
+    CH = OperationClass.CH,
 
-        /// <summary>
-        /// HS class, representing the Hesiod class for DNS queries.
-        /// </summary>
-        HS = OperationClass.HS,
+    /// <summary>
+    /// HS class, representing the Hesiod class for DNS queries.
+    /// </summary>
+    HS = OperationClass.HS,
 
-        /// <summary>
-        /// ANY class, representing a wildcard class that matches any DNS query class.
-        /// </summary>
-        Any = 255,
-    }
+    /// <summary>
+    /// ANY class, representing a wildcard class that matches any DNS query class.
+    /// </summary>
+    Any = 255,
 }

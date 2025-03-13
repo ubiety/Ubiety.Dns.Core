@@ -47,41 +47,40 @@ records can be associated with a simple mailbox, they are usually used
 with a mailing list.
  */
 
-namespace Ubiety.Dns.Core.Records.Mail
+namespace Ubiety.Dns.Core.Records.Mail;
+
+/// <summary>
+///     Mail list DNS record.
+/// </summary>
+public record RecordMinfo : Record
 {
     /// <summary>
-    ///     Mail list DNS record.
+    ///     Initializes a new instance of the <see cref="RecordMinfo" /> class.
     /// </summary>
-    public record RecordMinfo : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordMinfo(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMinfo" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMinfo(RecordReader reader)
-            : base(reader)
-        {
-            ResponsibleMailbox = Reader.ReadDomainName();
-            ErrorMailbox = Reader.ReadDomainName();
-        }
+        ResponsibleMailbox = Reader.ReadDomainName();
+        ErrorMailbox = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets the responsible mailbox.
-        /// </summary>
-        public string ResponsibleMailbox { get; }
+    /// <summary>
+    ///     Gets the responsible mailbox.
+    /// </summary>
+    public string ResponsibleMailbox { get; }
 
-        /// <summary>
-        ///     Gets the error mailbox.
-        /// </summary>
-        public string ErrorMailbox { get; }
+    /// <summary>
+    ///     Gets the error mailbox.
+    /// </summary>
+    public string ErrorMailbox { get; }
 
-        /// <summary>
-        ///     String representation of the record.
-        /// </summary>
-        /// <returns>String version of the domains.</returns>
-        public override string ToString()
-        {
-            return $"{ResponsibleMailbox} {ErrorMailbox}";
-        }
+    /// <summary>
+    ///     String representation of the record.
+    /// </summary>
+    /// <returns>String version of the domains.</returns>
+    public override string ToString()
+    {
+        return $"{ResponsibleMailbox} {ErrorMailbox}";
     }
 }

@@ -31,319 +31,319 @@ using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Logging.Core;
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core;
+
+/// <summary>
+/// Represents a DNS resolver that performs DNS queries and manages response caching
+/// with support for customizable transport protocols and query configurations.
+/// </summary>
+public partial class Resolver
 {
-    /// <summary>
-    /// Represents a DNS resolver that performs DNS queries and manages response caching
-    /// with support for customizable transport protocols and query configurations.
-    /// </summary>
-    public partial class Resolver
+    private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
+    private readonly Dictionary<Question, Response> _responseCache;
+    private readonly List<IPEndPoint> _dnsServers;
+
+    private readonly bool _useCache;
+
+    /// <summary> Initializes a new instance of the <see cref="Resolver" /> class. </summary>
+    /// <param name="dnsServers"> Set of DNS servers to use for resolution. </param>
+    internal Resolver(IEnumerable<IPEndPoint> dnsServers)
     {
-        private readonly IUbietyLogger _logger = UbietyLogger.Get<Resolver>();
-        private readonly Dictionary<Question, Response> _responseCache;
-        private readonly List<IPEndPoint> _dnsServers;
-
-        private readonly bool _useCache;
-
-        /// <summary> Initializes a new instance of the <see cref="Resolver" /> class. </summary>
-        /// <param name="dnsServers"> Set of DNS servers to use for resolution. </param>
-        internal Resolver(IEnumerable<IPEndPoint> dnsServers)
-        {
 #pragma warning disable SA1010 // Opening square brackets should be spaced correctly
-            _responseCache = [];
-            _dnsServers = [.. dnsServers];
+        _responseCache = [];
+        _dnsServers = [.. dnsServers];
 #pragma warning restore SA1010 // Opening square brackets should be spaced correctly
 
-            TransportType = TransportType.Tcp;
-        }
+        TransportType = TransportType.Tcp;
+    }
 
-        /// <summary>
-        /// Gets the version information for the current assembly.
-        /// </summary>
-        public static string Version => Assembly.GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-            ?.InformationalVersion;
+    /// <summary>
+    /// Gets the version information for the current assembly.
+    /// </summary>
+    public static string Version => Assembly.GetExecutingAssembly()
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+        ?.InformationalVersion;
 
-        /// <summary>
-        /// Gets or initializes the timeout duration, in milliseconds, for DNS queries.
-        /// This value determines how long the resolver waits for a response before timing out.
-        /// </summary>
-        public int Timeout { get; init; }
+    /// <summary>
+    /// Gets or initializes the timeout duration, in milliseconds, for DNS queries.
+    /// This value determines how long the resolver waits for a response before timing out.
+    /// </summary>
+    public int Timeout { get; init; }
 
-        /// <summary>
-        /// Gets or initializes the number of retry attempts for DNS queries in case of failure.
-        /// </summary>
-        public int Retries { get; init; }
+    /// <summary>
+    /// Gets or initializes the number of retry attempts for DNS queries in case of failure.
+    /// </summary>
+    public int Retries { get; init; }
 
-        /// <summary>
-        /// Gets a value indicating whether DNS recursion is enabled for the resolver.
-        /// When enabled, recursive DNS queries are performed, allowing the resolver to fetch complete DNS responses.
-        /// </summary>
-        public bool Recursion { get; init; }
+    /// <summary>
+    /// Gets a value indicating whether DNS recursion is enabled for the resolver.
+    /// When enabled, recursive DNS queries are performed, allowing the resolver to fetch complete DNS responses.
+    /// </summary>
+    public bool Recursion { get; init; }
 
-        /// <summary>
-        /// Gets or sets the transport protocol used for DNS queries.
-        /// Determines whether queries are sent over UDP or TCP.
-        /// </summary>
-        public TransportType TransportType { get; set; }
+    /// <summary>
+    /// Gets or sets the transport protocol used for DNS queries.
+    /// Determines whether queries are sent over UDP or TCP.
+    /// </summary>
+    public TransportType TransportType { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether the DNS resolver should use caching for responses.
-        /// When set to <c>false</c>, the existing cache is cleared.
-        /// </summary>
-        public bool UseCache
+    /// <summary>
+    /// Gets a value indicating whether the DNS resolver should use caching for responses.
+    /// When set to <c>false</c>, the existing cache is cleared.
+    /// </summary>
+    public bool UseCache
+    {
+        get => _useCache;
+
+        init
         {
-            get => _useCache;
-
-            init
+            _useCache = value;
+            if (_useCache)
             {
-                _useCache = value;
-                if (_useCache)
+                return;
+            }
+
+            ClearCache();
+        }
+    }
+
+    /// <summary>
+    /// Converts the given IP address into its corresponding reverse DNS ARPA address.
+    /// </summary>
+    /// <param name="ip">The IP address to be converted into an ARPA address.</param>
+    /// <returns>A string representing the reverse DNS ARPA address for the provided IP address. If the address family is unsupported, returns "?".</returns>
+    public static string GetArpaFromIp(IPAddress ip)
+    {
+        ip = ip.ThrowIfNull(nameof(ip));
+
+        switch (ip.AddressFamily)
+        {
+            case AddressFamily.InterNetwork:
+            {
+                var sb = new StringBuilder();
+                sb.Append("in-addr.arpa.");
+                foreach (var b in ip.GetAddressBytes())
                 {
-                    return;
+                    sb.Insert(0, $"{b}.");
                 }
 
-                ClearCache();
-            }
-        }
-
-        /// <summary>
-        /// Converts the given IP address into its corresponding reverse DNS ARPA address.
-        /// </summary>
-        /// <param name="ip">The IP address to be converted into an ARPA address.</param>
-        /// <returns>A string representing the reverse DNS ARPA address for the provided IP address. If the address family is unsupported, returns "?".</returns>
-        public static string GetArpaFromIp(IPAddress ip)
-        {
-            ip = ip.ThrowIfNull(nameof(ip));
-
-            switch (ip.AddressFamily)
-            {
-                case AddressFamily.InterNetwork:
-                    {
-                        var sb = new StringBuilder();
-                        sb.Append("in-addr.arpa.");
-                        foreach (var b in ip.GetAddressBytes())
-                        {
-                            sb.Insert(0, $"{b}.");
-                        }
-
-                        return sb.ToString();
-                    }
-
-                case AddressFamily.InterNetworkV6:
-                    {
-                        var sb = new StringBuilder();
-                        sb.Append("ip6.arpa.");
-                        foreach (var b in ip.GetAddressBytes())
-                        {
-                            sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
-                            sb.Insert(0, $"{b & 0xf:x}.");
-                        }
-
-                        return sb.ToString();
-                    }
-
-                default:
-                    return "?";
-            }
-        }
-
-        /// <summary>
-        /// Converts an enumerator string to its corresponding ARPA address.
-        /// </summary>
-        /// <param name="enumerator">The enumerator representing a numerical address to convert.</param>
-        /// <returns>The resulting ARPA address as a string.</returns>
-        public static string GetArpaFromEnumerator(string enumerator)
-        {
-            var sb = new StringBuilder();
-            var number = Number().Replace(enumerator, string.Empty);
-            sb.Append("e164.arpa.");
-            foreach (var c in number)
-            {
-                sb.Insert(0, $"{c}.");
+                return sb.ToString();
             }
 
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Clears all entries in the DNS response cache.
-        /// </summary>
-        public void ClearCache()
-        {
-            lock (_responseCache)
+            case AddressFamily.InterNetworkV6:
             {
-                _responseCache.Clear();
+                var sb = new StringBuilder();
+                sb.Append("ip6.arpa.");
+                foreach (var b in ip.GetAddressBytes())
+                {
+                    sb.Insert(0, $"{(b >> 4) & 0xf:x}.");
+                    sb.Insert(0, $"{b & 0xf:x}.");
+                }
+
+                return sb.ToString();
             }
+
+            default:
+                return "?";
+        }
+    }
+
+    /// <summary>
+    /// Converts an enumerator string to its corresponding ARPA address.
+    /// </summary>
+    /// <param name="enumerator">The enumerator representing a numerical address to convert.</param>
+    /// <returns>The resulting ARPA address as a string.</returns>
+    public static string GetArpaFromEnumerator(string enumerator)
+    {
+        var sb = new StringBuilder();
+        var number = Number().Replace(enumerator, string.Empty);
+        sb.Append("e164.arpa.");
+        foreach (var c in number)
+        {
+            sb.Insert(0, $"{c}.");
         }
 
-        /// <summary> Sends a DNS query for the specified domain name, question type, and question class. </summary>
-        /// <param name="domainName"> The domain name to resolve. </param>
-        /// <param name="questionType"> The type of DNS query (e.g., A, AAAA, MX). </param>
-        /// <param name="questionClass"> The class of DNS query (e.g., IN for Internet). </param>
-        /// <returns> A <see cref="Response"/> containing the result of the DNS query. </returns>
-        public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Clears all entries in the DNS response cache.
+    /// </summary>
+    public void ClearCache()
+    {
+        lock (_responseCache)
         {
-            if (_dnsServers.Count <= 0)
+            _responseCache.Clear();
+        }
+    }
+
+    /// <summary> Sends a DNS query for the specified domain name, question type, and question class. </summary>
+    /// <param name="domainName"> The domain name to resolve. </param>
+    /// <param name="questionType"> The type of DNS query (e.g., A, AAAA, MX). </param>
+    /// <param name="questionClass"> The class of DNS query (e.g., IN for Internet). </param>
+    /// <returns> A <see cref="Response"/> containing the result of the DNS query. </returns>
+    public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
+    {
+        if (_dnsServers.Count <= 0)
+        {
+            _logger.Error("No DNS servers to query.");
+            return null;
+        }
+
+        _logger.Debug($"Received {questionType} query for {domainName}");
+
+        var question = new Question(domainName, questionType, questionClass);
+        var response = SearchInCache(question);
+        if (response != null)
+        {
+            _logger.Debug("Returning cached response...");
+            return response;
+        }
+
+        _logger.Debug("Sending request to server...");
+        var request = new Request();
+        request.AddQuestion(question);
+        return GetResponse(request);
+    }
+
+    [GeneratedRegex("[^0-9]")]
+    private static partial Regex Number();
+
+    private static void WriteRequest(BufferedStream stream, Request request)
+    {
+        var data = request.GetBytes();
+        stream.WriteByte((byte)((data.Length >> 8) & 0xFF));
+        stream.WriteByte((byte)(data.Length & 0xFF));
+        stream.Write(data, 0, data.Length);
+        stream.Flush();
+    }
+
+    private static ushort GetUniqueId()
+    {
+        using var rng = RandomNumberGenerator.Create();
+        var rand = new byte[16];
+        rng.GetBytes(rand);
+        var id = BitConverter.ToUInt16(rand, 0);
+
+        return id;
+    }
+
+    private Response GetResponse(Request request)
+    {
+        request.Header.Id = GetUniqueId();
+        request.Header.Recursion = Recursion;
+
+        return TransportType switch
+        {
+            TransportType.Udp => UdpRequest(request),
+            TransportType.Tcp => TcpRequest(request).Result,
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
+    private Response SearchInCache(Question question)
+    {
+        _logger.Debug("Searching cache for question...");
+        if (!_useCache)
+        {
+            return null;
+        }
+
+        Response response;
+
+        lock (_responseCache)
+        {
+            if (!_responseCache.TryGetValue(question, out Response value))
             {
-                _logger.Error("No DNS servers to query.");
+                _logger.Debug("Question does not exist in cache.");
                 return null;
             }
 
-            _logger.Debug($"Received {questionType} query for {domainName}");
-
-            var question = new Question(domainName, questionType, questionClass);
-            var response = SearchInCache(question);
-            if (response != null)
-            {
-                _logger.Debug("Returning cached response...");
-                return response;
-            }
-
-            _logger.Debug("Sending request to server...");
-            var request = new Request();
-            request.AddQuestion(question);
-            return GetResponse(request);
+            response = value;
         }
 
-        [GeneratedRegex("[^0-9]")]
-        private static partial Regex Number();
+        _logger.Debug("Found question in cache...");
+        return response.ResourceRecords.Any(rr => rr.IsExpired(response.TimeStamp)) ? null : response;
+    }
 
-        private static void WriteRequest(BufferedStream stream, Request request)
+    private void AddToCache(Response response)
+    {
+        if (!_useCache)
         {
-            var data = request.GetBytes();
-            stream.WriteByte((byte)((data.Length >> 8) & 0xFF));
-            stream.WriteByte((byte)(data.Length & 0xFF));
-            stream.Write(data, 0, data.Length);
-            stream.Flush();
+            return;
         }
 
-        private static ushort GetUniqueId()
+        // No question, no caching
+        if (response.Questions.Count == 0)
         {
-            using var rng = RandomNumberGenerator.Create();
-            var rand = new byte[16];
-            rng.GetBytes(rand);
-            var id = BitConverter.ToUInt16(rand, 0);
-
-            return id;
+            return;
         }
 
-        private Response GetResponse(Request request)
+        // Only cached non-error responses
+        if (response.Header.ResponseCode != ResponseCode.NoError)
         {
-            request.Header.Id = GetUniqueId();
-            request.Header.Recursion = Recursion;
-
-            return TransportType switch
-            {
-                TransportType.Udp => UdpRequest(request),
-                TransportType.Tcp => TcpRequest(request).Result,
-                _ => throw new InvalidOperationException(),
-            };
+            return;
         }
 
-        private Response SearchInCache(Question question)
+        var question = response.Questions[0];
+
+        lock (_responseCache)
         {
-            _logger.Debug("Searching cache for question...");
-            if (!_useCache)
-            {
-                return null;
-            }
+            _responseCache.Remove(question);
 
-            Response response;
+            _responseCache.Add(question, response);
+        }
+    }
 
-            lock (_responseCache)
+    private Response UdpRequest(Request request)
+    {
+        _logger.Debug("Starting UDP request...");
+        for (var attempts = 0; attempts < Retries; attempts++)
+        {
+            _logger.Debug($"Attempt {attempts} of {Retries}...");
+            foreach (var server in _dnsServers)
             {
-                if (!_responseCache.TryGetValue(question, out Response value))
+                _logger.Debug($"Connecting to server {server.Address}...");
+                using var client = new UdpClient(AddressFamily.InterNetworkV6);
+                client.Client.DualMode = true;
+
+                try
                 {
-                    _logger.Debug("Question does not exist in cache.");
-                    return null;
+                    var sendBytes = request.GetBytes();
+                    client.Send(sendBytes, sendBytes.Length, server);
+                    var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    var data = client.Receive(ref remoteEndPoint);
+
+                    var response = new Response(server, data);
+                    AddToCache(response);
+
+                    client.Close();
+                    return response;
                 }
-
-                response = value;
-            }
-
-            _logger.Debug("Found question in cache...");
-            return response.ResourceRecords.Any(rr => rr.IsExpired(response.TimeStamp)) ? null : response;
-        }
-
-        private void AddToCache(Response response)
-        {
-            if (!_useCache)
-            {
-                return;
-            }
-
-            // No question, no caching
-            if (response.Questions.Count == 0)
-            {
-                return;
-            }
-
-            // Only cached non-error responses
-            if (response.Header.ResponseCode != ResponseCode.NoError)
-            {
-                return;
-            }
-
-            var question = response.Questions[0];
-
-            lock (_responseCache)
-            {
-                _responseCache.Remove(question);
-
-                _responseCache.Add(question, response);
-            }
-        }
-
-        private Response UdpRequest(Request request)
-        {
-            _logger.Debug("Starting UDP request...");
-            for (var attempts = 0; attempts < Retries; attempts++)
-            {
-                _logger.Debug($"Attempt {attempts} of {Retries}...");
-                foreach (var server in _dnsServers)
+                catch (SocketException exception)
                 {
-                    _logger.Debug($"Connecting to server {server.Address}...");
-                    using var client = new UdpClient(AddressFamily.InterNetworkV6);
-                    client.Client.DualMode = true;
-
-                    try
-                    {
-                        var sendBytes = request.GetBytes();
-                        client.Send(sendBytes, sendBytes.Length, server);
-                        var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                        var data = client.Receive(ref remoteEndPoint);
-
-                        var response = new Response(server, data);
-                        AddToCache(response);
-
-                        client.Close();
-                        return response;
-                    }
-                    catch (SocketException exception)
-                    {
-                        _logger.Error(exception, $"Connection to nameserver {server.Address} failed");
-                    }
+                    _logger.Error(exception, $"Connection to nameserver {server.Address} failed");
                 }
             }
-
-            var responseTimeout = new Response(true);
-            return responseTimeout;
         }
 
-        private async Task<Response> TcpRequest(Request request)
-        {
-            _logger.Debug("Starting TCP request...");
-            for (var attempts = 0; attempts < Retries; attempts++)
-            {
-                _logger.Debug($"Attempt {attempts + 1} of {Retries}...");
-                foreach (var server in _dnsServers)
-                {
-                    _logger.Debug($"Connecting to {server.Address}...");
+        var responseTimeout = new Response(true);
+        return responseTimeout;
+    }
 
-                    try
-                    {
-                        using var client = Socket.OSSupportsIPv6 ? new TcpClient(AddressFamily.InterNetworkV6)
+    private async Task<Response> TcpRequest(Request request)
+    {
+        _logger.Debug("Starting TCP request...");
+        for (var attempts = 0; attempts < Retries; attempts++)
+        {
+            _logger.Debug($"Attempt {attempts + 1} of {Retries}...");
+            foreach (var server in _dnsServers)
+            {
+                _logger.Debug($"Connecting to {server.Address}...");
+
+                try
+                {
+                    using var client = Socket.OSSupportsIPv6 ? new TcpClient(AddressFamily.InterNetworkV6)
                         {
                             ReceiveTimeout = Timeout,
                             Client = { DualMode = true },
@@ -353,97 +353,96 @@ namespace Ubiety.Dns.Core
                             ReceiveTimeout = Timeout,
                         };
 
-                        await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
+                    await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
 
-                        if (!client.Connected)
-                        {
-                            client.Close();
-                            _logger.Error($"Connection to nameserver {server.Address} failed.");
-                            continue;
-                        }
-
-                        await using var stream = new BufferedStream(client.GetStream());
-
-                        _logger.Debug("Sending request to server...");
-                        WriteRequest(stream, request);
-
-                        return ReceiveResponse(stream, server);
-                    }
-                    catch (SocketException e)
+                    if (!client.Connected)
                     {
-                        _logger.Error(e, "Socket exception occurred during request.");
-                        throw;
+                        client.Close();
+                        _logger.Error($"Connection to nameserver {server.Address} failed.");
+                        continue;
                     }
+
+                    await using var stream = new BufferedStream(client.GetStream());
+
+                    _logger.Debug("Sending request to server...");
+                    WriteRequest(stream, request);
+
+                    return ReceiveResponse(stream, server);
+                }
+                catch (SocketException e)
+                {
+                    _logger.Error(e, "Socket exception occurred during request.");
+                    throw;
                 }
             }
-
-            _logger.Debug("Connection timed out");
-            var responseTimeout = new Response(true);
-            return responseTimeout;
         }
 
-        private Response ReceiveResponse(Stream stream, IPEndPoint server)
+        _logger.Debug("Connection timed out");
+        var responseTimeout = new Response(true);
+        return responseTimeout;
+    }
+
+    private Response ReceiveResponse(Stream stream, IPEndPoint server)
+    {
+        var transferResponse = new Response();
+        var soa = 0;
+        var messageSize = 0;
+
+        while (true)
         {
-            var transferResponse = new Response();
-            var soa = 0;
-            var messageSize = 0;
-
-            while (true)
+            var length = (stream.ReadByte() << 8) | stream.ReadByte();
+            if (length <= 0)
             {
-                var length = (stream.ReadByte() << 8) | stream.ReadByte();
-                if (length <= 0)
-                {
-                    _logger.Error($"Connection to nameserver {server.Address} failed");
-                    throw new SocketException();
-                }
-
-                messageSize += length;
-
-                var data = new byte[length];
-                _ = stream.Read(data, 0, length);
-
-                _logger.Debug("Building response...");
-                var response = new Response(server, data);
-
-                if (response.Header.ResponseCode != ResponseCode.NoError)
-                {
-                    _logger.Debug($"Error from server - {response.Header.ResponseCode}");
-                    return response;
-                }
-
-                if (response.Questions[0].QuestionType != QuestionType.AXFR)
-                {
-                    AddToCache(response);
-                    return response;
-                }
-
-                if (transferResponse.Questions.Count == 0)
-                {
-                    transferResponse.Questions.AddRange(response.Questions);
-                }
-
-                transferResponse.Answers.AddRange(response.Answers);
-                transferResponse.Authorities.AddRange(response.Authorities);
-                transferResponse.Additional.AddRange(response.Additional);
-
-                if (response.Answers[0].Type == RecordType.SOA)
-                {
-                    soa++;
-                }
-
-                if (soa != 2)
-                {
-                    continue;
-                }
-
-                transferResponse.Header.QuestionCount = (ushort)transferResponse.Questions.Count;
-                transferResponse.Header.AnswerCount = (ushort)transferResponse.Answers.Count;
-                transferResponse.Header.NameserverCount = (ushort)transferResponse.Authorities.Count;
-                transferResponse.Header.AdditionalRecordsCount = (ushort)transferResponse.Additional.Count;
-                transferResponse.MessageSize = messageSize;
-
-                return transferResponse;
+                _logger.Error($"Connection to nameserver {server.Address} failed");
+                throw new SocketException();
             }
+
+            messageSize += length;
+
+            var data = new byte[length];
+            _ = stream.Read(data, 0, length);
+
+            _logger.Debug("Building response...");
+            var response = new Response(server, data);
+
+            if (response.Header.ResponseCode != ResponseCode.NoError)
+            {
+                _logger.Debug($"Error from server - {response.Header.ResponseCode}");
+                return response;
+            }
+
+            if (response.Questions[0].QuestionType != QuestionType.AXFR)
+            {
+                AddToCache(response);
+                return response;
+            }
+
+            if (transferResponse.Questions.Count == 0)
+            {
+                transferResponse.Questions.AddRange(response.Questions);
+            }
+
+            transferResponse.Answers.AddRange(response.Answers);
+            transferResponse.Authorities.AddRange(response.Authorities);
+            transferResponse.Additional.AddRange(response.Additional);
+
+            if (response.Answers[0].Type == RecordType.SOA)
+            {
+                soa++;
+            }
+
+            if (soa != 2)
+            {
+                continue;
+            }
+
+            transferResponse.Header.QuestionCount = (ushort)transferResponse.Questions.Count;
+            transferResponse.Header.AnswerCount = (ushort)transferResponse.Answers.Count;
+            transferResponse.Header.NameserverCount = (ushort)transferResponse.Authorities.Count;
+            transferResponse.Header.AdditionalRecordsCount = (ushort)transferResponse.Additional.Count;
+            transferResponse.MessageSize = messageSize;
+
+            return transferResponse;
         }
-    } // class
-}
+    }
+} // class

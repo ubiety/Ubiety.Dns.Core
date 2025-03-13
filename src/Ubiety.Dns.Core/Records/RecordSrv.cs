@@ -83,97 +83,96 @@ using System;
 
 using Ubiety.Dns.Core.Common.Extensions;
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     RFC 2782 - DNS resource record for service discovery.
+/// </summary>
+public sealed record RecordSrv : Record, IComparable<RecordSrv>
 {
     /// <summary>
-    ///     RFC 2782 - DNS resource record for service discovery.
+    ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
     /// </summary>
-    public sealed record RecordSrv : Record, IComparable<RecordSrv>
+    /// <param name="reader"><see cref="RecordReader" /> of the record data.</param>
+    public RecordSrv(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> of the record data.</param>
-        public RecordSrv(RecordReader reader)
-            : base(reader)
+        Priority = Reader.ReadUInt16();
+        Weight = Reader.ReadUInt16();
+        Port = Reader.ReadUInt16();
+        Target = Reader.ReadDomainName();
+    }
+
+    /// <summary>
+    ///     Gets the record priority.
+    /// </summary>
+    public ushort Priority { get; }
+
+    /// <summary>
+    ///     Gets the record weight.
+    /// </summary>
+    public ushort Weight { get; }
+
+    /// <summary>
+    ///     Gets the service port.
+    /// </summary>
+    public ushort Port { get; }
+
+    /// <summary>
+    ///     Gets the target domain.
+    /// </summary>
+    public string Target { get; }
+
+    /// <summary>
+    ///     Determines if the record is greater than another.
+    /// </summary>
+    /// <param name="left">Left record.</param>
+    /// <param name="right">Right record.</param>
+    /// <returns>A value indicating whether the left record is greater.</returns>
+    public static bool operator >(RecordSrv left, RecordSrv right)
+    {
+        return left.ThrowIfNull(nameof(left)).CompareTo(right) == 1;
+    }
+
+    /// <inheritdoc cref="IComparable{T}" />
+    public static bool operator <(RecordSrv left, RecordSrv right)
+    {
+        return left.ThrowIfNull(nameof(left)).CompareTo(right) == -1;
+    }
+
+    /// <inheritdoc cref="IComparable{T}" />
+    public static bool operator <=(RecordSrv left, RecordSrv right)
+    {
+        return left.ThrowIfNull(nameof(left)).CompareTo(right) <= 0;
+    }
+
+    /// <inheritdoc cref="IComparable{T}" />
+    public static bool operator >=(RecordSrv left, RecordSrv right)
+    {
+        return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
+    }
+
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Record as a string.</returns>
+    public override string ToString()
+    {
+        return $"{Priority} {Weight} {Port} {Target}";
+    }
+
+    /// <summary>
+    ///     Compares instance to object.
+    /// </summary>
+    /// <param name="other">Object to compare to.</param>
+    /// <returns>Integer defining object order.</returns>
+    public int CompareTo(RecordSrv other)
+    {
+        if (other is null)
         {
-            Priority = Reader.ReadUInt16();
-            Weight = Reader.ReadUInt16();
-            Port = Reader.ReadUInt16();
-            Target = Reader.ReadDomainName();
+            return 1;
         }
 
-        /// <summary>
-        ///     Gets the record priority.
-        /// </summary>
-        public ushort Priority { get; }
-
-        /// <summary>
-        ///     Gets the record weight.
-        /// </summary>
-        public ushort Weight { get; }
-
-        /// <summary>
-        ///     Gets the service port.
-        /// </summary>
-        public ushort Port { get; }
-
-        /// <summary>
-        ///     Gets the target domain.
-        /// </summary>
-        public string Target { get; }
-
-        /// <summary>
-        ///     Determines if the record is greater than another.
-        /// </summary>
-        /// <param name="left">Left record.</param>
-        /// <param name="right">Right record.</param>
-        /// <returns>A value indicating whether the left record is greater.</returns>
-        public static bool operator >(RecordSrv left, RecordSrv right)
-        {
-            return left.ThrowIfNull(nameof(left)).CompareTo(right) == 1;
-        }
-
-        /// <inheritdoc cref="IComparable{T}" />
-        public static bool operator <(RecordSrv left, RecordSrv right)
-        {
-            return left.ThrowIfNull(nameof(left)).CompareTo(right) == -1;
-        }
-
-        /// <inheritdoc cref="IComparable{T}" />
-        public static bool operator <=(RecordSrv left, RecordSrv right)
-        {
-            return left.ThrowIfNull(nameof(left)).CompareTo(right) <= 0;
-        }
-
-        /// <inheritdoc cref="IComparable{T}" />
-        public static bool operator >=(RecordSrv left, RecordSrv right)
-        {
-            return left.ThrowIfNull(nameof(left)).CompareTo(right) >= 0;
-        }
-
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Record as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Priority} {Weight} {Port} {Target}";
-        }
-
-        /// <summary>
-        ///     Compares instance to object.
-        /// </summary>
-        /// <param name="other">Object to compare to.</param>
-        /// <returns>Integer defining object order.</returns>
-        public int CompareTo(RecordSrv other)
-        {
-            if (other is null)
-            {
-                return 1;
-            }
-
-            return Priority.CompareTo(other.Priority) > 0 ? 1 : Weight.CompareTo(other.Weight);
-        }
+        return Priority.CompareTo(other.Priority) > 0 ? 1 : Weight.CompareTo(other.Weight);
     }
 }

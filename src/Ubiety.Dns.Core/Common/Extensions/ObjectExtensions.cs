@@ -17,30 +17,29 @@
 
 using System;
 
-namespace Ubiety.Dns.Core.Common.Extensions
+namespace Ubiety.Dns.Core.Common.Extensions;
+
+/// <summary>
+/// Provides extension methods for object validation.
+/// </summary>
+public static class ObjectExtensions
 {
     /// <summary>
-    /// Provides extension methods for object validation.
+    /// Throws an <see cref="ArgumentNullException"/> if the specified object is null.
     /// </summary>
-    public static class ObjectExtensions
+    /// <param name="target">The object to check for null.</param>
+    /// <param name="name">The name of the parameter being validated.</param>
+    /// <typeparam name="T">The type of the object to check.</typeparam>
+    /// <returns>The non-null target object.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the target object is null.</exception>
+    public static T ThrowIfNull<T>(this T target, string name)
+        where T : class
     {
-        /// <summary>
-        /// Throws an <see cref="ArgumentNullException"/> if the specified object is null.
-        /// </summary>
-        /// <param name="target">The object to check for null.</param>
-        /// <param name="name">The name of the parameter being validated.</param>
-        /// <typeparam name="T">The type of the object to check.</typeparam>
-        /// <returns>The non-null target object.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the target object is null.</exception>
-        public static T ThrowIfNull<T>(this T target, string name)
-            where T : class
+        if (target is null)
         {
-            if (target is null)
-            {
-                throw new ArgumentNullException(name);
-            }
-
-            return target;
+            throw new ArgumentNullException(name);
         }
+
+        return target;
     }
 }

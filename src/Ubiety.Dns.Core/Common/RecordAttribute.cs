@@ -17,24 +17,23 @@
 
 using System;
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Represents an attribute that is used to associate a DNS record type with a specific field.
+/// </summary>
+/// <remarks>
+/// This attribute is applied to fields of an enumeration to define the mapping between a DNS record identifier
+/// and the corresponding implementation type of the DNS record.
+/// </remarks>
+/// <example>
+/// This class is used internally to dynamically instantiate record types for DNS parsing.
+/// </example>
+[AttributeUsage(AttributeTargets.Field)]
+public class RecordAttribute(Type record) : Attribute
 {
     /// <summary>
-    /// Represents an attribute that is used to associate a DNS record type with a specific field.
+    ///     Gets the record type.
     /// </summary>
-    /// <remarks>
-    /// This attribute is applied to fields of an enumeration to define the mapping between a DNS record identifier
-    /// and the corresponding implementation type of the DNS record.
-    /// </remarks>
-    /// <example>
-    /// This class is used internally to dynamically instantiate record types for DNS parsing.
-    /// </example>
-    [AttributeUsage(AttributeTargets.Field)]
-    public class RecordAttribute(Type record) : Attribute
-    {
-        /// <summary>
-        ///     Gets the record type.
-        /// </summary>
-        public Type RecordType => record;
-    }
+    public Type RecordType => record;
 }

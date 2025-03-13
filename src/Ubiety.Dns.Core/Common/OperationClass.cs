@@ -15,31 +15,30 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Specifies the operation class for DNS queries and resource records.
+/// </summary>
+public enum OperationClass
 {
     /// <summary>
-    /// Specifies the operation class for DNS queries and resource records.
+    /// Represents the Internet class used in DNS queries and resource records.
     /// </summary>
-    public enum OperationClass
-    {
-        /// <summary>
-        /// Represents the Internet class used in DNS queries and resource records.
-        /// </summary>
-        IN = 1,
+    IN = 1,
 
-        /// <summary>
-        /// Represents the CS (CSNET) class, which is an obsolete class formerly used in early networking contexts.
-        /// </summary>
-        CS = 2,
+    /// <summary>
+    /// Represents the CS (CSNET) class, which is an obsolete class formerly used in early networking contexts.
+    /// </summary>
+    CS = 2,
 
-        /// <summary>
-        /// Represents the Chaos class used in DNS queries and resource records.
-        /// </summary>
-        CH = 3,
+    /// <summary>
+    /// Represents the Chaos class used in DNS queries and resource records.
+    /// </summary>
+    CH = 3,
 
-        /// <summary>
-        /// Represents the Hesiod class used in DNS queries and resource records.
-        /// </summary>
-        HS = 4,
-    }
+    /// <summary>
+    /// Represents the Hesiod class used in DNS queries and resource records.
+    /// </summary>
+    HS = 4,
 }

@@ -17,48 +17,47 @@
 
 using System.Net;
 
-namespace Ubiety.Dns.Core.Records.General
+namespace Ubiety.Dns.Core.Records.General;
+
+/// <summary>
+/// Represents a DNS A Record used to map a domain to an IPv4 address.
+/// </summary>
+/// <remarks>
+/// A Records are the most basic type of DNS record. They map a domain or subdomain
+/// to a 32-bit IPv4 address.
+/// Multiple A Records may exist for a single domain, each pointing to a different IP address.
+/// This allows for techniques such as load balancing or redundancy.
+/// The A RDATA format includes a single field:
+/// ADDRESS - A 32-bit IPv4 internet address.
+/// </remarks>
+public record RecordA : Record
 {
     /// <summary>
-    /// Represents a DNS A Record used to map a domain to an IPv4 address.
+    ///     Initializes a new instance of the <see cref="RecordA" /> class.
+    /// </summary>
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordA(RecordReader reader)
+        : base(reader)
+    {
+        Address = IPAddress.Parse(
+            $"{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}");
+    }
+
+    /// <summary>
+    /// Gets the IPv4 address associated with the DNS A Record.
     /// </summary>
     /// <remarks>
-    /// A Records are the most basic type of DNS record. They map a domain or subdomain
-    /// to a 32-bit IPv4 address.
-    /// Multiple A Records may exist for a single domain, each pointing to a different IP address.
-    /// This allows for techniques such as load balancing or redundancy.
-    /// The A RDATA format includes a single field:
-    /// ADDRESS - A 32-bit IPv4 internet address.
+    /// Represents a 32-bit IPv4 internet address contained in the DNS A Record.
+    /// This address is used to map a domain or subdomain to a specific IPv4 address.
     /// </remarks>
-    public record RecordA : Record
+    public IPAddress Address { get; }
+
+    /// <summary>
+    /// Converts the current record's data to its string representation.
+    /// </summary>
+    /// <returns>A string representation of the record, typically the IP address in this case.</returns>
+    public override string ToString()
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordA" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordA(RecordReader reader)
-            : base(reader)
-        {
-            Address = IPAddress.Parse(
-                $"{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}.{Reader.ReadByte()}");
-        }
-
-        /// <summary>
-        /// Gets the IPv4 address associated with the DNS A Record.
-        /// </summary>
-        /// <remarks>
-        /// Represents a 32-bit IPv4 internet address contained in the DNS A Record.
-        /// This address is used to map a domain or subdomain to a specific IPv4 address.
-        /// </remarks>
-        public IPAddress Address { get; }
-
-        /// <summary>
-        /// Converts the current record's data to its string representation.
-        /// </summary>
-        /// <returns>A string representation of the record, typically the IP address in this case.</returns>
-        public override string ToString()
-        {
-            return Address.ToString();
-        }
+        return Address.ToString();
     }
 }

@@ -21,210 +21,209 @@ using System.Net.NetworkInformation;
 
 using Ubiety.Logging.Core;
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core;
+
+/// <summary>
+/// Provides a builder for configuring and creating a DNS resolver.
+/// </summary>
+public class ResolverBuilder
 {
-    /// <summary>
-    /// Provides a builder for configuring and creating a DNS resolver.
-    /// </summary>
-    public class ResolverBuilder
+    private readonly List<IPEndPoint> _dnsServers;
+    private IUbietyLogManager _logManager;
+    private int _timeout;
+    private bool _enableCache;
+    private int _retries;
+    private bool _useRecursion;
+
+    private ResolverBuilder()
     {
-        private readonly List<IPEndPoint> _dnsServers;
-        private IUbietyLogManager _logManager;
-        private int _timeout;
-        private bool _enableCache;
-        private int _retries;
-        private bool _useRecursion;
-
-        private ResolverBuilder()
-        {
 #pragma warning disable SA1010 // Opening square brackets should be spaced correctly
-            _dnsServers = [];
+        _dnsServers = [];
 #pragma warning restore SA1010 // Opening square brackets should be spaced correctly
+    }
+
+    /// <summary>
+    /// Creates a new instance of the <see cref="ResolverBuilder"/> class.
+    /// </summary>
+    /// <returns>A new <see cref="ResolverBuilder"/> instance for configuring a DNS resolver.</returns>
+    public static ResolverBuilder Begin()
+    {
+        return new();
+    }
+
+    /// <summary>
+    /// Enables logging for the DNS resolver.
+    /// </summary>
+    /// <param name="logManager">An <see cref="IUbietyLogManager"/> instance to be used for logging.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder EnableLogging(IUbietyLogManager logManager)
+    {
+        _logManager = logManager;
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a DNS server to the resolver.
+    /// </summary>
+    /// <param name="server">The <see cref="IPEndPoint"/> representing the DNS server.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder AddDnsServer(IPEndPoint server)
+    {
+        _dnsServers.Add(server);
+
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a DNS server to the resolver.
+    /// </summary>
+    /// <param name="serverAddress">The <see cref="IPAddress"/> of the DNS server.</param>
+    /// <param name="port">The port number of the DNS server.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port)
+    {
+        _dnsServers.Add(new IPEndPoint(serverAddress, port));
+
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a DNS server to the resolver.
+    /// </summary>
+    /// <param name="serverAddress">The <see cref="IPAddress"/> representing the DNS server to add.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder AddDnsServer(IPAddress serverAddress)
+    {
+        return AddDnsServer(serverAddress, 53);
+    }
+
+    /// <summary>
+    /// Adds a DNS server to the resolver.
+    /// </summary>
+    /// <param name="serverAddress">The string representing the DNS server to be added.</param>
+    /// <param name="port">The port number of the DNS server.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder AddDnsServer(string serverAddress, int port)
+    {
+        return IPAddress.TryParse(serverAddress, out var serverIp) ? AddDnsServer(serverIp, port) : this;
+    }
+
+    /// <summary>
+    /// Adds a DNS server to the resolver.
+    /// </summary>
+    /// <param name="serverAddress">The endpoint of the DNS server to be added.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder AddDnsServer(string serverAddress)
+    {
+        return AddDnsServer(serverAddress, 53);
+    }
+
+    /// <summary>
+    /// Adds multiple DNS servers to the resolver.
+    /// </summary>
+    /// <param name="dnsServers">A collection of <see cref="IPEndPoint"/> representing the DNS servers to be added.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance for further configuration.</returns>
+    public ResolverBuilder AddDnsServers(IEnumerable<IPEndPoint> dnsServers)
+    {
+        _dnsServers.AddRange(dnsServers);
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the timeout duration for DNS resolver requests.
+    /// </summary>
+    /// <param name="timeout">The time in milliseconds to wait for a response before timing out.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder SetTimeout(int timeout)
+    {
+        _timeout = timeout;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Enables caching for the DNS resolver.
+    /// </summary>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder EnableCache()
+    {
+        _enableCache = true;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the number of retry attempts for DNS resolution.
+    /// </summary>
+    /// <param name="retries">The number of retries to attempt.</param>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder SetRetries(int retries)
+    {
+        _retries = retries;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Enables recursion for the DNS resolver.
+    /// </summary>
+    /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    public ResolverBuilder UseRecursion()
+    {
+        _useRecursion = true;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Builds and returns a configured instance of the <see cref="Resolver"/> class.
+    /// </summary>
+    /// <returns>A configured <see cref="Resolver"/> instance.</returns>
+    public Resolver Build()
+    {
+        if (_logManager != null)
+        {
+            UbietyLogger.Initialize(_logManager);
         }
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="ResolverBuilder"/> class.
-        /// </summary>
-        /// <returns>A new <see cref="ResolverBuilder"/> instance for configuring a DNS resolver.</returns>
-        public static ResolverBuilder Begin()
+        if (_dnsServers.Count < 1)
         {
-            return new();
+            AddSystemServers();
         }
 
-        /// <summary>
-        /// Enables logging for the DNS resolver.
-        /// </summary>
-        /// <param name="logManager">An <see cref="IUbietyLogManager"/> instance to be used for logging.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder EnableLogging(IUbietyLogManager logManager)
+        if (_timeout == 0)
         {
-            _logManager = logManager;
-            return this;
+            _timeout = 1000;
         }
 
-        /// <summary>
-        /// Adds a DNS server to the resolver.
-        /// </summary>
-        /// <param name="server">The <see cref="IPEndPoint"/> representing the DNS server.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder AddDnsServer(IPEndPoint server)
+        if (_retries == 0)
         {
-            _dnsServers.Add(server);
-
-            return this;
+            _retries = 1;
         }
 
-        /// <summary>
-        /// Adds a DNS server to the resolver.
-        /// </summary>
-        /// <param name="serverAddress">The <see cref="IPAddress"/> of the DNS server.</param>
-        /// <param name="port">The port number of the DNS server.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port)
+        return new Resolver(_dnsServers) { Timeout = _timeout, UseCache = _enableCache, Retries = _retries, Recursion = _useRecursion };
+    }
+
+    private void AddSystemServers()
+    {
+        var interfaces = NetworkInterface.GetAllNetworkInterfaces();
+        foreach (var adapter in interfaces)
         {
-            _dnsServers.Add(new IPEndPoint(serverAddress, port));
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a DNS server to the resolver.
-        /// </summary>
-        /// <param name="serverAddress">The <see cref="IPAddress"/> representing the DNS server to add.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder AddDnsServer(IPAddress serverAddress)
-        {
-            return AddDnsServer(serverAddress, 53);
-        }
-
-        /// <summary>
-        /// Adds a DNS server to the resolver.
-        /// </summary>
-        /// <param name="serverAddress">The string representing the DNS server to be added.</param>
-        /// <param name="port">The port number of the DNS server.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder AddDnsServer(string serverAddress, int port)
-        {
-            return IPAddress.TryParse(serverAddress, out var serverIp) ? AddDnsServer(serverIp, port) : this;
-        }
-
-        /// <summary>
-        /// Adds a DNS server to the resolver.
-        /// </summary>
-        /// <param name="serverAddress">The endpoint of the DNS server to be added.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder AddDnsServer(string serverAddress)
-        {
-            return AddDnsServer(serverAddress, 53);
-        }
-
-        /// <summary>
-        /// Adds multiple DNS servers to the resolver.
-        /// </summary>
-        /// <param name="dnsServers">A collection of <see cref="IPEndPoint"/> representing the DNS servers to be added.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance for further configuration.</returns>
-        public ResolverBuilder AddDnsServers(IEnumerable<IPEndPoint> dnsServers)
-        {
-            _dnsServers.AddRange(dnsServers);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the timeout duration for DNS resolver requests.
-        /// </summary>
-        /// <param name="timeout">The time in milliseconds to wait for a response before timing out.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder SetTimeout(int timeout)
-        {
-            _timeout = timeout;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Enables caching for the DNS resolver.
-        /// </summary>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder EnableCache()
-        {
-            _enableCache = true;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the number of retry attempts for DNS resolution.
-        /// </summary>
-        /// <param name="retries">The number of retries to attempt.</param>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder SetRetries(int retries)
-        {
-            _retries = retries;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Enables recursion for the DNS resolver.
-        /// </summary>
-        /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
-        public ResolverBuilder UseRecursion()
-        {
-            _useRecursion = true;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Builds and returns a configured instance of the <see cref="Resolver"/> class.
-        /// </summary>
-        /// <returns>A configured <see cref="Resolver"/> instance.</returns>
-        public Resolver Build()
-        {
-            if (_logManager != null)
+            if (adapter.OperationalStatus != OperationalStatus.Up)
             {
-                UbietyLogger.Initialize(_logManager);
+                continue;
             }
 
-            if (_dnsServers.Count < 1)
-            {
-                AddSystemServers();
-            }
+            var interfaceProperties = adapter.GetIPProperties();
 
-            if (_timeout == 0)
+            // thanks to Jon Webster on May 20, 2008
+            foreach (var address in interfaceProperties.DnsAddresses)
             {
-                _timeout = 1000;
-            }
-
-            if (_retries == 0)
-            {
-                _retries = 1;
-            }
-
-            return new Resolver(_dnsServers) { Timeout = _timeout, UseCache = _enableCache, Retries = _retries, Recursion = _useRecursion };
-        }
-
-        private void AddSystemServers()
-        {
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var adapter in interfaces)
-            {
-                if (adapter.OperationalStatus != OperationalStatus.Up)
+                var entry = new IPEndPoint(address, 53);
+                if (!_dnsServers.Contains(entry))
                 {
-                    continue;
-                }
-
-                var interfaceProperties = adapter.GetIPProperties();
-
-                // thanks to Jon Webster on May 20, 2008
-                foreach (var address in interfaceProperties.DnsAddresses)
-                {
-                    var entry = new IPEndPoint(address, 53);
-                    if (!_dnsServers.Contains(entry))
-                    {
-                        _dnsServers.Add(entry);
-                    }
+                    _dnsServers.Add(entry);
                 }
             }
         }

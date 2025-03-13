@@ -83,41 +83,40 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     ISDN DNS record.
+/// </summary>
+public record RecordIsdn : Record
 {
     /// <summary>
-    ///     ISDN DNS record.
+    ///     Initializes a new instance of the <see cref="RecordIsdn" /> class.
     /// </summary>
-    public record RecordIsdn : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordIsdn(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordIsdn" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordIsdn(RecordReader reader)
-            : base(reader)
-        {
-            IsdnAddress = Reader.ReadString();
-            SA = Reader.ReadString();
-        }
+        IsdnAddress = Reader.ReadString();
+        SA = Reader.ReadString();
+    }
 
-        /// <summary>
-        ///     Gets or sets the ISDN address.
-        /// </summary>
-        public string IsdnAddress { get; set; }
+    /// <summary>
+    ///     Gets or sets the ISDN address.
+    /// </summary>
+    public string IsdnAddress { get; set; }
 
-        /// <summary>
-        ///     Gets or sets SA.
-        /// </summary>
-        public string SA { get; set; }
+    /// <summary>
+    ///     Gets or sets SA.
+    /// </summary>
+    public string SA { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>String version of the data.</returns>
-        public override string ToString()
-        {
-            return $"{IsdnAddress} {SA}";
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>String version of the data.</returns>
+    public override string ToString()
+    {
+        return $"{IsdnAddress} {SA}";
     }
 }

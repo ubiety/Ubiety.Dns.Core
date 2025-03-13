@@ -49,70 +49,69 @@ using System.Text;
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Network service access point DNS record.
+/// </summary>
+public record RecordNsap : Record
 {
+    private readonly byte[] _address;
+
     /// <summary>
-    ///     Network service access point DNS record.
+    ///     Initializes a new instance of the <see cref="RecordNsap" /> class.
     /// </summary>
-    public record RecordNsap : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordNsap(RecordReader reader)
+        : base(reader)
     {
-        private readonly byte[] _address;
+        Length = Reader.ReadUInt16();
+        _address = Reader.ReadBytes(Length);
+    }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNsap" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordNsap(RecordReader reader)
-            : base(reader)
+    /// <summary>
+    ///     Gets or sets the length.
+    /// </summary>
+    public ushort Length { get; set; }
+
+    /// <summary>
+    ///     Gets the address as a byte collection.
+    /// </summary>
+    public Collection<byte> NsapAddress => new(_address);
+
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>NSAP address as a string.</returns>
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        sb.AppendFormat(CultureInfo.InvariantCulture, "{0} ", Length);
+        foreach (var t in _address)
         {
-            Length = Reader.ReadUInt16();
-            _address = Reader.ReadBytes(Length);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X00}", t);
         }
 
-        /// <summary>
-        ///     Gets or sets the length.
-        /// </summary>
-        public ushort Length { get; set; }
+        return sb.ToString();
+    }
 
-        /// <summary>
-        ///     Gets the address as a byte collection.
-        /// </summary>
-        public Collection<byte> NsapAddress => new(_address);
-
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>NSAP address as a string.</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.AppendFormat(CultureInfo.InvariantCulture, "{0} ", Length);
-            foreach (var t in _address)
-            {
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:X00}", t);
-            }
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        ///     Converts the address to a readable string.
-        /// </summary>
-        /// <returns>String of the address in IPv2 format.</returns>
-        public string ToGOSIPV2()
-        {
-            return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0:X}.{1:X}.{2:X}.{3:X}.{4:X}.{5:X}.{6:X}{7:X}.{8:X}",
-                _address[0],
-                (_address[1] << 8) | _address[2],
-                _address[3],
-                (_address[4] << 16) | (_address[5] << 8) | _address[6],
-                (_address[7] << 8) | _address[8],
-                (_address[9] << 8) | _address[10],
-                (_address[11] << 8) | _address[12],
-                (_address[13] << 16) | (_address[14] << 8) | _address[15],
-                (_address[16] << 16) | (_address[17] << 8) | _address[18]);
-        }
+    /// <summary>
+    ///     Converts the address to a readable string.
+    /// </summary>
+    /// <returns>String of the address in IPv2 format.</returns>
+    public string ToGOSIPV2()
+    {
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0:X}.{1:X}.{2:X}.{3:X}.{4:X}.{5:X}.{6:X}{7:X}.{8:X}",
+            _address[0],
+            (_address[1] << 8) | _address[2],
+            _address[3],
+            (_address[4] << 16) | (_address[5] << 8) | _address[6],
+            (_address[7] << 8) | _address[8],
+            (_address[9] << 8) | _address[10],
+            (_address[11] << 8) | _address[12],
+            (_address[13] << 16) | (_address[14] << 8) | _address[15],
+            (_address[16] << 16) | (_address[17] << 8) | _address[18]);
     }
 }

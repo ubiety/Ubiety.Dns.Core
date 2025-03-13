@@ -84,47 +84,46 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     PX DNS record.
+/// </summary>
+public record RecordPx : Record
 {
     /// <summary>
-    ///     PX DNS record.
+    ///     Initializes a new instance of the <see cref="RecordPx" /> class.
     /// </summary>
-    public record RecordPx : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordPx(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordPx" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordPx(RecordReader reader)
-            : base(reader)
-        {
-            Preference = Reader.ReadUInt16();
-            Map822 = Reader.ReadDomainName();
-            MapX400 = Reader.ReadDomainName();
-        }
+        Preference = Reader.ReadUInt16();
+        Map822 = Reader.ReadDomainName();
+        MapX400 = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets or sets the preference.
-        /// </summary>
-        public ushort Preference { get; set; }
+    /// <summary>
+    ///     Gets or sets the preference.
+    /// </summary>
+    public ushort Preference { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the map to 822.
-        /// </summary>
-        public string Map822 { get; set; }
+    /// <summary>
+    ///     Gets or sets the map to 822.
+    /// </summary>
+    public string Map822 { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the map to X.400.
-        /// </summary>
-        public string MapX400 { get; set; }
+    /// <summary>
+    ///     Gets or sets the map to X.400.
+    /// </summary>
+    public string MapX400 { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Mappings as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {Map822} {MapX400}";
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Mappings as a string.</returns>
+    public override string ToString()
+    {
+        return $"{Preference} {Map822} {MapX400}";
     }
 }

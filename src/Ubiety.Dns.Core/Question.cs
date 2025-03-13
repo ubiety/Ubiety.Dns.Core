@@ -22,183 +22,182 @@ using System.Text;
 using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core;
+
+/// <summary>
+/// Represents a DNS question section, which contains information about the domain name being queried,
+/// the type of query, and the class of query.
+/// </summary>
+public sealed class Question : IEquatable<Question>
 {
     /// <summary>
-    /// Represents a DNS question section, which contains information about the domain name being queried,
-    /// the type of query, and the class of query.
+    /// Initializes a new instance of the <see cref="Question"/> class.
     /// </summary>
-    public sealed class Question : IEquatable<Question>
+    /// <param name="domainName">The domain name to query.</param>
+    /// <param name="questionType">The type of query being performed.</param>
+    /// <param name="questionClass">The class of the query.</param>
+    public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Question"/> class.
-        /// </summary>
-        /// <param name="domainName">The domain name to query.</param>
-        /// <param name="questionType">The type of query being performed.</param>
-        /// <param name="questionClass">The class of the query.</param>
-        public Question(string domainName, QuestionType questionType, QuestionClass questionClass)
+        if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith('.'))
         {
-            if (!domainName.ThrowIfNull(nameof(domainName)).EndsWith('.'))
-            {
-                domainName += ".";
-            }
-
-            DomainName = domainName;
-            QuestionType = questionType;
-            QuestionClass = questionClass;
+            domainName += ".";
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Question" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> of the record.</param>
-        internal Question(RecordReader reader)
+        DomainName = domainName;
+        QuestionType = questionType;
+        QuestionClass = questionClass;
+    }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="Question" /> class.
+    /// </summary>
+    /// <param name="reader"><see cref="RecordReader" /> of the record.</param>
+    internal Question(RecordReader reader)
+    {
+        DomainName = reader.ReadDomainName();
+        QuestionType = (QuestionType)reader.ReadUInt16();
+        QuestionClass = (QuestionClass)reader.ReadUInt16();
+    }
+
+    /// <summary>
+    /// Gets the domain name associated with the DNS question.
+    /// </summary>
+    /// <value>The domain name being queried.</value>
+    public string DomainName { get; }
+
+    /// <summary>
+    /// Gets the type of DNS record associated with the question.
+    /// </summary>
+    /// <value>The DNS record type being queried, such as A, MX, or TXT.</value>
+    public QuestionType QuestionType { get; }
+
+    /// <summary>
+    /// Gets the query class for the DNS question, determining the protocol group in use.
+    /// </summary>
+    /// <value>The class of the DNS query, such as IN, CS, CH, HS, or Any.</value>
+    public QuestionClass QuestionClass { get; }
+
+    /// <summary>
+    /// Checks whether two <see cref="Question"/> instances are equal.
+    /// </summary>
+    /// <param name="left">The first instance to compare.</param>
+    /// <param name="right">The second instance to compare.</param>
+    /// <returns>True if the two instances are equal; otherwise, false.</returns>
+    public static bool operator ==(Question left, Question right)
+    {
+        return Equals(left, right);
+    }
+
+    /// <summary>
+    /// Determines whether two specified <see cref="Question"/> objects are not equal.
+    /// </summary>
+    /// <param name="left">The first instance to compare.</param>
+    /// <param name="right">The second instance to compare.</param>
+    /// <returns><c>true</c> if the two <see cref="Question"/> objects are not equal; otherwise, <c>false</c>.</returns>
+    public static bool operator !=(Question left, Question right)
+    {
+        return !Equals(left, right);
+    }
+
+    /// <summary>
+    /// Determines whether the current <see cref="Question"/> instance is equal to another <see cref="Question"/> instance.
+    /// </summary>
+    /// <param name="other">The <see cref="Question"/> instance to compare with the current instance.</param>
+    /// <returns>
+    /// true if the current <see cref="Question"/> instance is equal to the <paramref name="other"/> parameter; otherwise, false.
+    /// </returns>
+    public bool Equals(Question other)
+    {
+        if (other is null)
         {
-            DomainName = reader.ReadDomainName();
-            QuestionType = (QuestionType)reader.ReadUInt16();
-            QuestionClass = (QuestionClass)reader.ReadUInt16();
+            return false;
         }
 
-        /// <summary>
-        /// Gets the domain name associated with the DNS question.
-        /// </summary>
-        /// <value>The domain name being queried.</value>
-        public string DomainName { get; }
-
-        /// <summary>
-        /// Gets the type of DNS record associated with the question.
-        /// </summary>
-        /// <value>The DNS record type being queried, such as A, MX, or TXT.</value>
-        public QuestionType QuestionType { get; }
-
-        /// <summary>
-        /// Gets the query class for the DNS question, determining the protocol group in use.
-        /// </summary>
-        /// <value>The class of the DNS query, such as IN, CS, CH, HS, or Any.</value>
-        public QuestionClass QuestionClass { get; }
-
-        /// <summary>
-        /// Checks whether two <see cref="Question"/> instances are equal.
-        /// </summary>
-        /// <param name="left">The first instance to compare.</param>
-        /// <param name="right">The second instance to compare.</param>
-        /// <returns>True if the two instances are equal; otherwise, false.</returns>
-        public static bool operator ==(Question left, Question right)
+        if (ReferenceEquals(this, other))
         {
-            return Equals(left, right);
+            return true;
         }
 
-        /// <summary>
-        /// Determines whether two specified <see cref="Question"/> objects are not equal.
-        /// </summary>
-        /// <param name="left">The first instance to compare.</param>
-        /// <param name="right">The second instance to compare.</param>
-        /// <returns><c>true</c> if the two <see cref="Question"/> objects are not equal; otherwise, <c>false</c>.</returns>
-        public static bool operator !=(Question left, Question right)
+        return string.Equals(DomainName, other.DomainName, StringComparison.InvariantCultureIgnoreCase) &&
+               QuestionType == other.QuestionType && QuestionClass == other.QuestionClass;
+    }
+
+    /// <summary>
+    /// Determines whether the specified object is equal to the current <see cref="Question"/> instance.
+    /// </summary>
+    /// <param name="obj">The object to compare with the current instance.</param>
+    /// <returns>
+    /// true if the specified object is equal to the current <see cref="Question"/> instance; otherwise, false.
+    /// </returns>
+    public override bool Equals(object obj)
+    {
+        if (obj is null)
         {
-            return !Equals(left, right);
+            return false;
         }
 
-        /// <summary>
-        /// Determines whether the current <see cref="Question"/> instance is equal to another <see cref="Question"/> instance.
-        /// </summary>
-        /// <param name="other">The <see cref="Question"/> instance to compare with the current instance.</param>
-        /// <returns>
-        /// true if the current <see cref="Question"/> instance is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        public bool Equals(Question other)
+        if (ReferenceEquals(this, obj))
         {
-            if (other is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return string.Equals(DomainName, other.DomainName, StringComparison.InvariantCultureIgnoreCase) &&
-                   QuestionType == other.QuestionType && QuestionClass == other.QuestionClass;
+            return true;
         }
 
-        /// <summary>
-        /// Determines whether the specified object is equal to the current <see cref="Question"/> instance.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current instance.</param>
-        /// <returns>
-        /// true if the specified object is equal to the current <see cref="Question"/> instance; otherwise, false.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-            {
-                return false;
-            }
+        return obj.GetType() == GetType() && Equals((Question)obj);
+    }
 
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
+    /// <summary>
+    /// Converts the current <see cref="Question"/> instance to its string representation.
+    /// </summary>
+    /// <returns>A string that represents the current object, including the domain name, class, and type of the query.</returns>
+    public override string ToString()
+    {
+        return $"{DomainName,-32}\t{QuestionClass}\t{QuestionType}";
+    }
 
-            return obj.GetType() == GetType() && Equals((Question)obj);
-        }
-
-        /// <summary>
-        /// Converts the current <see cref="Question"/> instance to its string representation.
-        /// </summary>
-        /// <returns>A string that represents the current object, including the domain name, class, and type of the query.</returns>
-        public override string ToString()
-        {
-            return $"{DomainName,-32}\t{QuestionClass}\t{QuestionType}";
-        }
-
-        /// <summary>
-        /// Converts the question information into a sequence of bytes that can be used in DNS requests or responses.
-        /// </summary>
-        /// <returns>An enumerable collection of bytes representing the encoded DNS question fields.</returns>
-        public IEnumerable<byte> GetBytes()
-        {
+    /// <summary>
+    /// Converts the question information into a sequence of bytes that can be used in DNS requests or responses.
+    /// </summary>
+    /// <returns>An enumerable collection of bytes representing the encoded DNS question fields.</returns>
+    public IEnumerable<byte> GetBytes()
+    {
 #pragma warning disable SA1010 // Opening square brackets should be spaced correctly
-            return [.. WriteName(DomainName), .. ((ushort)QuestionType).GetBytes(), .. ((ushort)QuestionClass).GetBytes()];
+        return [.. WriteName(DomainName), .. ((ushort)QuestionType).GetBytes(), .. ((ushort)QuestionClass).GetBytes()];
 #pragma warning restore SA1010 // Opening square brackets should be spaced correctly
-        }
+    }
 
-        /// <summary>
-        /// Generates a hash code for the current instance of the <see cref="Question"/> class.
-        /// </summary>
-        /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode()
+    /// <summary>
+    /// Generates a hash code for the current instance of the <see cref="Question"/> class.
+    /// </summary>
+    /// <returns>A hash code for the current object.</returns>
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(DomainName, QuestionClass, QuestionType);
+    }
+
+    private static byte[] WriteName(string src)
+    {
+        if (!src.EndsWith('.'))
         {
-            return HashCode.Combine(DomainName, QuestionClass, QuestionType);
+            src += ".";
         }
 
-        private static byte[] WriteName(string src)
+        if (src == ".")
         {
-            if (!src.EndsWith('.'))
-            {
-                src += ".";
-            }
-
-            if (src == ".")
-            {
-                return new byte[1];
-            }
-
-            var sb = new StringBuilder();
-            sb.Append('\0');
-            for (int i = 0, j = 0; i < src.Length; i++, j++)
-            {
-                sb.Append(src[i]);
-                if (src[i] == '.')
-                {
-                    sb[i - j] = (char)(j & 0xff);
-                    j = -1;
-                }
-            }
-
-            sb.Append('\0');
-            return Encoding.ASCII.GetBytes(sb.ToString());
+            return new byte[1];
         }
+
+        var sb = new StringBuilder();
+        sb.Append('\0');
+        for (int i = 0, j = 0; i < src.Length; i++, j++)
+        {
+            sb.Append(src[i]);
+            if (src[i] == '.')
+            {
+                sb[i - j] = (char)(j & 0xff);
+                j = -1;
+            }
+        }
+
+        sb.Append('\0');
+        return Encoding.ASCII.GetBytes(sb.ToString());
     }
 }

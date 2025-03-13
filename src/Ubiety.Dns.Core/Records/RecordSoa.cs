@@ -82,71 +82,70 @@ reason for this provison is to allow future dynamic update facilities to
 change the SOA RR with known semantics.
 */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     DNS Start of Authority record.
+/// </summary>
+public record RecordSoa : Record
 {
     /// <summary>
-    ///     DNS Start of Authority record.
+    ///     Initializes a new instance of the <see cref="RecordSoa" /> class.
     /// </summary>
-    public record RecordSoa : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordSoa(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordSoa" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordSoa(RecordReader reader)
-            : base(reader)
-        {
-            PrimaryNameserver = Reader.ReadDomainName();
-            ResponsibleDomain = Reader.ReadDomainName();
-            Serial = Reader.ReadUInt32();
-            Refresh = Reader.ReadUInt32();
-            Retry = Reader.ReadUInt32();
-            Expire = Reader.ReadUInt32();
-            Minimum = Reader.ReadUInt32();
-        }
+        PrimaryNameserver = Reader.ReadDomainName();
+        ResponsibleDomain = Reader.ReadDomainName();
+        Serial = Reader.ReadUInt32();
+        Refresh = Reader.ReadUInt32();
+        Retry = Reader.ReadUInt32();
+        Expire = Reader.ReadUInt32();
+        Minimum = Reader.ReadUInt32();
+    }
 
-        /// <summary>
-        ///     Gets or sets the primary nameserver.
-        /// </summary>
-        public string PrimaryNameserver { get; set; }
+    /// <summary>
+    ///     Gets or sets the primary nameserver.
+    /// </summary>
+    public string PrimaryNameserver { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the responsible domain.
-        /// </summary>
-        public string ResponsibleDomain { get; set; }
+    /// <summary>
+    ///     Gets or sets the responsible domain.
+    /// </summary>
+    public string ResponsibleDomain { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the serial.
-        /// </summary>
-        public uint Serial { get; set; }
+    /// <summary>
+    ///     Gets or sets the serial.
+    /// </summary>
+    public uint Serial { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the refresh interval.
-        /// </summary>
-        public uint Refresh { get; set; }
+    /// <summary>
+    ///     Gets or sets the refresh interval.
+    /// </summary>
+    public uint Refresh { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the retry interval.
-        /// </summary>
-        public uint Retry { get; set; }
+    /// <summary>
+    ///     Gets or sets the retry interval.
+    /// </summary>
+    public uint Retry { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the expiration time.
-        /// </summary>
-        public uint Expire { get; set; }
+    /// <summary>
+    ///     Gets or sets the expiration time.
+    /// </summary>
+    public uint Expire { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the minimum TTL.
-        /// </summary>
-        public uint Minimum { get; set; }
+    /// <summary>
+    ///     Gets or sets the minimum TTL.
+    /// </summary>
+    public uint Minimum { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Record data as the string.</returns>
-        public override string ToString()
-        {
-            return $"{PrimaryNameserver} {ResponsibleDomain} {Serial} {Refresh} {Retry} {Expire} {Minimum}";
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Record data as the string.</returns>
+    public override string ToString()
+    {
+        return $"{PrimaryNameserver} {ResponsibleDomain} {Serial} {Refresh} {Retry} {Expire} {Minimum}";
     }
 }

@@ -34,47 +34,46 @@ depends on the domain where it is found.
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Text DNS record.
+/// </summary>
+public record RecordTxt : Record
 {
     /// <summary>
-    ///     Text DNS record.
+    ///     Initializes a new instance of the <see cref="RecordTxt" /> class.
     /// </summary>
-    public record RecordTxt : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    /// <param name="length">Record length.</param>
+    public RecordTxt(RecordReader reader, int length)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordTxt" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        /// <param name="length">Record length.</param>
-        public RecordTxt(RecordReader reader, int length)
-            : base(reader)
+        var position = Reader.Position;
+        Text = new List<string>();
+        while ((Reader.Position - position) < length)
         {
-            var position = Reader.Position;
-            Text = new List<string>();
-            while ((Reader.Position - position) < length)
-            {
-                Text.Add(Reader.ReadString());
-            }
+            Text.Add(Reader.ReadString());
+        }
+    }
+
+    /// <summary>
+    ///     Gets the text.
+    /// </summary>
+    public List<string> Text { get; }
+
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Text as a string.</returns>
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        foreach (var item in Text)
+        {
+            sb.Append(item);
         }
 
-        /// <summary>
-        ///     Gets the text.
-        /// </summary>
-        public List<string> Text { get; }
-
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Text as a string.</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            foreach (var item in Text)
-            {
-                sb.Append(item);
-            }
-
-            return sb.ToString().TrimEnd();
-        }
+        return sb.ToString().TrimEnd();
     }
 }

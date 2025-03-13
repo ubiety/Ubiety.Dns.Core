@@ -17,16 +17,15 @@
 
 using System;
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Represents event data for verbose output events.
+/// </summary>
+public class VerboseOutputEventArgs(string message) : EventArgs
 {
     /// <summary>
-    /// Represents event data for verbose output events.
+    ///     Gets the string message.
     /// </summary>
-    public class VerboseOutputEventArgs(string message) : EventArgs
-    {
-        /// <summary>
-        ///     Gets the string message.
-        /// </summary>
-        public string Message => message;
-    }
+    public string Message => message;
 }

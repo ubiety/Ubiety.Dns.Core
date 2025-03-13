@@ -32,37 +32,36 @@ MB records cause additional section processing which looks up an A type
 RRs corresponding to MADNAME.
 */
 
-namespace Ubiety.Dns.Core.Records.Mail
+namespace Ubiety.Dns.Core.Records.Mail;
+
+/// <summary>
+/// Represents a Mailbox-related DNS record (MB Record).
+/// </summary>
+public record RecordMb : Record
 {
     /// <summary>
-    /// Represents a Mailbox-related DNS record (MB Record).
+    ///     Initializes a new instance of the <see cref="RecordMb" /> class.
     /// </summary>
-    public record RecordMb : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordMb(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMb" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMb(RecordReader reader)
-            : base(reader)
-        {
-            MadName = Reader.ReadDomainName();
-        }
+        MadName = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        /// Gets the domain name (MADNAME) that specifies a host associated with the specified mailbox.
-        /// This represents the "domain-name" in the MB (Mailbox) DNS record format, which identifies
-        /// the domain of the host for the mailbox.
-        /// </summary>
-        public string MadName { get; }
+    /// <summary>
+    /// Gets the domain name (MADNAME) that specifies a host associated with the specified mailbox.
+    /// This represents the "domain-name" in the MB (Mailbox) DNS record format, which identifies
+    /// the domain of the host for the mailbox.
+    /// </summary>
+    public string MadName { get; }
 
-        /// <summary>
-        /// Converts the current record to its string representation.
-        /// </summary>
-        /// <returns>A string representing the domain associated with the record.</returns>
-        public override string ToString()
-        {
-            return MadName;
-        }
+    /// <summary>
+    /// Converts the current record to its string representation.
+    /// </summary>
+    /// <returns>A string representing the domain associated with the record.</returns>
+    public override string ToString()
+    {
+        return MadName;
     }
 }

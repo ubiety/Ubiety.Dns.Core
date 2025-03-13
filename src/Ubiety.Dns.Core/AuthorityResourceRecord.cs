@@ -15,17 +15,16 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core;
+
+/// <summary>
+/// Represents an authority resource record in a DNS response.
+/// </summary>
+/// <remarks>
+/// An authority resource record indicates the DNS zone authority information
+/// for a given query. This class is a specific type of resource record
+/// used to represent that authority data.
+/// </remarks>
+public class AuthorityResourceRecord(RecordReader reader) : ResourceRecord(reader)
 {
-    /// <summary>
-    /// Represents an authority resource record in a DNS response.
-    /// </summary>
-    /// <remarks>
-    /// An authority resource record indicates the DNS zone authority information
-    /// for a given query. This class is a specific type of resource record
-    /// used to represent that authority data.
-    /// </remarks>
-    public class AuthorityResourceRecord(RecordReader reader) : ResourceRecord(reader)
-    {
-    }
 }

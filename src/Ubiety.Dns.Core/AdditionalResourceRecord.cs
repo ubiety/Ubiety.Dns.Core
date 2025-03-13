@@ -15,18 +15,17 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core;
+
+/// <summary>
+/// Represents an additional DNS resource record in a DNS response.
+/// </summary>
+/// <remarks>
+/// This class provides functionality to parse and manage additional resource records
+/// in a DNS response. Additional resource records are often used to provide supplementary
+/// information related to the DNS query response but are not directly part of the
+/// answer, authority, or primary resource records.
+/// </remarks>
+public class AdditionalResourceRecord(RecordReader reader) : ResourceRecord(reader)
 {
-    /// <summary>
-    /// Represents an additional DNS resource record in a DNS response.
-    /// </summary>
-    /// <remarks>
-    /// This class provides functionality to parse and manage additional resource records
-    /// in a DNS response. Additional resource records are often used to provide supplementary
-    /// information related to the DNS query response but are not directly part of the
-    /// answer, authority, or primary resource records.
-    /// </remarks>
-    public class AdditionalResourceRecord(RecordReader reader) : ResourceRecord(reader)
-    {
-    }
 }

@@ -24,164 +24,163 @@ using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
 using Ubiety.Logging.Core;
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core;
+
+/// <summary>
+/// Represents a DNS response received from a DNS server. This class contains
+/// details about the DNS response, such as questions, answers, authorities,
+/// additional records, and metadata.
+/// </summary>
+public class Response
 {
+    private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
+
     /// <summary>
-    /// Represents a DNS response received from a DNS server. This class contains
-    /// details about the DNS response, such as questions, answers, authorities,
-    /// additional records, and metadata.
+    ///     Initializes a new instance of the <see cref="Response" /> class.
     /// </summary>
-    public class Response
+    /// <param name="timedOut">Sets whether the response timed out or not.</param>
+    public Response(bool timedOut)
     {
-        private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
+        Questions = [];
+        Answers = [];
+        Authorities = [];
+        Additional = [];
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Response" /> class.
-        /// </summary>
-        /// <param name="timedOut">Sets whether the response timed out or not.</param>
-        public Response(bool timedOut)
+        Server = new IPEndPoint(0, 0);
+        MessageSize = 0;
+        TimeStamp = DateTime.Now;
+        Header = new Header();
+        TimedOut = timedOut;
+    }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="Response" /> class.
+    /// </summary>
+    public Response()
+        : this(false)
+    {
+    }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="Response" /> class.
+    /// </summary>
+    /// <param name="server">
+    ///     <see cref="IPEndPoint" /> of the DNS server that responded to the query.
+    /// </param>
+    /// <param name="data">   <see cref="byte" /> array of the response data. </param>
+    public Response(IPEndPoint server, byte[] data)
+        : this()
+    {
+        _logger.Debug("Received information from server");
+        data = data.ThrowIfNull(nameof(data));
+        Server = server;
+        MessageSize = data.Length;
+        var reader = new RecordReader(data);
+
+        Header = new Header(reader);
+
+        for (var i = 0; i < Header.QuestionCount; i++)
         {
-            Questions = [];
-            Answers = [];
-            Authorities = [];
-            Additional = [];
-
-            Server = new IPEndPoint(0, 0);
-            MessageSize = 0;
-            TimeStamp = DateTime.Now;
-            Header = new Header();
-            TimedOut = timedOut;
+            _logger.Debug("Adding questions...");
+            Questions.Add(new Question(reader));
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Response" /> class.
-        /// </summary>
-        public Response()
-            : this(false)
+        for (var i = 0; i < Header.AnswerCount; i++)
         {
+            _logger.Debug("Adding answers...");
+            Answers.Add(new AnswerResourceRecord(reader));
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Response" /> class.
-        /// </summary>
-        /// <param name="server">
-        ///     <see cref="IPEndPoint" /> of the DNS server that responded to the query.
-        /// </param>
-        /// <param name="data">   <see cref="byte" /> array of the response data. </param>
-        public Response(IPEndPoint server, byte[] data)
-            : this()
+        for (var i = 0; i < Header.NameserverCount; i++)
         {
-            _logger.Debug("Received information from server");
-            data = data.ThrowIfNull(nameof(data));
-            Server = server;
-            MessageSize = data.Length;
-            var reader = new RecordReader(data);
-
-            Header = new Header(reader);
-
-            for (var i = 0; i < Header.QuestionCount; i++)
-            {
-                _logger.Debug("Adding questions...");
-                Questions.Add(new Question(reader));
-            }
-
-            for (var i = 0; i < Header.AnswerCount; i++)
-            {
-                _logger.Debug("Adding answers...");
-                Answers.Add(new AnswerResourceRecord(reader));
-            }
-
-            for (var i = 0; i < Header.NameserverCount; i++)
-            {
-                Authorities.Add(new AuthorityResourceRecord(reader));
-            }
-
-            for (var i = 0; i < Header.AdditionalRecordsCount; i++)
-            {
-                Additional.Add(new AdditionalResourceRecord(reader));
-            }
+            Authorities.Add(new AuthorityResourceRecord(reader));
         }
 
-        /// <summary>
-        /// Gets the list of question resource records.
-        /// </summary>
-        public List<Question> Questions { get; }
-
-        /// <summary>
-        /// Gets the list of answer resource records.
-        /// </summary>
-        public List<AnswerResourceRecord> Answers { get; }
-
-        /// <summary>
-        /// Gets the list of authority resource records.
-        /// </summary>
-        public List<AuthorityResourceRecord> Authorities { get; }
-
-        /// <summary>
-        /// Gets the list of additional resource records.
-        /// </summary>
-        public List<AdditionalResourceRecord> Additional { get; }
-
-        /// <summary>
-        /// Gets the header information of the DNS response. The header contains metadata
-        /// such as ID, flags, question count, and record counts associated with the DNS response.
-        /// </summary>
-        public Header Header { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the DNS response timed out.
-        /// </summary>
-        public bool TimedOut { get; }
-
-        /// <summary>
-        /// Gets or sets the size of the DNS message in bytes.
-        /// </summary>
-        public int MessageSize { get; set; }
-
-        /// <summary>
-        /// Gets the timestamp indicating when the response was received or created.
-        /// </summary>
-        public DateTime TimeStamp { get; }
-
-        /// <summary>
-        /// Gets the IP endpoint of the DNS server that provided the response.
-        /// </summary>
-        public IPEndPoint Server { get; }
-
-        /// <summary>
-        /// Gets the collection of all resource records, including answers, authorities, and additional records.
-        /// </summary>
-        public IEnumerable<ResourceRecord> ResourceRecords
+        for (var i = 0; i < Header.AdditionalRecordsCount; i++)
         {
-            get
-            {
-                var list = Answers.Cast<ResourceRecord>().ToList();
-                list.AddRange(Authorities);
-
-                list.AddRange(Additional);
-
-                return list;
-            }
+            Additional.Add(new AdditionalResourceRecord(reader));
         }
+    }
 
-        /// <summary>
-        /// Retrieves a list of DNS records of a specific type from the response.
-        /// </summary>
-        /// <typeparam name="T">The type of DNS records to retrieve, derived from <see cref="Record"/>.</typeparam>
-        /// <returns>A list of DNS records of the specified type found in the response.</returns>
-        public List<T> GetRecords<T>()
-            where T : Record
+    /// <summary>
+    /// Gets the list of question resource records.
+    /// </summary>
+    public List<Question> Questions { get; }
+
+    /// <summary>
+    /// Gets the list of answer resource records.
+    /// </summary>
+    public List<AnswerResourceRecord> Answers { get; }
+
+    /// <summary>
+    /// Gets the list of authority resource records.
+    /// </summary>
+    public List<AuthorityResourceRecord> Authorities { get; }
+
+    /// <summary>
+    /// Gets the list of additional resource records.
+    /// </summary>
+    public List<AdditionalResourceRecord> Additional { get; }
+
+    /// <summary>
+    /// Gets the header information of the DNS response. The header contains metadata
+    /// such as ID, flags, question count, and record counts associated with the DNS response.
+    /// </summary>
+    public Header Header { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the DNS response timed out.
+    /// </summary>
+    public bool TimedOut { get; }
+
+    /// <summary>
+    /// Gets or sets the size of the DNS message in bytes.
+    /// </summary>
+    public int MessageSize { get; set; }
+
+    /// <summary>
+    /// Gets the timestamp indicating when the response was received or created.
+    /// </summary>
+    public DateTime TimeStamp { get; }
+
+    /// <summary>
+    /// Gets the IP endpoint of the DNS server that provided the response.
+    /// </summary>
+    public IPEndPoint Server { get; }
+
+    /// <summary>
+    /// Gets the collection of all resource records, including answers, authorities, and additional records.
+    /// </summary>
+    public IEnumerable<ResourceRecord> ResourceRecords
+    {
+        get
         {
-            var list = new List<T>();
-            foreach (var resource in Answers)
-            {
-                if (resource.Record is T record)
-                {
-                    list.Add(record);
-                }
-            }
+            var list = Answers.Cast<ResourceRecord>().ToList();
+            list.AddRange(Authorities);
+
+            list.AddRange(Additional);
 
             return list;
         }
+    }
+
+    /// <summary>
+    /// Retrieves a list of DNS records of a specific type from the response.
+    /// </summary>
+    /// <typeparam name="T">The type of DNS records to retrieve, derived from <see cref="Record"/>.</typeparam>
+    /// <returns>A list of DNS records of the specified type found in the response.</returns>
+    public List<T> GetRecords<T>()
+        where T : Record
+    {
+        var list = new List<T>();
+        foreach (var resource in Answers)
+        {
+            if (resource.Record is T record)
+            {
+                list.Add(record);
+            }
+        }
+
+        return list;
     }
 }

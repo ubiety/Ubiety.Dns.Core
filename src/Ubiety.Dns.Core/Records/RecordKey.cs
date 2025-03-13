@@ -48,53 +48,52 @@
 
 */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Key DNS record.
+/// </summary>
+public record RecordKey : Record
 {
     /// <summary>
-    ///     Key DNS record.
+    ///     Initializes a new instance of the <see cref="RecordKey" /> class.
     /// </summary>
-    public record RecordKey : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordKey(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordKey" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordKey(RecordReader reader)
-            : base(reader)
-        {
-            Flags = Reader.ReadUInt16();
-            Protocol = Reader.ReadByte();
-            Algorithm = Reader.ReadByte();
-            PublicKey = Reader.ReadString();
-        }
+        Flags = Reader.ReadUInt16();
+        Protocol = Reader.ReadByte();
+        Algorithm = Reader.ReadByte();
+        PublicKey = Reader.ReadString();
+    }
 
-        /// <summary>
-        ///     Gets or sets the flags.
-        /// </summary>
-        public ushort Flags { get; set; }
+    /// <summary>
+    ///     Gets or sets the flags.
+    /// </summary>
+    public ushort Flags { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the protocol.
-        /// </summary>
-        public byte Protocol { get; set; }
+    /// <summary>
+    ///     Gets or sets the protocol.
+    /// </summary>
+    public byte Protocol { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the algorithm.
-        /// </summary>
-        public byte Algorithm { get; set; }
+    /// <summary>
+    ///     Gets or sets the algorithm.
+    /// </summary>
+    public byte Algorithm { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the public key.
-        /// </summary>
-        public string PublicKey { get; set; }
+    /// <summary>
+    ///     Gets or sets the public key.
+    /// </summary>
+    public string PublicKey { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>String version of the record.</returns>
-        public override string ToString()
-        {
-            return $"{Flags} {Protocol} {Algorithm} \"{PublicKey}\"";
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>String version of the record.</returns>
+    public override string ToString()
+    {
+        return $"{Flags} {Protocol} {Algorithm} \"{PublicKey}\"";
     }
 }
