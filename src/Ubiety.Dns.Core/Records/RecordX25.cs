@@ -54,9 +54,9 @@ namespace Ubiety.Dns.Core.Records;
 public record RecordX25 : Record
 {
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordX25" /> class.
+    ///     Initializes a new instance of the <see cref="RecordX25"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the X25 record data.</param>
     public RecordX25(RecordReader reader)
         : base(reader)
     {
@@ -64,14 +64,14 @@ public record RecordX25 : Record
     }
 
     /// <summary>
-    ///     Gets or sets the PSDN address.
+    ///     Gets or sets the Public Switched Data Network (PSDN) address in X.121 numbering format.
     /// </summary>
     public string PSDNAdress { get; set; }
 
     /// <summary>
-    ///     String representation of the record data.
+    ///     Returns a string representation of the X25 record data.
     /// </summary>
-    /// <returns>PSDN address as a string.</returns>
+    /// <returns>The PSDN address as a string.</returns>
     public override string ToString()
     {
         return PSDNAdress;

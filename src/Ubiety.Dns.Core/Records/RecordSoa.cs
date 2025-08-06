@@ -90,9 +90,9 @@ namespace Ubiety.Dns.Core.Records;
 public record RecordSoa : Record
 {
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordSoa" /> class.
+    ///     Initializes a new instance of the <see cref="RecordSoa"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the SOA record data.</param>
     public RecordSoa(RecordReader reader)
         : base(reader)
     {
@@ -106,44 +106,44 @@ public record RecordSoa : Record
     }
 
     /// <summary>
-    ///     Gets or sets the primary nameserver.
+    ///     Gets or sets the domain name of the primary nameserver for this zone.
     /// </summary>
     public string PrimaryNameserver { get; set; }
 
     /// <summary>
-    ///     Gets or sets the responsible domain.
+    ///     Gets or sets the domain name that specifies the mailbox of the person responsible for this zone.
     /// </summary>
     public string ResponsibleDomain { get; set; }
 
     /// <summary>
-    ///     Gets or sets the serial.
+    ///     Gets or sets the unsigned 32-bit version number of the original copy of the zone.
     /// </summary>
     public uint Serial { get; set; }
 
     /// <summary>
-    ///     Gets or sets the refresh interval.
+    ///     Gets or sets the time interval (in seconds) before the zone should be refreshed.
     /// </summary>
     public uint Refresh { get; set; }
 
     /// <summary>
-    ///     Gets or sets the retry interval.
+    ///     Gets or sets the time interval (in seconds) that should elapse before a failed refresh should be retried.
     /// </summary>
     public uint Retry { get; set; }
 
     /// <summary>
-    ///     Gets or sets the expiration time.
+    ///     Gets or sets the upper limit (in seconds) on the time interval that can elapse before the zone is no longer authoritative.
     /// </summary>
     public uint Expire { get; set; }
 
     /// <summary>
-    ///     Gets or sets the minimum TTL.
+    ///     Gets or sets the minimum TTL (time to live) field that should be exported with any RR from this zone.
     /// </summary>
     public uint Minimum { get; set; }
 
     /// <summary>
-    ///     String representation of the record data.
+    ///     Returns a string representation of the SOA record data.
     /// </summary>
-    /// <returns>Record data as the string.</returns>
+    /// <returns>A string containing the SOA record fields in display order.</returns>
     public override string ToString()
     {
         return $"{PrimaryNameserver} {ResponsibleDomain} {Serial} {Refresh} {Retry} {Expire} {Minimum}";

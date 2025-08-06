@@ -89,9 +89,9 @@ namespace Ubiety.Dns.Core.Records;
 public sealed record RecordSrv : Record, IComparable<RecordSrv>
 {
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordSrv" /> class.
+    ///     Initializes a new instance of the <see cref="RecordSrv"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader"><see cref="RecordReader" /> of the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the SRV record data.</param>
     public RecordSrv(RecordReader reader)
         : base(reader)
     {
@@ -102,31 +102,31 @@ public sealed record RecordSrv : Record, IComparable<RecordSrv>
     }
 
     /// <summary>
-    ///     Gets the record priority.
+    ///     Gets the priority of the target host. Lower values are tried first.
     /// </summary>
     public ushort Priority { get; }
 
     /// <summary>
-    ///     Gets the record weight.
+    ///     Gets the relative weight for entries with the same priority. Higher values are more likely to be selected.
     /// </summary>
     public ushort Weight { get; }
 
     /// <summary>
-    ///     Gets the service port.
+    ///     Gets the port on this target host of this service.
     /// </summary>
     public ushort Port { get; }
 
     /// <summary>
-    ///     Gets the target domain.
+    ///     Gets the domain name of the target host for this service.
     /// </summary>
     public string Target { get; }
 
     /// <summary>
-    ///     Determines if the record is greater than another.
+    ///     Determines if the left record is greater than the right record based on priority and weight.
     /// </summary>
-    /// <param name="left">Left record.</param>
-    /// <param name="right">Right record.</param>
-    /// <returns>A value indicating whether the left record is greater.</returns>
+    /// <param name="left">The left <see cref="RecordSrv"/> instance.</param>
+    /// <param name="right">The right <see cref="RecordSrv"/> instance.</param>
+    /// <returns><c>true</c> if the left record is greater; otherwise, <c>false</c>.</returns>
     public static bool operator >(RecordSrv left, RecordSrv right)
     {
         ArgumentNullException.ThrowIfNull(left);
@@ -155,19 +155,19 @@ public sealed record RecordSrv : Record, IComparable<RecordSrv>
     }
 
     /// <summary>
-    ///     String representation of the record data.
+    ///     Returns a string representation of the SRV record data.
     /// </summary>
-    /// <returns>Record as a string.</returns>
+    /// <returns>A string containing the SRV record fields in display order.</returns>
     public override string ToString()
     {
         return $"{Priority} {Weight} {Port} {Target}";
     }
 
     /// <summary>
-    ///     Compares instance to object.
+    ///     Compares this instance to another <see cref="RecordSrv"/> instance for ordering.
     /// </summary>
-    /// <param name="other">Object to compare to.</param>
-    /// <returns>Integer defining object order.</returns>
+    /// <param name="other">The <see cref="RecordSrv"/> instance to compare to.</param>
+    /// <returns>An integer that indicates the relative order of the objects being compared.</returns>
     public int CompareTo(RecordSrv other)
     {
         if (other is null)

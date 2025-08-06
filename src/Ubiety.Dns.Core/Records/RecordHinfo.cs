@@ -46,9 +46,9 @@ namespace Ubiety.Dns.Core.Records;
 public record RecordHinfo : Record
 {
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordHinfo" /> class.
+    ///     Initializes a new instance of the <see cref="RecordHinfo"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the HINFO record data.</param>
     public RecordHinfo(RecordReader reader)
         : base(reader)
     {
@@ -57,19 +57,19 @@ public record RecordHinfo : Record
     }
 
     /// <summary>
-    ///     Gets the CPU.
+    ///     Gets the CPU type for the host described by this record.
     /// </summary>
     public string Cpu { get; }
 
     /// <summary>
-    ///     Gets the OS.
+    ///     Gets the operating system type for the host described by this record.
     /// </summary>
     public string Os { get; }
 
     /// <summary>
-    ///     String representation of the record data.
+    ///     Returns a string representation of the HINFO record data.
     /// </summary>
-    /// <returns>String version of the record.</returns>
+    /// <returns>A string containing the CPU and OS information.</returns>
     public override string ToString()
     {
         return $"CPU={Cpu} OS={Os}";

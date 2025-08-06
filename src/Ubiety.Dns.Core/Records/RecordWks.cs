@@ -72,9 +72,9 @@ public record RecordWks : Record
     private readonly byte[] _bitmap;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordWks" /> class.
+    ///     Initializes a new instance of the <see cref="RecordWks"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader">Record reader for record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the WKS record data.</param>
     public RecordWks(RecordReader reader)
         : base(reader)
     {
@@ -87,24 +87,24 @@ public record RecordWks : Record
     }
 
     /// <summary>
-    ///     Gets or sets the address of the server.
+    ///     Gets or sets the IPv4 address of the server described by this record.
     /// </summary>
     public string Address { get; set; }
 
     /// <summary>
-    ///     Gets or sets the protocol of the service.
+    ///     Gets or sets the IP protocol number for the service (e.g., TCP or UDP).
     /// </summary>
     public int Protocol { get; set; }
 
     /// <summary>
-    ///     Gets the service bitmap.
+    ///     Gets the variable-length bitmap indicating supported services on the specified protocol.
     /// </summary>
     public IEnumerable<byte> Bitmap => new List<byte>(_bitmap);
 
     /// <summary>
-    ///     Return a string of the well known service record.
+    ///     Returns a string representation of the WKS record.
     /// </summary>
-    /// <returns>String of the record.</returns>
+    /// <returns>A string containing the WKS record fields in display order.</returns>
     public override string ToString()
     {
         return $"{Address} {Protocol}";

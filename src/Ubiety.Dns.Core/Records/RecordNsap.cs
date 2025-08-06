@@ -59,9 +59,9 @@ public record RecordNsap : Record
     private readonly byte[] _address;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordNsap" /> class.
+    ///     Initializes a new instance of the <see cref="RecordNsap"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the NSAP record data.</param>
     public RecordNsap(RecordReader reader)
         : base(reader)
     {
@@ -70,12 +70,12 @@ public record RecordNsap : Record
     }
 
     /// <summary>
-    ///     Gets or sets the length.
+    ///     Gets or sets the length of the NSAP address in bytes.
     /// </summary>
     public ushort Length { get; set; }
 
     /// <summary>
-    ///     Gets the address as a byte collection.
+    ///     Gets the NSAP address as a collection of bytes.
     /// </summary>
     public Collection<byte> NsapAddress => new(_address);
 

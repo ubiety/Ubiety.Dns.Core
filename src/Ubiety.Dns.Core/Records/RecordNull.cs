@@ -43,9 +43,9 @@ public record RecordNull : Record
     private readonly byte[] _data;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordNull" /> class.
+    ///     Initializes a new instance of the <see cref="RecordNull"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the NULL record data.</param>
     public RecordNull(RecordReader reader)
         : base(reader)
     {
@@ -56,14 +56,14 @@ public record RecordNull : Record
     }
 
     /// <summary>
-    ///     Gets the record data.
+    ///     Gets the record data as a list of bytes.
     /// </summary>
     public List<byte> Data => new(_data);
 
     /// <summary>
-    ///     String representation of the data.
+    ///     Returns a string representation of the NULL record data.
     /// </summary>
-    /// <returns>Record data as a string.</returns>
+    /// <returns>A string indicating the length of the binary data.</returns>
     public override string ToString()
     {
         return $"...binary data... ({_data.Length}) bytes";

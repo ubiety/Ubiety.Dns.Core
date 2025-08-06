@@ -25,9 +25,9 @@ namespace Ubiety.Dns.Core.Records;
 public record RecordSig : Record
 {
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordSig" /> class.
+    ///     Initializes a new instance of the <see cref="RecordSig"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader">Record reader for the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the DNS signature record data.</param>
     public RecordSig(RecordReader reader)
         : base(reader)
     {
@@ -43,57 +43,56 @@ public record RecordSig : Record
     }
 
     /// <summary>
-    ///     Gets or sets the type covered.
+    ///     Gets the type of DNS record that is covered by this signature.
     /// </summary>
-    public ushort TypeCovered { get; set; }
+    public ushort TypeCovered { get; init; }
 
     /// <summary>
-    ///     Gets or sets the signature algorithm.
+    ///     Gets the algorithm number used to generate the signature.
     /// </summary>
-    public byte Algorithm { get; set; }
+    public byte Algorithm { get; init; }
 
     /// <summary>
-    ///     Gets or sets the labels.
+    ///     Gets the number of labels in the original RRSIG owner name.
     /// </summary>
-    public byte Labels { get; set; }
+    public byte Labels { get; init; }
 
     /// <summary>
-    ///     Gets or sets the original TTL.
+    ///     Gets the original TTL (time to live) value of the covered record set.
     /// </summary>
-    public uint OriginalTTL { get; set; }
+    public uint OriginalTTL { get; init; }
 
     /// <summary>
-    ///     Gets or sets the signature expiration.
+    ///     Gets the signature expiration time as a UNIX timestamp.
     /// </summary>
-    public uint SignatureExpiration { get; set; }
+    public uint SignatureExpiration { get; init; }
 
     /// <summary>
-    ///     Gets or sets the signature inception.
+    ///     Gets the signature inception time as a UNIX timestamp.
     /// </summary>
-    public uint SignatureInception { get; set; }
+    public uint SignatureInception { get; init; }
 
     /// <summary>
-    ///     Gets or sets the key tag.
+    ///     Gets the key tag value identifying the DNSKEY record that validates this signature.
     /// </summary>
-    public ushort KeyTag { get; set; }
+    public ushort KeyTag { get; init; }
 
     /// <summary>
-    ///     Gets or sets the signers name.
+    ///     Gets the domain name of the signer that generated the signature.
     /// </summary>
-    public string SignersName { get; set; }
+    public string SignersName { get; init; }
 
     /// <summary>
-    ///     Gets or sets the signature.
+    ///     Gets the cryptographic signature data as a string.
     /// </summary>
-    public string Signature { get; set; }
+    public string Signature { get; init; }
 
     /// <summary>
-    ///     Get a string version of the record.
+    ///     Returns a string representation of the DNS signature record.
     /// </summary>
-    /// <returns>String of the record.</returns>
-    public override string ToString()
-    {
-        return string.Format(
+    /// <returns>A string containing the record fields in display order.</returns>
+    public override string ToString() =>
+        string.Format(
             CultureInfo.InvariantCulture,
             "{0} {1} {2} {3} {4} {5} {6} {7} \"{8}\"",
             TypeCovered,
@@ -105,5 +104,4 @@ public record RecordSig : Record
             KeyTag,
             SignersName,
             Signature);
-    }
 }
