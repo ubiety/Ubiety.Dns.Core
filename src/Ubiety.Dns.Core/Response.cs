@@ -30,27 +30,13 @@ namespace Ubiety.Dns.Core;
 /// details about the DNS response, such as questions, answers, authorities,
 /// additional records, and metadata.
 /// </summary>
-public class Response
+/// <remarks>
+///     Initializes a new instance of the <see cref="Response" /> class.
+/// </remarks>
+/// <param name="timedOut">Sets whether the response timed out or not.</param>
+public class Response(bool timedOut)
 {
     private readonly IUbietyLogger _logger = UbietyLogger.Get<Response>();
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="Response" /> class.
-    /// </summary>
-    /// <param name="timedOut">Sets whether the response timed out or not.</param>
-    public Response(bool timedOut)
-    {
-        Questions = [];
-        Answers = [];
-        Authorities = [];
-        Additional = [];
-
-        Server = new IPEndPoint(0, 0);
-        MessageSize = 0;
-        TimeStamp = DateTime.Now;
-        Header = new Header();
-        TimedOut = timedOut;
-    }
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Response" /> class.
@@ -104,48 +90,48 @@ public class Response
     /// <summary>
     /// Gets the list of question resource records.
     /// </summary>
-    public List<Question> Questions { get; }
+    public List<Question> Questions { get; } = [];
 
     /// <summary>
     /// Gets the list of answer resource records.
     /// </summary>
-    public List<AnswerResourceRecord> Answers { get; }
+    public List<AnswerResourceRecord> Answers { get; } = [];
 
     /// <summary>
     /// Gets the list of authority resource records.
     /// </summary>
-    public List<AuthorityResourceRecord> Authorities { get; }
+    public List<AuthorityResourceRecord> Authorities { get; } = [];
 
     /// <summary>
     /// Gets the list of additional resource records.
     /// </summary>
-    public List<AdditionalResourceRecord> Additional { get; }
+    public List<AdditionalResourceRecord> Additional { get; } = [];
 
     /// <summary>
     /// Gets the header information of the DNS response. The header contains metadata
     /// such as ID, flags, question count, and record counts associated with the DNS response.
     /// </summary>
-    public Header Header { get; }
+    public Header Header { get; } = new Header();
 
     /// <summary>
     /// Gets a value indicating whether the DNS response timed out.
     /// </summary>
-    public bool TimedOut { get; }
+    public bool TimedOut { get; } = timedOut;
 
     /// <summary>
     /// Gets or sets the size of the DNS message in bytes.
     /// </summary>
-    public int MessageSize { get; set; }
+    public int MessageSize { get; set; } = 0;
 
     /// <summary>
     /// Gets the timestamp indicating when the response was received or created.
     /// </summary>
-    public DateTime TimeStamp { get; }
+    public DateTime TimeStamp { get; } = DateTime.Now;
 
     /// <summary>
     /// Gets the IP endpoint of the DNS server that provided the response.
     /// </summary>
-    public IPEndPoint Server { get; }
+    public IPEndPoint Server { get; } = new IPEndPoint(0, 0);
 
     /// <summary>
     /// Gets the collection of all resource records, including answers, authorities, and additional records.

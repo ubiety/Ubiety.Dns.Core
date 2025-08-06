@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core;
+namespace Ubiety.Dns.Core.Records;
 
 /// <summary>
 /// Represents an additional DNS resource record in a DNS response.
