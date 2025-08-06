@@ -92,9 +92,9 @@ namespace Ubiety.Dns.Core.Records;
 public record RecordPx : Record
 {
     /// <summary>
-    ///     Initializes a new instance of the <see cref="RecordPx" /> class.
+    ///     Initializes a new instance of the <see cref="RecordPx"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the PX record data.</param>
     public RecordPx(RecordReader reader)
         : base(reader)
     {
@@ -104,24 +104,24 @@ public record RecordPx : Record
     }
 
     /// <summary>
-    ///     Gets or sets the preference.
+    ///     Gets or sets the preference value for this mapping. Lower values are preferred.
     /// </summary>
     public ushort Preference { get; set; }
 
     /// <summary>
-    ///     Gets or sets the map to 822.
+    ///     Gets or sets the RFC822 domain name part of the mapping.
     /// </summary>
     public string Map822 { get; set; }
 
     /// <summary>
-    ///     Gets or sets the map to X.400.
+    ///     Gets or sets the X.400 domain name part of the mapping.
     /// </summary>
     public string MapX400 { get; set; }
 
     /// <summary>
-    ///     String representation of the record data.
+    ///     Returns a string representation of the PX record data.
     /// </summary>
-    /// <returns>Mappings as a string.</returns>
+    /// <returns>A string containing the PX record fields in display order.</returns>
     public override string ToString()
     {
         return $"{Preference} {Map822} {MapX400}";
