@@ -29,6 +29,12 @@ lose nothing.
 | `Question.Equals(Question)` | `Question` | `[NotNullWhen(true)] Question?` |
 | `Question.Equals(object)` | `object` | `[NotNullWhen(true)] object?` |
 | `RecordSrv.CompareTo(RecordSrv)` | `RecordSrv` | `RecordSrv?` |
+| `Question.operator ==` | `(Question, Question)` | `(Question?, Question?)` |
+| `Question.operator !=` | `(Question, Question)` | `(Question?, Question?)` |
+
+The two operators were missed in the original pass and caught later by a test that compared a
+`Question` against `null`. They delegate to `Equals(left, right)`, which has always handled null
+correctly, so only the annotation was wrong: callers were warned off a comparison that works.
 
 The `[NotNullWhen(true)]` attributes let callers skip a redundant null check after a `true` result.
 

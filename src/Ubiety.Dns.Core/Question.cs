@@ -92,10 +92,10 @@ public sealed class Question : IEquatable<Question>
     /// <summary>
     /// Checks whether two <see cref="Question"/> instances are equal.
     /// </summary>
-    /// <param name="left">The first instance to compare.</param>
-    /// <param name="right">The second instance to compare.</param>
+    /// <param name="left">The first instance to compare, which may be null.</param>
+    /// <param name="right">The second instance to compare, which may be null.</param>
     /// <returns>True if the two instances are equal; otherwise, false.</returns>
-    public static bool operator ==(Question left, Question right)
+    public static bool operator ==(Question? left, Question? right)
     {
         return Equals(left, right);
     }
@@ -103,10 +103,10 @@ public sealed class Question : IEquatable<Question>
     /// <summary>
     /// Determines whether two specified <see cref="Question"/> objects are not equal.
     /// </summary>
-    /// <param name="left">The first instance to compare.</param>
-    /// <param name="right">The second instance to compare.</param>
+    /// <param name="left">The first instance to compare, which may be null.</param>
+    /// <param name="right">The second instance to compare, which may be null.</param>
     /// <returns><c>true</c> if the two <see cref="Question"/> objects are not equal; otherwise, <c>false</c>.</returns>
-    public static bool operator !=(Question left, Question right)
+    public static bool operator !=(Question? left, Question? right)
     {
         return !Equals(left, right);
     }
