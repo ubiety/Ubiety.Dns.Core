@@ -31,6 +31,16 @@ namespace Ubiety.Dns.Core;
 public sealed class Question : IEquatable<Question>
 {
     /// <summary>
+    /// The maximum length of a single label in octets, per RFC 1035 section 2.3.4.
+    /// </summary>
+    private const int MaxLabelLength = 63;
+
+    /// <summary>
+    /// The maximum length of an encoded domain name in octets, per RFC 1035 section 2.3.4.
+    /// </summary>
+    private const int MaxDomainNameLength = 255;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Question"/> class.
     /// </summary>
     /// <param name="domainName">The domain name to query.</param>
@@ -174,6 +184,15 @@ public sealed class Question : IEquatable<Question>
         return HashCode.Combine(DomainName, QuestionClass, QuestionType);
     }
 
+    /// <summary>
+    /// Encodes a domain name into the length-prefixed label sequence used on the wire.
+    /// </summary>
+    /// <param name="src">The domain name to encode, with or without a trailing separator.</param>
+    /// <returns>The encoded name, terminated by the zero-length root label.</returns>
+    /// <exception cref="FormatException">
+    /// The name contains an empty label, a label longer than <see cref="MaxLabelLength"/> octets, or
+    /// encodes to more than <see cref="MaxDomainNameLength"/> octets.
+    /// </exception>
     private static byte[] WriteName(string src)
     {
         if (!src.EndsWith('.'))
@@ -181,24 +200,36 @@ public sealed class Question : IEquatable<Question>
             src += ".";
         }
 
+        // The root is a bare terminator with no labels of its own.
         if (src == ".")
         {
             return new byte[1];
         }
 
-        var sb = new StringBuilder();
-        sb.Append('\0');
-        for (int i = 0, j = 0; i < src.Length; i++, j++)
+        var bytes = new List<byte>(src.Length + 1);
+
+        // The trailing separator terminates the name rather than introducing an empty label.
+        foreach (var label in src[..^1].Split('.'))
         {
-            sb.Append(src[i]);
-            if (src[i] == '.')
+            if (label.Length == 0 || label.Length > MaxLabelLength)
             {
-                sb[i - j] = (char)(j & 0xff);
-                j = -1;
+                throw new FormatException(
+                    $"'{src}' contains a label that is empty or longer than {MaxLabelLength} octets.");
             }
+
+            bytes.Add((byte)label.Length);
+            bytes.AddRange(Encoding.ASCII.GetBytes(label));
         }
 
-        sb.Append('\0');
-        return Encoding.ASCII.GetBytes(sb.ToString());
+        // Zero-length root label terminating the name.
+        bytes.Add(0);
+
+        if (bytes.Count > MaxDomainNameLength)
+        {
+            throw new FormatException(
+                $"'{src}' encodes to {bytes.Count} octets, exceeding the {MaxDomainNameLength} octet limit.");
+        }
+
+        return bytes.ToArray();
     }
 }
