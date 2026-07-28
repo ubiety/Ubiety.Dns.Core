@@ -477,13 +477,6 @@ namespace Ubiety.Dns.Test
             record.OtherSize.ShouldBe((ushort)0);
         }
 
-        /// <remarks>
-        /// TimeSigned is deliberately not asserted. RFC 8945 defines it as a 48 bit field, but the
-        /// parser reads two 32 bit values and combines them with `(a &lt;&lt; 32) | b`, where the shift
-        /// count is masked to zero for a uint and the high half is discarded. The resource data
-        /// here matches what the parser currently expects, so this test will need updating when the
-        /// field is corrected.
-        /// </remarks>
         [Fact]
         public void TsigReadsAlgorithmMacAndErrorFields()
         {
@@ -491,8 +484,7 @@ namespace Ubiety.Dns.Test
                 RecordType.TSIG,
                 Builder.Data(
                     Builder.Name("hmac-sha256"),
-                    Builder.UInt32(0),
-                    Builder.UInt32(1600000000),
+                    Builder.UInt48(1600000000),
                     Builder.UInt16(300),
                     Builder.UInt16(4),
                     [0x11, 0x22, 0x33, 0x44],
@@ -501,11 +493,53 @@ namespace Ubiety.Dns.Test
                     Builder.UInt16(0)));
 
             record.AlgorithmName.ShouldBe("hmac-sha256.");
+            record.TimeSigned.ShouldBe(1600000000L);
             record.Fudge.ShouldBe((ushort)300);
             record.MacSize.ShouldBe((ushort)4);
             record.OriginalId.ShouldBe((ushort)0x1234);
             record.Error.ShouldBe((ushort)0);
             record.OtherLength.ShouldBe((ushort)0);
+        }
+
+        [Fact]
+        public void TsigReadsTheHighHalfOfTheFortyEightBitTimeSigned()
+        {
+            // Time Signed is 48 bits, so a value above 2^32 must survive. The field used to be read
+            // as two 32 bit halves combined with a shift the compiler masked to zero, which
+            // discarded the high half and made this indistinguishable from the low half alone.
+            const long timeSigned = 0x0001_2345_6789L;
+
+            var record = Parse<RecordTsig>(
+                RecordType.TSIG,
+                Builder.Data(
+                    Builder.Name("hmac-sha256"),
+                    Builder.UInt48(timeSigned),
+                    Builder.UInt16(300),
+                    Builder.UInt16(0),
+                    Builder.UInt16(0x1234),
+                    Builder.UInt16(0),
+                    Builder.UInt16(0)));
+
+            record.TimeSigned.ShouldBe(timeSigned);
+            record.TimeSigned.ShouldBeGreaterThan(uint.MaxValue);
+        }
+
+        [Fact]
+        public void TsigRendersTimeSignedFromTheUtcEpoch()
+        {
+            var record = Parse<RecordTsig>(
+                RecordType.TSIG,
+                Builder.Data(
+                    Builder.Name("hmac-sha256"),
+                    Builder.UInt48(0),
+                    Builder.UInt16(300),
+                    Builder.UInt16(0),
+                    Builder.UInt16(0x1234),
+                    Builder.UInt16(0),
+                    Builder.UInt16(0)));
+
+            record.TimeSigned.ShouldBe(0L);
+            record.ToString().ShouldContain("1970");
         }
 
         // ----- address records -----

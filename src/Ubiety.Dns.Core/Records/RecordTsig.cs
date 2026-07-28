@@ -58,7 +58,11 @@ public record RecordTsig : Record
         : base(reader)
     {
         AlgorithmName = Reader.ReadDomainName();
-        TimeSigned = (Reader.ReadUInt32() << 32) | Reader.ReadUInt32();
+
+        // Time Signed is 48 bits: a 16 bit high half then a 32 bit low half. Casting to long
+        // before shifting matters, because a shift count of 32 on a 32 bit operand is masked to
+        // zero, which is what previously discarded the high half and misread the field as 64 bits.
+        TimeSigned = ((long)Reader.ReadUInt16() << 32) | Reader.ReadUInt32();
         Fudge = Reader.ReadUInt16();
         MacSize = Reader.ReadUInt16();
         _mac = Reader.ReadBytes(MacSize);
@@ -119,7 +123,8 @@ public record RecordTsig : Record
     /// <returns>Signature as a string.</returns>
     public override string ToString()
     {
-        var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+        // Time Signed counts seconds from the UTC epoch, so the base has to say so.
+        var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(TimeSigned);
         var printDate = dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString();
         return string.Format(

@@ -208,6 +208,15 @@ namespace Ubiety.Dns.Test
 
         internal static byte[] UInt16(ushort value) => [(byte)(value >> 8), (byte)(value & 0xFF)];
 
+        /// <summary>
+        /// Encodes a 48 bit big-endian value, the width of the TSIG Time Signed field.
+        /// </summary>
+        internal static byte[] UInt48(long value) =>
+        [
+            (byte)(value >> 40), (byte)(value >> 32), (byte)(value >> 24),
+            (byte)(value >> 16), (byte)(value >> 8), (byte)value,
+        ];
+
         internal static byte[] UInt32(uint value) =>
             [(byte)(value >> 24), (byte)(value >> 16), (byte)(value >> 8), (byte)(value & 0xFF)];
     }
