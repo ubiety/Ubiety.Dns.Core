@@ -207,8 +207,27 @@ public class RecordReader(byte[] data, int position = 0)
     /// </summary>
     /// <param name="type">The type of the record to be read.</param>
     /// <returns>The record read from the data.</returns>
+    /// <remarks>
+    /// Record types whose length is not implied by their own structure, currently only TXT, read
+    /// nothing through this overload. Prefer <see cref="ReadRecord(RecordType, int)" />.
+    /// </remarks>
     public Record ReadRecord(RecordType type)
     {
         return type.GetRecord(this);
+    }
+
+    /// <summary>
+    /// Reads a record of the specified type from the data, bounded by the resource data length.
+    /// </summary>
+    /// <param name="type">The type of the record to be read.</param>
+    /// <param name="length">The length in octets of the resource data, from RDLENGTH.</param>
+    /// <returns>The record read from the data.</returns>
+    /// <remarks>
+    /// A TXT record is a sequence of character-strings with no count of its own, so the only way to
+    /// know where it ends is the resource record's length.
+    /// </remarks>
+    public Record ReadRecord(RecordType type, int length)
+    {
+        return type.GetRecord(this, length);
     }
 }

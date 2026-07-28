@@ -95,7 +95,10 @@ public class ResourceRecord
         Class = (OperationClass)reader.ReadUInt16();
         TimeToLive = reader.ReadUInt32();
         RecordLength = reader.ReadUInt16();
-        Record = reader.ReadRecord(Type);
+
+        // RecordLength has to be handed on: a TXT record is a run of character-strings with no
+        // count of its own, so without it the record parses as empty.
+        Record = reader.ReadRecord(Type, RecordLength);
         Record.ResourceRecord = this;
     }
 

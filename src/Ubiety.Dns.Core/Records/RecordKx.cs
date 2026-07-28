@@ -74,4 +74,18 @@ public sealed record RecordKx : Record
     ///     Gets the exchanger.
     /// </summary>
     public string Exchanger { get; }
+
+    /// <summary>
+    ///     Returns a string representation of the key exchanger record.
+    /// </summary>
+    /// <returns>The preference followed by the exchanger.</returns>
+    /// <remarks>
+    ///     Required rather than optional: without it the compiler-generated record ToString prints
+    ///     <see cref="Record.ResourceRecord" />, whose own ToString prints this record back, and the
+    ///     pair recurse until the stack is exhausted.
+    /// </remarks>
+    public override string ToString()
+    {
+        return $"{Preference} {Exchanger}";
+    }
 }

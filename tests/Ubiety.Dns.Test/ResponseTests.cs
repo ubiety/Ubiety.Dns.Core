@@ -77,6 +77,27 @@ namespace Ubiety.Dns.Test
         }
 
         [Fact]
+        public void ParsesAuthorityAndAdditionalSections()
+        {
+            var message = DnsMessageBuilder.MessageWithSections(
+                "example.com",
+                QuestionType.A,
+                [DnsMessageBuilder.ARecord("example.com", 300, 5, 6, 7, 8)],
+                [DnsMessageBuilder.Record("example.com", RecordType.NS, 3600, DnsMessageBuilder.Name("ns1.example.com"))],
+                [DnsMessageBuilder.ARecord("ns1.example.com", 3600, 10, 0, 0, 53)]);
+
+            var response = new Response(new IPEndPoint(IPAddress.Loopback, 53), message);
+
+            response.Answers.ShouldHaveSingleItem();
+            response.Authorities.ShouldHaveSingleItem().Type.ShouldBe(RecordType.NS);
+            response.Additional.ShouldHaveSingleItem().Name.ShouldBe("ns1.example.com.");
+
+            // ResourceRecords spans all three sections, unlike GetRecords which only reads answers.
+            response.ResourceRecords.Count().ShouldBe(3);
+            response.GetRecords<RecordA>().ShouldHaveSingleItem();
+        }
+
+        [Fact]
         public void TimeStampIsUtc()
         {
             // IsExpired compares against DateTime.UtcNow, so a local timestamp would misjudge

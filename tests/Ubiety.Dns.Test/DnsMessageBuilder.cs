@@ -64,6 +64,38 @@ namespace Ubiety.Dns.Test
         }
 
         /// <summary>
+        /// Assembles a message carrying all four sections, so authority and additional records are
+        /// exercised as well as answers.
+        /// </summary>
+        internal static byte[] MessageWithSections(
+            string questionName,
+            QuestionType questionType,
+            byte[][] answers,
+            byte[][] authorities,
+            byte[][] additionals)
+        {
+            var bytes = new List<byte>();
+
+            bytes.AddRange(UInt16(0x2222));
+            bytes.AddRange(UInt16(NoErrorFlags));
+            bytes.AddRange(UInt16(1));
+            bytes.AddRange(UInt16((ushort)answers.Length));
+            bytes.AddRange(UInt16((ushort)authorities.Length));
+            bytes.AddRange(UInt16((ushort)additionals.Length));
+
+            bytes.AddRange(Name(questionName));
+            bytes.AddRange(UInt16((ushort)questionType));
+            bytes.AddRange(UInt16((ushort)QuestionClass.IN));
+
+            foreach (var record in answers.Concat(authorities).Concat(additionals))
+            {
+                bytes.AddRange(record);
+            }
+
+            return [.. bytes];
+        }
+
+        /// <summary>
         /// Builds an A record answer carrying the four supplied address octets.
         /// </summary>
         internal static byte[] ARecord(string name, uint ttl, params byte[] address)
@@ -126,6 +158,29 @@ namespace Ubiety.Dns.Test
             return [.. bytes];
         }
 
+        /// <summary>
+        /// Builds a resource record of any type around the supplied resource data.
+        /// </summary>
+        internal static byte[] Record(string name, RecordType type, uint ttl, params byte[] rdata)
+        {
+            return ResourceRecord(name, type, ttl, rdata);
+        }
+
+        /// <summary>
+        /// Encodes a DNS character-string: a single length octet followed by that many bytes.
+        /// </summary>
+        internal static byte[] CharString(string value)
+        {
+            var bytes = new List<byte> { (byte)value.Length };
+            bytes.AddRange(value.Select(c => (byte)c));
+            return [.. bytes];
+        }
+
+        /// <summary>
+        /// Concatenates resource data fragments into a single resource data block.
+        /// </summary>
+        internal static byte[] Data(params byte[][] parts) => [.. parts.SelectMany(p => p)];
+
         private static byte[] ResourceRecord(string name, RecordType type, uint ttl, byte[] rdata)
         {
             var bytes = new List<byte>();
@@ -138,7 +193,7 @@ namespace Ubiety.Dns.Test
             return [.. bytes];
         }
 
-        private static byte[] Name(string name)
+        internal static byte[] Name(string name)
         {
             var bytes = new List<byte>();
             foreach (var label in name.TrimEnd('.').Split('.'))
@@ -151,9 +206,9 @@ namespace Ubiety.Dns.Test
             return [.. bytes];
         }
 
-        private static byte[] UInt16(ushort value) => [(byte)(value >> 8), (byte)(value & 0xFF)];
+        internal static byte[] UInt16(ushort value) => [(byte)(value >> 8), (byte)(value & 0xFF)];
 
-        private static byte[] UInt32(uint value) =>
+        internal static byte[] UInt32(uint value) =>
             [(byte)(value >> 24), (byte)(value >> 16), (byte)(value >> 8), (byte)(value & 0xFF)];
     }
 }

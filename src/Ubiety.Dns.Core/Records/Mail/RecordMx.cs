@@ -64,4 +64,18 @@ public sealed record RecordMx : Record
     ///     Gets the exchange.
     /// </summary>
     public string Exchange { get; }
+
+    /// <summary>
+    ///     Returns a string representation of the mail exchange record.
+    /// </summary>
+    /// <returns>The preference followed by the exchange.</returns>
+    /// <remarks>
+    ///     Required rather than optional: without it the compiler-generated record ToString prints
+    ///     <see cref="Record.ResourceRecord" />, whose own ToString prints this record back, and the
+    ///     pair recurse until the stack is exhausted.
+    /// </remarks>
+    public override string ToString()
+    {
+        return $"{Preference} {Exchange}";
+    }
 }
