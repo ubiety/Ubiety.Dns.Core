@@ -171,9 +171,7 @@ public sealed class Question : IEquatable<Question>
     /// <returns>An enumerable collection of bytes representing the encoded DNS question fields.</returns>
     public IEnumerable<byte> GetBytes()
     {
-#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
         return [.. WriteName(DomainName), .. ((ushort)QuestionType).GetBytes(), .. ((ushort)QuestionClass).GetBytes()];
-#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
     }
 
     /// <summary>

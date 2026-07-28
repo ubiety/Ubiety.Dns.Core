@@ -37,9 +37,7 @@ public class ResolverBuilder
 
     private ResolverBuilder()
     {
-#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
         _dnsServers = [];
-#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
     }
 
     /// <summary>

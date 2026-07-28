@@ -165,8 +165,6 @@ public class Header
     /// <returns>A sequence of bytes representing the header data.</returns>
     public IEnumerable<byte> GetBytes()
     {
-#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
         return [..Id.GetBytes(), .._flags.GetBytes(), ..QuestionCount.GetBytes(), ..AnswerCount.GetBytes(), ..NameserverCount.GetBytes(), ..AdditionalRecordsCount.GetBytes()];
-#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
     }
 }

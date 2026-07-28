@@ -47,10 +47,8 @@ public partial class Resolver
     /// <param name="dnsServers"> Set of DNS servers to use for resolution. </param>
     internal Resolver(IEnumerable<IPEndPoint> dnsServers)
     {
-#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
         _responseCache = [];
         _dnsServers = [.. dnsServers];
-#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
 
         TransportType = TransportType.Tcp;
     }
