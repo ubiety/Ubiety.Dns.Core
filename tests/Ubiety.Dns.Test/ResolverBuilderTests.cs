@@ -98,6 +98,78 @@ namespace Ubiety.Dns.Test
         }
 
         [Fact]
+        public void AddDnsServerRejectsANullEndPoint()
+        {
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin().AddDnsServer((IPEndPoint)null!))
+                .ParamName.ShouldBe("server");
+        }
+
+        [Fact]
+        public void AddDnsServerRejectsANullAddress()
+        {
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin().AddDnsServer((IPAddress)null!, 53))
+                .ParamName.ShouldBe("serverAddress");
+
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin().AddDnsServer((IPAddress)null!))
+                .ParamName.ShouldBe("serverAddress");
+        }
+
+        [Fact]
+        public void AddDnsServerRejectsANullAddressString()
+        {
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin().AddDnsServer((string)null!, 53))
+                .ParamName.ShouldBe("serverAddress");
+
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin().AddDnsServer((string)null!))
+                .ParamName.ShouldBe("serverAddress");
+        }
+
+        [Fact]
+        public void AddDnsServersRejectsANullCollection()
+        {
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin().AddDnsServers(null!))
+                .ParamName.ShouldBe("dnsServers");
+        }
+
+        [Fact]
+        public void AddDnsServersRejectsACollectionContainingNull()
+        {
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin()
+                        .AddDnsServers([new IPEndPoint(IPAddress.Loopback, 53), null!]))
+                .ParamName.ShouldBe("dnsServers");
+        }
+
+        [Fact]
+        public void AddDnsServersAppliesNothingWhenAnEntryIsNull()
+        {
+            // The collection is validated before any of it is applied, so a bad entry does not
+            // leave the builder holding a partially applied list.
+            var builder = ResolverBuilder.Begin();
+
+            Should.Throw<ArgumentNullException>(
+                () => builder.AddDnsServers([new IPEndPoint(IPAddress.Loopback, 53), null!]));
+
+            // No server was added, so Build falls back to the system resolvers rather than using
+            // the endpoint that preceded the null.
+            Should.NotThrow(() => builder.Build());
+        }
+
+        [Fact]
+        public void EnableLoggingRejectsANullLogManager()
+        {
+            Should.Throw<ArgumentNullException>(
+                    () => ResolverBuilder.Begin().EnableLogging(null!))
+                .ParamName.ShouldBe("logManager");
+        }
+
+        [Fact]
         public void AddDnsServerSilentlyIgnoresAnUnparseableAddress()
         {
             // The string overloads parse with TryParse and drop anything that fails, so a typo in a

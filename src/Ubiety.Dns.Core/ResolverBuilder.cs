@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 
@@ -54,8 +56,11 @@ public class ResolverBuilder
     /// </summary>
     /// <param name="logManager">An <see cref="IUbietyLogManager"/> instance to be used for logging.</param>
     /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="logManager"/> is null.</exception>
     public ResolverBuilder EnableLogging(IUbietyLogManager logManager)
     {
+        ArgumentNullException.ThrowIfNull(logManager);
+
         _logManager = logManager;
         return this;
     }
@@ -65,8 +70,11 @@ public class ResolverBuilder
     /// </summary>
     /// <param name="server">The <see cref="IPEndPoint"/> representing the DNS server.</param>
     /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> is null.</exception>
     public ResolverBuilder AddDnsServer(IPEndPoint server)
     {
+        ArgumentNullException.ThrowIfNull(server);
+
         _dnsServers.Add(server);
 
         return this;
@@ -78,8 +86,12 @@ public class ResolverBuilder
     /// <param name="serverAddress">The <see cref="IPAddress"/> of the DNS server.</param>
     /// <param name="port">The port number of the DNS server.</param>
     /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="serverAddress"/> is null.</exception>
     public ResolverBuilder AddDnsServer(IPAddress serverAddress, int port)
     {
+        // IPEndPoint would throw for null anyway, but naming its own parameter rather than ours.
+        ArgumentNullException.ThrowIfNull(serverAddress);
+
         _dnsServers.Add(new IPEndPoint(serverAddress, port));
 
         return this;
@@ -101,8 +113,15 @@ public class ResolverBuilder
     /// <param name="serverAddress">The string representing the DNS server to be added.</param>
     /// <param name="port">The port number of the DNS server.</param>
     /// <returns>The current <see cref="ResolverBuilder"/> instance.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="serverAddress"/> is null.</exception>
+    /// <remarks>
+    /// A null address is a caller mistake and throws. An address that is merely unparseable is
+    /// dropped and the builder returned unchanged, since such a value may come from configuration.
+    /// </remarks>
     public ResolverBuilder AddDnsServer(string serverAddress, int port)
     {
+        ArgumentNullException.ThrowIfNull(serverAddress);
+
         return IPAddress.TryParse(serverAddress, out var serverIp) ? AddDnsServer(serverIp, port) : this;
     }
 
@@ -121,9 +140,22 @@ public class ResolverBuilder
     /// </summary>
     /// <param name="dnsServers">A collection of <see cref="IPEndPoint"/> representing the DNS servers to be added.</param>
     /// <returns>The current <see cref="ResolverBuilder"/> instance for further configuration.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="dnsServers"/> is null or contains a null entry.
+    /// </exception>
     public ResolverBuilder AddDnsServers(IEnumerable<IPEndPoint> dnsServers)
     {
-        _dnsServers.AddRange(dnsServers);
+        ArgumentNullException.ThrowIfNull(dnsServers);
+
+        // Materialise once, both to avoid enumerating twice and so a null entry is rejected before
+        // any of the collection is applied.
+        var servers = dnsServers.ToList();
+        if (servers.Exists(server => server is null))
+        {
+            throw new ArgumentNullException(nameof(dnsServers), "The collection contains a null server.");
+        }
+
+        _dnsServers.AddRange(servers);
 
         return this;
     }
