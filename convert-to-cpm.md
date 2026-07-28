@@ -120,22 +120,14 @@ accident of property ordering, but it is a real change in strictness.
 
 ## 6. Follow-up items
 
-1. **Security advisory (high severity).** `System.Security.Cryptography.Xml` 8.0.0 arrives
-   transitively through `Nuke.Common` 9.0.4 in `build/_build.csproj` and has three known high
-   severity advisories: [GHSA-g8r8-53c2-pm3f](https://github.com/advisories/GHSA-g8r8-53c2-pm3f),
-   [GHSA-mmjf-rqrv-855v](https://github.com/advisories/GHSA-mmjf-rqrv-855v) and
-   [GHSA-w3x6-4m5h-cxqf](https://github.com/advisories/GHSA-w3x6-4m5h-cxqf). This affects the build
-   tooling only, not the shipped package. Upgrading was deliberately left out of this conversion to
-   keep it version-neutral.
-2. **Outdated test dependencies.** `coverlet.msbuild` 6.0.4 → 10.0.1, `Microsoft.NET.Test.Sdk`
-   17.13.0 → 18.8.1, `Roslynator.Analyzers` 4.13.1 → 4.15.0, `xunit.analyzers` 1.20.0 → 1.27.0,
-   `xunit.runner.visualstudio` 3.0.2 → 3.1.5, `Moq.Analyzers` 0.3.0 → 0.4.2. Now a one-file change
-   in `Directory.Packages.props`.
+1. ~~**Security advisories.**~~ **Done** in a follow-up commit — see section 8.
+2. ~~**Outdated test dependencies.**~~ **Done** in a follow-up commit — see section 8.
 3. **Decide on `LangVersion`.** All four projects now float on `latest`. Pinning to the TFM default
    instead would make builds more reproducible across SDK versions.
 4. **`_build` is in the solution but never built by it.** It has `ActiveCfg` entries with no
    `Build.0` entries, which is why `dotnet package list` initially failed on a missing assets file
    and it needs a separate `dotnet restore`. Intentional for a Nuke build project, but worth knowing.
+5. **Nuke appears dormant.** See section 8 for the evidence and what it implies.
 
 ## 7. Artifacts
 
@@ -146,3 +138,77 @@ All under `.cpm-artifacts/` (gitignored; safe to delete once reviewed):
 | `baseline.binlog` / `after-cpm.binlog` | MSBuild binary logs before and after, for manual inspection |
 | `baseline-packages.json` / `after-cpm-packages.json` | Resolved package versions per project, source of the section 3 comparison |
 | `baseline-properties.txt` / `after-properties.txt` | Evaluated MSBuild properties, source of the section 4 comparison |
+
+## 8. Follow-up: package bumps and advisory remediation
+
+Applied after the conversion, as a separate change.
+
+### Test dependency bumps
+
+| Package | From | To |
+| --- | --- | --- |
+| `coverlet.msbuild` | 6.0.4 | 10.0.1 |
+| `Microsoft.NET.Test.Sdk` | 17.13.0 | 18.8.1 |
+| `Moq.Analyzers` | 0.3.0 | 0.4.2 |
+| `Roslynator.Analyzers` | 4.13.1 | 4.15.0 |
+| `xunit.analyzers` | 1.20.0 | 1.27.0 |
+| `xunit.runner.visualstudio` | 3.0.2 | 3.1.5 |
+
+`xunit` stays on 2.9.3 (latest of the v2 line — moving to v3 is a migration, not a bump), and `Moq`
+and `Shouldly` were already current. All 38 tests pass and the warning count is unchanged at 43, so
+the newer analyzer versions introduced nothing new.
+
+### Advisory remediation
+
+All five vulnerable transitive packages reached the repo through `Nuke.Common` in
+`build/_build.csproj`. None affect the shipped `Ubiety.Dns.Core` package — this is build tooling
+only.
+
+| Package | Was | Now | Severity | Fixed by |
+| --- | --- | --- | --- | --- |
+| `Microsoft.Build` | 17.12.6 | 18.0.2 | High | Nuke.Common 9.0.4 → 10.1.0 |
+| `Microsoft.Build.Tasks.Core` | 17.12.6 | 18.0.2 | High | Nuke.Common 9.0.4 → 10.1.0 |
+| `Microsoft.Build.Utilities.Core` | 17.12.6 | 18.0.2 | High | Nuke.Common 9.0.4 → 10.1.0 |
+| `System.Security.Cryptography.Xml` | 8.0.0 | 10.0.10 | High | transitive pin |
+| `NuGet.Packaging` | 6.12.1 | 6.12.5 | Low | transitive pin |
+
+`dotnet package list --vulnerable --include-transitive` now reports zero vulnerable packages across
+all four projects.
+
+Upgrading Nuke alone was not sufficient: it moved `System.Security.Cryptography.Xml` from 8.0.0 only
+as far as 9.0.0, which is still vulnerable. `CentralPackageTransitivePinningEnabled` was enabled so
+the two remaining packages could be raised from `Directory.Packages.props` without adding artificial
+`PackageReference` entries to the build project.
+
+`NuGet.Packaging` was pinned to **6.12.5**, not the latest 7.6.0. The advisory lists a patch within
+the 6.12.x line, so a patch-level bump closes it without forcing a major-version change on a library
+Nuke uses at runtime.
+
+### Nuke is dormant
+
+Checked while deciding whether to wait for an upstream fix rather than pin:
+
+- Last commit to `nuke-build/nuke`: **2025-12-02**. Nothing since.
+- Last release: 10.1.0, published the same day.
+- Repository is **not** archived; 122 open issues.
+- `nuke.build` and `www.nuke.build` do not resolve.
+- Release history shows a 10-month gap (9.0.4 in Jan 2025 → 10.0.0 in Nov 2025) that ended in a
+  two-week burst of releases, so dormancy has broken before.
+
+The practical consequence: transitive pinning is the only available remediation, since there is no
+upstream release cadence to wait for. Whether to migrate off Nuke is a larger, separate decision.
+
+### Verification
+
+The Nuke build was executed end to end under 10.1.0, not merely compiled:
+
+- `./build.sh Compile` — Restore, Compile succeeded.
+- `./build.sh Test` — Restore, Compile, Test succeeded; Coverlet collected coverage
+  (19.79% line, 28.28% branch, 20.57% method) and wrote `artifacts/coverage.opencover.xml`.
+- `./build.sh Pack` — produced `artifacts/Ubiety.Dns.Core.4.3.0-alpha.34.nupkg` containing
+  `lib/net10.0` with the DLL and XML docs, plus the packed README and icon file.
+
+Running Nuke regenerated `.github/workflows/continuous.yml`, bumping `actions/checkout` from v4 to
+v6. That file carries an `<auto-generated>` header and is produced from the `[GitHubActions]`
+attribute in `build/Build.cs`, so the change is committed rather than reverted — otherwise it would
+reappear on the next run.
