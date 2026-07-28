@@ -53,9 +53,15 @@ public class Response(bool timedOut)
     ///     <see cref="IPEndPoint" /> of the DNS server that responded to the query.
     /// </param>
     /// <param name="data">   <see cref="byte" /> array of the response data. </param>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref name="server" /> or <paramref name="data" /> is null.
+    /// </exception>
     public Response(IPEndPoint server, byte[] data)
         : this()
     {
+        // Server is non-nullable and callers read it without checking, so let a null argument fail
+        // here rather than surface later as a null on a property that promises never to be one.
+        ArgumentNullException.ThrowIfNull(server);
         ArgumentNullException.ThrowIfNull(data);
         _logger.Debug("Received information from server");
         Server = server;

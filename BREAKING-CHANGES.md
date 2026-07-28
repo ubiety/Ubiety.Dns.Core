@@ -67,13 +67,14 @@ now produces a compiler warning at the call site.
 This matches the behaviour that was already there — those paths threw or silently no-opped on null
 before. Nothing changed at runtime; the contract is simply now visible to the compiler.
 
-## Known issues, not fixed here
+## Behaviour changes
 
-The migration was strictly an annotation exercise and changed no runtime behaviour. It uncovered
-`Record.RecordData` as dead API, which has since been removed — see the removals above. One item
-remains open:
+- **`Response(IPEndPoint server, byte[] data)` now rejects a null `server`.** It previously
+  validated only `data` and assigned `server` unchecked, so a null argument left the non-nullable
+  `Response.Server` property holding null and contradicting its own annotation. It now throws
+  `ArgumentNullException` at the constructor, in line with every other public entry point in the
+  library. No code path inside the library is affected: both internal call sites take their server
+  from the resolver's configured list.
 
-- **`Response(IPEndPoint server, byte[] data)` does not null-check `server`.** It validates `data`
-  with `ArgumentNullException.ThrowIfNull` but assigns `server` unchecked, so a null argument
-  leaves the non-nullable `Response.Server` property holding null, contradicting its annotation.
-  Adding the guard is a runtime behaviour change and was deliberately left out of this pass.
+Both issues the nullable migration originally recorded here are now resolved: `Record.RecordData`
+was removed, see the removals above, and the missing guard is the change described in this section.

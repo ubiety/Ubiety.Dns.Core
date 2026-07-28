@@ -98,6 +98,23 @@ namespace Ubiety.Dns.Test
         }
 
         [Fact]
+        public void RejectsANullServer()
+        {
+            // Server is annotated non-nullable, so it must not be possible to construct a Response
+            // that hands callers a null through it.
+            Should.Throw<ArgumentNullException>(() => new Response(null!, Reply))
+                .ParamName.ShouldBe("server");
+        }
+
+        [Fact]
+        public void RejectsNullData()
+        {
+            Should.Throw<ArgumentNullException>(
+                    () => new Response(new IPEndPoint(IPAddress.Loopback, 53), null!))
+                .ParamName.ShouldBe("data");
+        }
+
+        [Fact]
         public void TimeStampIsUtc()
         {
             // IsExpired compares against DateTime.UtcNow, so a local timestamp would misjudge
