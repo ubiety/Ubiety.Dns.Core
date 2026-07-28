@@ -58,7 +58,7 @@ public partial class Resolver
     /// <summary>
     /// Gets the version information for the current assembly.
     /// </summary>
-    public static string Version => Assembly.GetExecutingAssembly()
+    public static string? Version => Assembly.GetExecutingAssembly()
         .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
         ?.InformationalVersion;
 
@@ -240,7 +240,7 @@ public partial class Resolver
         };
     }
 
-    private Response SearchInCache(Question question)
+    private Response? SearchInCache(Question question)
     {
         _logger.Debug("Searching cache for question...");
         if (!_useCache)
@@ -252,7 +252,7 @@ public partial class Resolver
 
         lock (_responseCache)
         {
-            if (!_responseCache.TryGetValue(question, out Response value))
+            if (!_responseCache.TryGetValue(question, out Response? value))
             {
                 _logger.Debug("Question does not exist in cache.");
                 return null;

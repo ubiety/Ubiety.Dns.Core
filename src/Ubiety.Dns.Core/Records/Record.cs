@@ -45,19 +45,27 @@ public abstract record Record
     /// <summary>
     ///     Gets the record data.
     /// </summary>
-    /// <value>Byte list of the raw record data.</value>
-    public List<byte> RecordData { get; }
+    /// <value>Byte list of the raw record data, which is never populated.</value>
+    public List<byte>? RecordData { get; }
 
     /// <summary>
     ///     Gets or sets the resource record this record is a part of.
     /// </summary>
     /// <value>Resource record of the data.</value>
-    public ResourceRecord ResourceRecord { get; set; }
+    /// <remarks>
+    ///     Assigned by <see cref="ResourceRecord" /> immediately after the record is read, so it is
+    ///     always set by the time a caller can observe the record.
+    /// </remarks>
+    public ResourceRecord ResourceRecord { get; set; } = null!;
 
     /// <summary>
     ///     Gets the record reader for the record.
     /// </summary>
-    protected RecordReader Reader { get; }
+    /// <remarks>
+    ///     Only the parameterless constructor leaves this unset, and every record in this assembly
+    ///     is built through <see cref="Record(RecordReader)" />.
+    /// </remarks>
+    protected RecordReader Reader { get; } = null!;
 
     /// <summary>
     ///     String representation of the record.

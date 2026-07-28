@@ -166,9 +166,9 @@ public sealed record RecordSrv : Record, IComparable<RecordSrv>
     /// <summary>
     ///     Compares this instance to another <see cref="RecordSrv"/> instance for ordering.
     /// </summary>
-    /// <param name="other">The <see cref="RecordSrv"/> instance to compare to.</param>
+    /// <param name="other">The <see cref="RecordSrv"/> instance to compare to, which may be null.</param>
     /// <returns>An integer that indicates the relative order of the objects being compared.</returns>
-    public int CompareTo(RecordSrv other)
+    public int CompareTo(RecordSrv? other)
     {
         if (other is null)
         {

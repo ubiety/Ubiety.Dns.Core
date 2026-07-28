@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 using Ubiety.Dns.Core.Common;
@@ -113,11 +114,11 @@ public sealed class Question : IEquatable<Question>
     /// <summary>
     /// Determines whether the current <see cref="Question"/> instance is equal to another <see cref="Question"/> instance.
     /// </summary>
-    /// <param name="other">The <see cref="Question"/> instance to compare with the current instance.</param>
+    /// <param name="other">The <see cref="Question"/> instance to compare with the current instance, which may be null.</param>
     /// <returns>
     /// true if the current <see cref="Question"/> instance is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
-    public bool Equals(Question other)
+    public bool Equals([NotNullWhen(true)] Question? other)
     {
         if (other is null)
         {
@@ -136,11 +137,11 @@ public sealed class Question : IEquatable<Question>
     /// <summary>
     /// Determines whether the specified object is equal to the current <see cref="Question"/> instance.
     /// </summary>
-    /// <param name="obj">The object to compare with the current instance.</param>
+    /// <param name="obj">The object to compare with the current instance, which may be null.</param>
     /// <returns>
     /// true if the specified object is equal to the current <see cref="Question"/> instance; otherwise, false.
     /// </returns>
-    public override bool Equals(object obj)
+    public override bool Equals([NotNullWhen(true)] object? obj)
     {
         if (obj is null)
         {

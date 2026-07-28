@@ -39,11 +39,13 @@ public static class EnumExtensions
         var fieldInfo = type.GetType().GetField(type.ToString());
         var recordAttr = fieldInfo?.GetCustomAttribute<RecordAttribute>();
 
+        // CreateInstance only returns null when asked for a Nullable<T>; every RecordType
+        // registered by RecordAttribute is a class, so the result is always a Record.
         if (type == RecordType.TXT)
         {
-            return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader, length);
+            return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader, length)!;
         }
 
-        return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader);
+        return (Record)Activator.CreateInstance(recordAttr?.RecordType ?? throw new InvalidOperationException(), reader)!;
     }
 }

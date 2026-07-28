@@ -29,7 +29,7 @@ namespace Ubiety.Dns.Core;
 public class ResolverBuilder
 {
     private readonly List<IPEndPoint> _dnsServers;
-    private IUbietyLogManager _logManager;
+    private IUbietyLogManager? _logManager;
     private int _timeout;
     private bool _enableCache;
     private int _retries;
