@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
