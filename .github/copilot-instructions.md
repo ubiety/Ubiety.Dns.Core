@@ -1,72 +1,68 @@
 # Copilot Instructions
 
+## What this project is
 
-  # .NET Development Rules
+Ubiety.Dns.Core is a DNS resolver library for .NET, published to NuGet. It builds DNS queries,
+sends them over UDP or TCP, and parses the responses into typed record objects.
 
-  You are a senior .NET backend developer and an expert in C#, ASP.NET Core, and Entity Framework Core.
+There is no web stack here: no ASP.NET Core, no Entity Framework, no HTTP, no controllers, no
+dependency injection container. Suggestions built around those do not apply.
 
-  ## Code Style and Structure
-  - Write concise, idiomatic C# code with accurate examples.
-  - Follow .NET and ASP.NET Core conventions and best practices.
-  - Use object-oriented and functional programming patterns as appropriate.
-  - Prefer LINQ and lambda expressions for collection operations.
-  - Use descriptive variable and method names (e.g., 'IsUserSignedIn', 'CalculateTotal').
-  - Structure files according to .NET conventions (Controllers, Models, Services, etc.).
+## Layout
 
-  ## Naming Conventions
-  - Use PascalCase for class names, method names, and public members.
-  - Use camelCase for local variables and private fields.
-  - Use UPPERCASE for constants.
-  - Prefix interface names with "I" (e.g., 'IUserService').
+| Path | Purpose |
+| --- | --- |
+| `src/Ubiety.Dns.Core` | The shipping library. The only packable project. |
+| `src/Dns.Sample` | Small console program demonstrating the resolver. |
+| `tests/Ubiety.Dns.Test` | xUnit tests using Shouldly for assertions. |
+| `build/_build.csproj` | NUKE build. Not built by the solution; restore it separately. |
+| `Directory.Build.props` | Shared MSBuild properties for every project. |
+| `Directory.Packages.props` | Central Package Management. **All** package versions live here. |
 
-  ## C# and .NET Usage
-  - Use C# 10+ features when appropriate (e.g., record types, pattern matching, null-coalescing assignment).
-  - Leverage built-in ASP.NET Core features and middleware.
-  - Use Entity Framework Core effectively for database operations.
+Key types: `Resolver` and `ResolverBuilder` drive queries, `Request`/`Response` model a DNS
+exchange, `RecordReader` parses the wire format, and `Records/*` hold one class per record type
+dispatched via `RecordAttribute`.
 
-  ## Syntax and Formatting
-  - Follow the C# Coding Conventions (https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-  - Use C#'s expressive syntax (e.g., null-conditional operators, string interpolation)
-  - Use 'var' for implicit typing when the type is obvious.
+## Build and test
 
-  ## Error Handling and Validation
-  - Use exceptions for exceptional cases, not for control flow.
-  - Implement proper error logging using built-in .NET logging or a third-party logger.
-  - Use Data Annotations or Fluent Validation for model validation.
-  - Implement global exception handling middleware.
-  - Return appropriate HTTP status codes and consistent error responses.
+```shell
+dotnet build Ubiety.Dns.Core.sln
+dotnet test tests/Ubiety.Dns.Test/Ubiety.Dns.Test.csproj
+./build.sh Test              # the NUKE path CI uses; build.cmd on Windows
+```
 
-  ## API Design
-  - Follow RESTful API design principles.
-  - Use attribute routing in controllers.
-  - Implement versioning for your API.
-  - Use action filters for cross-cutting concerns.
+The build must stay at **zero warnings**. `TreatWarningsAsErrors` is on, so a new warning fails the
+build. NuGet audit warnings (NU1901-NU1904) are the deliberate exception and remain warnings.
 
-  ## Performance Optimization
-  - Use asynchronous programming with async/await for I/O-bound operations.
-  - Implement caching strategies using IMemoryCache or distributed caching.
-  - Use efficient LINQ queries and avoid N+1 query problems.
-  - Implement pagination for large data sets.
+## Conventions
 
-  ## Key Conventions
-  - Use Dependency Injection for loose coupling and testability.
-  - Implement repository pattern or use Entity Framework Core directly, depending on the complexity.
-  - Use AutoMapper for object-to-object mapping if needed.
-  - Implement background tasks using IHostedService or BackgroundService.
+- **Never put a version on a `PackageReference`.** Add a `PackageVersion` to
+  `Directory.Packages.props` instead. `PackageDownload` items are exempt.
+- **Nullable reference types are enabled everywhere**, with nullable warnings as errors. Annotate
+  honestly: if something can return null, its type is `T?`. Do not reach for `!` or `null!` to
+  silence a warning — each existing use carries a comment justifying it.
+- **StyleCop runs on the library** and public members need XML documentation. SA1010 is disabled in
+  `.editorconfig` because it predates collection expressions.
+- Target-typed `new`, collection expressions, file-scoped namespaces and primary constructors are
+  all used and welcome.
+- Keep the Apache-2.0 header at the top of new source files.
 
-  ## Testing
-  - Write unit tests using xUnit, NUnit, or MSTest.
-  - Use Moq or NSubstitute for mocking dependencies.
-  - Implement integration tests for API endpoints.
+## Parsing untrusted input
 
-  ## Security
-  - Use Authentication and Authorization middleware.
-  - Implement JWT authentication for stateless API authentication.
-  - Use HTTPS and enforce SSL.
-  - Implement proper CORS policies.
+`RecordReader` and everything under `Records/` parse bytes that arrive from the network and cannot
+be trusted. When touching that code:
 
-  ## API Documentation
-  - Use Swagger/OpenAPI for API documentation (as per installed Swashbuckle.AspNetCore package).
-  - Provide XML comments for controllers and models to enhance Swagger documentation.
+- Bound every loop. Domain name decompression follows pointers and is capped at 128 jumps and 255
+  octets specifically to stop a malicious response from looping or exhausting the stack.
+- Prefer tolerating malformed input by stopping early over throwing, matching the surrounding code.
+  Serialization of caller-supplied data is the opposite: `Question.WriteName` throws
+  `FormatException` on a name it cannot encode.
+- Read exactly what the length prefix promises. Use `Stream.ReadExactly`, never a bare
+  `Stream.Read` whose return value is discarded.
 
-  Follow the official Microsoft documentation and ASP.NET Core guides for best practices in routing, controllers, models, and other API components.
+## Testing
+
+- xUnit with Shouldly. `Should.Throw<T>` for exceptions, `ShouldBe` for equality.
+- Prefer building a byte array that mirrors real wire data and asserting on the parsed result over
+  mocking. Several tests embed a real DNS reply, compression pointers included.
+- New parsing code needs a malformed-input test, not only a happy-path one.
