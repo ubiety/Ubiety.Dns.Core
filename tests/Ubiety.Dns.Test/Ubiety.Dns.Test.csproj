@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <ProjectGuid>ca6db048-53ca-43dd-bf6c-2b47ff09929c</ProjectGuid>
   </PropertyGroup>
