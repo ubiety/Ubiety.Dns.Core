@@ -389,7 +389,15 @@ public partial class Resolver
 
         while (true)
         {
-            var length = (stream.ReadByte() << 8) | stream.ReadByte();
+            var lengthHigh = stream.ReadByte();
+            var lengthLow = stream.ReadByte();
+            if (lengthHigh < 0 || lengthLow < 0)
+            {
+                _logger.Error($"Connection to nameserver {server.Address} closed before sending a length prefix");
+                throw new SocketException();
+            }
+
+            var length = (lengthHigh << 8) | lengthLow;
             if (length <= 0)
             {
                 _logger.Error($"Connection to nameserver {server.Address} failed");
@@ -398,8 +406,10 @@ public partial class Resolver
 
             messageSize += length;
 
+            // ReadExactly loops until the full message arrives; a plain Read can return a
+            // partial buffer and would leave the remainder to be parsed as zeroed bytes.
             var data = new byte[length];
-            _ = stream.Read(data, 0, length);
+            stream.ReadExactly(data);
 
             _logger.Debug("Building response...");
             var response = new Response(server, data);

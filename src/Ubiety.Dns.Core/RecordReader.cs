@@ -29,6 +29,16 @@ namespace Ubiety.Dns.Core;
 /// </summary>
 public class RecordReader(byte[] data, int position = 0)
 {
+    /// <summary>
+    /// The maximum number of compression pointers followed while reading a single domain name.
+    /// </summary>
+    private const int MaxCompressionJumps = 128;
+
+    /// <summary>
+    /// The maximum length of a domain name in octets, per RFC 1035 section 2.3.4.
+    /// </summary>
+    private const int MaxDomainNameLength = 255;
+
     private readonly byte[] _data = data;
 
     /// <summary>
@@ -90,33 +100,76 @@ public class RecordReader(byte[] data, int position = 0)
     /// <summary>
     /// Reads and returns the domain name from the current record.
     /// </summary>
+    /// <remarks>
+    /// Compression pointers are followed iteratively and are bounded by
+    /// <see cref="MaxCompressionJumps"/> jumps and <see cref="MaxDomainNameLength"/> octets, so a
+    /// malformed or hostile response containing a pointer cycle terminates instead of looping.
+    /// Reading stops early rather than throwing when either bound is reached.
+    /// </remarks>
     /// <returns>The domain name of the record.</returns>
     public string ReadDomainName()
     {
         var name = new StringBuilder();
-        int length;
+        var current = Position;
+        var jumps = 0;
+        var jumped = false;
 
-        // get  the length of the first label
-        while ((length = ReadByte()) != 0)
+        // get the length of each label in turn; a zero length terminates the name
+        while (current < _data.Length)
         {
+            int length = _data[current++];
+
+            if (length == 0)
+            {
+                break;
+            }
+
             // top 2 bits set denotes domain name compression and to reference elsewhere
             if ((length & 0xc0) == 0xc0)
             {
-                // work out the existing domain name, copy this pointer
-                var newRecordReader = new RecordReader(_data, ((length & 0x3f) << 8) | ReadByte());
+                if (current >= _data.Length)
+                {
+                    break;
+                }
 
-                name.Append(newRecordReader.ReadDomainName());
-                return name.ToString();
+                var pointer = ((length & 0x3f) << 8) | _data[current++];
+
+                // Only the pointer itself is consumed from the reader's own position; the
+                // target is read out of band and must not advance the reader any further.
+                if (!jumped)
+                {
+                    Position = current;
+                    jumped = true;
+                }
+
+                if (++jumps > MaxCompressionJumps || pointer >= _data.Length)
+                {
+                    break;
+                }
+
+                current = pointer;
+                continue;
+            }
+
+            // account for the separator appended after the label
+            if (name.Length + length + 1 > MaxDomainNameLength)
+            {
+                break;
             }
 
             // if not using compression, copy a char at a time to the domain name
-            while (length > 0)
+            while (length > 0 && current < _data.Length)
             {
-                name.Append(ReadChar());
+                name.Append((char)_data[current++]);
                 length--;
             }
 
             name.Append('.');
+        }
+
+        if (!jumped)
+        {
+            Position = current;
         }
 
         return name.Length == 0 ? "." : name.ToString();
