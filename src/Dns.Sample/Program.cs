@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.CommandLine;
 
 namespace Dns.Sample
 {
@@ -24,8 +25,25 @@ namespace Dns.Sample
         /// <summary>
         ///     Main application
         /// </summary>
-        /// <param name="dnsIp">IP address of DNS server</param>
-        public static void Main(string dnsIp)
+        /// <param name="args">Command line arguments</param>
+        /// <returns>The process exit code</returns>
+        public static int Main(string[] args)
+        {
+            var dnsIpOption = new Option<string>("--dns-ip", "-d")
+            {
+                Description = "IP address of DNS server",
+                Required = true,
+            };
+
+            var rootCommand = new RootCommand("Sample queries against the Ubiety DNS resolver");
+            rootCommand.Options.Add(dnsIpOption);
+
+            rootCommand.SetAction(parseResult => Query(parseResult.GetRequiredValue(dnsIpOption)));
+
+            return rootCommand.Parse(args).Invoke();
+        }
+
+        private static void Query(string dnsIp)
         {
             var test = new DnsTest(dnsIp);
 
