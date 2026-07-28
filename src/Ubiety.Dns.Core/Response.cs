@@ -124,9 +124,12 @@ public class Response(bool timedOut)
     public int MessageSize { get; set; } = 0;
 
     /// <summary>
-    /// Gets the timestamp indicating when the response was received or created.
+    /// Gets the UTC timestamp indicating when the response was received or created.
     /// </summary>
-    public DateTime TimeStamp { get; } = DateTime.Now;
+    /// <remarks>
+    /// This is UTC so that record expiry stays correct across a daylight saving transition.
+    /// </remarks>
+    public DateTime TimeStamp { get; } = DateTime.UtcNow;
 
     /// <summary>
     /// Gets the IP endpoint of the DNS server that provided the response.

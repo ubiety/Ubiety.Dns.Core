@@ -25,7 +25,6 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using Ubiety.Dns.Core.Common;
 using Ubiety.Logging.Core;
@@ -181,12 +180,13 @@ public partial class Resolver
     /// <param name="questionType"> The type of DNS query (e.g., A, AAAA, MX). </param>
     /// <param name="questionClass"> The class of DNS query (e.g., IN for Internet). </param>
     /// <returns> A <see cref="Response"/> containing the result of the DNS query. </returns>
+    /// <exception cref="InvalidOperationException">The resolver has no DNS servers configured.</exception>
     public Response Query(string domainName, QuestionType questionType, QuestionClass questionClass = QuestionClass.IN)
     {
         if (_dnsServers.Count <= 0)
         {
             _logger.Error("No DNS servers to query.");
-            return null;
+            throw new InvalidOperationException("The resolver has no DNS servers configured.");
         }
 
         _logger.Debug($"Received {questionType} query for {domainName}");
@@ -235,7 +235,7 @@ public partial class Resolver
         return TransportType switch
         {
             TransportType.Udp => UdpRequest(request),
-            TransportType.Tcp => TcpRequest(request).Result,
+            TransportType.Tcp => TcpRequest(request),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -299,12 +299,16 @@ public partial class Resolver
         _logger.Debug("Starting UDP request...");
         for (var attempts = 0; attempts < Retries; attempts++)
         {
-            _logger.Debug($"Attempt {attempts} of {Retries}...");
+            _logger.Debug($"Attempt {attempts + 1} of {Retries}...");
             foreach (var server in _dnsServers)
             {
                 _logger.Debug($"Connecting to server {server.Address}...");
                 using var client = new UdpClient(AddressFamily.InterNetworkV6);
                 client.Client.DualMode = true;
+
+                // Without this Receive blocks indefinitely and Timeout applies to TCP only.
+                client.Client.ReceiveTimeout = Timeout;
+                client.Client.SendTimeout = Timeout;
 
                 try
                 {
@@ -330,7 +334,7 @@ public partial class Resolver
         return responseTimeout;
     }
 
-    private async Task<Response> TcpRequest(Request request)
+    private Response TcpRequest(Request request)
     {
         _logger.Debug("Starting TCP request...");
         for (var attempts = 0; attempts < Retries; attempts++)
@@ -345,14 +349,16 @@ public partial class Resolver
                     using var client = Socket.OSSupportsIPv6 ? new TcpClient(AddressFamily.InterNetworkV6)
                         {
                             ReceiveTimeout = Timeout,
+                            SendTimeout = Timeout,
                             Client = { DualMode = true },
                         }
                         : new TcpClient(AddressFamily.InterNetwork)
                         {
                             ReceiveTimeout = Timeout,
+                            SendTimeout = Timeout,
                         };
 
-                    await client.ConnectAsync(server.Address, server.Port).ConfigureAwait(false);
+                    client.Connect(server.Address, server.Port);
 
                     if (!client.Connected)
                     {
@@ -361,17 +367,19 @@ public partial class Resolver
                         continue;
                     }
 
-                    await using var stream = new BufferedStream(client.GetStream());
+                    using var stream = new BufferedStream(client.GetStream());
 
                     _logger.Debug("Sending request to server...");
                     WriteRequest(stream, request);
 
                     return ReceiveResponse(stream, server);
                 }
-                catch (SocketException e)
+                catch (Exception e) when (e is SocketException or IOException)
                 {
-                    _logger.Error(e, "Socket exception occurred during request.");
-                    throw;
+                    // A read timeout surfaces as an IOException wrapping a SocketException, and a
+                    // truncated response as an EndOfStreamException. Neither should abort the run:
+                    // fall through and give the remaining servers and attempts a chance.
+                    _logger.Error(e, $"Request to nameserver {server.Address} failed");
                 }
             }
         }

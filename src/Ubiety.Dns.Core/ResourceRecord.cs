@@ -133,11 +133,15 @@ public class ResourceRecord
     /// <summary>
     /// Determines whether the resource record is expired based on the response timestamp.
     /// </summary>
-    /// <param name="responseTimeStamp">The timestamp from the response for the record.</param>
+    /// <param name="responseTimeStamp">The UTC timestamp from the response for the record.</param>
     /// <returns>True if the resource record is expired; otherwise, false.</returns>
+    /// <remarks>
+    /// Compared in UTC to match <see cref="Response.TimeStamp"/>, so a daylight saving transition
+    /// cannot expire a record an hour early or keep it an hour too long.
+    /// </remarks>
     public bool IsExpired(DateTime responseTimeStamp)
     {
-        var timeLived = (int)((DateTime.Now.Ticks - responseTimeStamp.Ticks) / TimeSpan.TicksPerSecond);
+        var timeLived = (int)((DateTime.UtcNow.Ticks - responseTimeStamp.Ticks) / TimeSpan.TicksPerSecond);
 
         return (uint)Math.Max(0, TimeToLive - timeLived) == 0;
     }
