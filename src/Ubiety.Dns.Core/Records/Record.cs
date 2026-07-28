@@ -16,7 +16,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 
 namespace Ubiety.Dns.Core.Records;
 
@@ -41,12 +40,6 @@ public abstract record Record
         ArgumentNullException.ThrowIfNull(reader);
         Reader = reader;
     }
-
-    /// <summary>
-    ///     Gets the record data.
-    /// </summary>
-    /// <value>Byte list of the raw record data, which is never populated.</value>
-    public List<byte>? RecordData { get; }
 
     /// <summary>
     ///     Gets or sets the resource record this record is a part of.

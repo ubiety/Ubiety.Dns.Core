@@ -1,25 +1,44 @@
-# Nullable reference type annotations — consumer impact
+# Breaking changes — consumer impact
+
+Public API changes in `Ubiety.Dns.Core` that consumers should know about before upgrading.
+
+## Removed members
+
+Three public members were removed. All were unreachable dead API: nothing in the library assigned,
+raised or referenced them, and no consumer could have used them for their stated purpose.
+
+| Member | Dead since | Why |
+| --- | --- | --- |
+| `Ubiety.Dns.Core.Common.VerboseEventArgs` | 2020-03-27 | Payload for `Resolver.OnVerbose`. Commit `af2cd30` removed the event, the `VerboseEventHandler` delegate, the `Verbose()` method and all four call sites, but left the payload class behind. Logging moved to `IUbietyLogger`. |
+| `Ubiety.Dns.Core.Common.VerboseOutputEventArgs` | never used | Declared in the original 2008 import at `Resolver.cs:130` while the event on line 148 used `VerboseEventArgs`. An unused duplicate carried forward through every refactor since. |
+| `Ubiety.Dns.Core.Records.Record.RecordData` | 2020-03-29 | Commit `43ea6ad` removed the `RecordData = new List<byte>(Reader.ReadBytes(length))` assignment because reading those bytes fast-forwarded the reader and broke parsing. The property stayed declared and returned `null` on every record from then on. |
+
+These removals **are binary breaking**: code compiled against an earlier version that names any of
+these types or members will fail to load. In practice nothing could have depended on them — the
+library declares no `event` members at all, so there was nothing to hand the event arguments to, and
+`RecordData` was always `null`.
+
+## Nullable reference type annotations
 
 `Ubiety.Dns.Core` now builds with `<Nullable>enable</Nullable>`. Nullable annotations are part of
-the public API contract, so this page records what changed for consumers.
+the public API contract, so this section records what changed for consumers.
 
-None of these are **binary** breaking changes — no value type gained `Nullable<T>`, and no signature
+None of the annotation changes are **binary** breaking changes — no value type gained `Nullable<T>`, and no signature
 changed in a way that affects the emitted metadata beyond nullability attributes. Existing compiled
 assemblies keep working without recompilation.
 
 They **are** source breaking for consumers who have nullable reference types enabled themselves:
 those projects will see new warnings until they adjust.
 
-## Members that became nullable
+### Members that became nullable
 
 Consumers must now handle null (or will see `CS8600`/`CS8602` where they previously saw nothing).
 
 | Member | Was | Now | Why |
 | --- | --- | --- | --- |
 | `Resolver.Version` | `string` | `string?` | Reads `AssemblyInformationalVersionAttribute` through `?.`, which yields null when the attribute is absent. |
-| `Record.RecordData` | `List<byte>` | `List<byte>?` | Never assigned anywhere in the library — see "Known issues" below. |
 
-## Members that now accept null explicitly
+### Members that now accept null explicitly
 
 These already handled null at runtime; the signature now says so. Consumers gain flexibility and
 lose nothing.
@@ -38,7 +57,7 @@ correctly, so only the annotation was wrong: callers were warned off a compariso
 
 The `[NotNullWhen(true)]` attributes let callers skip a redundant null check after a `true` result.
 
-## Everything else is now non-nullable
+### Everything else is now non-nullable
 
 Enabling the feature implicitly declares every other unannotated reference type in the public
 surface as non-nullable. The practical effect: passing `null` to a method such as
@@ -48,15 +67,12 @@ now produces a compiler warning at the call site.
 This matches the behaviour that was already there — those paths threw or silently no-opped on null
 before. Nothing changed at runtime; the contract is simply now visible to the compiler.
 
-## Known issues surfaced by the migration, not fixed here
+## Known issues, not fixed here
 
-The migration was strictly an annotation exercise and changed no runtime behaviour. Two things it
-uncovered are worth addressing separately:
+The migration was strictly an annotation exercise and changed no runtime behaviour. It uncovered
+`Record.RecordData` as dead API, which has since been removed — see the removals above. One item
+remains open:
 
-- **`Record.RecordData` is dead API.** It is declared with a getter only, is never assigned by any
-  constructor or derived record, and is never read anywhere in the library. It is therefore always
-  `null`. It is annotated `List<byte>?` here to be truthful, but the real fix is to remove it — a
-  genuine breaking change that deserves its own release note.
 - **`Response(IPEndPoint server, byte[] data)` does not null-check `server`.** It validates `data`
   with `ArgumentNullException.ThrowIfNull` but assigns `server` unchecked, so a null argument
   leaves the non-nullable `Response.Server` property holding null, contradicting its annotation.
