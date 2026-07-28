@@ -472,3 +472,5 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
+# Artifacts from the central package management conversion
+.cpm-artifacts/

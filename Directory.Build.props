@@ -1,0 +1,19 @@
+<Project>
+
+  <!--
+    Settings shared by every project in the repository. Projects override individual values by
+    redeclaring them in their own PropertyGroup, which is evaluated after this file.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Ubiety.Dns.Core is the only shipping package; everything else opts back in explicitly. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+</Project>
