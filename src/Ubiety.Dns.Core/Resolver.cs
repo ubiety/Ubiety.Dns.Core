@@ -220,6 +220,7 @@ public partial class Resolver
         var transferResponse = new Response();
         var soa = 0;
         var messageSize = 0;
+        var isTransfer = false;
 
         while (true)
         {
@@ -254,7 +255,15 @@ public partial class Resolver
                 return response;
             }
 
-            if (response.Questions[0].QuestionType != QuestionType.AXFR)
+            // RFC 5936 requires the question section on the first response of a zone transfer but
+            // lets later messages omit it, so only re-read the intent when one is actually present.
+            // Indexing unconditionally threw on any message without a question section.
+            if (response.Questions.Count > 0)
+            {
+                isTransfer = response.Questions[0].QuestionType == QuestionType.AXFR;
+            }
+
+            if (!isTransfer)
             {
                 AddToCache(response);
                 return response;
@@ -269,7 +278,9 @@ public partial class Resolver
             transferResponse.Authorities.AddRange(response.Authorities);
             transferResponse.Additional.AddRange(response.Additional);
 
-            if (response.Answers[0].Type == RecordType.SOA)
+            // A transfer message with no answers carries no SOA to count; malformed input must not
+            // index past the end of the list.
+            if (response.Answers.Count > 0 && response.Answers[0].Type == RecordType.SOA)
             {
                 soa++;
             }

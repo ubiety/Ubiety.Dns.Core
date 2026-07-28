@@ -144,6 +144,61 @@ namespace Ubiety.Dns.Test
         }
 
         [Fact]
+        public void AccumulatesAZoneTransferWhoseContinuationsOmitTheQuestionSection()
+        {
+            // RFC 5936 lets a server send the question section only on the first message. Indexing
+            // Questions[0] unconditionally used to throw ArgumentOutOfRangeException here.
+            var opening = DnsMessageBuilder.Message(
+                1, DnsMessageBuilder.NoErrorFlags, "example.com", QuestionType.AXFR,
+                DnsMessageBuilder.SoaRecord("example.com", 42));
+            var middle = DnsMessageBuilder.MessageWithoutQuestion(
+                1, DnsMessageBuilder.NoErrorFlags,
+                DnsMessageBuilder.ARecord("www.example.com", 300, 10, 0, 0, 1));
+            var closing = DnsMessageBuilder.MessageWithoutQuestion(
+                1, DnsMessageBuilder.NoErrorFlags,
+                DnsMessageBuilder.SoaRecord("example.com", 42));
+
+            var response = Receive(DnsMessageBuilder.Framed(opening, middle, closing));
+
+            response.Answers.Count.ShouldBe(3);
+            response.GetRecords<RecordA>().ShouldHaveSingleItem();
+            response.GetRecords<RecordSoa>().Count.ShouldBe(2);
+            response.Header.QuestionCount.ShouldBe((ushort)1);
+        }
+
+        [Fact]
+        public void ToleratesATransferMessageWithNoAnswers()
+        {
+            // An empty continuation carries no SOA to count and must not index past the end.
+            var opening = DnsMessageBuilder.Message(
+                1, DnsMessageBuilder.NoErrorFlags, "example.com", QuestionType.AXFR,
+                DnsMessageBuilder.SoaRecord("example.com", 42));
+            var empty = DnsMessageBuilder.MessageWithoutQuestion(1, DnsMessageBuilder.NoErrorFlags);
+            var closing = DnsMessageBuilder.MessageWithoutQuestion(
+                1, DnsMessageBuilder.NoErrorFlags,
+                DnsMessageBuilder.SoaRecord("example.com", 42));
+
+            var response = Receive(DnsMessageBuilder.Framed(opening, empty, closing));
+
+            response.GetRecords<RecordSoa>().Count.ShouldBe(2);
+        }
+
+        [Fact]
+        public void ReturnsAQuestionlessNonTransferMessageRatherThanThrowing()
+        {
+            // Nothing identifies this as a transfer, so it is returned as an ordinary response.
+            var message = DnsMessageBuilder.MessageWithoutQuestion(
+                1, DnsMessageBuilder.NoErrorFlags,
+                DnsMessageBuilder.ARecord("example.com", 60, 1, 2, 3, 4));
+
+            var response = Receive(DnsMessageBuilder.Framed(message));
+
+            response.Questions.ShouldBeEmpty();
+            response.GetRecords<RecordA>().ShouldHaveSingleItem()
+                .Address.ShouldBe(IPAddress.Parse("1.2.3.4"));
+        }
+
+        [Fact]
         public void ThrowsWhenTheStreamEndsBeforeALengthPrefix()
         {
             Should.Throw<SocketException>(() => Receive([]));

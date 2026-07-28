@@ -89,6 +89,29 @@ namespace Ubiety.Dns.Test
         }
 
         /// <summary>
+        /// Assembles a message with no question section, as servers may send for the continuation
+        /// messages of a zone transfer.
+        /// </summary>
+        internal static byte[] MessageWithoutQuestion(ushort id, ushort flags, params byte[][] answers)
+        {
+            var bytes = new List<byte>();
+
+            bytes.AddRange(UInt16(id));
+            bytes.AddRange(UInt16(flags));
+            bytes.AddRange(UInt16(0));                          // question count
+            bytes.AddRange(UInt16((ushort)answers.Length));     // answer count
+            bytes.AddRange(UInt16(0));                          // authority count
+            bytes.AddRange(UInt16(0));                          // additional count
+
+            foreach (var answer in answers)
+            {
+                bytes.AddRange(answer);
+            }
+
+            return [.. bytes];
+        }
+
+        /// <summary>
         /// Prefixes a message with the two byte big-endian length used by DNS over TCP.
         /// </summary>
         internal static byte[] Framed(params byte[][] messages)
