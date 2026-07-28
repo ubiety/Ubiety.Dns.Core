@@ -203,6 +203,92 @@ public partial class Resolver
         return GetResponse(request);
     }
 
+    /// <summary>
+    /// Reads one or more length-prefixed DNS messages from a connected stream.
+    /// </summary>
+    /// <param name="stream">The stream to read framed messages from.</param>
+    /// <param name="server">The server the messages came from, recorded on the response.</param>
+    /// <returns>
+    /// The response, or for an AXFR query the accumulated transfer once the closing SOA arrives.
+    /// </returns>
+    /// <remarks>
+    /// Internal rather than private so it can be tested over a <see cref="MemoryStream" /> without
+    /// a socket; it is not part of the public surface.
+    /// </remarks>
+    internal Response ReceiveResponse(Stream stream, IPEndPoint server)
+    {
+        var transferResponse = new Response();
+        var soa = 0;
+        var messageSize = 0;
+
+        while (true)
+        {
+            var lengthHigh = stream.ReadByte();
+            var lengthLow = stream.ReadByte();
+            if (lengthHigh < 0 || lengthLow < 0)
+            {
+                _logger.Error($"Connection to nameserver {server.Address} closed before sending a length prefix");
+                throw new SocketException();
+            }
+
+            var length = (lengthHigh << 8) | lengthLow;
+            if (length <= 0)
+            {
+                _logger.Error($"Connection to nameserver {server.Address} failed");
+                throw new SocketException();
+            }
+
+            messageSize += length;
+
+            // ReadExactly loops until the full message arrives; a plain Read can return a
+            // partial buffer and would leave the remainder to be parsed as zeroed bytes.
+            var data = new byte[length];
+            stream.ReadExactly(data);
+
+            _logger.Debug("Building response...");
+            var response = new Response(server, data);
+
+            if (response.Header.ResponseCode != ResponseCode.NoError)
+            {
+                _logger.Debug($"Error from server - {response.Header.ResponseCode}");
+                return response;
+            }
+
+            if (response.Questions[0].QuestionType != QuestionType.AXFR)
+            {
+                AddToCache(response);
+                return response;
+            }
+
+            if (transferResponse.Questions.Count == 0)
+            {
+                transferResponse.Questions.AddRange(response.Questions);
+            }
+
+            transferResponse.Answers.AddRange(response.Answers);
+            transferResponse.Authorities.AddRange(response.Authorities);
+            transferResponse.Additional.AddRange(response.Additional);
+
+            if (response.Answers[0].Type == RecordType.SOA)
+            {
+                soa++;
+            }
+
+            if (soa != 2)
+            {
+                continue;
+            }
+
+            transferResponse.Header.QuestionCount = (ushort)transferResponse.Questions.Count;
+            transferResponse.Header.AnswerCount = (ushort)transferResponse.Answers.Count;
+            transferResponse.Header.NameserverCount = (ushort)transferResponse.Authorities.Count;
+            transferResponse.Header.AdditionalRecordsCount = (ushort)transferResponse.Additional.Count;
+            transferResponse.MessageSize = messageSize;
+
+            return transferResponse;
+        }
+    }
+
     [GeneratedRegex("[^0-9]")]
     private static partial Regex Number();
 
@@ -385,79 +471,5 @@ public partial class Resolver
         _logger.Debug("Connection timed out");
         var responseTimeout = new Response(true);
         return responseTimeout;
-    }
-
-    private Response ReceiveResponse(Stream stream, IPEndPoint server)
-    {
-        var transferResponse = new Response();
-        var soa = 0;
-        var messageSize = 0;
-
-        while (true)
-        {
-            var lengthHigh = stream.ReadByte();
-            var lengthLow = stream.ReadByte();
-            if (lengthHigh < 0 || lengthLow < 0)
-            {
-                _logger.Error($"Connection to nameserver {server.Address} closed before sending a length prefix");
-                throw new SocketException();
-            }
-
-            var length = (lengthHigh << 8) | lengthLow;
-            if (length <= 0)
-            {
-                _logger.Error($"Connection to nameserver {server.Address} failed");
-                throw new SocketException();
-            }
-
-            messageSize += length;
-
-            // ReadExactly loops until the full message arrives; a plain Read can return a
-            // partial buffer and would leave the remainder to be parsed as zeroed bytes.
-            var data = new byte[length];
-            stream.ReadExactly(data);
-
-            _logger.Debug("Building response...");
-            var response = new Response(server, data);
-
-            if (response.Header.ResponseCode != ResponseCode.NoError)
-            {
-                _logger.Debug($"Error from server - {response.Header.ResponseCode}");
-                return response;
-            }
-
-            if (response.Questions[0].QuestionType != QuestionType.AXFR)
-            {
-                AddToCache(response);
-                return response;
-            }
-
-            if (transferResponse.Questions.Count == 0)
-            {
-                transferResponse.Questions.AddRange(response.Questions);
-            }
-
-            transferResponse.Answers.AddRange(response.Answers);
-            transferResponse.Authorities.AddRange(response.Authorities);
-            transferResponse.Additional.AddRange(response.Additional);
-
-            if (response.Answers[0].Type == RecordType.SOA)
-            {
-                soa++;
-            }
-
-            if (soa != 2)
-            {
-                continue;
-            }
-
-            transferResponse.Header.QuestionCount = (ushort)transferResponse.Questions.Count;
-            transferResponse.Header.AnswerCount = (ushort)transferResponse.Answers.Count;
-            transferResponse.Header.NameserverCount = (ushort)transferResponse.Authorities.Count;
-            transferResponse.Header.AdditionalRecordsCount = (ushort)transferResponse.Additional.Count;
-            transferResponse.MessageSize = messageSize;
-
-            return transferResponse;
-        }
     }
 } // class
