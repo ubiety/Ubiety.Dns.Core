@@ -18,9 +18,8 @@ name: release
 
 on:
   push:
-    branches:
-      - main
-      - 'release/*'
+    tags:
+      - 'v*'
 
 permissions:
   id-token: write

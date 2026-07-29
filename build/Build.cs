@@ -54,9 +54,13 @@ namespace _build;
     FetchDepth = 0)]
 // Releases go to nuget.org via trusted publishing, which needs id-token to exchange the OIDC
 // token for a short-lived key. A single image keeps the push from racing itself.
+//
+// The tag is the trigger, not the merge into main: GitVersion only resolves the release version
+// once the tag exists, so a branch push would publish whatever build-metadata version it computed
+// for the untagged merge commit.
 [CustomGitHubActions("release",
     GitHubActionsImage.UbuntuLatest,
-    OnPushBranches = [MasterBranch, ReleaseBranchPrefix],
+    OnPushTags = ["v*"],
     PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Publish)],
     ReadPermissions = [GitHubActionsPermissions.Contents],
