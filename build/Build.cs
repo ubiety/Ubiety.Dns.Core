@@ -190,9 +190,13 @@ class Build : NukeBuild
                     .SetStorePasswordInClearText(true));
             }
 
+            // The workflow runs this target on every image in the matrix, and they all compute the
+            // same version, so whichever job gets there first wins and the rest see 409 Conflict.
+            // Skipping duplicates makes the push idempotent instead of a race.
             DotNetNuGetPush(s => s
                     .SetApiKey(ApiKey)
                     .SetSource(Source)
+                    .EnableSkipDuplicate()
                     .CombineWith(PackageFiles, (f, p) => f.SetTargetPath(p)),
                 5,
                 true);
