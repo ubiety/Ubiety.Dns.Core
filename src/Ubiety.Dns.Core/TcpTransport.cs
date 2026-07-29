@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ubiety.Dns.Core;
 
@@ -29,19 +32,7 @@ internal sealed class TcpTransport : ITcpTransport
     /// <inheritdoc />
     public ITcpConnection Connect(IPEndPoint server, int timeout)
     {
-        // Dual mode where the host supports it, so one socket reaches both IPv4 and IPv6 servers.
-        var client = Socket.OSSupportsIPv6
-            ? new TcpClient(AddressFamily.InterNetworkV6)
-            {
-                ReceiveTimeout = timeout,
-                SendTimeout = timeout,
-                Client = { DualMode = true },
-            }
-            : new TcpClient(AddressFamily.InterNetwork)
-            {
-                ReceiveTimeout = timeout,
-                SendTimeout = timeout,
-            };
+        var client = CreateClient(timeout);
 
         try
         {
@@ -59,6 +50,59 @@ internal sealed class TcpTransport : ITcpTransport
             client.Dispose();
             throw;
         }
+    }
+
+    /// <inheritdoc />
+    public async Task<ITcpConnection> ConnectAsync(
+        IPEndPoint server, int timeout, CancellationToken cancellationToken)
+    {
+        var client = CreateClient(timeout);
+
+        // Connect has no timeout of its own, so the deadline is a linked token.
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        deadline.CancelAfter(timeout);
+
+        try
+        {
+            await client.ConnectAsync(server.Address, server.Port, deadline.Token).ConfigureAwait(false);
+
+            if (!client.Connected)
+            {
+                throw new SocketException((int)SocketError.NotConnected);
+            }
+
+            return new TcpConnection(client);
+        }
+        catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+        {
+            client.Dispose();
+
+            // The deadline elapsed rather than the caller cancelling; report it as the socket
+            // timeout the resolver already knows how to fail over from.
+            throw new SocketException((int)SocketError.TimedOut);
+        }
+        catch
+        {
+            client.Dispose();
+            throw;
+        }
+    }
+
+    private static TcpClient CreateClient(int timeout)
+    {
+        // Dual mode where the host supports it, so one socket reaches both IPv4 and IPv6 servers.
+        return Socket.OSSupportsIPv6
+            ? new TcpClient(AddressFamily.InterNetworkV6)
+            {
+                ReceiveTimeout = timeout,
+                SendTimeout = timeout,
+                Client = { DualMode = true },
+            }
+            : new TcpClient(AddressFamily.InterNetwork)
+            {
+                ReceiveTimeout = timeout,
+                SendTimeout = timeout,
+            };
     }
 
     /// <summary>

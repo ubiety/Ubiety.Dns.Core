@@ -19,6 +19,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ubiety.Dns.Core;
 
@@ -40,6 +42,22 @@ internal interface ITcpTransport
     /// <returns>The open connection, which the caller disposes.</returns>
     /// <exception cref="SocketException">The server could not be reached.</exception>
     ITcpConnection Connect(IPEndPoint server, int timeout);
+
+    /// <summary>
+    /// Connects to a server, awaiting the handshake.
+    /// </summary>
+    /// <param name="server">The server to connect to.</param>
+    /// <param name="timeout">The send and receive timeout, in milliseconds.</param>
+    /// <param name="cancellationToken">Cancels the connection attempt.</param>
+    /// <returns>The open connection, which the caller disposes.</returns>
+    /// <exception cref="SocketException">
+    /// The server could not be reached, or the attempt exceeded <paramref name="timeout" />.
+    /// </exception>
+    /// <exception cref="OperationCanceledException">
+    /// <paramref name="cancellationToken" /> was cancelled.
+    /// </exception>
+    Task<ITcpConnection> ConnectAsync(
+        IPEndPoint server, int timeout, CancellationToken cancellationToken);
 }
 
 /// <summary>

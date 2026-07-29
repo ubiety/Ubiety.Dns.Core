@@ -67,6 +67,18 @@ now produces a compiler warning at the call site.
 This matches the behaviour that was already there — those paths threw or silently no-opped on null
 before. Nothing changed at runtime; the contract is simply now visible to the compiler.
 
+## Added members
+
+`Resolver.QueryAsync(string, QuestionType, QuestionClass, CancellationToken)` returns
+`Task<Response>`. It is additive: the synchronous `Query` is unchanged and remains supported.
+
+The async path is implemented independently down to the socket rather than wrapping the synchronous
+one, so it neither blocks a thread nor risks the deadlock that `.Result` over an async call causes.
+Cancellation and timeout are deliberately distinct: a cancelled token throws
+`OperationCanceledException` and abandons the query, while an elapsed timeout fails over to the next
+server and ultimately returns a `Response` with `TimedOut` set, matching what a synchronous query
+does.
+
 ## Behaviour changes
 
 - **`Response(IPEndPoint server, byte[] data)` now rejects a null `server`.** It previously

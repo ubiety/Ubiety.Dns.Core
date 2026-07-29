@@ -45,6 +45,18 @@ foreach (var record in response.GetRecords<RecordA>())
 }
 ```
 
+There is an async equivalent that takes a cancellation token:
+
+```csharp
+var response = await resolver.QueryAsync(
+    "example.com", QuestionType.A, QuestionClass.IN, cancellationToken);
+```
+
+`QueryAsync` is asynchronous the whole way down rather than the synchronous path wrapped in a task.
+A cancelled token abandons the query and throws `OperationCanceledException`; that is distinct from
+the configured timeout, which fails over to the next server and eventually returns a `Response` with
+`TimedOut` set. A cached answer is returned without awaiting anything.
+
 If no DNS server is added the builder falls back to the system resolvers.
 Queries go over TCP by default; set `resolver.TransportType = TransportType.Udp`
 to use UDP instead. A query that no server answers returns a `Response` with

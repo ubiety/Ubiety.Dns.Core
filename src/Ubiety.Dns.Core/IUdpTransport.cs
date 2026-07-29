@@ -15,8 +15,11 @@
  * limitations under the License.
  */
 
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ubiety.Dns.Core;
 
@@ -43,4 +46,25 @@ internal interface IUdpTransport
     /// The server could not be reached or did not reply within <paramref name="timeout" />.
     /// </exception>
     byte[] Exchange(byte[] request, IPEndPoint server, int timeout);
+
+    /// <summary>
+    /// Sends a query to a server and awaits the reply.
+    /// </summary>
+    /// <param name="request">The encoded DNS query.</param>
+    /// <param name="server">The server to send it to.</param>
+    /// <param name="timeout">
+    /// How long to wait, in milliseconds, for both the send and the reply.
+    /// </param>
+    /// <param name="cancellationToken">Cancels the query.</param>
+    /// <returns>The raw bytes of the reply.</returns>
+    /// <exception cref="SocketException">
+    /// The server could not be reached or did not reply within <paramref name="timeout" />.
+    /// </exception>
+    /// <exception cref="OperationCanceledException">
+    /// <paramref name="cancellationToken" /> was cancelled. A timeout raises
+    /// <see cref="SocketException" /> instead, so the resolver fails over exactly as it does for a
+    /// synchronous query.
+    /// </exception>
+    Task<byte[]> ExchangeAsync(
+        byte[] request, IPEndPoint server, int timeout, CancellationToken cancellationToken);
 }

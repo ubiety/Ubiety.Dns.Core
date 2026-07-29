@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Common;
@@ -187,6 +189,13 @@ namespace Ubiety.Dns.Test
                 Connections.Add(connection);
                 return connection;
             }
+
+            public Task<ITcpConnection> ConnectAsync(
+                IPEndPoint server, int timeout, CancellationToken cancellationToken)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                return Task.FromResult(Connect(server, timeout));
+            }
         }
 
         /// <summary>
@@ -249,6 +258,14 @@ namespace Ubiety.Dns.Test
             public override void SetLength(long value) => throw new NotSupportedException();
 
             public override void Write(byte[] buffer, int offset, int count) => _writes.Write(buffer, offset, count);
+
+            public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) =>
+                _reads.ReadAsync(buffer, cancellationToken);
+
+            public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) =>
+                _writes.WriteAsync(buffer, cancellationToken);
+
+            public override Task FlushAsync(CancellationToken cancellationToken) => _writes.FlushAsync(cancellationToken);
         }
     }
 }

@@ -25,6 +25,8 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Ubiety.Dns.Core.Common;
 using Ubiety.Logging.Core;
@@ -221,6 +223,46 @@ public partial class Resolver
         return GetResponse(request);
     }
 
+    /// <summary> Sends a DNS query asynchronously. </summary>
+    /// <param name="domainName"> The domain name to resolve. </param>
+    /// <param name="questionType"> The type of DNS query (e.g., A, AAAA, MX). </param>
+    /// <param name="questionClass"> The class of DNS query (e.g., IN for Internet). </param>
+    /// <param name="cancellationToken"> Cancels the query. </param>
+    /// <returns> A <see cref="Response"/> containing the result of the DNS query. </returns>
+    /// <exception cref="InvalidOperationException">The resolver has no DNS servers configured.</exception>
+    /// <exception cref="OperationCanceledException"><paramref name="cancellationToken"/> was cancelled.</exception>
+    /// <remarks>
+    /// A cached answer is returned without awaiting anything. Cancellation is distinct from the
+    /// configured timeout: a timeout fails over to the next server, cancellation abandons the query.
+    /// </remarks>
+    public async Task<Response> QueryAsync(
+        string domainName,
+        QuestionType questionType,
+        QuestionClass questionClass = QuestionClass.IN,
+        CancellationToken cancellationToken = default)
+    {
+        if (_dnsServers.Count <= 0)
+        {
+            _logger.Error("No DNS servers to query.");
+            throw new InvalidOperationException("The resolver has no DNS servers configured.");
+        }
+
+        _logger.Debug($"Received {questionType} query for {domainName}");
+
+        var question = new Question(domainName, questionType, questionClass);
+        var cached = SearchInCache(question);
+        if (cached != null)
+        {
+            _logger.Debug("Returning cached response...");
+            return cached;
+        }
+
+        _logger.Debug("Sending request to server...");
+        var request = new Request();
+        request.AddQuestion(question);
+        return await GetResponseAsync(request, cancellationToken).ConfigureAwait(false);
+    }
+
     /// <summary>
     /// Reads one or more length-prefixed DNS messages from a connected stream.
     /// </summary>
@@ -318,6 +360,101 @@ public partial class Resolver
         }
     }
 
+    /// <summary>
+    /// Reads one or more length-prefixed DNS messages from a connected stream, asynchronously.
+    /// </summary>
+    /// <param name="stream">The stream to read framed messages from.</param>
+    /// <param name="server">The server the messages came from, recorded on the response.</param>
+    /// <param name="cancellationToken">Cancels the read.</param>
+    /// <returns>
+    /// The response, or for an AXFR query the accumulated transfer once the closing SOA arrives.
+    /// </returns>
+    /// <remarks>
+    /// Deliberately a separate implementation rather than the synchronous one bridged onto a task.
+    /// The two differ only in how bytes are pulled off the stream; C# has no way to express that
+    /// once, and blocking on an asynchronous read is the deadlock this library moved away from.
+    /// </remarks>
+    internal async Task<Response> ReceiveResponseAsync(
+        Stream stream, IPEndPoint server, CancellationToken cancellationToken)
+    {
+        var transferResponse = new Response();
+        var soa = 0;
+        var messageSize = 0;
+        var isTransfer = false;
+        var prefix = new byte[2];
+
+        while (true)
+        {
+            var read = await stream
+                .ReadAtLeastAsync(prefix, 2, throwOnEndOfStream: false, cancellationToken)
+                .ConfigureAwait(false);
+            if (read < 2)
+            {
+                _logger.Error($"Connection to nameserver {server.Address} closed before sending a length prefix");
+                throw new SocketException();
+            }
+
+            var length = (prefix[0] << 8) | prefix[1];
+            if (length <= 0)
+            {
+                _logger.Error($"Connection to nameserver {server.Address} failed");
+                throw new SocketException();
+            }
+
+            messageSize += length;
+
+            var data = new byte[length];
+            await stream.ReadExactlyAsync(data, cancellationToken).ConfigureAwait(false);
+
+            _logger.Debug("Building response...");
+            var response = new Response(server, data);
+
+            if (response.Header.ResponseCode != ResponseCode.NoError)
+            {
+                _logger.Debug($"Error from server - {response.Header.ResponseCode}");
+                return response;
+            }
+
+            if (response.Questions.Count > 0)
+            {
+                isTransfer = response.Questions[0].QuestionType == QuestionType.AXFR;
+            }
+
+            if (!isTransfer)
+            {
+                AddToCache(response);
+                return response;
+            }
+
+            if (transferResponse.Questions.Count == 0)
+            {
+                transferResponse.Questions.AddRange(response.Questions);
+            }
+
+            transferResponse.Answers.AddRange(response.Answers);
+            transferResponse.Authorities.AddRange(response.Authorities);
+            transferResponse.Additional.AddRange(response.Additional);
+
+            if (response.Answers.Count > 0 && response.Answers[0].Type == RecordType.SOA)
+            {
+                soa++;
+            }
+
+            if (soa != 2)
+            {
+                continue;
+            }
+
+            transferResponse.Header.QuestionCount = (ushort)transferResponse.Questions.Count;
+            transferResponse.Header.AnswerCount = (ushort)transferResponse.Answers.Count;
+            transferResponse.Header.NameserverCount = (ushort)transferResponse.Authorities.Count;
+            transferResponse.Header.AdditionalRecordsCount = (ushort)transferResponse.Additional.Count;
+            transferResponse.MessageSize = messageSize;
+
+            return transferResponse;
+        }
+    }
+
     [GeneratedRegex("[^0-9]")]
     private static partial Regex Number();
 
@@ -330,6 +467,19 @@ public partial class Resolver
         stream.Flush();
     }
 
+    private static async Task WriteRequestAsync(
+        Stream stream, Request request, CancellationToken cancellationToken)
+    {
+        var data = request.GetBytes();
+        var framed = new byte[data.Length + 2];
+        framed[0] = (byte)((data.Length >> 8) & 0xFF);
+        framed[1] = (byte)(data.Length & 0xFF);
+        data.CopyTo(framed, 2);
+
+        await stream.WriteAsync(framed, cancellationToken).ConfigureAwait(false);
+        await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
+    }
+
     private static ushort GetUniqueId()
     {
         using var rng = RandomNumberGenerator.Create();
@@ -338,6 +488,84 @@ public partial class Resolver
         var id = BitConverter.ToUInt16(rand, 0);
 
         return id;
+    }
+
+    private async Task<Response> GetResponseAsync(Request request, CancellationToken cancellationToken)
+    {
+        request.Header.Id = GetUniqueId();
+        request.Header.Recursion = Recursion;
+
+        return TransportType switch
+        {
+            TransportType.Udp => await UdpRequestAsync(request, cancellationToken).ConfigureAwait(false),
+            TransportType.Tcp => await TcpRequestAsync(request, cancellationToken).ConfigureAwait(false),
+            _ => throw new InvalidOperationException(),
+        };
+    }
+
+    private async Task<Response> UdpRequestAsync(Request request, CancellationToken cancellationToken)
+    {
+        _logger.Debug("Starting UDP request...");
+        for (var attempts = 0; attempts < Retries; attempts++)
+        {
+            _logger.Debug($"Attempt {attempts + 1} of {Retries}...");
+            foreach (var server in _dnsServers)
+            {
+                _logger.Debug($"Connecting to server {server.Address}...");
+
+                try
+                {
+                    var data = await UdpTransport
+                        .ExchangeAsync(request.GetBytes(), server, Timeout, cancellationToken)
+                        .ConfigureAwait(false);
+
+                    var response = new Response(server, data);
+                    AddToCache(response);
+
+                    return response;
+                }
+                catch (SocketException exception)
+                {
+                    _logger.Error(exception, $"Connection to nameserver {server.Address} failed");
+                }
+            }
+        }
+
+        return new Response(true);
+    }
+
+    private async Task<Response> TcpRequestAsync(Request request, CancellationToken cancellationToken)
+    {
+        _logger.Debug("Starting TCP request...");
+        for (var attempts = 0; attempts < Retries; attempts++)
+        {
+            _logger.Debug($"Attempt {attempts + 1} of {Retries}...");
+            foreach (var server in _dnsServers)
+            {
+                _logger.Debug($"Connecting to {server.Address}...");
+
+                try
+                {
+                    using var connection = await TcpTransport
+                        .ConnectAsync(server, Timeout, cancellationToken)
+                        .ConfigureAwait(false);
+
+                    _logger.Debug("Sending request to server...");
+                    await WriteRequestAsync(connection.Stream, request, cancellationToken)
+                        .ConfigureAwait(false);
+
+                    return await ReceiveResponseAsync(connection.Stream, server, cancellationToken)
+                        .ConfigureAwait(false);
+                }
+                catch (Exception e) when (e is SocketException or IOException)
+                {
+                    _logger.Error(e, $"Request to nameserver {server.Address} failed");
+                }
+            }
+        }
+
+        _logger.Debug("Connection timed out");
+        return new Response(true);
     }
 
     private Response GetResponse(Request request)

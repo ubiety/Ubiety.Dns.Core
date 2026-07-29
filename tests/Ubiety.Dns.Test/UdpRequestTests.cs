@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 using Shouldly;
 using Ubiety.Dns.Core;
 using Ubiety.Dns.Core.Common;
@@ -158,6 +160,13 @@ namespace Ubiety.Dns.Test
                 var call = new TransportCall(request, server, timeout);
                 Calls.Add(call);
                 return behaviour(call);
+            }
+
+            public Task<byte[]> ExchangeAsync(
+                byte[] request, IPEndPoint server, int timeout, CancellationToken cancellationToken)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                return Task.FromResult(Exchange(request, server, timeout));
             }
         }
     }
