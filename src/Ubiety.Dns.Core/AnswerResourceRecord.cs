@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+/// Represents an answer resource record in a DNS response. An answer resource record contains information such as
+/// the NAME, TYPE, CLASS, TTL, RDLENGTH, and RDATA fields as defined in the DNS protocol specification.
+/// </summary>
+/// <remarks>
+/// This class is used to parse and process the answer section of DNS messages, providing details about
+/// resolved names and their associated data.
+/// </remarks>
+public class AnswerResourceRecord(RecordReader reader) : ResourceRecord(reader)
 {
-    /// <summary>
-    ///     Answer resource record.
-    /// </summary>
-    public class AnswerResourceRecord : ResourceRecord
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AnswerResourceRecord" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public AnswerResourceRecord(RecordReader reader)
-            : base(reader)
-        {
-        }
-    }
 }

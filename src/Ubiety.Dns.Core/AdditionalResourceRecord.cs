@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,17 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+/// Represents an additional DNS resource record in a DNS response.
+/// </summary>
+/// <remarks>
+/// This class provides functionality to parse and manage additional resource records
+/// in a DNS response. Additional resource records are often used to provide supplementary
+/// information related to the DNS query response but are not directly part of the
+/// answer, authority, or primary resource records.
+/// </remarks>
+public class AdditionalResourceRecord(RecordReader reader) : ResourceRecord(reader)
 {
-    /// <summary>
-    ///     Additional resource record.
-    /// </summary>
-    public class AdditionalResourceRecord : ResourceRecord
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AdditionalResourceRecord" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="ResourceRecord" /> for the record data.</param>
-        public AdditionalResourceRecord(RecordReader reader)
-            : base(reader)
-        {
-        }
-    }
 }

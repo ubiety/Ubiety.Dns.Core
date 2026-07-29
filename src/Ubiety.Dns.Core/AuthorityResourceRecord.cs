@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+/// Represents an authority resource record in a DNS response.
+/// </summary>
+/// <remarks>
+/// An authority resource record indicates the DNS zone authority information
+/// for a given query. This class is a specific type of resource record
+/// used to represent that authority data.
+/// </remarks>
+public class AuthorityResourceRecord(RecordReader reader) : ResourceRecord(reader)
 {
-    /// <summary>
-    ///     Authority resource record.
-    /// </summary>
-    public class AuthorityResourceRecord : ResourceRecord
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AuthorityResourceRecord" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="ResourceRecord" /> for the record data.</param>
-        public AuthorityResourceRecord(RecordReader reader)
-            : base(reader)
-        {
-        }
-    }
 }

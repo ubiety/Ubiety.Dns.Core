@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,56 +15,57 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
-using Ubiety.Dns.Core.Common.Extensions;
+using System;
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Abstract record.
+/// </summary>
+public abstract record Record
 {
     /// <summary>
-    ///     Abstract record.
+    ///     Initializes a new instance of the <see cref="Record" /> class.
     /// </summary>
-    public abstract record Record
+    protected Record()
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Record" /> class.
-        /// </summary>
-        protected Record()
-        {
-        }
+    }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Record" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        protected Record(RecordReader reader)
-        {
-            Reader = reader.ThrowIfNull(nameof(reader));
-        }
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="Record" /> class.
+    /// </summary>
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    protected Record(RecordReader reader)
+    {
+        ArgumentNullException.ThrowIfNull(reader);
+        Reader = reader;
+    }
 
-        /// <summary>
-        ///     Gets the record data.
-        /// </summary>
-        /// <value>Byte list of the raw record data.</value>
-        public List<byte> RecordData { get; }
+    /// <summary>
+    ///     Gets or sets the resource record this record is a part of.
+    /// </summary>
+    /// <value>Resource record of the data.</value>
+    /// <remarks>
+    ///     Assigned by <see cref="ResourceRecord" /> immediately after the record is read, so it is
+    ///     always set by the time a caller can observe the record.
+    /// </remarks>
+    public ResourceRecord ResourceRecord { get; set; } = null!;
 
-        /// <summary>
-        ///     Gets or sets the resource record this record is a part of.
-        /// </summary>
-        /// <value>Resource record of the data.</value>
-        public ResourceRecord ResourceRecord { get; set; }
+    /// <summary>
+    ///     Gets the record reader for the record.
+    /// </summary>
+    /// <remarks>
+    ///     Only the parameterless constructor leaves this unset, and every record in this assembly
+    ///     is built through <see cref="Record(RecordReader)" />.
+    /// </remarks>
+    protected RecordReader Reader { get; } = null!;
 
-        /// <summary>
-        ///     Gets the record reader for the record.
-        /// </summary>
-        protected RecordReader Reader { get; }
-
-        /// <summary>
-        ///     String representation of the record.
-        /// </summary>
-        /// <returns>String version of the data.</returns>
-        public override string ToString()
-        {
-            return $"{GetType().Name} is not-used";
-        }
+    /// <summary>
+    ///     String representation of the record.
+    /// </summary>
+    /// <returns>String version of the data.</returns>
+    public override string ToString()
+    {
+        return $"{GetType().Name} is not-used";
     }
 }

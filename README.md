@@ -1,23 +1,75 @@
 # ![Logo](https://github.com/ubiety/Ubiety.Dns.Core/raw/develop/library64.png) Ubiety.Dns.Core [![Nuget](https://img.shields.io/nuget/v/Ubiety.Dns.Core.svg?style=flat-square)](https://www.nuget.org/packages/Ubiety.Dns.Core/)
 
-> A reusable DNS resolver for .NET Standard 2.0
+> A reusable DNS resolver for .NET
 
 Thank you to the initial work of Alphons van der Heijden and Geoffry Huntley on this library.
 
 | Branch  | Quality                                                                                                                                                                                                                                                                                                 | Appveyor                                                                                                                                                                                   | Coverage                                                                                                                                                        |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Main    | [![Codacy branch grade](https://img.shields.io/codacy/grade/8f394c2975b44792b37aaf9b4f4bc3ec/main?style=flat-square)](https://www.codacy.com/gh/ubiety/Ubiety.Dns.Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ubiety/Ubiety.Dns.Core&amp;utm_campaign=Badge_Grade)     | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/main.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/main)       | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/master.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core)  |
+| Main    | [![Codacy branch grade](https://img.shields.io/codacy/grade/8f394c2975b44792b37aaf9b4f4bc3ec/main?style=flat-square)](https://www.codacy.com/gh/ubiety/Ubiety.Dns.Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ubiety/Ubiety.Dns.Core&amp;utm_campaign=Badge_Grade)     | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/main.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/main)       | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/main.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core)    |
 | Develop | [![Codacy branch grade](https://img.shields.io/codacy/grade/8f394c2975b44792b37aaf9b4f4bc3ec/develop?style=flat-square)](https://www.codacy.com/gh/ubiety/Ubiety.Dns.Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ubiety/Ubiety.Dns.Core&amp;utm_campaign=Badge_Grade)  | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-dns-core/develop.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-dns-core/branch/develop) | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Dns.Core/develop.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Dns.Core) |
 
 ## Installing / Getting started
 
-Ubiety DNS Core is available from NuGet
+Ubiety DNS Core targets .NET 10 and is available from NuGet
 
 ```shell
-dotnet package install Ubiety.Dns.Core
+dotnet package add Ubiety.Dns.Core
 ```
 
 You can also use your favorite NuGet client.
+
+## Usage
+
+Build a resolver with `ResolverBuilder`, then query it and pull out the record
+type you care about:
+
+```csharp
+using Ubiety.Dns.Core;
+using Ubiety.Dns.Core.Common;
+using Ubiety.Dns.Core.Records.General;
+
+var resolver = ResolverBuilder.Begin()
+    .AddDnsServer("1.1.1.1")
+    .SetTimeout(5000)
+    .SetRetries(2)
+    .UseRecursion()
+    .EnableCache()
+    .Build();
+
+var response = resolver.Query("example.com", QuestionType.A);
+
+foreach (var record in response.GetRecords<RecordA>())
+{
+    Console.WriteLine(record.Address);
+}
+```
+
+There is an async equivalent that takes a cancellation token:
+
+```csharp
+var response = await resolver.QueryAsync("example.com", QuestionType.A, cancellationToken);
+```
+
+The question class defaults to `IN`; pass it explicitly when you need another one:
+
+```csharp
+var response = await resolver.QueryAsync(
+    "example.com", QuestionType.A, QuestionClass.CH, cancellationToken);
+```
+
+`QueryAsync` is asynchronous the whole way down rather than the synchronous path wrapped in a task.
+A cancelled token abandons the query and throws `OperationCanceledException`; that is distinct from
+the configured timeout, which fails over to the next server and eventually returns a `Response` with
+`TimedOut` set. A cached answer is returned without awaiting anything.
+
+If no DNS server is added the builder falls back to the system resolvers.
+Queries go over TCP by default; set `resolver.TransportType = TransportType.Udp`
+to use UDP instead. A query that no server answers returns a `Response` with
+`TimedOut` set rather than throwing.
+
+`src/Dns.Sample` is a small runnable program that does the same thing from the
+command line.
 
 ## Developing
 
@@ -31,16 +83,37 @@ dotnet restore
 ```
 
 Clone the repository and then restore the development requirements. You can use
-any editor, Rider, VS Code or VS 2017. The library supports all .NET Core
-platforms.
+any editor: Rider, VS Code or Visual Studio. Building requires the .NET SDK
+version pinned in `global.json`.
 
 ### Building
 
-Building is simple
+The build is driven by [NUKE](https://github.com/nuke-build/nuke). Use
+`build.cmd` on Windows and `build.sh` elsewhere:
 
 ```shell
-./build.ps1
+./build.sh Compile     # restore and compile
+./build.sh Test        # run the tests with coverage
+./build.sh Pack        # produce the NuGet package in ./artifacts
+./build.sh Docs        # build the documentation site into docs/_site
 ```
+
+Running `dotnet build` and `dotnet test` directly works too.
+
+### Documentation
+
+The site is [DocFX](https://dotnet.github.io/docfx/). The API reference is generated from the XML
+documentation comments in the source, so it cannot drift from the code; the guides under
+`docs/articles` are hand written.
+
+```shell
+dotnet tool restore
+dotnet docfx docs/docfx.json --serve    # http://localhost:8080
+```
+
+The site deploys to Netlify from `netlify.toml`. The Netlify build image has no .NET, so
+`docs/netlify-build.sh` installs the SDK version pinned in `global.json` before running DocFX,
+caching it under `/opt/build/cache` so later builds skip the download.
 
 ## Contributing
 

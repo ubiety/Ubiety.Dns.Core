@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,128 +113,127 @@ ALTITUDE     The altitude of the center of the sphere described by the
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     DNS location recod.
+/// </summary>
+public record RecordLoc : Record
 {
     /// <summary>
-    ///     DNS location recod.
+    ///     Initializes a new instance of the <see cref="RecordLoc" /> class.
     /// </summary>
-    public record RecordLoc : Record
+    /// <param name="reader">Record reader of the record data.</param>
+    public RecordLoc(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordLoc" /> class.
-        /// </summary>
-        /// <param name="reader">Record reader of the record data.</param>
-        public RecordLoc(RecordReader reader)
-            : base(reader)
+        Version = Reader.ReadByte(); // must be 0!
+        Size = Reader.ReadByte();
+        HorizontalPrecision = Reader.ReadByte();
+        VerticalPrecision = Reader.ReadByte();
+        Latitude = Reader.ReadUInt32();
+        Longitude = Reader.ReadUInt32();
+        Altitude = Reader.ReadUInt32();
+    }
+
+    /// <summary>
+    ///     Gets the version of the representation.
+    /// </summary>
+    public byte Version { get; }
+
+    /// <summary>
+    ///     Gets the diameter of the sphere enclosing the entity.
+    /// </summary>
+    public byte Size { get; }
+
+    /// <summary>
+    ///     Gets the horizontal precision of the data.
+    /// </summary>
+    public byte HorizontalPrecision { get; }
+
+    /// <summary>
+    ///     Gets the vertical precision or the data.
+    /// </summary>
+    public byte VerticalPrecision { get; }
+
+    /// <summary>
+    ///     Gets the latitude of the location.
+    /// </summary>
+    public uint Latitude { get; }
+
+    /// <summary>
+    ///     Gets the longitude of the location.
+    /// </summary>
+    public uint Longitude { get; }
+
+    /// <summary>
+    ///     Gets the altitude of the location.
+    /// </summary>
+    public uint Altitude { get; }
+
+    /// <summary>
+    ///     Gets a string of the location.
+    /// </summary>
+    /// <returns>String of the location.</returns>
+    public override string ToString()
+    {
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0} {1} {2} {3} {4} {5}",
+            ToTime(Latitude, 'S', 'N'),
+            ToTime(Longitude, 'W', 'E'),
+            ToAlt(Altitude),
+            SizeToString(Size),
+            SizeToString(HorizontalPrecision),
+            SizeToString(VerticalPrecision));
+    }
+
+    private static string ToAlt(uint a)
+    {
+        var alt = (a / 100.0) - 100000.00;
+        return string.Format(CultureInfo.InvariantCulture, "{0:0.00}m", alt);
+    }
+
+    private static string SizeToString(byte size)
+    {
+        var unit = "cm";
+        var prime = size >> 4;
+        var power = size & 0x0f;
+        if (power >= 2)
         {
-            Version = Reader.ReadByte(); // must be 0!
-            Size = Reader.ReadByte();
-            HorizontalPrecision = Reader.ReadByte();
-            VerticalPrecision = Reader.ReadByte();
-            Latitude = Reader.ReadUInt32();
-            Longitude = Reader.ReadUInt32();
-            Altitude = Reader.ReadUInt32();
+            power -= 2;
+            unit = "m";
         }
 
-        /// <summary>
-        ///     Gets the version of the representation.
-        /// </summary>
-        public byte Version { get; }
-
-        /// <summary>
-        ///     Gets the diameter of the sphere enclosing the entity.
-        /// </summary>
-        public byte Size { get; }
-
-        /// <summary>
-        ///     Gets the horizontal precision of the data.
-        /// </summary>
-        public byte HorizontalPrecision { get; }
-
-        /// <summary>
-        ///     Gets the vertical precision or the data.
-        /// </summary>
-        public byte VerticalPrecision { get; }
-
-        /// <summary>
-        ///     Gets the latitude of the location.
-        /// </summary>
-        public uint Latitude { get; }
-
-        /// <summary>
-        ///     Gets the longitude of the location.
-        /// </summary>
-        public uint Longitude { get; }
-
-        /// <summary>
-        ///     Gets the altitude of the location.
-        /// </summary>
-        public uint Altitude { get; }
-
-        /// <summary>
-        ///     Gets a string of the location.
-        /// </summary>
-        /// <returns>String of the location.</returns>
-        public override string ToString()
+        var sb = new StringBuilder();
+        sb.AppendFormat(CultureInfo.InvariantCulture, "{0}", prime);
+        for (; power > 0; power--)
         {
-            return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0} {1} {2} {3} {4} {5}",
-                ToTime(Latitude, 'S', 'N'),
-                ToTime(Longitude, 'W', 'E'),
-                ToAlt(Altitude),
-                SizeToString(Size),
-                SizeToString(HorizontalPrecision),
-                SizeToString(VerticalPrecision));
+            sb.Append('0');
         }
 
-        private static string ToAlt(uint a)
+        sb.Append(unit);
+        return sb.ToString();
+    }
+
+    private static string ToTime(uint r, char below, char above)
+    {
+        var mid = 2147483648; // 2^31
+        char dir;
+        if (r > mid)
         {
-            var alt = (a / 100.0) - 100000.00;
-            return string.Format(CultureInfo.InvariantCulture, "{0:0.00}m", alt);
+            dir = above;
+            r -= mid;
+        }
+        else
+        {
+            dir = below;
+            r = mid - r;
         }
 
-        private static string SizeToString(byte size)
-        {
-            var unit = "cm";
-            var prime = size >> 4;
-            var power = size & 0x0f;
-            if (power >= 2)
-            {
-                power -= 2;
-                unit = "m";
-            }
-
-            var sb = new StringBuilder();
-            sb.AppendFormat(CultureInfo.InvariantCulture, "{0}", prime);
-            for (; power > 0; power--)
-            {
-                sb.Append('0');
-            }
-
-            sb.Append(unit);
-            return sb.ToString();
-        }
-
-        private static string ToTime(uint r, char below, char above)
-        {
-            var mid = 2147483648; // 2^31
-            char dir;
-            if (r > mid)
-            {
-                dir = above;
-                r -= mid;
-            }
-            else
-            {
-                dir = below;
-                r = mid - r;
-            }
-
-            var h = r / (360000.0 * 10.0);
-            var m = 60.0 * (h - (int)h);
-            var s = 60.0 * (m - (int)m);
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int)h, (int)m, s, dir);
-        }
+        var h = r / (360000.0 * 10.0);
+        var m = 60.0 * (h - (int)h);
+        var s = 60.0 * (m - (int)m);
+        return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2:0.000} {3}", (int)h, (int)m, s, dir);
     }
 }

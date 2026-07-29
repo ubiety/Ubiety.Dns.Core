@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,36 +15,36 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Represents the class of a DNS question, specifying the scope or network context
+/// for a DNS query, such as Internet, CSNET, Chaos, or Hesiod.
+/// </summary>
+public enum QuestionClass
 {
     /// <summary>
-    ///     Question class.
+    /// IN class, representing the Internet class for DNS queries.
     /// </summary>
-    public enum QuestionClass
-    {
-        /// <summary>
-        ///     Internet class.
-        /// </summary>
-        IN = OperationClass.IN,
+    IN = OperationClass.IN,
 
-        /// <summary>
-        ///     CSNET class.
-        /// </summary>
-        CS = OperationClass.CS,
+    /// <summary>
+    /// CS class, representing the CSNET (Computer Science Network) class for DNS queries.
+    /// </summary>
+    CS = OperationClass.CS,
 
-        /// <summary>
-        ///     CHAOS class.
-        /// </summary>
-        CH = OperationClass.CH,
+    /// <summary>
+    /// CH class, representing the Chaos network class for DNS queries.
+    /// </summary>
+    CH = OperationClass.CH,
 
-        /// <summary>
-        ///     Hesiod class.
-        /// </summary>
-        HS = OperationClass.HS,
+    /// <summary>
+    /// HS class, representing the Hesiod class for DNS queries.
+    /// </summary>
+    HS = OperationClass.HS,
 
-        /// <summary>
-        ///     Any question class.
-        /// </summary>
-        Any = 255,
-    }
+    /// <summary>
+    /// ANY class, representing a wildcard class that matches any DNS query class.
+    /// </summary>
+    Any = 255,
 }

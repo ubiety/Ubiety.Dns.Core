@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,32 +47,45 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Key exchange record.
+/// </summary>
+public sealed record RecordKx : Record
 {
     /// <summary>
-    ///     Key exchange record.
+    ///     Initializes a new instance of the <see cref="RecordKx" /> class.
     /// </summary>
-    public sealed record RecordKx : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the data.</param>
+    public RecordKx(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordKx" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the data.</param>
-        public RecordKx(RecordReader reader)
-            : base(reader)
-        {
-            Preference = Reader.ReadUInt16();
-            Exchanger = Reader.ReadDomainName();
-        }
+        Preference = Reader.ReadUInt16();
+        Exchanger = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets the preference.
-        /// </summary>
-        public ushort Preference { get; }
+    /// <summary>
+    ///     Gets the preference.
+    /// </summary>
+    public ushort Preference { get; }
 
-        /// <summary>
-        ///     Gets the exchanger.
-        /// </summary>
-        public string Exchanger { get; }
+    /// <summary>
+    ///     Gets the exchanger.
+    /// </summary>
+    public string Exchanger { get; }
+
+    /// <summary>
+    ///     Returns a string representation of the key exchanger record.
+    /// </summary>
+    /// <returns>The preference followed by the exchanger.</returns>
+    /// <remarks>
+    ///     Required rather than optional: without it the compiler-generated record ToString prints
+    ///     <see cref="Record.ResourceRecord" />, whose own ToString prints this record back, and the
+    ///     pair recurse until the stack is exhausted.
+    /// </remarks>
+    public override string ToString()
+    {
+        return $"{Preference} {Exchanger}";
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,36 +15,35 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Specifies the operation codes used in DNS messages.
+/// </summary>
+public enum OperationCode
 {
     /// <summary>
-    ///     DNS Record OpCode.
+    /// Represents a standard DNS query operation code.
     /// </summary>
-    public enum OperationCode
-    {
-        /// <summary>
-        ///     Standard DNS Query.
-        /// </summary>
-        Query = 0,
+    Query = 0,
 
-        /// <summary>
-        ///     Retired IQUERY code.
-        /// </summary>
-        IQuery = 1,
+    /// <summary>
+    /// Represents an inverse query DNS operation code.
+    /// </summary>
+    IQuery = 1,
 
-        /// <summary>
-        ///     Server status request.
-        /// </summary>
-        Status = 2,
+    /// <summary>
+    /// Represents a DNS operation code indicating a status request.
+    /// </summary>
+    Status = 2,
 
-        /// <summary>
-        ///     Notify OpCode.
-        /// </summary>
-        Notify = 4,
+    /// <summary>
+    /// Represents a DNS "Notify" operation code, used to inform secondary servers of zone changes.
+    /// </summary>
+    Notify = 4,
 
-        /// <summary>
-        ///     Update OpCode.
-        /// </summary>
-        Update = 5,
-    }
+    /// <summary>
+    /// Represents an operation code for updating DNS records.
+    /// </summary>
+    Update = 5,
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,35 +36,34 @@ the description of name server logic in [RFC-1034] for details.
  *
  */
 
-namespace Ubiety.Dns.Core.Records.General
+namespace Ubiety.Dns.Core.Records.General;
+
+/// <summary>
+/// Represents a DNS Canonical Name (CNAME) record used to specify that a domain name is an alias for another domain name.
+/// </summary>
+public record RecordCname : Record
 {
     /// <summary>
-    ///     Canonical name DNS record.
+    ///     Initializes a new instance of the <see cref="RecordCname" /> class.
     /// </summary>
-    public record RecordCname : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordCname(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordCname" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordCname(RecordReader reader)
-            : base(reader)
-        {
-            Cname = Reader.ReadDomainName();
-        }
+        Cname = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets the canonical name.
-        /// </summary>
-        public string Cname { get; }
+    /// <summary>
+    /// Gets the canonical name (CNAME) for the DNS record, which represents the primary domain name to which the alias refers.
+    /// </summary>
+    public string Cname { get; }
 
-        /// <summary>
-        ///     String representation of the record.
-        /// </summary>
-        /// <returns>String version of the cname.</returns>
-        public override string ToString()
-        {
-            return Cname;
-        }
+    /// <summary>
+    /// Returns a string representation of the CNAME record.
+    /// </summary>
+    /// <returns>A string that represents the canonical name of the record.</returns>
+    public override string ToString()
+    {
+        return Cname;
     }
 }

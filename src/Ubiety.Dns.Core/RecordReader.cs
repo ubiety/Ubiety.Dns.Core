@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,157 +22,212 @@ using Ubiety.Dns.Core.Common;
 using Ubiety.Dns.Core.Common.Extensions;
 using Ubiety.Dns.Core.Records;
 
-namespace Ubiety.Dns.Core
+namespace Ubiety.Dns.Core;
+
+/// <summary>
+/// Provides utilities for reading DNS record data from a byte array.
+/// </summary>
+public class RecordReader(byte[] data, int position = 0)
 {
     /// <summary>
-    ///     DNS record reader.
+    /// The maximum number of compression pointers followed while reading a single domain name.
     /// </summary>
-    public class RecordReader
+    private const int MaxCompressionJumps = 128;
+
+    /// <summary>
+    /// The maximum length of a domain name in octets, per RFC 1035 section 2.3.4.
+    /// </summary>
+    private const int MaxDomainNameLength = 255;
+
+    private readonly byte[] _data = data;
+
+    /// <summary>
+    /// Gets or sets the current reading position within the byte array.
+    /// </summary>
+    /// <remarks>
+    /// The position represents the index in the byte array from which the next read operation will occur.
+    /// Modifying this value directly affects subsequent read operations.
+    /// </remarks>
+    public int Position { get; set; } = position;
+
+    /// <summary>
+    /// Reads the next byte from the record.
+    /// </summary>
+    /// <returns>The next available byte of the record.</returns>
+    public byte ReadByte()
     {
-        private readonly byte[] _data;
+        return Position >= _data.Length ? (byte)0 : _data[Position++];
+    }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordReader" /> class.
-        /// </summary>
-        /// <param name="data">Byte array of the record.</param>
-        /// <param name="position">Position of the cursor in the record.</param>
-        public RecordReader(byte[] data, int position)
+    /// <summary>
+    /// Reads the next character from the record.
+    /// </summary>
+    /// <returns>The next available character of the record.</returns>
+    public char ReadChar()
+    {
+        return (char)ReadByte();
+    }
+
+    /// <summary>
+    /// Reads the next unsigned 16-bit integer from the record.
+    /// </summary>
+    /// <returns>The next available unsigned 16-bit integer of the record.</returns>
+    public ushort ReadUInt16()
+    {
+        return (ushort)((ReadByte() << 8) | ReadByte());
+    }
+
+    /// <summary>
+    /// Reads the next unsigned 16-bit integer from the record.
+    /// </summary>
+    /// <param name="offset">Offset to start reading from.</param>
+    /// <returns>The next available unsigned 16-bit integer of the record from the offset.</returns>
+    public ushort ReadUInt16(int offset)
+    {
+        Position += offset;
+        return ReadUInt16();
+    }
+
+    /// <summary>
+    /// Reads the next unsigned 32-bit integer from the record.
+    /// </summary>
+    /// <returns>The next available unsigned 32-bit integer in the record.</returns>
+    public uint ReadUInt32()
+    {
+        return (uint)((ReadUInt16() << 16) | ReadUInt16());
+    }
+
+    /// <summary>
+    /// Reads and returns the domain name from the current record.
+    /// </summary>
+    /// <remarks>
+    /// Compression pointers are followed iteratively and are bounded by
+    /// <see cref="MaxCompressionJumps"/> jumps and <see cref="MaxDomainNameLength"/> octets, so a
+    /// malformed or hostile response containing a pointer cycle terminates instead of looping.
+    /// Reading stops early rather than throwing when either bound is reached.
+    /// </remarks>
+    /// <returns>The domain name of the record.</returns>
+    public string ReadDomainName()
+    {
+        var name = new StringBuilder();
+        var current = Position;
+        var jumps = 0;
+        var jumped = false;
+
+        // get the length of each label in turn; a zero length terminates the name
+        while (current < _data.Length)
         {
-            _data = data;
-            Position = position;
-        }
+            int length = _data[current++];
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordReader" /> class.
-        /// </summary>
-        /// <param name="data">Byte array of the record.</param>
-        public RecordReader(byte[] data)
-            : this(data, 0)
-        {
-        }
-
-        /// <summary>
-        ///     Gets or sets the position of the cursor in the record.
-        /// </summary>
-        public int Position { get; set; }
-
-        /// <summary>
-        ///     Read a byte from the record.
-        /// </summary>
-        /// <returns>Next available byte of the record.</returns>
-        public byte ReadByte()
-        {
-            return (byte)(Position >= _data.Length ? 0 : _data[Position++]);
-        }
-
-        /// <summary>
-        ///     Read a char from the record.
-        /// </summary>
-        /// <returns>Next available char of the record.</returns>
-        public char ReadChar()
-        {
-            return (char)ReadByte();
-        }
-
-        /// <summary>
-        ///     Read an unsigned int 16 from the record.
-        /// </summary>
-        /// <returns>Next available unsigned int 16 of the record.</returns>
-        public ushort ReadUInt16()
-        {
-            return (ushort)((ReadByte() << 8) | ReadByte());
-        }
-
-        /// <summary>
-        ///     Read an unsigned int 16 from the offset of the record.
-        /// </summary>
-        /// <param name="offset">Offset to start reading from.</param>
-        /// <returns>Next unsigned int 16 from the offset.</returns>
-        public ushort ReadUInt16(int offset)
-        {
-            Position += offset;
-            return ReadUInt16();
-        }
-
-        /// <summary>
-        ///     Read an unsigned int 32 from the record.
-        /// </summary>
-        /// <returns>Next available unsigned int 32 in the record.</returns>
-        public uint ReadUInt32()
-        {
-            return (uint)((ReadUInt16() << 16) | ReadUInt16());
-        }
-
-        /// <summary>
-        ///     Read the domain name from the record.
-        /// </summary>
-        /// <returns>Domain name of the record.</returns>
-        public string ReadDomainName()
-        {
-            var name = new StringBuilder();
-            int length;
-
-            // get  the length of the first label
-            while ((length = ReadByte()) != 0)
+            if (length == 0)
             {
-                // top 2 bits set denotes domain name compression and to reference elsewhere
-                if ((length & 0xc0) == 0xc0)
-                {
-                    // work out the existing domain name, copy this pointer
-                    var newRecordReader = new RecordReader(_data, ((length & 0x3f) << 8) | ReadByte());
-
-                    name.Append(newRecordReader.ReadDomainName());
-                    return name.ToString();
-                }
-
-                // if not using compression, copy a char at a time to the domain name
-                while (length > 0)
-                {
-                    name.Append(ReadChar());
-                    length--;
-                }
-
-                name.Append('.');
+                break;
             }
 
-            return name.Length == 0 ? "." : name.ToString();
-        }
-
-        /// <summary>
-        ///     Read a string from the record.
-        /// </summary>
-        /// <returns>String read from the record.</returns>
-        public string ReadString()
-        {
-            short length = ReadByte();
-
-            return Encoding.UTF8.GetString(ReadBytes(length));
-        }
-
-        /// <summary>
-        ///     Read a series of bytes from the record.
-        /// </summary>
-        /// <param name="length">Length to read from the record.</param>
-        /// <returns>Byte array read from the record.</returns>
-        public byte[] ReadBytes(int length)
-        {
-            var list = new List<byte>();
-            for (var i = 0; i < length; i++)
+            // top 2 bits set denotes domain name compression and to reference elsewhere
+            if ((length & 0xc0) == 0xc0)
             {
-                list.Add(ReadByte());
+                if (current >= _data.Length)
+                {
+                    break;
+                }
+
+                var pointer = ((length & 0x3f) << 8) | _data[current++];
+
+                // Only the pointer itself is consumed from the reader's own position; the
+                // target is read out of band and must not advance the reader any further.
+                if (!jumped)
+                {
+                    Position = current;
+                    jumped = true;
+                }
+
+                if (++jumps > MaxCompressionJumps || pointer >= _data.Length)
+                {
+                    break;
+                }
+
+                current = pointer;
+                continue;
             }
 
-            return list.ToArray();
+            // account for the separator appended after the label
+            if (name.Length + length + 1 > MaxDomainNameLength)
+            {
+                break;
+            }
+
+            // if not using compression, copy a char at a time to the domain name
+            while (length > 0 && current < _data.Length)
+            {
+                name.Append((char)_data[current++]);
+                length--;
+            }
+
+            name.Append('.');
         }
 
-        /// <summary>
-        ///     Read record from the data.
-        /// </summary>
-        /// <param name="type">Type of the record to read.</param>
-        /// <returns>Record read from the data.</returns>
-        public Record ReadRecord(RecordType type)
+        if (!jumped)
         {
-            return type.GetRecord(this);
+            Position = current;
         }
+
+        return name.Length == 0 ? "." : name.ToString();
+    }
+
+    /// <summary>
+    /// Reads a string from the record using its length, which is determined by reading a byte preceding the string data.
+    /// </summary>
+    /// <returns>The string read from the record.</returns>
+    public string ReadString()
+    {
+        short length = ReadByte();
+
+        return Encoding.UTF8.GetString(ReadBytes(length));
+    }
+
+    /// <summary>
+    /// Reads a sequence of bytes from the record.
+    /// </summary>
+    /// <param name="length">The number of bytes to read from the record.</param>
+    /// <returns>An array containing the bytes read from the record.</returns>
+    public byte[] ReadBytes(int length)
+    {
+        var list = new List<byte>();
+        for (var i = 0; i < length; i++)
+        {
+            list.Add(ReadByte());
+        }
+
+        return list.ToArray();
+    }
+
+    /// <summary>
+    /// Reads a record of the specified type from the data.
+    /// </summary>
+    /// <param name="type">The type of the record to be read.</param>
+    /// <returns>The record read from the data.</returns>
+    /// <remarks>
+    /// Record types whose length is not implied by their own structure, currently only TXT, read
+    /// nothing through this overload. Prefer <see cref="ReadRecord(RecordType, int)" />.
+    /// </remarks>
+    public Record ReadRecord(RecordType type)
+    {
+        return type.GetRecord(this);
+    }
+
+    /// <summary>
+    /// Reads a record of the specified type from the data, bounded by the resource data length.
+    /// </summary>
+    /// <param name="type">The type of the record to be read.</param>
+    /// <param name="length">The length in octets of the resource data, from RDLENGTH.</param>
+    /// <returns>The record read from the data.</returns>
+    /// <remarks>
+    /// A TXT record is a sequence of character-strings with no count of its own, so the only way to
+    /// know where it ends is the resource record's length.
+    /// </remarks>
+    public Record ReadRecord(RecordType type, int length)
+    {
+        return type.GetRecord(this, length);
     }
 }

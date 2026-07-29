@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,47 +84,46 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     PX DNS record.
+/// </summary>
+public record RecordPx : Record
 {
     /// <summary>
-    ///     PX DNS record.
+    ///     Initializes a new instance of the <see cref="RecordPx"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    public record RecordPx : Record
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the PX record data.</param>
+    public RecordPx(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordPx" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordPx(RecordReader reader)
-            : base(reader)
-        {
-            Preference = Reader.ReadUInt16();
-            Map822 = Reader.ReadDomainName();
-            MapX400 = Reader.ReadDomainName();
-        }
+        Preference = Reader.ReadUInt16();
+        Map822 = Reader.ReadDomainName();
+        MapX400 = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets or sets the preference.
-        /// </summary>
-        public ushort Preference { get; set; }
+    /// <summary>
+    ///     Gets or sets the preference value for this mapping. Lower values are preferred.
+    /// </summary>
+    public ushort Preference { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the map to 822.
-        /// </summary>
-        public string Map822 { get; set; }
+    /// <summary>
+    ///     Gets or sets the RFC822 domain name part of the mapping.
+    /// </summary>
+    public string Map822 { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the map to X.400.
-        /// </summary>
-        public string MapX400 { get; set; }
+    /// <summary>
+    ///     Gets or sets the X.400 domain name part of the mapping.
+    /// </summary>
+    public string MapX400 { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Mappings as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {Map822} {MapX400}";
-        }
+    /// <summary>
+    ///     Returns a string representation of the PX record data.
+    /// </summary>
+    /// <returns>A string containing the PX record fields in display order.</returns>
+    public override string ToString()
+    {
+        return $"{Preference} {Map822} {MapX400}";
     }
 }

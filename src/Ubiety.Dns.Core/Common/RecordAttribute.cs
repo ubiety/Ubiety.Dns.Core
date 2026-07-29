@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,23 @@
 
 using System;
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Represents an attribute that is used to associate a DNS record type with a specific field.
+/// </summary>
+/// <remarks>
+/// This attribute is applied to fields of an enumeration to define the mapping between a DNS record identifier
+/// and the corresponding implementation type of the DNS record.
+/// </remarks>
+/// <example>
+/// This class is used internally to dynamically instantiate record types for DNS parsing.
+/// </example>
+[AttributeUsage(AttributeTargets.Field)]
+public class RecordAttribute(Type record) : Attribute
 {
     /// <summary>
-    ///     Applies a record class type to the enum type.
+    ///     Gets the record type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field)]
-    public class RecordAttribute : Attribute
-    {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordAttribute"/> class.
-        /// </summary>
-        /// <param name="record">Record to use.</param>
-        public RecordAttribute(Type record)
-        {
-            RecordType = record;
-        }
-
-        /// <summary>
-        ///     Gets the record type.
-        /// </summary>
-        public Type RecordType { get; }
-    }
+    public Type RecordType => record;
 }

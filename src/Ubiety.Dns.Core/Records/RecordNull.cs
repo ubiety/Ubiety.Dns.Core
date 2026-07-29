@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,40 +33,39 @@ allowed in master files.  NULLs are used as placeholders in some
 experimental extensions of the DNS.
 */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Null DNS record.
+/// </summary>
+public record RecordNull : Record
 {
+    private readonly byte[] _data;
+
     /// <summary>
-    ///     Null DNS record.
+    ///     Initializes a new instance of the <see cref="RecordNull"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    public record RecordNull : Record
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the NULL record data.</param>
+    public RecordNull(RecordReader reader)
+        : base(reader)
     {
-        private readonly byte[] _data;
+        Reader.Position -= 2;
+        var recordLength = Reader.ReadUInt16();
+        _data = new byte[recordLength];
+        _data = Reader.ReadBytes(recordLength);
+    }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNull" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordNull(RecordReader reader)
-            : base(reader)
-        {
-            Reader.Position -= 2;
-            var recordLength = Reader.ReadUInt16();
-            _data = new byte[recordLength];
-            _data = Reader.ReadBytes(recordLength);
-        }
+    /// <summary>
+    ///     Gets the record data as a list of bytes.
+    /// </summary>
+    public List<byte> Data => new(_data);
 
-        /// <summary>
-        ///     Gets the record data.
-        /// </summary>
-        public List<byte> Data => new(_data);
-
-        /// <summary>
-        ///     String representation of the data.
-        /// </summary>
-        /// <returns>Record data as a string.</returns>
-        public override string ToString()
-        {
-            return $"...binary data... ({_data.Length}) bytes";
-        }
+    /// <summary>
+    ///     Returns a string representation of the NULL record data.
+    /// </summary>
+    /// <returns>A string indicating the length of the binary data.</returns>
+    public override string ToString()
+    {
+        return $"...binary data... ({_data.Length}) bytes";
     }
 }

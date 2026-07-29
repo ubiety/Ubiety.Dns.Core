@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,96 +40,100 @@ using System.Globalization;
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Transaction signature DNS record.
+/// </summary>
+public record RecordTsig : Record
 {
+    private readonly byte[] _mac;
+    private readonly byte[] _otherData;
+
     /// <summary>
-    ///     Transaction signature DNS record.
+    ///     Initializes a new instance of the <see cref="RecordTsig" /> class.
     /// </summary>
-    public record RecordTsig : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordTsig(RecordReader reader)
+        : base(reader)
     {
-        private readonly byte[] _mac;
-        private readonly byte[] _otherData;
+        AlgorithmName = Reader.ReadDomainName();
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordTsig" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordTsig(RecordReader reader)
-            : base(reader)
-        {
-            AlgorithmName = Reader.ReadDomainName();
-            TimeSigned = (Reader.ReadUInt32() << 32) | Reader.ReadUInt32();
-            Fudge = Reader.ReadUInt16();
-            MacSize = Reader.ReadUInt16();
-            _mac = Reader.ReadBytes(MacSize);
-            OriginalId = Reader.ReadUInt16();
-            Error = Reader.ReadUInt16();
-            OtherLength = Reader.ReadUInt16();
-            _otherData = Reader.ReadBytes(OtherLength);
-        }
+        // Time Signed is 48 bits: a 16 bit high half then a 32 bit low half. Casting to long
+        // before shifting matters, because a shift count of 32 on a 32 bit operand is masked to
+        // zero, which is what previously discarded the high half and misread the field as 64 bits.
+        TimeSigned = ((long)Reader.ReadUInt16() << 32) | Reader.ReadUInt32();
+        Fudge = Reader.ReadUInt16();
+        MacSize = Reader.ReadUInt16();
+        _mac = Reader.ReadBytes(MacSize);
+        OriginalId = Reader.ReadUInt16();
+        Error = Reader.ReadUInt16();
+        OtherLength = Reader.ReadUInt16();
+        _otherData = Reader.ReadBytes(OtherLength);
+    }
 
-        /// <summary>
-        ///     Gets or sets the algorithm name.
-        /// </summary>
-        public string AlgorithmName { get; set; }
+    /// <summary>
+    ///     Gets or sets the algorithm name.
+    /// </summary>
+    public string AlgorithmName { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the time signed.
-        /// </summary>
-        public long TimeSigned { get; set; }
+    /// <summary>
+    ///     Gets or sets the time signed.
+    /// </summary>
+    public long TimeSigned { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the number of seconds of error.
-        /// </summary>
-        public ushort Fudge { get; set; }
+    /// <summary>
+    ///     Gets or sets the number of seconds of error.
+    /// </summary>
+    public ushort Fudge { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the MAC size.
-        /// </summary>
-        public ushort MacSize { get; set; }
+    /// <summary>
+    ///     Gets or sets the MAC size.
+    /// </summary>
+    public ushort MacSize { get; set; }
 
-        /// <summary>
-        ///     Gets the MAC.
-        /// </summary>
-        public List<byte> Mac => new(_mac);
+    /// <summary>
+    ///     Gets the MAC.
+    /// </summary>
+    public List<byte> Mac => new(_mac);
 
-        /// <summary>
-        ///     Gets or sets the original id.
-        /// </summary>
-        public ushort OriginalId { get; set; }
+    /// <summary>
+    ///     Gets or sets the original id.
+    /// </summary>
+    public ushort OriginalId { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the record error.
-        /// </summary>
-        public ushort Error { get; set; }
+    /// <summary>
+    ///     Gets or sets the record error.
+    /// </summary>
+    public ushort Error { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the length of other data.
-        /// </summary>
-        public ushort OtherLength { get; set; }
+    /// <summary>
+    ///     Gets or sets the length of other data.
+    /// </summary>
+    public ushort OtherLength { get; set; }
 
-        /// <summary>
-        ///     Gets the other record data.
-        /// </summary>
-        public List<byte> OtherData => new(_otherData);
+    /// <summary>
+    ///     Gets the other record data.
+    /// </summary>
+    public List<byte> OtherData => new(_otherData);
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Signature as a string.</returns>
-        public override string ToString()
-        {
-            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            dateTime = dateTime.AddSeconds(TimeSigned);
-            var printDate = dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString();
-            return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0} {1} {2} {3} {4}",
-                AlgorithmName,
-                printDate,
-                Fudge,
-                OriginalId,
-                Error);
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Signature as a string.</returns>
+    public override string ToString()
+    {
+        // Time Signed counts seconds from the UTC epoch, so the base has to say so.
+        var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(TimeSigned);
+        var printDate = dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString();
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0} {1} {2} {3} {4}",
+            AlgorithmName,
+            printDate,
+            Fudge,
+            OriginalId,
+            Error);
     }
 }

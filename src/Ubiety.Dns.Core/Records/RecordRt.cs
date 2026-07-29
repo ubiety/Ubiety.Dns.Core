@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,41 +68,40 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Route through DNS record.
+/// </summary>
+public record RecordRt : Record
 {
     /// <summary>
-    ///     Route through DNS record.
+    ///     Initializes a new instance of the <see cref="RecordRt" /> class.
     /// </summary>
-    public record RecordRt : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordRt(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordRt" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordRt(RecordReader reader)
-            : base(reader)
-        {
-            Preference = Reader.ReadUInt16();
-            IntermediateHost = Reader.ReadDomainName();
-        }
+        Preference = Reader.ReadUInt16();
+        IntermediateHost = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets or sets the route preference.
-        /// </summary>
-        public ushort Preference { get; set; }
+    /// <summary>
+    ///     Gets or sets the route preference.
+    /// </summary>
+    public ushort Preference { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the intermediate host.
-        /// </summary>
-        public string IntermediateHost { get; set; }
+    /// <summary>
+    ///     Gets or sets the intermediate host.
+    /// </summary>
+    public string IntermediateHost { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Preference and host as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Preference} {IntermediateHost}";
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Preference and host as a string.</returns>
+    public override string ToString()
+    {
+        return $"{Preference} {IntermediateHost}";
     }
 }

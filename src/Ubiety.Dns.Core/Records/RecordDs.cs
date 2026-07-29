@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,64 +47,63 @@ using System.Text;
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     DS DNS Record.
+/// </summary>
+public record RecordDs : Record
 {
+    private readonly byte[] _digest;
+
     /// <summary>
-    ///     DS DNS Record.
+    ///     Initializes a new instance of the <see cref="RecordDs" /> class.
     /// </summary>
-    public record RecordDs : Record
+    /// <param name="reader"><see cref="RecordReader" /> of the record data.</param>
+    public RecordDs(RecordReader reader)
+        : base(reader)
     {
-        private readonly byte[] _digest;
+        var length = Reader.ReadUInt16(-2);
+        KeyTag = Reader.ReadUInt16();
+        Algorithm = Reader.ReadByte();
+        DigestType = Reader.ReadByte();
+        length -= 4;
+        _digest = new byte[length];
+        _digest = Reader.ReadBytes(length);
+    }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordDs" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> of the record data.</param>
-        public RecordDs(RecordReader reader)
-            : base(reader)
+    /// <summary>
+    ///     Gets the key tag.
+    /// </summary>
+    public ushort KeyTag { get; }
+
+    /// <summary>
+    ///     Gets the algorithm.
+    /// </summary>
+    public byte Algorithm { get; }
+
+    /// <summary>
+    ///     Gets the digest type.
+    /// </summary>
+    public byte DigestType { get; }
+
+    /// <summary>
+    ///     Gets the digest.
+    /// </summary>
+    public List<byte> Digest => new(_digest);
+
+    /// <summary>
+    ///     String version of the record.
+    /// </summary>
+    /// <returns>String of the data.</returns>
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        foreach (var t in _digest)
         {
-            var length = Reader.ReadUInt16(-2);
-            KeyTag = Reader.ReadUInt16();
-            Algorithm = Reader.ReadByte();
-            DigestType = Reader.ReadByte();
-            length -= 4;
-            _digest = new byte[length];
-            _digest = Reader.ReadBytes(length);
+            sb.AppendFormat(CultureInfo.InvariantCulture, "{0:x2}", t);
         }
 
-        /// <summary>
-        ///     Gets the key tag.
-        /// </summary>
-        public ushort KeyTag { get; }
-
-        /// <summary>
-        ///     Gets the algorithm.
-        /// </summary>
-        public byte Algorithm { get; }
-
-        /// <summary>
-        ///     Gets the digest type.
-        /// </summary>
-        public byte DigestType { get; }
-
-        /// <summary>
-        ///     Gets the digest.
-        /// </summary>
-        public List<byte> Digest => new(_digest);
-
-        /// <summary>
-        ///     String version of the record.
-        /// </summary>
-        /// <returns>String of the data.</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            foreach (var t in _digest)
-            {
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0:x2}", t);
-            }
-
-            return $"{KeyTag} {Algorithm} {DigestType} {sb}";
-        }
+        return $"{KeyTag} {Algorithm} {DigestType} {sb}";
     }
 }

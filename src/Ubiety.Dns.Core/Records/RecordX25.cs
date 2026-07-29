@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,35 +46,34 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     X25 DNS record.
+/// </summary>
+public record RecordX25 : Record
 {
     /// <summary>
-    ///     X25 DNS record.
+    ///     Initializes a new instance of the <see cref="RecordX25"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    public record RecordX25 : Record
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the X25 record data.</param>
+    public RecordX25(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordX25" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordX25(RecordReader reader)
-            : base(reader)
-        {
-            PSDNAdress = Reader.ReadString();
-        }
+        PSDNAdress = Reader.ReadString();
+    }
 
-        /// <summary>
-        ///     Gets or sets the PSDN address.
-        /// </summary>
-        public string PSDNAdress { get; set; }
+    /// <summary>
+    ///     Gets or sets the Public Switched Data Network (PSDN) address in X.121 numbering format.
+    /// </summary>
+    public string PSDNAdress { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>PSDN address as a string.</returns>
-        public override string ToString()
-        {
-            return PSDNAdress;
-        }
+    /// <summary>
+    ///     Returns a string representation of the X25 record data.
+    /// </summary>
+    /// <returns>The PSDN address as a string.</returns>
+    public override string ToString()
+    {
+        return PSDNAdress;
     }
 }

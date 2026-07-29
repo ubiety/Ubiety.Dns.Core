@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,20 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core.Common
+namespace Ubiety.Dns.Core.Common;
+
+/// <summary>
+/// Defines the types of transport protocols used in DNS communication.
+/// </summary>
+public enum TransportType
 {
     /// <summary>
-    ///     Network transport type.
+    /// Use the UDP transport.
     /// </summary>
-    public enum TransportType
-    {
-        /// <summary>
-        ///     Use the UDP transport.
-        /// </summary>
-        Udp,
+    Udp,
 
-        /// <summary>
-        ///     Use the TCP transport.
-        /// </summary>
-        Tcp,
-    }
+    /// <summary>
+    /// Use the TCP transport.
+    /// </summary>
+    Tcp,
 }

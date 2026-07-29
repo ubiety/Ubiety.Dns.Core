@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,54 +15,67 @@
  * limitations under the License.
  */
 
-namespace Ubiety.Dns.Core.Records.Mail
+namespace Ubiety.Dns.Core.Records.Mail;
+
+/// <summary>
+///     Mail exchange DNS record.
+/// </summary>
+/// <remarks>
+///     # [Description](#tab/description)
+///     Standard MX mail DNS record
+///     # [RFC](#tab/rfc)
+///     ```
+///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+///     |                  PREFERENCE                   |
+///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+///     /                   EXCHANGE                    /
+///     /                                               /
+///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+///     where:
+///     PREFERENCE      A 16 bit integer which specifies the preference given to
+///     this RR among others at the same owner.  Lower values
+///     are preferred.
+///     EXCHANGE        A [domain-name] which specifies a host willing to act as
+///     a mail exchange for the owner name.
+///     MX records cause type A additional section processing for the host
+///     specified by EXCHANGE.  The use of MX RRs is explained in detail in
+///     [RFC-974].
+///     ```.
+/// </remarks>
+public sealed record RecordMx : Record
 {
     /// <summary>
-    ///     Mail exchange DNS record.
+    ///     Initializes a new instance of the <see cref="RecordMx" /> class.
     /// </summary>
-    /// <remarks>
-    ///     # [Description](#tab/description)
-    ///     Standard MX mail DNS record
-    ///     # [RFC](#tab/rfc)
-    ///     ```
-    ///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    ///     |                  PREFERENCE                   |
-    ///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    ///     /                   EXCHANGE                    /
-    ///     /                                               /
-    ///     +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-    ///     where:
-    ///     PREFERENCE      A 16 bit integer which specifies the preference given to
-    ///     this RR among others at the same owner.  Lower values
-    ///     are preferred.
-    ///     EXCHANGE        A [domain-name] which specifies a host willing to act as
-    ///     a mail exchange for the owner name.
-    ///     MX records cause type A additional section processing for the host
-    ///     specified by EXCHANGE.  The use of MX RRs is explained in detail in
-    ///     [RFC-974].
-    ///     ```.
-    /// </remarks>
-    public sealed record RecordMx : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordMx(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMx" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMx(RecordReader reader)
-            : base(reader)
-        {
-            Preference = Reader.ReadUInt16();
-            Exchange = Reader.ReadDomainName();
-        }
+        Preference = Reader.ReadUInt16();
+        Exchange = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets the preference.
-        /// </summary>
-        public ushort Preference { get; }
+    /// <summary>
+    ///     Gets the preference.
+    /// </summary>
+    public ushort Preference { get; }
 
-        /// <summary>
-        ///     Gets the exchange.
-        /// </summary>
-        public string Exchange { get; }
+    /// <summary>
+    ///     Gets the exchange.
+    /// </summary>
+    public string Exchange { get; }
+
+    /// <summary>
+    ///     Returns a string representation of the mail exchange record.
+    /// </summary>
+    /// <returns>The preference followed by the exchange.</returns>
+    /// <remarks>
+    ///     Required rather than optional: without it the compiler-generated record ToString prints
+    ///     <see cref="Record.ResourceRecord" />, whose own ToString prints this record back, and the
+    ///     pair recurse until the stack is exhausted.
+    /// </remarks>
+    public override string ToString()
+    {
+        return $"{Preference} {Exchange}";
     }
 }

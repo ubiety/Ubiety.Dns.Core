@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,35 +40,34 @@ hosts which are name servers for either Internet (IN) or Hesiod (HS)
 class information are normally queried using IN class protocols.
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Nameserver DNS record.
+/// </summary>
+public record RecordNs : Record
 {
     /// <summary>
-    ///     Nameserver DNS record.
+    ///     Initializes a new instance of the <see cref="RecordNs" /> class.
     /// </summary>
-    public record RecordNs : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordNs(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNs" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordNs(RecordReader reader)
-            : base(reader)
-        {
-            NameserverDomain = Reader.ReadDomainName();
-        }
+        NameserverDomain = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets or sets the nameserver domain.
-        /// </summary>
-        public string NameserverDomain { get; set; }
+    /// <summary>
+    ///     Gets or sets the nameserver domain.
+    /// </summary>
+    public string NameserverDomain { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Nameserver domain as a string.</returns>
-        public override string ToString()
-        {
-            return NameserverDomain;
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Nameserver domain as a string.</returns>
+    public override string ToString()
+    {
+        return NameserverDomain;
     }
 }

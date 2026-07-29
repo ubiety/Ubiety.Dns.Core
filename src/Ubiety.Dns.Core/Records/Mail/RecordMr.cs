@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,35 +33,34 @@ is as a forwarding entry for a user who has moved to a different
 mailbox.
 */
 
-namespace Ubiety.Dns.Core.Records.Mail
+namespace Ubiety.Dns.Core.Records.Mail;
+
+/// <summary>
+///     Mailbox rename DNS record.
+/// </summary>
+public record RecordMr : Record
 {
     /// <summary>
-    ///     Mailbox rename DNS record.
+    ///     Initializes a new instance of the <see cref="RecordMr" /> class.
     /// </summary>
-    public record RecordMr : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordMr(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMr" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMr(RecordReader reader)
-            : base(reader)
-        {
-            NewName = Reader.ReadDomainName();
-        }
+        NewName = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets the new name.
-        /// </summary>
-        public string NewName { get; }
+    /// <summary>
+    ///     Gets the new name.
+    /// </summary>
+    public string NewName { get; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Rename domain from the record.</returns>
-        public override string ToString()
-        {
-            return NewName;
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Rename domain from the record.</returns>
+    public override string ToString()
+    {
+        return NewName;
     }
 }

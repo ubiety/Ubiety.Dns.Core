@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,65 +57,64 @@
 
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     NAPTR DNS record.
+/// </summary>
+public record RecordNaptr : Record
 {
     /// <summary>
-    ///     NAPTR DNS record.
+    ///     Initializes a new instance of the <see cref="RecordNaptr" /> class.
     /// </summary>
-    public record RecordNaptr : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordNaptr(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordNaptr" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordNaptr(RecordReader reader)
-            : base(reader)
-        {
-            Order = Reader.ReadUInt16();
-            Preference = Reader.ReadUInt16();
-            Flags = Reader.ReadString();
-            Services = Reader.ReadString();
-            Regexp = Reader.ReadString();
-            Replacement = Reader.ReadDomainName();
-        }
+        Order = Reader.ReadUInt16();
+        Preference = Reader.ReadUInt16();
+        Flags = Reader.ReadString();
+        Services = Reader.ReadString();
+        Regexp = Reader.ReadString();
+        Replacement = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets or sets the order.
-        /// </summary>
-        public ushort Order { get; set; }
+    /// <summary>
+    ///     Gets or sets the order.
+    /// </summary>
+    public ushort Order { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the preference.
-        /// </summary>
-        public ushort Preference { get; set; }
+    /// <summary>
+    ///     Gets or sets the preference.
+    /// </summary>
+    public ushort Preference { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the flags.
-        /// </summary>
-        public string Flags { get; set; }
+    /// <summary>
+    ///     Gets or sets the flags.
+    /// </summary>
+    public string Flags { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the services.
-        /// </summary>
-        public string Services { get; set; }
+    /// <summary>
+    ///     Gets or sets the services.
+    /// </summary>
+    public string Services { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the regexp.
-        /// </summary>
-        public string Regexp { get; set; }
+    /// <summary>
+    ///     Gets or sets the regexp.
+    /// </summary>
+    public string Regexp { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the replacement.
-        /// </summary>
-        public string Replacement { get; set; }
+    /// <summary>
+    ///     Gets or sets the replacement.
+    /// </summary>
+    public string Replacement { get; set; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>Data as a string.</returns>
-        public override string ToString()
-        {
-            return $"{Order} {Preference} \"{Flags}\" \"{Services}\" \"{Regexp}\" {Replacement}";
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>Data as a string.</returns>
+    public override string ToString()
+    {
+        return $"{Order} {Preference} \"{Flags}\" \"{Services}\" \"{Regexp}\" {Replacement}";
     }
 }

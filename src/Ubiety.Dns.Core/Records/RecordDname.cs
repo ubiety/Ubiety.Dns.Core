@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,35 +31,34 @@
  *
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     DNAME DNS Record.
+/// </summary>
+public record RecordDname : Record
 {
     /// <summary>
-    ///     DNAME DNS Record.
+    ///     Initializes a new instance of the <see cref="RecordDname" /> class.
     /// </summary>
-    public record RecordDname : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record.</param>
+    public RecordDname(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordDname" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record.</param>
-        public RecordDname(RecordReader reader)
-            : base(reader)
-        {
-            Target = Reader.ReadDomainName();
-        }
+        Target = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets the target.
-        /// </summary>
-        public string Target { get; }
+    /// <summary>
+    ///     Gets the target.
+    /// </summary>
+    public string Target { get; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>String of the target.</returns>
-        public override string ToString()
-        {
-            return Target;
-        }
+    /// <summary>
+    ///     String representation of the record data.
+    /// </summary>
+    /// <returns>String of the target.</returns>
+    public override string ToString()
+    {
+        return Target;
     }
 }

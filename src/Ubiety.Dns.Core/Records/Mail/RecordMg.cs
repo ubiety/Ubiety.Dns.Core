@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,35 +31,36 @@ MGMNAME         A <domain-name> which specifies a mailbox which is a
 MG records cause no additional section processing.
 */
 
-namespace Ubiety.Dns.Core.Records.Mail
+namespace Ubiety.Dns.Core.Records.Mail;
+
+/// <summary>
+/// Represents a mail group record (MG record) in the DNS system.
+/// </summary>
+public record RecordMg : Record
 {
     /// <summary>
-    ///     Mail group DNS record.
+    ///     Initializes a new instance of the <see cref="RecordMg" /> class.
     /// </summary>
-    public record RecordMg : Record
+    /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
+    public RecordMg(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordMg" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordMg(RecordReader reader)
-            : base(reader)
-        {
-            MgmName = Reader.ReadDomainName();
-        }
+        MgmName = Reader.ReadDomainName();
+    }
 
-        /// <summary>
-        ///     Gets the mail group name.
-        /// </summary>
-        public string MgmName { get; }
+    /// <summary>
+    /// Gets the name of the mail group member (MGMNAME).
+    /// This represents a domain name that specifies a mailbox, which is a member
+    /// of the mail group associated with the domain name.
+    /// </summary>
+    public string MgmName { get; }
 
-        /// <summary>
-        ///     String representation of the record.
-        /// </summary>
-        /// <returns>Mail group name as a string.</returns>
-        public override string ToString()
-        {
-            return MgmName;
-        }
+    /// <summary>
+    /// Converts the mail group record to its string representation.
+    /// </summary>
+    /// <returns>Mail group name as a string.</returns>
+    public override string ToString()
+    {
+        return MgmName;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Dieter Lunn
+ * Copyright © 2020-2026 Dieter (coder2000) Lunn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,41 +38,40 @@ main use is for protocols such as FTP that can use special procedures
 when talking between machines or operating systems of the same type.
  */
 
-namespace Ubiety.Dns.Core.Records
+namespace Ubiety.Dns.Core.Records;
+
+/// <summary>
+///     Hardware info DNS record.
+/// </summary>
+public record RecordHinfo : Record
 {
     /// <summary>
-    ///     Hardware info DNS record.
+    ///     Initializes a new instance of the <see cref="RecordHinfo"/> class from the specified <see cref="RecordReader"/>.
     /// </summary>
-    public record RecordHinfo : Record
+    /// <param name="reader">The <see cref="RecordReader"/> used to read the HINFO record data.</param>
+    public RecordHinfo(RecordReader reader)
+        : base(reader)
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RecordHinfo" /> class.
-        /// </summary>
-        /// <param name="reader"><see cref="RecordReader" /> for the record data.</param>
-        public RecordHinfo(RecordReader reader)
-            : base(reader)
-        {
-            Cpu = Reader.ReadString();
-            Os = Reader.ReadString();
-        }
+        Cpu = Reader.ReadString();
+        Os = Reader.ReadString();
+    }
 
-        /// <summary>
-        ///     Gets the CPU.
-        /// </summary>
-        public string Cpu { get; }
+    /// <summary>
+    ///     Gets the CPU type for the host described by this record.
+    /// </summary>
+    public string Cpu { get; }
 
-        /// <summary>
-        ///     Gets the OS.
-        /// </summary>
-        public string Os { get; }
+    /// <summary>
+    ///     Gets the operating system type for the host described by this record.
+    /// </summary>
+    public string Os { get; }
 
-        /// <summary>
-        ///     String representation of the record data.
-        /// </summary>
-        /// <returns>String version of the record.</returns>
-        public override string ToString()
-        {
-            return $"CPU={Cpu} OS={Os}";
-        }
+    /// <summary>
+    ///     Returns a string representation of the HINFO record data.
+    /// </summary>
+    /// <returns>A string containing the CPU and OS information.</returns>
+    public override string ToString()
+    {
+        return $"CPU={Cpu} OS={Os}";
     }
 }

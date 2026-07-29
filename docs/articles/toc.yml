@@ -1,0 +1,6 @@
+- name: Getting started
+  href: getting-started.md
+- name: Resolver configuration
+  href: configuration.md
+- name: Record types
+  href: record-types.md
