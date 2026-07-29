@@ -104,6 +104,15 @@ public partial class Resolver
     }
 
     /// <summary>
+    /// Gets the transport used for UDP queries.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to a real socket. Internal so tests can substitute one; not part of the public
+    /// surface and not a supported extension point.
+    /// </remarks>
+    internal IUdpTransport UdpTransport { get; init; } = new UdpTransport();
+
+    /// <summary>
     /// Converts the given IP address into its corresponding reverse DNS ARPA address.
     /// </summary>
     /// <param name="ip">The IP address to be converted into an ARPA address.</param>
@@ -398,24 +407,14 @@ public partial class Resolver
             foreach (var server in _dnsServers)
             {
                 _logger.Debug($"Connecting to server {server.Address}...");
-                using var client = new UdpClient(AddressFamily.InterNetworkV6);
-                client.Client.DualMode = true;
-
-                // Without this Receive blocks indefinitely and Timeout applies to TCP only.
-                client.Client.ReceiveTimeout = Timeout;
-                client.Client.SendTimeout = Timeout;
 
                 try
                 {
-                    var sendBytes = request.GetBytes();
-                    client.Send(sendBytes, sendBytes.Length, server);
-                    var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                    var data = client.Receive(ref remoteEndPoint);
+                    var data = UdpTransport.Exchange(request.GetBytes(), server, Timeout);
 
                     var response = new Response(server, data);
                     AddToCache(response);
 
-                    client.Close();
                     return response;
                 }
                 catch (SocketException exception)
