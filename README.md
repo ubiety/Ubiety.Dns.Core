@@ -111,6 +111,10 @@ dotnet tool restore
 dotnet docfx docs/docfx.json --serve    # http://localhost:8080
 ```
 
+The site deploys to Netlify from `netlify.toml`. The Netlify build image has no .NET, so
+`docs/netlify-build.sh` installs the SDK version pinned in `global.json` before running DocFX,
+caching it under `/opt/build/cache` so later builds skip the download.
+
 ## Contributing
 
 Thank you for your assistance. Please find more information on how to contribute in the CONTRIBUTING.md
