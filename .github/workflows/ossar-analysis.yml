@@ -31,8 +31,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      # The MSDO CLI behind OSSAR needs net6.0 or later, which the
-      # GitHub-hosted Windows image already provides.
+      # The MSDO CLI behind OSSAR is a dotnet tool, so it runs into global.json
+      # before it can install itself. The image ships 10.0.301, which the pinned
+      # 10.0.302 will not roll back to.
+      - name: Install .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
       - name: Run OSSAR
         # The repo publishes no floating v2 tag, so the release is pinned.
         uses: github/ossar-action@v2.0.0
