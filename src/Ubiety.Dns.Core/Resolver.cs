@@ -113,6 +113,15 @@ public partial class Resolver
     internal IUdpTransport UdpTransport { get; init; } = new UdpTransport();
 
     /// <summary>
+    /// Gets the transport used for TCP queries.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to a real socket. Internal so tests can substitute one; not part of the public
+    /// surface and not a supported extension point.
+    /// </remarks>
+    internal ITcpTransport TcpTransport { get; init; } = new TcpTransport();
+
+    /// <summary>
     /// Converts the given IP address into its corresponding reverse DNS ARPA address.
     /// </summary>
     /// <param name="ip">The IP address to be converted into an ARPA address.</param>
@@ -312,7 +321,7 @@ public partial class Resolver
     [GeneratedRegex("[^0-9]")]
     private static partial Regex Number();
 
-    private static void WriteRequest(BufferedStream stream, Request request)
+    private static void WriteRequest(Stream stream, Request request)
     {
         var data = request.GetBytes();
         stream.WriteByte((byte)((data.Length >> 8) & 0xFF));
@@ -440,33 +449,12 @@ public partial class Resolver
 
                 try
                 {
-                    using var client = Socket.OSSupportsIPv6 ? new TcpClient(AddressFamily.InterNetworkV6)
-                        {
-                            ReceiveTimeout = Timeout,
-                            SendTimeout = Timeout,
-                            Client = { DualMode = true },
-                        }
-                        : new TcpClient(AddressFamily.InterNetwork)
-                        {
-                            ReceiveTimeout = Timeout,
-                            SendTimeout = Timeout,
-                        };
-
-                    client.Connect(server.Address, server.Port);
-
-                    if (!client.Connected)
-                    {
-                        client.Close();
-                        _logger.Error($"Connection to nameserver {server.Address} failed.");
-                        continue;
-                    }
-
-                    using var stream = new BufferedStream(client.GetStream());
+                    using var connection = TcpTransport.Connect(server, Timeout);
 
                     _logger.Debug("Sending request to server...");
-                    WriteRequest(stream, request);
+                    WriteRequest(connection.Stream, request);
 
-                    return ReceiveResponse(stream, server);
+                    return ReceiveResponse(connection.Stream, server);
                 }
                 catch (Exception e) when (e is SocketException or IOException)
                 {
