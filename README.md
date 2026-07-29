@@ -48,8 +48,14 @@ foreach (var record in response.GetRecords<RecordA>())
 There is an async equivalent that takes a cancellation token:
 
 ```csharp
+var response = await resolver.QueryAsync("example.com", QuestionType.A, cancellationToken);
+```
+
+The question class defaults to `IN`; pass it explicitly when you need another one:
+
+```csharp
 var response = await resolver.QueryAsync(
-    "example.com", QuestionType.A, QuestionClass.IN, cancellationToken);
+    "example.com", QuestionType.A, QuestionClass.CH, cancellationToken);
 ```
 
 `QueryAsync` is asynchronous the whole way down rather than the synchronous path wrapped in a task.

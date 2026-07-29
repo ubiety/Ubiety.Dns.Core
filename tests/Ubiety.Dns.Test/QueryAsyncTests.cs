@@ -166,6 +166,50 @@ namespace Ubiety.Dns.Test
         }
 
         [Fact]
+        public async Task EveryOverloadShapeResolvesWithoutAmbiguity()
+        {
+            // This compiling is most of the test: a CancellationToken does not convert to a
+            // QuestionClass, so the three argument overload cannot collide with the defaulted one.
+            var resolver = UdpResolver(_ => Reply("example.com", 1, 2, 3, 4));
+            using var cts = new CancellationTokenSource();
+
+            var withDefaults = await resolver.QueryAsync("example.com", QuestionType.A);
+            var withToken = await resolver.QueryAsync("example.com", QuestionType.A, cts.Token);
+            var withClass = await resolver.QueryAsync("example.com", QuestionType.A, QuestionClass.IN);
+            var withBoth = await resolver.QueryAsync(
+                "example.com", QuestionType.A, QuestionClass.IN, cts.Token);
+
+            foreach (var response in new[] { withDefaults, withToken, withClass, withBoth })
+            {
+                response.GetRecords<RecordA>().ShouldHaveSingleItem()
+                    .Address.ShouldBe(IPAddress.Parse("1.2.3.4"));
+            }
+        }
+
+        [Fact]
+        public async Task TheTokenOverloadUsesTheInternetClass()
+        {
+            var resolver = UdpResolver(_ => Reply("example.com", 1, 2, 3, 4));
+
+            var response = await resolver.QueryAsync(
+                "example.com", QuestionType.A, CancellationToken.None);
+
+            response.Questions.ShouldHaveSingleItem().QuestionClass.ShouldBe(QuestionClass.IN);
+        }
+
+        [Fact]
+        public async Task TheTokenOverloadObservesCancellation()
+        {
+            using var cts = new CancellationTokenSource();
+            await cts.CancelAsync();
+
+            var resolver = UdpResolver(_ => Reply("example.com", 1, 2, 3, 4));
+
+            await Should.ThrowAsync<OperationCanceledException>(
+                () => resolver.QueryAsync("example.com", QuestionType.A, cts.Token));
+        }
+
+        [Fact]
         public async Task QueryAsyncAccumulatesAZoneTransfer()
         {
             var transfer = Builder.Framed(
@@ -203,6 +247,15 @@ namespace Ubiety.Dns.Test
             async.Answers.Count.ShouldBe(sync.Answers.Count);
             async.GetRecords<RecordA>()[0].Address.ShouldBe(sync.GetRecords<RecordA>()[0].Address);
         }
+
+        private static Resolver UdpResolver(Func<IPEndPoint, byte[]> behaviour) =>
+            new([First])
+            {
+                UdpTransport = new StubUdp(behaviour),
+                Timeout = 1000,
+                Retries = 1,
+                TransportType = TransportType.Udp,
+            };
 
         private static Resolver TcpResolver(Func<IPEndPoint, byte[]> behaviour) =>
             new([First]) { TcpTransport = new StubTcp(behaviour), Timeout = 1000, Retries = 1 };

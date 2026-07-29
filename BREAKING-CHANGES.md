@@ -69,8 +69,13 @@ before. Nothing changed at runtime; the contract is simply now visible to the co
 
 ## Added members
 
-`Resolver.QueryAsync(string, QuestionType, QuestionClass, CancellationToken)` returns
-`Task<Response>`. It is additive: the synchronous `Query` is unchanged and remains supported.
+Two overloads of `Resolver.QueryAsync` return `Task<Response>`:
+
+- `QueryAsync(string, QuestionType, CancellationToken)` for the common internet class case
+- `QueryAsync(string, QuestionType, QuestionClass = IN, CancellationToken = default)`
+
+Both are additive: the synchronous `Query` is unchanged and remains supported. The overloads cannot
+be ambiguous, since a `CancellationToken` does not convert to a `QuestionClass`.
 
 The async path is implemented independently down to the socket rather than wrapping the synchronous
 one, so it neither blocks a thread nor risks the deadlock that `.Result` over an async call causes.

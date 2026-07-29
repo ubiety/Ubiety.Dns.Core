@@ -263,6 +263,23 @@ public partial class Resolver
         return await GetResponseAsync(request, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary> Sends a DNS query asynchronously in the internet class. </summary>
+    /// <param name="domainName"> The domain name to resolve. </param>
+    /// <param name="questionType"> The type of DNS query (e.g., A, AAAA, MX). </param>
+    /// <param name="cancellationToken"> Cancels the query. </param>
+    /// <returns> A <see cref="Response"/> containing the result of the DNS query. </returns>
+    /// <exception cref="InvalidOperationException">The resolver has no DNS servers configured.</exception>
+    /// <exception cref="OperationCanceledException"><paramref name="cancellationToken"/> was cancelled.</exception>
+    /// <remarks>
+    /// Saves passing <see cref="QuestionClass.IN" /> just to reach the token, which is the class
+    /// almost every caller wants.
+    /// </remarks>
+    public Task<Response> QueryAsync(
+        string domainName, QuestionType questionType, CancellationToken cancellationToken)
+    {
+        return QueryAsync(domainName, questionType, QuestionClass.IN, cancellationToken);
+    }
+
     /// <summary>
     /// Reads one or more length-prefixed DNS messages from a connected stream.
     /// </summary>
