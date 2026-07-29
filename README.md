@@ -95,9 +95,21 @@ The build is driven by [NUKE](https://github.com/nuke-build/nuke). Use
 ./build.sh Compile     # restore and compile
 ./build.sh Test        # run the tests with coverage
 ./build.sh Pack        # produce the NuGet package in ./artifacts
+./build.sh Docs        # build the documentation site into docs/_site
 ```
 
 Running `dotnet build` and `dotnet test` directly works too.
+
+### Documentation
+
+The site is [DocFX](https://dotnet.github.io/docfx/). The API reference is generated from the XML
+documentation comments in the source, so it cannot drift from the code; the guides under
+`docs/articles` are hand written.
+
+```shell
+dotnet tool restore
+dotnet docfx docs/docfx.json --serve    # http://localhost:8080
+```
 
 ## Contributing
 
