@@ -25,6 +25,10 @@ on:
     branches:
       - develop
 
+permissions:
+  packages: write
+  contents: read
+
 jobs:
   windows-latest:
     name: windows-latest

@@ -38,6 +38,8 @@ using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
 
 namespace _build;
 
+// Pre-releases go to GitHub Packages, so this workflow needs the GitHub token and nothing from
+// nuget.org. Declaring any permission drops the rest to none, hence contents for the checkout.
 [GitHubActions("continuous",
     GitHubActionsImage.WindowsLatest,
     GitHubActionsImage.MacOsLatest,
@@ -47,6 +49,22 @@ namespace _build;
     PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Publish)],
     EnableGitHubToken = true,
+    ReadPermissions = [GitHubActionsPermissions.Contents],
+    WritePermissions = [GitHubActionsPermissions.Packages],
+    FetchDepth = 0)]
+// Releases go to nuget.org via trusted publishing, which needs id-token to exchange the OIDC
+// token for a short-lived key. A single image keeps the push from racing itself.
+//
+// The tag is the trigger, not the merge into main: GitVersion only resolves the release version
+// once the tag exists, so a branch push would publish whatever build-metadata version it computed
+// for the untagged merge commit.
+[CustomGitHubActions("release",
+    GitHubActionsImage.UbuntuLatest,
+    OnPushTags = ["v*"],
+    PublishArtifacts = false,
+    InvokedTargets = [nameof(Test), nameof(Publish)],
+    ReadPermissions = [GitHubActionsPermissions.Contents],
+    WritePermissions = [GitHubActionsPermissions.IdToken],
     FetchDepth = 0)]
 [AppVeyor(
     AppVeyorImage.VisualStudioLatest,
