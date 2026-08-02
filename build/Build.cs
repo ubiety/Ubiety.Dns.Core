@@ -45,12 +45,24 @@ namespace _build;
     GitHubActionsImage.MacOsLatest,
     GitHubActionsImage.UbuntuLatest,
     OnPushBranchesIgnore = [ReleaseBranchPrefix, MasterBranch],
-    OnPullRequestBranches = [DevelopBranch],
     PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Publish)],
     EnableGitHubToken = true,
     ReadPermissions = [GitHubActionsPermissions.Contents],
     WritePermissions = [GitHubActionsPermissions.Packages],
+    FetchDepth = 0)]
+// Pull requests test only. A pull_request event checks out the detached merge ref, so there is no
+// branch for GitRepository to resolve, Beta is false whatever the source branch is called, and
+// Publish would demand a nuget.org key this workflow has no reason to hold. Keeping Publish out
+// of the pull request build lets it keep a hard Requires for the release path.
+[GitHubActions("pr",
+    GitHubActionsImage.WindowsLatest,
+    GitHubActionsImage.MacOsLatest,
+    GitHubActionsImage.UbuntuLatest,
+    OnPullRequestBranches = [DevelopBranch, MasterBranch],
+    PublishArtifacts = false,
+    InvokedTargets = [nameof(Test)],
+    ReadPermissions = [GitHubActionsPermissions.Contents],
     FetchDepth = 0)]
 // Releases go to nuget.org via trusted publishing, which needs id-token to exchange the OIDC
 // token for a short-lived key. A single image keeps the push from racing itself.

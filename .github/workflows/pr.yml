@@ -9,21 +9,20 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_continuous --host GitHubActions
+#         nuke --generate-configuration GitHubActions_pr --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: continuous
+name: pr
 
 on:
-  push:
-    branches-ignore:
-      - 'release/*'
+  pull_request:
+    branches:
+      - develop
       - main
 
 permissions:
-  packages: write
   contents: read
 
 jobs:
@@ -41,10 +40,8 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: Test, Publish'
-        run: ./build.cmd Test Publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Run: Test'
+        run: ./build.cmd Test
   macos-latest:
     name: macos-latest
     runs-on: macos-latest
@@ -59,10 +56,8 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: Test, Publish'
-        run: ./build.cmd Test Publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Run: Test'
+        run: ./build.cmd Test
   ubuntu-latest:
     name: ubuntu-latest
     runs-on: ubuntu-latest
@@ -77,7 +72,5 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: Test, Publish'
-        run: ./build.cmd Test Publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Run: Test'
+        run: ./build.cmd Test
